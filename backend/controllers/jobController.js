@@ -3,11 +3,12 @@ const Job = require("../models/jobModel");
 const User = require("../models/userModel");
 const multer = require("multer");
 const sharp = require("sharp");
+const fs = require("fs");
 
 const path = require("path");
 
 //
-const DIR = "././public/uploads/";
+const DIR = path.join(__dirname, "../../Client/public/uploads/");
 
 /////////////////////////////////////////////////////
 // @desc Get job by ID
@@ -95,12 +96,8 @@ const setJob = asyncHandler(async (req, res) => {
 
   fileUpload.single("logo")(req, res, async (err) => {
     if (err) {
-      if (!filename) {
-        throw new Error("File not selected");
-      }
-      return res.status(500).send(err);
+      throw new Error("File not selected");
     }
-
     const resizedImage = await sharp(req.file.path)
       .resize({ width: 160 })
       .toBuffer();
@@ -151,6 +148,7 @@ const setJob = asyncHandler(async (req, res) => {
     res.status(200).json(newJob);
   });
 });
+
 // @desc Update Jobs
 // @route PUT /api/jobs/:id
 // @access Private
@@ -284,6 +282,13 @@ const deleteJob = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("User not Authorized");
   }
+  // Delete the image file associated with the job
+  const imagePath = path.join(DIR, djob.logo.substr(9)); // Use the correct directory path (DIR)
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error("Error deleting image file:", err);
+    }
+  });
 
   await Job.findByIdAndDelete(req.params.id);
 
