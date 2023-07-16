@@ -2,12 +2,10 @@ const asyncHandler = require("express-async-handler");
 const studentForm = require("../models/studentFormModel");
 const Student = require("../models/studentModel");
 const fs = require("fs");
-
-const multer = require("multer");
-
-const path = require("path");
 const studentFormModel = require("../models/studentFormModel");
-const DIR = "././public/submissions/";
+const multer = require("multer");
+const path = require("path");
+const DIR = path.join(__dirname, "../../Client/public/submissions/");
 
 const getProfile = asyncHandler(async (req, res) => {
   const studentId = req.student.id;
@@ -64,10 +62,11 @@ const setSForm = asyncHandler(async (req, res) => {
   fileUpload.single("cv")(req, res, async (err) => {
     if (err) {
       // Handle any errors that occurred while parsing the form data
-      if (!filename) {
-        throw new Error("No File was selected!");
-      }
-      return res.status(500).send(err);
+      throw new Error("No File was selected!");
+      /*       if (!filename) {
+        
+      } */
+      /* return res.status(500).send(err); */
     }
 
     // Extract form data
@@ -161,7 +160,7 @@ const deleteProfile = asyncHandler(async (req, res) => {
   }
   // Delete the CV file if it exists
   if (dprofile.cv) {
-    const cvFilePath = path.join("public", dprofile.cv);
+    const cvFilePath = path.join(DIR, dprofile.cv.substr(11));
     fs.unlinkSync(cvFilePath);
   }
   await studentFormModel.findByIdAndDelete(req.params.id);

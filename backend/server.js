@@ -1,6 +1,6 @@
-require("dotenv").config();
 const express = require("express");
 const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");

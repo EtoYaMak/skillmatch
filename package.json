@@ -1,12 +1,23 @@
 {
   "name": "skillmint-project",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Skillmint Project Root",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run dev",
+    "server": "cd backend && npm run dev",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Muhammad Abdul Karim",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "nodemon": "^3.0.1"
+  }
 }
