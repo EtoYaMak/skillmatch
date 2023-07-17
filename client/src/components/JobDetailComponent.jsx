@@ -26,7 +26,7 @@ function JobDetailComponent(props) {
 
   // Check if job is available
   if (!job || isError) {
-    return <div>Job not found FRONTEND.</div>;
+    return <div>Job not found.</div>;
   }
 
   // Display the job details
