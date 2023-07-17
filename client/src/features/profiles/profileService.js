@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:4000/api/profiles/";
+const API_URL = "http://13.53.103.94:4000/api/profiles/";
 
 const createProfile = async (formData, token) => {
   const config = {
