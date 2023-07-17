@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 
 //
-const DIR = path.join(__dirname, "../../Client/public/uploads/");
+const DIR = path.join(__dirname, "../../client/public/uploads/");
 
 /////////////////////////////////////////////////////
 // @desc Get job by ID

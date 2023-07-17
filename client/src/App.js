@@ -24,8 +24,17 @@ function App() {
 
   useEffect(() => {
     fetch("http://13.53.103.94:4000")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Network response was not ok.");
+        }
+      })
+      .then((data) => setMessage(data.message))
+      .catch((error) => {
+        setMessage("Error: " + error.message);
+      });
   }, []);
 
   return (

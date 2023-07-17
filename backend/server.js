@@ -4,7 +4,7 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 4000;
 const cors = require("cors");
 const app = express();
 
@@ -13,7 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  /* origin: "http://localhost:3000", */
+  origin: "http://13.53.103.94:3000",
 };
 app.use(cors(corsOptions));
 
@@ -40,7 +41,7 @@ if (process.env.NODE_ENV === "production") {
   );
 } else {
   app.get("/", (req, res) => {
-    res.status(201).json({ message: "Connected to backend" });
+    res.status(200).json({ message: "Connected to backend" });
   });
 }
 
