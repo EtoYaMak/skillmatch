@@ -1,7 +1,7 @@
 // Making HTTP request
 import axios from "axios";
 
-const API_URL = "http://13.53.103.94:80/api/users/";
+const API_URL = "http://13.53.103.94/api/users/";
 
 // Register User
 const register = async (userData) => {

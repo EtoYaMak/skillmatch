@@ -23,7 +23,7 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://13.53.103.94:4000")
+    fetch("http://13.53.103.94")
       .then((res) => {
         if (res.ok) {
           return res.json();
