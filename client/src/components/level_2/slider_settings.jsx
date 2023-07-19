@@ -1,15 +1,15 @@
 // SliderSettings.js
-
+import { BiCircle } from "react-icons/bi";
 const settings = {
   dots: true,
   infinite: true,
   lazyLoad: true,
-  speed: 200,
+  speed: 300,
   slidesToShow: 3,
   slidesToScroll: 1,
   arrows: false,
   autoplay: true,
-  autoplaySpeed: 7000,
+  autoplaySpeed: 3600,
   responsive: [
     {
       breakpoint: 1024,

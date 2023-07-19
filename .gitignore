@@ -11,7 +11,7 @@ node_modules
 
 # production
 /build
-
+slick-dump
 # misc
 .DS_Store
 .env.local
