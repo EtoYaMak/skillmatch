@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import { RiExpandRightFill } from "react-icons/ri";
 function JobBoardComponent({ job }) {
   const jobId = job._id;
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ function JobBoardComponent({ job }) {
   return (
     <div
       className="main grid grid-cols-12 items-center p-3 md:p-4 my-3
-     bg-[#fff] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-[#1c1f21] hover: rounded-md "
+     bg-[#fff] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-[#1c1f21] rounded-md select-none "
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -62,11 +62,11 @@ function JobBoardComponent({ job }) {
           />
         </Link>
         <div className="ml-5 bg-transparent md:w-4/6 w-fit">
-          <h2 className="font-semibold text-2xl bg-transparent">
+          <h2 className="font-semibold text-2xl bg-transparent tracking-wide">
             {job.position}
           </h2>
           <h3
-            className={`bg-inherit block cursor-pointer font-semibold text-lg ${
+            className={`bg-inherit block cursor-pointer font-semibold text-lg tracking-wider ${
               isHovered
                 ? "text-md font-bold rounded-md text-[#d4d7d7] "
                 : "text-md font-bold rounded-md text-gray-500 "
@@ -87,7 +87,7 @@ function JobBoardComponent({ job }) {
                 /*className="text-[#d4d7d7] bg-[#1c1f21] font-bold  p-2 rounded-md cursor-zoom-in" THIS*/
                 className={` block cursor-pointer p-2 ${
                   isHovered
-                    ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c]"
+                    ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
                     : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
                 }`}
                 onClick={handleSkill}
@@ -97,14 +97,20 @@ function JobBoardComponent({ job }) {
             ))}
           {!showDropdown && skills.length > 2 && (
             <span
-              className={` block cursor-pointer p-2 ${
+              className={`block cursor-pointer p-2 ${
                 isHovered
-                  ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c]"
+                  ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#2c3033] hover:text-[#d0333c]"
                   : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
               }`}
               onClick={handleSkill}
             >
-              +{skills.length - 2}
+              <span
+                className={`bg-transparent flex justify-center items-center gap-1
+              ${isHovered ? "" : ""}`}
+              >
+                +{skills.length - 2}
+                <RiExpandRightFill size={17} className="bg-transparent" />
+              </span>
             </span>
           )}
 
@@ -116,14 +122,14 @@ function JobBoardComponent({ job }) {
               {skills.map((skill, index) => (
                 <span
                   key={index}
-                  className={` block cursor-pointer p-2 ${
+                  className={` block cursor-pointer p-2 sm:mt-0  mt-2 ${
                     selectedSkillIndex === index
                       ? "text-md font-bold rounded-md text-white"
                       : "text-md font-bold  rounded-md text-white"
                   } ${
                     isHovered
-                      ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c]"
-                      : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
+                      ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
+                      : "text-md font-bold rounded-md text-white bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
                   }`}
                   onClick={() => setSelectedSkillIndex(index)}
                 >
@@ -138,7 +144,9 @@ function JobBoardComponent({ job }) {
       {/* Location */}
       <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end">
         <div className=" p-3 bg-transparent w-fit">
-          <p className="bg-transparent font-semibold text-lg">{job.location}</p>
+          <p className="bg-transparent font-semibold text-lg tracking-normal">
+            {job.location}
+          </p>
         </div>
       </div>
     </div>
