@@ -41,7 +41,7 @@ function Home() {
 
   return (
     <div className="justify-between items-center max-w-[1240px] max-h-fit px-4 my-5 mx-auto mb-5">
-      <h1 className="text-center font-semibold my-5 text-3xl text-[#f3900b]">
+      <h1 className="text-center font-semibold my-5 text-3xl text-[#d0333c]">
         Remote Jobs
       </h1>
 
@@ -61,13 +61,13 @@ function Home() {
         </Slider>
       </div>
 
-      <h1 className="text-center font-semibold mt-10 pb-4 text-3xl text-[#f3900b]">
+      <h1 className="text-center font-semibold mt-10 pb-4 text-3xl text-[#d0333c]">
         Recent Job Postings
       </h1>
 
       <div className="recent pb-5">
         {sortedJobs.length === 0 ? (
-          <p>No jobs found</p>
+          <p className="text-2xl text-white text-center">No jobs found</p>
         ) : (
           <>
             {sortedJobs.slice(0, visibleJobs).map((job) => (

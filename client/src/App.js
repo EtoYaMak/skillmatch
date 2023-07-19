@@ -41,7 +41,8 @@ function App() {
   return (
     <div className="App min-h-screen">
       <Navbar />
-      <h1 className="text-white hover:text-black text-center">{message}</h1>
+      {/*       <h1 className="text-white hover:text-black text-center">{message}</h1>
+       */}{" "}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/browse" element={<Browse />} />
