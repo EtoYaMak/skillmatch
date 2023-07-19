@@ -57,86 +57,89 @@ function Login() {
 
   return (
     <>
-      <div className="main h-full mx-auto w-[960px] ">
-        <div className="content ">
-          <div className="container flex flex-row my-10 justify-evenly items-center h-full ">
-            {/* Navigate through forms*/}
-            <div className="rounded-3xl bg-gray-100 text-slate-500 text-2xl font-inter px-4 py-14 flex flex-col gap-2">
-              <p className="bg-inherit leading-tight tracking-wide">
-                Want to Apply for Jobs?
-              </p>
-              <Link
-                to="/registerS"
-                className="text-3xl font-inter font-bold text-slate-800"
-              >
-                Register an Job Seeker Account.
-              </Link>
-              <p className="bg-inherit text-right tracking-wide">
-                Already have one?
-              </p>
-              <Link
-                to="/loginS"
-                className="text-3xl font-inter font-bold text-slate-800"
-              >
-                Login to your Job Seeker Account.
-              </Link>
-            </div>
-
-            <section className="form  h-max min-w-[424px] my-4 flex flex-col justify-center items-center">
-              <p className="text-3xl text- flex flex-row items-center justify-center gap-2 font-Inter font-light m-2 p-2 w-fit">
-                <FaSignInAlt />
-                Login as an Employer
-              </p>
-              <form onSubmit={onSubmit} className=" w-2/3 mx-auto">
-                <div className="form-group pb-2 grid">
-                  <label className="text-gray-700 text-xl font-mono">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    value={email}
-                    placeholder="Enter your email"
-                    onChange={onChange}
-                  />
-                </div>
-
-                <div className="form-group pb-2 grid">
-                  <label className="text-gray-700 text-xl font-mono">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    value={password}
-                    placeholder="Enter password"
-                    onChange={onChange}
-                  />
-                </div>
-                <div className="form-group w-max mx-auto m-2 flex flex-col">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-gray-500 text-white text-xl  font-Inter font-medium uppercase tracking-widest hover:text-white hover:bg-gray-900 rounded-lg transition ease-in-out delay-50"
-                  >
-                    Login
-                  </button>
-                </div>
-                <span className="flex flex-col justify-between items-center">
-                  Create a new account
-                  <Link
-                    to="/register"
-                    className="font-semibold text-lg hover:text-blue-500"
-                  >
-                    Register Here!
-                  </Link>
-                </span>
-              </form>
-            </section>
+      <div className="main max-h-screen mx-auto min-h-fit max-w-[1024px] flex justify-center items-center">
+        <div className="flex flex-col md:flex-row gap-8 items-center mx-4 mt-12">
+          {/* Navigate through forms*/}
+          <div className="w-5/5 md:w-1/2 mt-10 md:mt-0 rounded-3xl bg-gray-100 text-slate-500 text-2xl font-inter p-6 flex flex-col gap-2 ">
+            <p className="bg-inherit leading-tight tracking-wide">
+              Want to Apply for Jobs?
+            </p>
+            <Link
+              to="/registerS"
+              className="text-3xl font-inter font-bold text-slate-800"
+            >
+              Register an Job Seeker Account.
+            </Link>
+            <p className="bg-inherit text-right tracking-wide">
+              Already have one?
+            </p>
+            <Link
+              to="/loginS"
+              className="text-3xl font-inter font-bold text-slate-800"
+            >
+              Login to your Job Seeker Account.
+            </Link>
           </div>
+
+          <section className="w-4/5 md:w-1/2 ">
+            <p className="text-3xl text-center flex flex-row items-center justify-center gap-2 font-Inter font-light m-2 p-2 text-white">
+              <FaSignInAlt />
+              Login as an Employer
+            </p>
+            <form onSubmit={onSubmit} className="w-full mx-auto">
+              <div className="form-group pb-2 grid">
+                <label className="text-white text-2xl font-Inter p-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="form-control input bg-white/5 text-xl text-white"
+                  id="email"
+                  name="email"
+                  value={email}
+                  placeholder="Enter Email Address"
+                  onChange={onChange}
+                />
+              </div>
+
+              <div className="form-group pb-2 grid">
+                <label className="text-white text-2xl font-Inter p-2">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="form-control input bg-white/5 text-xl text-white"
+                  id="password"
+                  name="password"
+                  value={password}
+                  placeholder="Enter Password"
+                  onChange={onChange}
+                />
+              </div>
+              <div className="form-group w-max mx-auto m-2 flex flex-col">
+                <button
+                  type="submit"
+                  className="btn btn-outline text-[#000]/80 border-white/10 bg-white/80 hover:bg-[#d0333c] hover:border-[#d4d7d7] hover:text-[#d4d7d7]
+                  flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
+                >
+                  Login
+                </button>
+              </div>
+              <div className="flex flex-col justify-center items-center gap-2">
+                <span className="mt-2 text-xl font-bold gap-2 bg-transparent text-white font-Inter">
+                  Create a new account
+                </span>
+                <Link to="/register" className="bg-transparent mb-2">
+                  <button
+                    className="btn btn-outline text-[#fff]/80 border-[#d0333c]/10 hover:bg-[#fff]/90 hover:border-[#d0333c] hover:text-[#d0333c]
+                   flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
+                  >
+                    Register
+                  </button>
+                </Link>
+              </div>
+            </form>
+          </section>
         </div>
       </div>
     </>
