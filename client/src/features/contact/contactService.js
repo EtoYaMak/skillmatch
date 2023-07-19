@@ -1,5 +1,5 @@
 import axios from "axios";
-
+require("dotenv").config();
 export const sendContactForm = async (formData) => {
   try {
     const response = await axios.post(

@@ -1,4 +1,5 @@
 // Making HTTP request
+require("dotenv").config();
 import axios from "axios";
 
 const API_URL = `http://${process.env.SERVER_IP}/api/users/`;

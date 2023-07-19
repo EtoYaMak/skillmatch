@@ -1,4 +1,5 @@
 import axios from "axios";
+require("dotenv").config();
 
 const API_URL = `http://${process.env.SERVER_IP}/api/profiles/`;
 /* const API_URL = "http://localhost:4000/api/profiles/"; */
