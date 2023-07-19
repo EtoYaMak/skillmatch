@@ -38,7 +38,10 @@ const Post = () => {
           <div className="text-center h-[50vh] flex justify-center items-center">
             <p className="text-2xl text-white tracking-[0.15em]">
               Want to post a job?{" "}
-              <Link to="/register" className="text-[#f3900b] hover:underline">
+              <Link
+                to="/register"
+                className="text-[#d0333c] hover:text-[#aba6a6] hover:border-b-2 border-[#d0333c]"
+              >
                 Click here to register as a job poster
               </Link>
               .

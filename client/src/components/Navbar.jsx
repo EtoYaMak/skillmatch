@@ -76,7 +76,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="relative flex justify-evenly items-center h-24  px-4 mx-auto z-50 bg-[#2c3033] shadow-[0px_0px_2px_1px_#d0333c] select-none ">
+    <div className="relative flex justify-evenly items-center h-24  px-4 mx-auto z-50 bg-[#1c1f21] shadow-[0px_0px_2px_1px_#d0333c] select-none ">
       <h1 className="w-max text-5xl font-bold text-[#d4d7d7] bg-transparent">
         <Link to="/" className=" hover:text-[#d0333c] ">
           SKILLMINT.
@@ -114,7 +114,11 @@ const Navbar = () => {
                text-[#d4d7d7] font-bold hover:text-[#d0333c] tracking-widest "
               onClick={() => setIsOpen(!isOpen)}
             >
-              Profile <RiArrowDownDoubleFill size={24} className="mb-1" />
+              Profile{" "}
+              <RiArrowDownDoubleFill
+                size={24}
+                className="mb-1 bg-transparent"
+              />
             </button>
             {isOpen && (
               <ul

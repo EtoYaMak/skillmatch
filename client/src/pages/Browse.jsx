@@ -93,7 +93,7 @@ function Browse() {
               key={number}
               className={`px-3 py-1  ${
                 currentPage === number
-                  ? "bg-[#d0333c] shadow-[0px_0px_0px_1px_#aba6a6] font-semibold mx-1 rounded-sm text-white"
+                  ? "bg-[#d0333c]  font-semibold mx-1 rounded-sm text-white"
                   : "text-[#fff] bg-[#1c1f21] font-medium  mx-1 rounded-sm "
               }`}
               onClick={() => paginate(number)}
