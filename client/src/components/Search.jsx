@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BsSearch } from "react-icons/bs";
 
 export default function SearchComponent({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,17 +18,26 @@ export default function SearchComponent({ onSearch }) {
 
   return (
     <div className="flex items-center w-full">
-      <div className="flex rounded mx-4 gap-2 w-full">
+      <div className="flex justify-between rounded mx-4 gap-2 w-full">
         <input
           type="text"
-          className="h-12 w-3/4 md:w-5/6 px-4 py-2 placeholder:tracking-[0.25em] tracking-widest text-2xl placeholder:opacity-60 rounded-md placeholder:text-[#f3eeeb] text-white bg-transparent  focus:text-white focus:border-2 focus:border-white focus:ring-0 "
+          className="input input-ghost h-12 w-full px-4 py-4
+          placeholder:tracking-[0.25em] tracking-wider text-2xl 
+          placeholder:opacity-60 rounded-md placeholder:text-[#aba6a6]
+           text-[#d4d7d7]   focus:text-white focus:border-2
+            focus:border-white/5 focus:outline-none bg-[hsl(206,7%,12%)]/20"
           placeholder="Search a job title"
           value={searchQuery}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-        <button className=" text-[#f3eeeb] bg-[hsl(0,0%,12%)] border border-[#f3eeeb] hover:bg-[#ee6555] ease-in-out duration-200 tracking-[0.15em] rounded font-bold text-xl h-12 w-1/4 md:w-1/6">
-          Search
+        <button className=" btn btn-ghost text-xl bg-white/5">
+          {" "}
+          {/* text-[#f3eeeb] bg-[hsl(0,0%,12%)] border border-[#f3eeeb] hover:bg-[#ee6555]
+         ease-in-out duration-200 tracking-[0.15em] rounded font-bold text-xl h-12 w-1/4 md:w-1/6 */}
+          <span className="bg-transparent flex gap-2 justify-evenly items-center text-white/50">
+            <BsSearch size={24} className="bg-transparent" />
+          </span>
         </button>
       </div>
     </div>

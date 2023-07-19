@@ -55,8 +55,8 @@ function Browse() {
   };
 
   return (
-    <div className="main mx-auto md:max-w-4xl lg:max-w-6xl xl:max-w-7xl px-4 md:px-6 ">
-      <div className="h-auto pb-2">
+    <div className="main mx-auto md:max-w-4xl lg:max-w-6xl xl:max-w-7xl px-4 md:px-6 min-h-fit ">
+      <div className="h-fit pb-2">
         {/* Search component */}
         <div className="md:flex md:space-x-4 mt-6">
           <div className="md:w-full md:flex md:justify-end">
@@ -78,12 +78,10 @@ function Browse() {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-center items-center mb-5">
+        <div className="flex justify-center items-center mb-2">
           <button
-            className={`px-3 py-1 font-medium mr-2 ${
-              currentPage === 1
-                ? "text-[hsl(44,91%,25%)] border-b-[#f3900b] border-b"
-                : "text-[hsl(34,91%,70%)] border-b-[#f3900b] border-b"
+            className={`btn btn-ghost  ${
+              currentPage === 1 ? "text-[#939393] " : "text-[#d4d7d7] "
             }`}
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
@@ -93,10 +91,10 @@ function Browse() {
           {pageNumbers.map((number) => (
             <button
               key={number}
-              className={`px-3 py-1 ${
+              className={`px-3 py-1  ${
                 currentPage === number
-                  ? "bg-[#ee6555] shadow-[1px_2px_0px_0px_#f3900b] font-bold mx-1 rounded-sm text-white"
-                  : "text-[#fff] bg-[#ee6555] font-medium  mx-1 rounded-sm "
+                  ? "bg-[#d0333c] shadow-[0px_0px_0px_1px_#aba6a6] font-semibold mx-1 rounded-sm text-white"
+                  : "text-[#fff] bg-[#1c1f21] font-medium  mx-1 rounded-sm "
               }`}
               onClick={() => paginate(number)}
             >
@@ -104,10 +102,10 @@ function Browse() {
             </button>
           ))}
           <button
-            className={`px-3 py-1 font-medium ml-2 ${
+            className={` btn btn-ghost  ${
               currentPage === Math.ceil(filteredJobs.length / jobsPerPage)
-                ? "text-[hsl(44,91%,25%)] border-b-[hsl(44,91%,25%)] border-b"
-                : "text-[hsl(34,91%,70%)] border-b-[hsl(34,91%,70%)] border-b"
+                ? "text-[#939393] "
+                : "text-[#d4d7d7] "
             }`}
             onClick={() => paginate(currentPage + 1)}
             disabled={
