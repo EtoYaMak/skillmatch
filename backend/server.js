@@ -20,6 +20,7 @@ const corsOptions = {
     "http://localhost:3000",
     "http://localhost:4000",
     "http://skillmint.io",
+    `http://${process.env.SERVER_IP}`,
   ],
 };
 app.use(cors(corsOptions));

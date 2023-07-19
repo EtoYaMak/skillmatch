@@ -1,9 +1,11 @@
 import axios from "axios";
-require("dotenv").config();
+
+const SERVER_IP = "13.53.134.165";
+
 export const sendContactForm = async (formData) => {
   try {
     const response = await axios.post(
-      `http://${process.env.SERVER_IP}/api/contact`,
+      `http://${SERVER_IP}/api/contact`,
       /* "http://localhost:4000/api/contact", */
       formData
     );

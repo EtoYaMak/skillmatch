@@ -1,8 +1,9 @@
 // Making HTTP request
-require("dotenv").config();
+
 import axios from "axios";
 
-const API_URL = `http://${process.env.SERVER_IP}/api/users/`;
+const SERVER_IP = "13.53.134.165";
+const API_URL = `http://${SERVER_IP}/api/users/`;
 /* const API_URL = "http://localhost:4000/api/users/"; */
 
 // Register User
