@@ -1,8 +1,8 @@
 // Making HTTP request
 import axios from "axios";
 
-/* const API_URL = "http://13.53.103.94/api/users/"; */
-const API_URL = "http://localhost:4000/api/users/";
+const API_URL = `http://${process.env.SERVER_IP}/api/users/`;
+/* const API_URL = "http://localhost:4000/api/users/"; */
 
 // Register User
 const register = async (userData) => {
