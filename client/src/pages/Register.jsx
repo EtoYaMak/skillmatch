@@ -63,34 +63,37 @@ function Register() {
 
   return (
     <>
-      <div className="main max-w-[960px] mx-auto">
-        <div className="flex flex-col md:flex-row justify-evenly items-center mt-10 gap-4 mx-4">
+      <div className="min-h-screen max-h-fit h-full w-full mx-auto">
+        <div className="flex flex-col md:flex-row justify-evenly items-center mt-10 gap-4  mx-auto max-w-[960px]">
           {/* Navigate through forms*/}
-          <div className="max-w-1/4 rounded-3xl bg-gray-100 text-slate-500 text-2xl font-inter px-4 py-14 flex flex-col gap-2 select-none">
+          <div
+            className="max-w-1/4 w-3/4 md:w-1/2 h-[40vh] justify-center 
+           rounded-3xl bg-gray-100 text-slate-500 text-2xl font-inter px-4 py-14 flex flex-col gap-2 select-none"
+          >
             <p className="bg-inherit leading-tight tracking-wide">
               Want to Apply for Jobs?
             </p>
             <Link
               to="/registerS"
-              className="text-3xl font-inter font-bold text-slate-800"
+              className="text-3xl font-inter font-bold text-slate-800 hover:text-[#d0333c] mb-10"
             >
-              Register an Job Seeker Account.
+              Register to Start Applying
             </Link>
             <p className="bg-inherit text-right tracking-wide">
-              Already have one?
+              Already have an Account?
             </p>
             <Link
               to="/loginS"
-              className="text-3xl font-inter font-bold text-slate-800"
+              className="text-3xl font-inter text-right font-bold text-slate-800 hover:text-[#d0333c]"
             >
-              Login to your Job Seeker Account.
+              Login to Start Applying
             </Link>
           </div>
 
           <section className="my-10  rounded-md p-2">
             <p className="text-3xl flex gap-2 font-Inter font-light m-2 p-2 text-white bg-transparent">
               <FaUser className="bg-inherit" />
-              Create an Employer Account
+              Register to Start Posting
             </p>
             <form onSubmit={onSubmit} className="bg-transparent">
               <div className="form-group pb-2 grid bg-inherit">
