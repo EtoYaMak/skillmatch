@@ -48,13 +48,13 @@ const Contact = () => {
   return (
     <div className="max-w-7xl mx-auto">
       <section className="text-gray-400 body-font font-Inter">
-        <div className="container px-5 py-5 mx-auto bg-zinc-800 rounded-xl">
-          <div className="flex flex-col text-center w-full mb-12 bg-inherit">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-50 bg-inherit font-Inter">
+        <div className="container px-5 py-5 mt-[10vh] mx-auto bg-[#1c1f21] rounded-xl">
+          <div className="flex flex-col text-center w-full mb-4 bg-inherit mt-10 ">
+            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-1 text-[#d4d7d7] bg-inherit font-Inter">
               Contact Us
             </h1>
-            <p className="lg:w-2/3 mx-auto leading-relaxed text-base bg-inherit">
-              Connect with Skillmint Team by Sending us a Message!
+            <p className="lg:w-2/3 mx-auto leading-relaxed text-2xl bg-inherit text-[#aba6a6]">
+              Got a Question? Reach out!
             </p>
           </div>
           <div className="lg:w-1/2 md:w-2/3 mx-auto bg-inherit">
@@ -71,10 +71,10 @@ const Contact = () => {
               className="flex flex-wrap m-2 bg-inherit"
             >
               <div className="p-2 w-full sm:w-1/2 bg-inherit">
-                <div className="relative bg-inherit">
+                <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="name"
-                    className="leading-7 text-md text-zinc-200 bg-inherit font-Inter font-semibold"
+                    className="leading-7 text-xl p-2 text-[#d4d7d7] bg-inherit font-Inter font-semibold"
                   >
                     Name
                   </label>
@@ -84,15 +84,15 @@ const Contact = () => {
                     name="name"
                     value={name}
                     onChange={handleChange}
-                    className="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    className="input bg-white/10 text-lg text-white/80 w-full leading-8 transition-colors duration-200 ease-in-out"
                   />
                 </div>
               </div>
               <div className="p-2 w-full sm:w-1/2 bg-inherit">
-                <div className="relative bg-inherit">
+                <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="email"
-                    className="leading-7 text-md text-zinc-200 bg-inherit font-Inter font-semibold"
+                    className="leading-7 text-xl p-2 text-[#d4d7d7]  bg-inherit font-Inter font-semibold"
                   >
                     Email
                   </label>
@@ -102,15 +102,16 @@ const Contact = () => {
                     name="email"
                     value={email}
                     onChange={handleChange}
-                    className="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    className="w-full input bg-white/10      text-lg text-white/80             
+                      leading-8 transition-colors duration-200 ease-in-out"
                   />
                 </div>
               </div>
               <div className="p-2 w-full bg-inherit">
-                <div className="relative bg-inherit">
+                <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="message"
-                    className="leading-7 text-md text-zinc-200 bg-inherit font-Inter font-semibold"
+                    className="leading-7 text-xl  text-[#d4d7d7]  bg-inherit font-Inter font-semibold"
                   >
                     Message
                   </label>
@@ -119,14 +120,15 @@ const Contact = () => {
                     name="message"
                     value={message}
                     onChange={handleChange}
-                    className="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                    className="textarea textarea-bordered w-full bg-white/10 h-36 leading-6 transition-colors duration-200 ease-in-out text-lg text-white/80"
                   ></textarea>
                 </div>
               </div>
               <div className="p-2 w-full bg-inherit">
                 <button
                   type="submit"
-                  className="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg font-Inter font-semibold"
+                  className="btn btn-outline text-[#fff]/80 border-[#d0333c] hover:bg-[#d0333c] hover:border-[#d4d7d7] hover:text-[#d4d7d7]
+                   flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
                   disabled={loading}
                 >
                   {loading ? "Sending..." : "Submit"}
@@ -134,15 +136,10 @@ const Contact = () => {
               </div>
             </form>
 
-            <div className="p-2 w-full pt-8 mt-8 border-t border-gray-600 text-center bg-inherit">
-              <Link className="text-gray-200 text-lg">
+            <div className="p-2 w-full pt-8 mt-8 mb-2 border-t border-[#d0333c] text-center bg-inherit">
+              <Link className="text-[#d4d7d7]/80 hover:text-[#d0333c] text-xl bg-transparent border-0 tracking-widest">
                 skillmintofficial@gmail.com
               </Link>
-              <p className="leading-normal my-5 bg-inherit">
-                {/*                 49 Smith St.
-                <br />
-                Saint Cloud, MN 56301 */}
-              </p>
             </div>
           </div>
         </div>
