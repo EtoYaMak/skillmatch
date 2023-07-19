@@ -16,17 +16,17 @@ export default function SearchComponent({ onSearch }) {
   };
 
   return (
-    <div className="flex items-center">
-      <div className="flex rounded my-2 mx-auto">
+    <div className="flex items-center w-full">
+      <div className="flex rounded mx-4 gap-2 w-full">
         <input
           type="text"
-          className="block w-full px-4 py-2 text-zinc-900 bg-white border rounded-md focus:border-blue-500 focus:ring-teal-100 focus:outline-none focus:ring focus:ring-opacity-40"
-          placeholder="Search..."
+          className="h-12 w-3/4 md:w-5/6 px-4 py-2 placeholder:tracking-[0.25em] tracking-widest text-2xl placeholder:opacity-60 rounded-md placeholder:text-[#f3eeeb] text-white bg-transparent  focus:text-white focus:border-2 focus:border-white focus:ring-0 "
+          placeholder="Search a job title"
           value={searchQuery}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-        <button className="ml-1 px-4 text-white bg-gray-700 hover:bg-gray-900 rounded font-bold text-lg">
+        <button className=" text-[#f3eeeb] bg-[hsl(0,0%,12%)] border border-[#f3eeeb] hover:bg-[#ee6555] ease-in-out duration-200 tracking-[0.15em] rounded font-bold text-xl h-12 w-1/4 md:w-1/6">
           Search
         </button>
       </div>

@@ -23,7 +23,8 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://13.53.103.94")
+    /* fetch("http://13.53.103.94") */
+    fetch("http://localhost:4000")
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -38,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App min-h-screen">
       <Navbar />
       <h1 className="text-white hover:text-black text-center">{message}</h1>
       <Routes>

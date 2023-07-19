@@ -17,13 +17,15 @@ const Post = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="my-4 pb-1">
+      <div className="my-4 pb-1 ">
         {user ? (
           <>
-            <section className="text-center">
+            <section className="text-center text-white">
               <h1 className="text-xl font-semibold">
                 Welcome <br />
-                <span className="hover:text-blue-500">{user && user.name}</span>
+                <span className="hover:text-[#ee6555]">
+                  {user && user.name}
+                </span>
               </h1>
               <p className="text-xl font-thin pt-2 pb-4">
                 Hire the best. Share your job post with thousands of job
@@ -34,10 +36,10 @@ const Post = () => {
             <JobForm />
           </>
         ) : (
-          <div className="text-center">
-            <p className="text-xl">
+          <div className="text-center h-[50vh] flex justify-center items-center">
+            <p className="text-2xl text-white tracking-[0.15em]">
               Want to post a job?{" "}
-              <Link to="/register" className="text-blue-500 hover:underline">
+              <Link to="/register" className="text-[#f3900b] hover:underline">
                 Click here to register as a job poster
               </Link>
               .

@@ -40,13 +40,17 @@ function Home() {
   );
 
   return (
-    <div className="justify-between items-center max-w-[1240px] px-4 my-5 mx-auto mb-5">
-      <h1 className="text-center font-semibold my-5 text-3xl">Remote Jobs</h1>
+    <div className="justify-between items-center max-w-[1240px] max-h-fit px-4 my-5 mx-auto mb-5">
+      <h1 className="text-center font-semibold my-5 text-3xl text-[#f3900b]">
+        Remote Jobs
+      </h1>
 
       <div className="Carousel Slider cursor-pointer">
         <Slider {...settings}>
           {remoteJobs.length === 0 ? (
-            <p>Jobs fetching...</p>
+            <p className="text-2xl font-mono">
+              Fetching Jobs || Check Backend...
+            </p>
           ) : (
             remoteJobs.map((job) => (
               <div key={job._id} className="featuredCarousel">
@@ -57,7 +61,7 @@ function Home() {
         </Slider>
       </div>
 
-      <h1 className="text-center font-semibold mt-10 pb-4 text-3xl">
+      <h1 className="text-center font-semibold mt-10 pb-4 text-3xl text-[#f3900b]">
         Recent Job Postings
       </h1>
 
@@ -71,19 +75,21 @@ function Home() {
             ))}
             {visibleJobs < sortedJobs.length && (
               <div className="load-more-btn-container flex justify-center gap-2 py-4">
-                <Button
-                  primary
+                <button
                   onClick={showMoreJobs}
-                  className="load-more-btn"
+                  className="primary-btn bg-[#ee6555] hover:bg-[#dd4837] py-2 px-4 rounded-sm text-[#fff]"
                 >
                   Show More{" "}
                   <Icon name="chevron down" className="pl-2 bg-transparent" />
-                </Button>
+                </button>
                 {visibleJobs > 5 && (
-                  <Button onClick={showLessJobs} className="show-less-btn">
+                  <button
+                    onClick={showLessJobs}
+                    className="secondary-btn show-less-btn"
+                  >
                     Show Less{" "}
                     <Icon name="chevron up" className="pl-2 bg-transparent" />
-                  </Button>
+                  </button>
                 )}
               </div>
             )}

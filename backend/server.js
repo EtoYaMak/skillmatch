@@ -4,23 +4,25 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 const myIP = process.env.MYIP;
 const cors = require("cors");
 const app = express();
 
+// Database connection
+connectDB();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const corsOptions = {
-  /* origin: "http://localhost:3000", */
-  origin: "http://skillmint.io",
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:4000",
+    "http://skillmint.io",
+  ],
 };
 app.use(cors(corsOptions));
-
-// Database connection
-connectDB();
 
 // API routes
 app.use("/api/jobs", require("./routes/jobRoutes"));
@@ -30,6 +32,7 @@ app.use("/api/profiles", require("./routes/studentFormroutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
 
 // Error handling middleware
+app.use(express.static("../../client/public"));
 app.use(errorHandler);
 
 // Serve static files and set default route

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createJob } from "../features/jobs/jobSlice";
-import TextEditor from "../components/TextEditor";
 import DOMPurify from "dompurify";
 
 function JobForm() {
@@ -141,7 +140,7 @@ function JobForm() {
           <div className="sm:flex sm:space-x-8">
             <div className="w-full sm:w-1/2">
               <div>
-                <label className="block text-2xl font-semibold mb-2 mt-6">
+                <label className="block text-2xl font-semibold mb-2 mt-6 text-white">
                   Job Title
                 </label>
                 <input
@@ -157,7 +156,7 @@ function JobForm() {
             </div>
             <div className="w-full sm:w-1/2">
               <div>
-                <label className="block text-2xl font-semibold mb-2 mt-6">
+                <label className="block text-2xl font-semibold mb-2 mt-6 text-white">
                   Location
                 </label>
                 <input
@@ -172,86 +171,90 @@ function JobForm() {
               </div>
             </div>
           </div>
-          <div className="typeWork grid grid-cols-2 my-5 ">
+          <div className="typeWork grid grid-cols-2 my-5 text-white">
             {/* Type */}
-            <div className="col-start-1 sm:w-1/2">
-              <div className="type">
+            <div className="col-start-1 sm:w-1/2 ">
+              <div className="type flex items-center">
                 <input
                   type="checkbox"
                   value="Full-Time"
                   checked={fulltime}
                   onChange={(e) => setFulltime(e.target.checked)}
-                  className="checkbox border-gray-300 hover:border-gray-600 "
+                  className="checkbox checkbox-warning focus:ring-0 "
                 />
-                <span className="ml-2 font-medium">Full-Time</span>
+                <span className="ml-2 text-lg">Full-Time</span>
               </div>
-              <div className="type">
+              <div className="type flex items-center">
                 <input
                   type="checkbox"
                   value="Part-Time"
                   checked={parttime}
                   onChange={(e) => setParttime(e.target.checked)}
-                  className="checkbox border-gray-300 hover:border-gray-600"
+                  className="checkbox checkbox-warning focus:ring-0"
                 />
-                <span className="ml-2 font-medium">Part-Time</span>
+                <span className="ml-2 h-full text-lg">Part-Time</span>
               </div>
-              <div className="type">
+              <div className="type flex items-center">
                 <input
                   type="checkbox"
                   value="Internship"
                   checked={internship}
                   onChange={(e) => setInternship(e.target.checked)}
-                  className="checkbox border-gray-300 hover:border-gray-600"
+                  className="checkbox checkbox-warning focus:ring-0"
                 />
-                <span className="ml-2 font-medium">Internship</span>
+                <span className="ml-2 text-lg">Internship</span>
               </div>
-              <div className="type">
+              <div className="type flex items-center">
                 <input
                   type="checkbox"
                   value="Contract"
                   checked={contract}
                   onChange={(e) => setContract(e.target.checked)}
-                  className="checkbox border-gray-300 hover:border-gray-600"
+                  className="checkbox checkbox-warning focus:ring-0"
                 />
-                <span className="ml-2 font-medium">Contract</span>
+                <span className="ml-2 text-lg">Contract</span>
               </div>
             </div>
             {/* Job Setting */}
             <div className=" col-start-2 sm:w-1/2 sm:ml-4">
-              <div className="remoteWork">
+              <div className="remoteWork flex items-center">
                 <input
                   type="checkbox"
                   value="Remote"
                   checked={remote}
                   onChange={(e) => setRemote(e.target.checked)}
-                  className="checkbox border-gray-300 hover:border-gray-600"
+                  className="checkbox checkbox-warning focus:ring-0"
                 />
-                <span className="ml-2 font-medium">Remote</span>
+                <span className="ml-2 text-lg">Remote</span>
               </div>
-              <div className="hybridWork">
+              <div className="hybridWork flex items-center">
                 <input
                   type="checkbox"
                   value="Hybrid"
                   checked={hybrid}
                   onChange={(e) => setHybrid(e.target.checked)}
-                  className="checkbox border-gray-300 hover:border-gray-600"
+                  className="checkbox checkbox-warning focus:ring-0"
                 />
-                <span className="ml-2 font-medium">Hybrid</span>
+                <span className="ml-2 text-lg">Hybrid</span>
               </div>
-              <div className="onsite">
+              <div className="onsite flex items-center">
                 <input
                   type="checkbox"
                   value="On-site"
                   checked={onsite}
                   onChange={(e) => setOnsite(e.target.checked)}
-                  className="checkbox border-gray-300 hover:border-gray-600"
+                  className="checkbox checkbox-warning "
                 />
-                <span className="ml-2 font-medium">On-Site</span>
+                <span className="ml-2 text-lg">On-Site</span>
               </div>
             </div>
           </div>
-          <div className="mt-6 ">
-            <TextEditor setDescription={setDescription} />
+          <div className="mt-6 text-white tracking-wider text-lg">
+            <textarea
+              placeholder="Job Description"
+              className="textarea textarea-bordered textarea-lg w-full max-w-full"
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
           </div>
           {/* Skills */}
           <div className="w-full sm:w-1/2">

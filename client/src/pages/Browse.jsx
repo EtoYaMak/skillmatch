@@ -34,8 +34,8 @@ function Browse() {
   const filteredJobs = searchQuery
     ? jobs.filter(
         (job) =>
-          job.position.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-          job.company.toLowerCase().startsWith(searchQuery.toLowerCase())
+          job.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.company.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : jobs;
 
@@ -65,9 +65,11 @@ function Browse() {
         </div>
 
         {/* JobBoard Component */}
-        <div className="px-4 py-5">
+        <div className="px-4 py-5 ">
           {currentJobs.length === 0 ? (
-            <p>No jobs found</p>
+            <p className="text-2xl text-white tracking-[0.23em] mx-auto h-32 flex justify-center items-center">
+              No jobs found
+            </p>
           ) : (
             currentJobs.map((job) => (
               <JobBoardComponent job={job} key={job._id} />
@@ -76,10 +78,12 @@ function Browse() {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-center mb-5">
+        <div className="flex justify-center items-center mb-5">
           <button
             className={`px-3 py-1 font-medium mr-2 ${
-              currentPage === 1 ? "text-gray-400" : "text-black"
+              currentPage === 1
+                ? "text-[hsl(44,91%,25%)] border-b-[#f3900b] border-b"
+                : "text-[hsl(34,91%,70%)] border-b-[#f3900b] border-b"
             }`}
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
@@ -89,8 +93,10 @@ function Browse() {
           {pageNumbers.map((number) => (
             <button
               key={number}
-              className={`px-3 py-1 font-medium  ${
-                currentPage === number ? "bg-blue-500 text-white" : "text-black"
+              className={`px-3 py-1 ${
+                currentPage === number
+                  ? "bg-[#ee6555] shadow-[1px_2px_0px_0px_#f3900b] font-bold mx-1 rounded-sm text-white"
+                  : "text-[#fff] bg-[#ee6555] font-medium  mx-1 rounded-sm "
               }`}
               onClick={() => paginate(number)}
             >
@@ -100,8 +106,8 @@ function Browse() {
           <button
             className={`px-3 py-1 font-medium ml-2 ${
               currentPage === Math.ceil(filteredJobs.length / jobsPerPage)
-                ? "text-gray-400"
-                : "text-black"
+                ? "text-[hsl(44,91%,25%)] border-b-[hsl(44,91%,25%)] border-b"
+                : "text-[hsl(34,91%,70%)] border-b-[hsl(34,91%,70%)] border-b"
             }`}
             onClick={() => paginate(currentPage + 1)}
             disabled={

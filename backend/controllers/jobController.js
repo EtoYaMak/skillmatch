@@ -9,6 +9,7 @@ const path = require("path");
 
 //
 const DIR = path.join(__dirname, "../../client/public/uploads/");
+/* const DIR = "../../client/public/uploads"; */
 
 /////////////////////////////////////////////////////
 // @desc Get job by ID

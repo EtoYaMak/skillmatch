@@ -48,16 +48,18 @@ const Navbar = () => {
     };
   }, [dropdownRef]);
   return (
-    <div className="flex justify-evenly items-center h-24  px-4 mx-auto relative z-50 bg-zinc-800">
-      <h1 className="w-max text-3xl font-bold text-white  border-gray-500 bg-transparent">
-        <Link to="/">SKILLMINT.</Link>
+    <div className="flex justify-evenly items-center h-24  px-4 mx-auto relative z-50 bg-[#ee6555]">
+      <h1 className="w-max text-3xl font-bold text-white  bg-transparent">
+        <Link to="/" className="hover:text-inherit">
+          SKILLMINT.
+        </Link>
       </h1>
 
-      <ul className="gap-0 hidden md:flex bg-transparent justify-center items-center">
+      <ul className="uppercase gap-0 hidden md:flex bg-transparent justify-center items-center">
         <li className=" text-white text-xl text-center  bg-inherit ">
           <Link
             to="/"
-            className=" hover:bg-zinc-700 p-9 hover:font-semibold hover:text-sky-600"
+            className="p-9  hover:text-[#161f30] hover:underline underline-offset-2"
           >
             Home
           </Link>
@@ -65,7 +67,7 @@ const Navbar = () => {
         <li className="text-white text-xl text-center  bg-inherit">
           <Link
             to="/browse"
-            className="hover:bg-zinc-700 p-9 hover:font-semibold hover:text-sky-600"
+            className="p-9  hover:text-[#161f30] hover:underline underline-offset-2"
           >
             Browse
           </Link>
@@ -73,7 +75,7 @@ const Navbar = () => {
         <li className="text-white text-xl text-center  bg-inherit">
           <Link
             to="/post"
-            className="hover:bg-zinc-700 p-9 hover:font-semibold hover:text-sky-600"
+            className=" p-9  hover:text-[#161f30] hover:underline underline-offset-2"
           >
             Post
           </Link>
@@ -81,7 +83,7 @@ const Navbar = () => {
         <li className="text-white text-xl text-center  bg-inherit">
           <Link
             to="/contact"
-            className="hover:bg-zinc-700 p-9 hover:font-semibold hover:text-sky-600"
+            className=" p-9  hover:text-[#161f30] hover:underline underline-offset-2"
           >
             Contact
           </Link>
@@ -92,31 +94,31 @@ const Navbar = () => {
             ref={dropdownRef}
           >
             <button
-              className="flex justify-center items-center hover:bg-zinc-700 p-9 mb-2 hover:font-semibold text-white hover:text-sky-600 "
+              className="flex uppercase justify-center items-center  p-9   text-white hover:text-[#161f30] hover:underline underline-offset-2 "
               onClick={() => setIsOpen(!isOpen)}
             >
               Profile
               <svg
-                className="w-4 h-4 ml-2 bg-transparent fill-white stroke-none "
+                className="w-4 h-4 ml-2 bg-transparent fill-white stroke-white "
                 viewBox="0 0 24 24"
               >
-                <path d="M22 8 12 20 2 8z" className="bg-inherit" />
+                <path d="M22 8 12 20 2 8z" className="bg-inherit " />
               </svg>
             </button>
             {isOpen && (
-              <ul className="absolute bg-zinc-700 rounded-lg my-1">
-                <li className="dashboard py-4 text-xl text-center font-normal text-white bg-inherit border-b-2 border-zinc-600 hover:bg-zinc-800 rounded-md">
+              <ul className="ease-in-out duration-200 absolute rounded-lg my-1 space-y-2 bg-black/80 backdrop-blur-lg p-2">
+                <li className="dashboard py-4 text-xl text-center font-normal text-white bg-[#ee6555] rounded-md">
                   <Link
                     to={user ? "/dash" : "/studentDash"}
-                    className=" hover:font-semibold rounded hover:text-zinc-50 px-5 py-4"
+                    className="  rounded hover:text-zinc-50 px-5 py-4"
                     onClick={() => setIsOpen(!isOpen)}
                   >
                     Dashboard
                   </Link>
                 </li>
-                <li className="bg-inherit hover:bg-zinc-800 rounded-md">
+                <li className="bg-inherit  rounded-md">
                   <button
-                    className="logout text-xl text-center hover:font-semibold hover:text-zinc-50 text-white bg-inherit rounded-lg  py-4  w-[124px]"
+                    className="logout  uppercase text-xl text-center  hover:text-zinc-50 text-white bg-[#ee6555] rounded-lg  py-4  w-full"
                     onClick={() => {
                       if (user) {
                         onLogout();
@@ -135,7 +137,7 @@ const Navbar = () => {
           <li className="text-white text-xl text-center  bg-inherit">
             <Link
               to="/login"
-              className="hover:bg-zinc-700 p-9 hover:font-semibold hover:text-sky-600"
+              className="hover:bg-zinc-700 p-9 hover:font-semibold "
             >
               Login
             </Link>
@@ -161,46 +163,48 @@ const Navbar = () => {
             : "ease-in-out duration-500 fixed left-[-100%] top-0"
         }
       >
-        <h1 className=" select-none cursor-auto h-24 flex flex-col justify-center text-center w-full text-3xl font-bold text-white hover:text-sky-600 bg-zinc-800 border-b border-b-zinc-900">
-          SKILLMINT.
-        </h1>
+        <Link to="/">
+          <h1 className="cursor-pointer h-24 flex flex-col justify-center text-center w-full text-3xl font-bold text-white hover:text-white bg-[#ee6555] border-b border-b-zinc-900">
+            SKILLMINT.
+          </h1>
+        </Link>
 
-        <ul className="uppercase bg-zinc-800 text-zinc-300 text-lg  text-center font-semibold">
-          <li className="border-b border-b-zinc-900 ">
-            <div className="nav-link  flex items-center bg-zinc-700 hover:bg-zinc-800">
+        <ul className="uppercase  text-zinc-300 text-lg  text-center font-semibold">
+          <li className="border-b border-b-zinc-900">
+            <div className="nav-link  flex items-center bg-[#0e0f01] hover:bg-zinc-800">
               <Link
                 to="/"
-                className="flex-1 py-4 hover:text-gray-50 hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#f3900b] hover:font-extrabold"
               >
                 Home
               </Link>
             </div>
           </li>
           <li className="border-b border-b-zinc-900">
-            <div className="nav-link flex items-center bg-zinc-700 hover:bg-zinc-800">
+            <div className="nav-link flex items-center bg-[#0e0f01] hover:bg-zinc-800">
               <Link
                 to="/browse"
-                className="flex-1 py-4 hover:text-gray-50 hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#f3900b] hover:font-extrabold"
               >
                 Browse Jobs
               </Link>
             </div>
           </li>
           <li className="border-b border-b-zinc-900">
-            <div className="nav-link flex items-center bg-zinc-700 hover:bg-zinc-800">
+            <div className="nav-link flex items-center bg-[#0e0f01] hover:bg-zinc-800">
               <Link
                 to="/post"
-                className="flex-1 py-4 hover:text-gray-50 hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#f3900b] hover:font-extrabold"
               >
                 Post A Job
               </Link>
             </div>
           </li>
           <li className="border-b border-b-zinc-900">
-            <div className="nav-link flex items-center bg-zinc-700 hover:bg-zinc-800">
+            <div className="nav-link flex items-center bg-[#0e0f01] hover:bg-zinc-800">
               <Link
                 to="/contact"
-                className="flex-1 py-4 hover:text-gray-50 hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#f3900b] hover:font-extrabold"
               >
                 Contact
               </Link>
@@ -209,19 +213,19 @@ const Navbar = () => {
           {user || student ? (
             <ul className="bg-inherit">
               <li className="border-b border-b-zinc-900">
-                <div className="nav-link flex items-center bg-zinc-700 hover:bg-zinc-800">
+                <div className="nav-link flex items-center bg-[#0e0f01] hover:bg-zinc-800">
                   <Link
                     to="/dash"
-                    className="flex-1 py-4 hover:text-gray-50 hover:font-extrabold"
+                    className="flex-1 py-4 hover:text-[#f3900b]  hover:font-extrabold"
                   >
                     Dashboard
                   </Link>
                 </div>
               </li>
               <li className="border-b border-b-zinc-900">
-                <div className="nav-link flex items-center justify-center bg-zinc-700 hover:bg-zinc-800">
+                <div className="nav-link flex items-center justify-center bg-[#0e0f01] hover:bg-zinc-800">
                   <button
-                    className="text-lg font-bold uppercase w-full py-4 hover:text-gray-50 hover:font-extrabold"
+                    className="text-lg font-bold uppercase w-full py-4 hover:text-[#f3900b] hover:font-extrabold"
                     onClick={() => {
                       if (user) {
                         onLogout();
@@ -237,7 +241,7 @@ const Navbar = () => {
             </ul>
           ) : (
             <li className="border-b border-b-zinc-900">
-              <div className="nav-link flex items-center justify-center bg-zinc-700 hover:bg-zinc-800">
+              <div className="nav-link flex items-center justify-center bg-[#0e0f01] hover:bg-zinc-800">
                 <Link
                   to="/login"
                   className="flex-1 py-4 hover:text-gray-50 hover:font-extrabold"

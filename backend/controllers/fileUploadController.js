@@ -5,7 +5,8 @@ const fs = require("fs");
 const studentFormModel = require("../models/studentFormModel");
 const multer = require("multer");
 const path = require("path");
-const DIR = path.join(__dirname, "../../Client/public/submissions/");
+const DIR = path.join(__dirname, "../../client/public/submissions/");
+/* const DIR = "../../client/public/submissions"; */
 
 const getProfile = asyncHandler(async (req, res) => {
   const studentId = req.student.id;
