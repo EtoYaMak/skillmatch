@@ -58,11 +58,7 @@ function JobForm() {
       .map((field) => field.name);
 
     if (missingFields.length > 0) {
-      setFormError(
-        "Oh! Looks like you missed some fields:\n" +
-          missingFields.join(", ") +
-          "."
-      );
+      setFormError(`${missingFields.join(", ")}.`);
       return;
     }
 
@@ -133,22 +129,28 @@ function JobForm() {
         method="post"
         encType="multipart/form-data"
       >
-        <div className="my-2">
+        <div className="mb-8">
           {formError && (
-            <p className="text-lg text-red-700 mb-4">{formError}</p>
+            <p className="text-xl text-[#f3900b] tracking-wide leading-normal font-bold p-2 text-justify">
+              <span className="text-white">
+                Oh! Looks like you missed some fields:
+              </span>{" "}
+              {formError}
+            </p>
           )}
           <div className="sm:flex sm:space-x-8">
             <div className="w-full sm:w-1/2">
               <div>
-                <label className="block text-2xl font-semibold mb-2 mt-6 text-white">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                   Job Title
                 </label>
                 <input
                   type="text"
                   name="position"
                   id="position"
-                  className="form-control w-full border-gray-300 hover:border-blue-500 transition-colors duration-300 ease-in-out outline-none"
-                  placeholder="Example: Front-End Developer"
+                  className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
+                  text-white/80 placeholder:text-white/40 text-xl "
+                  placeholder="Example: Front-End Developer "
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
                 />
@@ -156,14 +158,15 @@ function JobForm() {
             </div>
             <div className="w-full sm:w-1/2">
               <div>
-                <label className="block text-2xl font-semibold mb-2 mt-6 text-white">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                   Location
                 </label>
                 <input
                   type="text"
                   name="location"
                   id="location"
-                  className="form-control w-full border-gray-300 hover:border-blue-500 transition-colors duration-300 ease-in-out outline-none"
+                  className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
+                  text-white/80 placeholder:text-white/40 text-xl"
                   placeholder="Example: New York, USA"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
@@ -171,18 +174,18 @@ function JobForm() {
               </div>
             </div>
           </div>
-          <div className="typeWork grid grid-cols-2 my-5 text-white">
+          <div className="typeWork grid grid-cols-2 my-5 text-white ">
             {/* Type */}
-            <div className="col-start-1 sm:w-1/2 ">
+            <div className="col-start-1 sm:w-1/2 space-y-2 ">
               <div className="type flex items-center">
                 <input
                   type="checkbox"
                   value="Full-Time"
                   checked={fulltime}
                   onChange={(e) => setFulltime(e.target.checked)}
-                  className="checkbox checkbox-warning focus:ring-0 "
+                  className="checkbox checkbox-success focus:ring-0 "
                 />
-                <span className="ml-2 text-lg">Full-Time</span>
+                <span className="ml-2 text-xl">Full-Time</span>
               </div>
               <div className="type flex items-center">
                 <input
@@ -190,9 +193,9 @@ function JobForm() {
                   value="Part-Time"
                   checked={parttime}
                   onChange={(e) => setParttime(e.target.checked)}
-                  className="checkbox checkbox-warning focus:ring-0"
+                  className="checkbox checkbox-success focus:ring-0"
                 />
-                <span className="ml-2 h-full text-lg">Part-Time</span>
+                <span className="ml-2 h-full text-xl">Part-Time</span>
               </div>
               <div className="type flex items-center">
                 <input
@@ -200,9 +203,9 @@ function JobForm() {
                   value="Internship"
                   checked={internship}
                   onChange={(e) => setInternship(e.target.checked)}
-                  className="checkbox checkbox-warning focus:ring-0"
+                  className="checkbox checkbox-success focus:ring-0"
                 />
-                <span className="ml-2 text-lg">Internship</span>
+                <span className="ml-2 text-xl">Internship</span>
               </div>
               <div className="type flex items-center">
                 <input
@@ -210,22 +213,22 @@ function JobForm() {
                   value="Contract"
                   checked={contract}
                   onChange={(e) => setContract(e.target.checked)}
-                  className="checkbox checkbox-warning focus:ring-0"
+                  className="checkbox checkbox-success focus:ring-0"
                 />
-                <span className="ml-2 text-lg">Contract</span>
+                <span className="ml-2 text-xl">Contract</span>
               </div>
             </div>
             {/* Job Setting */}
-            <div className=" col-start-2 sm:w-1/2 sm:ml-4">
+            <div className=" col-start-2 sm:w-1/2 sm:ml-4 space-y-2 ">
               <div className="remoteWork flex items-center">
                 <input
                   type="checkbox"
                   value="Remote"
                   checked={remote}
                   onChange={(e) => setRemote(e.target.checked)}
-                  className="checkbox checkbox-warning focus:ring-0"
+                  className="checkbox checkbox-info focus:ring-0"
                 />
-                <span className="ml-2 text-lg">Remote</span>
+                <span className="ml-2 text-xl">Remote</span>
               </div>
               <div className="hybridWork flex items-center">
                 <input
@@ -233,9 +236,9 @@ function JobForm() {
                   value="Hybrid"
                   checked={hybrid}
                   onChange={(e) => setHybrid(e.target.checked)}
-                  className="checkbox checkbox-warning focus:ring-0"
+                  className="checkbox checkbox-info focus:ring-0"
                 />
-                <span className="ml-2 text-lg">Hybrid</span>
+                <span className="ml-2 text-xl">Hybrid</span>
               </div>
               <div className="onsite flex items-center">
                 <input
@@ -243,30 +246,31 @@ function JobForm() {
                   value="On-site"
                   checked={onsite}
                   onChange={(e) => setOnsite(e.target.checked)}
-                  className="checkbox checkbox-warning "
+                  className="checkbox checkbox-info"
                 />
-                <span className="ml-2 text-lg">On-Site</span>
+                <span className="ml-2 text-xl">On-Site</span>
               </div>
             </div>
           </div>
           <div className="mt-6 text-white tracking-wider text-lg">
             <textarea
               placeholder="Job Description"
-              className="textarea textarea-bordered textarea-lg w-full max-w-full"
+              className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/25 
+              text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest"
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
           {/* Skills */}
-          <div className="w-full sm:w-1/2">
-            <div>
-              <label className="block text-2xl font-semibold mb-2 mt-6">
+          <div className="w-full bg-transparent">
+            <div className="bg-transparent">
+              <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                 Skills
               </label>
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap mb-1">
                 {skills.map((skill, index) => (
                   <div
                     key={index}
-                    className="bg-blue-500 text-white py-1 px-2 rounded-md m-1  "
+                    className="bg-[#d0333c]/80 text-[#d4d7d7] px-3 py-1 text-lg font-bold tracking-wide rounded-md m-1  "
                   >
                     {skill}
                     <button
@@ -283,39 +287,42 @@ function JobForm() {
                 type="text"
                 name="skills"
                 id="skills"
-                className="w-full border-gray-300 hover:border-blue-500 my-2 transition-colors duration-200 ease-in-out "
-                placeholder="Enter skill and type comma or hit Enter eg Python,"
+                className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
+                text-white/80 placeholder:text-white/40 text-xl placeholder:tracking-wide"
+                placeholder="Skill 1, Skill 2. <Enter> or <comma> to split Skills."
                 onKeyUp={handleSkillChange}
               />
             </div>
           </div>
-          <div className="sm:flex sm:space-x-8">
-            <div className="w-full sm:w-1/2">
-              <div>
-                <label className="block text-2xl font-semibold mb-2 mt-6">
+          <div className="sm:flex sm:space-x-8 bg-transparent">
+            <div className="w-full sm:w-1/2 bg-transparent">
+              <div className="bg-transparent">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                   Company Name
                 </label>
                 <input
                   type="text"
                   name="company"
                   id="company"
-                  className="w-full border-gray-300 hover:border-blue-500 transition-colors duration-200 ease-in-out"
+                  className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
+                  text-white/80 placeholder:text-white/40 text-xl "
                   placeholder="ABC Co."
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                 />
               </div>
             </div>
-            <div className="w-full sm:w-1/2">
-              <div>
-                <label className="block text-2xl font-semibold mb-2 mt-6">
-                  Career Page Link
+            <div className="w-full sm:w-1/2 bg-transparent">
+              <div className="bg-transparent">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                  Career Page URL
                 </label>
                 <input
                   type="text"
                   name="careerPage"
                   id="careerPage"
-                  className="w-full border-gray-300 hover:border-blue-500 transition-colors duration-200 ease-in-out"
+                  className="w-full input input-bordered  transition-colors duration-300 ease-in-out bg-black/25 
+                  text-white/80 placeholder:text-white/40 text-xl "
                   placeholder="https://www.careers.example.com/jobID?JobName"
                   value={careerPage}
                   onChange={(e) => setCareerPage(e.target.value)}
@@ -324,31 +331,32 @@ function JobForm() {
             </div>
           </div>
 
-          <div className="sm:flex sm:space-x-8">
-            <div className="w-full sm:w-1/2">
-              <div className="form-group">
-                <label className="block text-2xl font-semibold mb-2 mt-6">
-                  Company Logo
+          <div className="sm:flex sm:space-x-8 bg-transparent">
+            <div className="w-full sm:w-1/2 bg-transparent">
+              <div className="form-group bg-transparent">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                  Logo
                 </label>
                 <input
                   type="file"
                   name="logo"
                   accept="image/*"
-                  className="form-control-file w-full"
+                  className="form-control-file file-input w-full bg-black/25 text-white/40 text-lg"
                   onChange={(e) => setFileName(e.target.files[0])}
                 />
               </div>
             </div>
-            <div className="w-full sm:w-1/2">
-              <div>
-                <label className="block text-2xl font-semibold mb-2 mt-6">
-                  Company Website
+            <div className="w-full sm:w-1/2 bg-transparent">
+              <div className="bg-transparent">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                  Company URL
                 </label>
                 <input
                   type="text"
                   name="website"
                   id="website"
-                  className="w-full border-gray-300 hover:border-blue-500 transition-colors duration-200 ease-in-out"
+                  className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
+                  text-white/80 placeholder:text-white/40 text-xl "
                   placeholder="https://www.companyname.com"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
@@ -358,9 +366,11 @@ function JobForm() {
           </div>
         </div>
 
-        <div className="form-group flex justify-center ">
+        <div className="form-group flex justify-center items-center bg-transparent backdrop-blur-sm">
           <button
-            className="btn button bg-zinc-900 hover:bg-zinc-800 text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit px-4 py-2 rounded-lg uppercase transition-colors duration-300 ease-in-out"
+            className="btn btn-lg
+             bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white 
+             font-semibold hover:text-white hover:btn-wide w-fit h-fit rounded-lg uppercase transition-colors duration-300 ease-in-out"
             type="submit"
           >
             post job

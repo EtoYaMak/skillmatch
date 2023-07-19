@@ -16,20 +16,19 @@ const Post = () => {
   }, [user, navigate]);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="my-4 pb-1 ">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 min-h-fit">
+      <div className="pb-1 select-none h-fit pt-10">
         {user ? (
           <>
-            <section className="text-center text-white">
-              <h1 className="text-xl font-semibold">
-                Welcome <br />
-                <span className="hover:text-[#ee6555]">
+            <section className="text-center h-it ">
+              <h1 className="flex-wrap max-[520px]:text-3xl text-4xl font-extrabold text-[#d4d7d7] w-full">
+                Welcome{" "}
+                <span className="text-[#d0333c]/80 w-full">
                   {user && user.name}
                 </span>
               </h1>
-              <p className="text-xl font-thin pt-2 pb-4">
-                Hire the best. Share your job post with thousands of job
-                seekers.
+              <p className="text-xl pt-2 pb-4 uppercase text-[#aba6a6]/80 font-semibold">
+                Use the form below to submit a job.
               </p>
             </section>
 
