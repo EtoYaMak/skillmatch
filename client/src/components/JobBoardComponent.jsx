@@ -5,6 +5,15 @@ function JobBoardComponent({ job }) {
   const jobId = job._id;
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   const [selectedSkillIndex, setSelectedSkillIndex] = useState(-1);
   const dropdownRef = useRef(null);
   useEffect(() => {
@@ -33,7 +42,13 @@ function JobBoardComponent({ job }) {
     .join(" · ");
 
   return (
-    <div className="grid grid-cols-12 items-center p-3 md:p-4 my-3 bg-[#f3eeeb] text-[#ee6555] shadow-[2px_4px_1px_0px_#f3900b] hover:bg-gray-900 hover: rounded-md ">
+    <div
+      className="main grid grid-cols-12 items-center p-3 md:p-4 my-3
+     bg-[#fff] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-[#1c1f21] hover: rounded-md "
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Job Info */}
       <div
         className="col-span-12 md:col-span-5 flex items-center bg-transparent cursor-pointer w-full "
         onClick={handleClick}
@@ -47,23 +62,34 @@ function JobBoardComponent({ job }) {
           />
         </Link>
         <div className="ml-5 bg-transparent md:w-4/6 w-fit">
-          <h2 className="font-medium text-2xl bg-transparent">
+          <h2 className="font-semibold text-2xl bg-transparent">
             {job.position}
           </h2>
-          <h3 className="text-lg text-gray-400 bg-transparent">
+          <h3
+            className={`bg-inherit block cursor-pointer font-semibold text-lg ${
+              isHovered
+                ? "text-md font-bold rounded-md text-[#d4d7d7] "
+                : "text-md font-bold rounded-md text-gray-500 "
+            }`}
+          >
             {job.company}
           </h3>
         </div>
       </div>
 
-      {/* Languages */}
-      <div className="col-span-8 w-fit md:col-span-4 bg-transparent">
+      {/* Skills */}
+      <div className="skills col-span-8 w-fit md:col-span-4 bg-transparent">
         <div className="bg-transparent flex flex-wrap w-fit sm:flex-row gap-2">
           {!showDropdown &&
             skills.slice(0, 2).map((skill, index) => (
               <span
                 key={index}
-                className="text-white bg-[#ee6555] font-bold  p-2 rounded-md cursor-zoom-in"
+                /*className="text-[#d4d7d7] bg-[#1c1f21] font-bold  p-2 rounded-md cursor-zoom-in" THIS*/
+                className={` block cursor-pointer p-2 ${
+                  isHovered
+                    ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c]"
+                    : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
+                }`}
                 onClick={handleSkill}
               >
                 {skill}
@@ -71,7 +97,11 @@ function JobBoardComponent({ job }) {
             ))}
           {!showDropdown && skills.length > 2 && (
             <span
-              className="text-[#fff] bg-[#ee6555] font-bold p-2 rounded-md cursor-pointer"
+              className={` block cursor-pointer p-2 ${
+                isHovered
+                  ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c]"
+                  : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
+              }`}
               onClick={handleSkill}
             >
               +{skills.length - 2}
@@ -86,10 +116,14 @@ function JobBoardComponent({ job }) {
               {skills.map((skill, index) => (
                 <span
                   key={index}
-                  className={` bg-[#F6A231] block cursor-pointer p-2 ${
+                  className={` block cursor-pointer p-2 ${
                     selectedSkillIndex === index
                       ? "text-md font-bold rounded-md text-white"
                       : "text-md font-bold  rounded-md text-white"
+                  } ${
+                    isHovered
+                      ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c]"
+                      : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
                   }`}
                   onClick={() => setSelectedSkillIndex(index)}
                 >
@@ -104,7 +138,7 @@ function JobBoardComponent({ job }) {
       {/* Location */}
       <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end">
         <div className=" p-3 bg-transparent w-fit">
-          <p className="bg-transparent">{job.location}</p>
+          <p className="bg-transparent font-semibold text-lg">{job.location}</p>
         </div>
       </div>
     </div>

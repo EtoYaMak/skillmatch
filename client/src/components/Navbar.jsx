@@ -248,10 +248,10 @@ const Navbar = () => {
                   </Link>
                 </div>
               </li>
-              <li className=" backdrop-blur-sm bg-[#000]/70 ">
-                <div className="nav-link flex items-center justify-center bg-[#1c1f21]/80 hover:bg-[#000]/70">
+              <li className=" backdrop-blur-sm bg-[#000]/70 rounded-br-lg ">
+                <div className="nav-link flex items-center justify-center bg-[#1c1f21]/80 hover:bg-[#000]/70 rounded-br-lg">
                   <button
-                    className="text-lg font-bold uppercase w-full py-4 hover:text-[#d0333c] hover:font-extrabold"
+                    className="text-lg font-bold uppercase w-full py-4 hover:text-[#d0333c] hover:font-extrabold "
                     onClick={() => {
                       if (user) {
                         onLogout();

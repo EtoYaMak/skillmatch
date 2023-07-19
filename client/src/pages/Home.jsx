@@ -77,7 +77,7 @@ function Home() {
               <div className="load-more-btn-container flex justify-center gap-2 py-4">
                 <button
                   onClick={showMoreJobs}
-                  className="primary-btn bg-[#ee6555] hover:bg-[#dd4837] py-2 px-4 rounded-sm text-[#fff]"
+                  className="primary-btn text-lg font-semibold bg-[#d0333c] hover:bg-[#1c1f21] py-2 px-4 rounded-md text-[#d4d7d7] hover:text-[#d0333c]"
                 >
                   Show More{" "}
                   <Icon name="chevron down" className="pl-2 bg-transparent" />
