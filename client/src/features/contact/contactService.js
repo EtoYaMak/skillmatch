@@ -5,7 +5,7 @@ const SERVER_IP = "16.170.201.227";
 export const sendContactForm = async (formData) => {
   try {
     const response = await axios.post(
-      `http://${SERVER_IP}/api/contact`,
+      `http://16.170.247.204/api/contact`,
 
       formData
     );

@@ -1,7 +1,7 @@
 // Making HTTP request
 import axios from "axios";
 const SERVER_IP = "16.170.201.227";
-const API_URL = `http://${SERVER_IP}/api/students/`;
+const API_URL = `http://16.170.247.204/api/students/`;
 /* const API_URL = "http://localhost:4000/api/students/"; */
 
 // Register Student

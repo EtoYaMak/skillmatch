@@ -25,7 +25,7 @@ function App() {
   /* fetch("http://localhost:4000") */
 
   useEffect(() => {
-    fetch(`http://${SERVER_IP}`)
+    fetch(`http://16.170.247.204`)
       .then((res) => {
         if (res.ok) {
           return res.json();
