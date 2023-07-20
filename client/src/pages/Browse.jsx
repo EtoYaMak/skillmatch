@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SearchComponent from "../components/Search";
-import JobBoardComponent from "../components/JobBoardComponent";
+import BrowseJobComponent from "../components/BrowseJobComponent";
 /* import FilterComponent from "../components/Filter/Filter"; */
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -72,7 +72,7 @@ function Browse() {
             </p>
           ) : (
             currentJobs.map((job) => (
-              <JobBoardComponent job={job} key={job._id} />
+              <BrowseJobComponent job={job} key={job._id} />
             ))
           )}
         </div>

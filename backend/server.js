@@ -33,7 +33,7 @@ app.use("/api/contact", require("./routes/contactRoutes"));
 // Database connection
 connectDB();
 // Error handling middleware
-/* app.use(express.static("../../client/public")); */
+
 app.use(errorHandler);
 
 // Serve static files and set default route
@@ -47,6 +47,7 @@ if (process.env.NODE_ENV === "production") {
   );
 } else {
   app.get("/", (req, res) => {
+    app.use(express.static(path.join(__dirname, "../client/public")));
     res.status(200).json({ message: "Connected to backend" });
   });
 }

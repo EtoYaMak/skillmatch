@@ -52,7 +52,7 @@ function JobBoardComponent({ job }) {
         className="col-span-12 md:col-span-5 flex items-center bg-transparent cursor-pointer w-full "
         onClick={handleClick}
       >
-        <Link className="md:w-1/6 w-fit">
+        <Link className="">
           <img
             src={job.logo}
             alt={job.company}

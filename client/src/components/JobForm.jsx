@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createJob } from "../features/jobs/jobSlice";
 import DOMPurify from "dompurify";
+import ReactQuill from "react-quill";
+import "../assets/quill.snow.css"; // Import the CSS for the editor
+import { MdClose } from "react-icons/md";
+import countriesData from "../assets/countries-data.json";
+import Select, { StylesConfig } from "react-select";
 
 function JobForm() {
   const [position, setPosition] = useState("");
@@ -20,27 +25,95 @@ function JobForm() {
   const [onsite, setOnsite] = useState(false);
   const [formError, setFormError] = useState("");
   const [skills, setSkills] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
   const dispatch = useDispatch();
+
+  const options = countriesData.map((country) => ({
+    value: country.Code,
+    label: country.Name,
+  }));
+  /*   const colourStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "red",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isDisabled
+        ? null
+        : state.isSelected
+        ? state.data.color
+        : state.isFocused
+        ? "rgba(0, 0, 0, 0.1)"
+        : null,
+      color: state.isDisabled
+        ? "#ccc"
+        : state.isSelected > 2
+        ? "white"
+        : "black",
+      cursor: state.isDisabled ? "not-allowed" : "default",
+    }),
+    input: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      opacity: 0.5,
+    }),
+    singleValue: (provided, state) => ({
+      ...provided,
+      padding: 0,
+      margin: 0,
+      color: state.data.color,
+    }),
+  }; */
+  // Handler for changing the selected location
+  const handleLocationChange = (selectedOption) => {
+    setSelectedLocation(selectedOption);
+  };
+  const [showFormError, setShowFormError] = useState(true);
+  const falseFlagsubmit = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
+  const handleFormErrorClose = () => {
+    setShowFormError(false);
+  };
+
+  const handleDescriptionChange = (value) => {
+    const sanitizedValue = DOMPurify.sanitize(value);
+    setDescription(sanitizedValue);
+  };
 
   const handleSkillChange = (e) => {
     const value = e.target.value.trim();
-    if (value && (e.key === "," || e.key === "Enter")) {
+    if (value && (e.key === "," || e.key === " ")) {
       e.preventDefault();
-      const trimmedValue = value.replace(/,+$/, ""); // Remove trailing commas
-      const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9-.\s]/g, ""); // Remove special characters except "-" and "."
+      const trimmedValue = value.replace(/-,+$/, ""); // Remove trailing commas
+      const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9-.\s+#]/g, ""); // Remove special characters except "-", ".", "+", and whitespace
       setSkills([...skills, sanitizedValue]);
       e.target.value = "";
     }
   };
 
   const removeSkill = (skill) => {
-    const updatedSkills = skills.filter((s) => s !== skill);
-    setSkills(updatedSkills);
+    const skillIndex = skills.indexOf(skill);
+    if (skillIndex !== -1) {
+      const updatedSkills = [...skills];
+      updatedSkills.splice(skillIndex, 1);
+      setSkills(updatedSkills);
+    }
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     // Input validation
     const requiredFields = [
       { name: "Job Title", value: position },
@@ -56,9 +129,9 @@ function JobForm() {
     const missingFields = requiredFields
       .filter((field) => !field.value)
       .map((field) => field.name);
-
     if (missingFields.length > 0) {
-      setFormError(`${missingFields.join(", ")}.`);
+      setFormError(`${missingFields.join(" » ")}`);
+      setShowFormError(true);
       return;
     }
 
@@ -130,13 +203,22 @@ function JobForm() {
         encType="multipart/form-data"
       >
         <div className="mb-8">
-          {formError && (
-            <p className="text-xl text-[#f3900b] tracking-wide leading-normal font-bold p-2 text-justify">
-              <span className="text-white">
-                Oh! Looks like you missed some fields:
-              </span>{" "}
-              {formError}
-            </p>
+          {showFormError && formError && (
+            <div className="flex flex-col min-[390px]:flex-row items-center justify-evenly">
+              <p className="flex flex-col text-md text-[#d4d7d7] tracking-wide leading-normal font-bold p-2">
+                <span className="text-white">
+                  Oh! Looks like you missed some fields:
+                </span>
+                <span className="">{formError}</span>
+              </p>
+              <button
+                id="close-button"
+                className=" flex items-center justify-center font-semibold rounded-full p-1 min-h-fit min-w-fit bg-[#d0333c] hover:bg-[#1c1f21]"
+                onClick={handleFormErrorClose}
+              >
+                <MdClose size={20} className="bg-transparent text-[#d4d7d7]" />
+              </button>
+            </div>
           )}
           <div className="sm:flex sm:space-x-8">
             <div className="w-full sm:w-1/2">
@@ -153,6 +235,7 @@ function JobForm() {
                   placeholder="Example: Front-End Developer "
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
+                  onKeyDown={falseFlagsubmit}
                 />
               </div>
             </div>
@@ -161,7 +244,7 @@ function JobForm() {
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                   Location
                 </label>
-                <input
+                {/*                 <input
                   type="text"
                   name="location"
                   id="location"
@@ -170,6 +253,14 @@ function JobForm() {
                   placeholder="Example: New York, USA"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                  onKeyDown={falseFlagsubmit}
+                /> */}
+
+                <Select
+                  options={options}
+                  value={selectedLocation}
+                  onChange={handleLocationChange}
+                  placeholder="Example: New York, USA"
                 />
               </div>
             </div>
@@ -253,12 +344,12 @@ function JobForm() {
             </div>
           </div>
           <div className="mt-6 text-white tracking-wider text-lg">
-            <textarea
+            <ReactQuill
               placeholder="Job Description"
               className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/25 
               text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest"
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
+              onChange={handleDescriptionChange}
+            />
           </div>
           {/* Skills */}
           <div className="w-full bg-transparent">
@@ -289,8 +380,9 @@ function JobForm() {
                 id="skills"
                 className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
                 text-white/80 placeholder:text-white/40 text-xl placeholder:tracking-wide"
-                placeholder="Skill 1, Skill 2. <Enter> or <comma> to split Skills."
+                placeholder="<spacebar> or <comma> to split Skills."
                 onKeyUp={handleSkillChange}
+                onKeyDown={falseFlagsubmit}
               />
             </div>
           </div>
@@ -309,6 +401,7 @@ function JobForm() {
                   placeholder="ABC Co."
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
+                  onKeyDown={falseFlagsubmit}
                 />
               </div>
             </div>
@@ -326,6 +419,7 @@ function JobForm() {
                   placeholder="https://www.careers.example.com/jobID?JobName"
                   value={careerPage}
                   onChange={(e) => setCareerPage(e.target.value)}
+                  onKeyDown={falseFlagsubmit}
                 />
               </div>
             </div>
@@ -360,6 +454,7 @@ function JobForm() {
                   placeholder="https://www.companyname.com"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
+                  onKeyDown={falseFlagsubmit}
                 />
               </div>
             </div>

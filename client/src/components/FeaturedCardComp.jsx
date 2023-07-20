@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function FeaturedCardComp({ job }) {
   const jobId = job._id;
@@ -26,29 +26,28 @@ function FeaturedCardComp({ job }) {
         className="cards flex h-[90px] overflow-hidden bg-transparent  items-center rounded-md"
         onClick={handleClick}
       >
-        <div className="bg-transparent rounded-sm w-28">
-          <img
-            src={job.logo}
-            alt={job.company}
-            className="w-24 h-24 rounded-full object-cover bg-transparent"
-          />
-        </div>
-
-        <div className="w-full pl-4 lg:pl-4 md:pl-0 bg-transparent flex flex-col h-full justify-center items-center">
-          <p
-            className={`w-full font-extrabold text-2xl bg-transparent tracking-wide flex-wrap  ${
-              isHovered ? " text-[#d0333c]" : " text-[#d0333c]"
-            }`}
-          >
-            {job.position}
-          </p>
-          <p /* className="w-full font-light text-lg bg-transparent " */
-            className={`w-full font-semibold text-lg bg-transparent tracking-wider  ${
-              isHovered ? " text-[#d4d7d7]" : " text-gray-500"
-            }`}
-          >
-            {job.company}
-          </p>
+        <div className="flex w-full items-center bg-transparent">
+          <Link className="ml-1 py-2 flex justify-center">
+            <img
+              src={job.logo}
+              alt={job.company}
+              className="bg-transparent w-24 h-24 rounded-full object-cover"
+            />
+          </Link>
+          <div className="ml-2 bg-transparent w-3/4">
+            <h2 className="font-semibold text-2xl bg-transparent tracking-wide">
+              {job.position}
+            </h2>
+            <h3
+              className={`bg-inherit block cursor-pointer font-semibold text-lg tracking-wider ${
+                isHovered
+                  ? "text-md font-bold rounded-md text-[#d4d7d7] "
+                  : "text-md font-bold rounded-md text-gray-500 "
+              }`}
+            >
+              {job.company}
+            </h3>
+          </div>
         </div>
       </div>
     </div>
