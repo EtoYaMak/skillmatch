@@ -81,7 +81,7 @@ function UserDash() {
                             <img
                               src={job.logo}
                               alt={job.position}
-                              className="bg-transparent object-cover md:w-28 md:h-28 h-[90px] w-[90px] rounded-full  "
+                              className="bg-transparent w-32 h-32 mr-8 rounded-full md:w-64 md:h-64 object-cover  "
                             />
                           </div>
 

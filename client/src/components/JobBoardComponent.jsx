@@ -57,7 +57,7 @@ function JobBoardComponent({ job }) {
             src={job.logo}
             alt={job.company}
             /* className="w-[70px] min-h-[70px] md:w-[70px] md:h-[70px] rounded-full bg-transparent" */
-            className="bg-transparent object-scale-down rounded-full md:h-24 md:w-24 h-[90px] w-[90px]"
+            className="bg-transparent w-32 h-32 mr-8 rounded-full md:w-64 md:h-64 object-cover"
           />
         </Link>
         <div className="ml-5 bg-transparent md:w-4/6 w-fit">
