@@ -21,10 +21,11 @@ import JobUpdatePage from "./components/JobUpdatePage";
 
 function App() {
   const [message, setMessage] = useState("");
+  const SERVER_IP = "16.170.201.227";
+  /* fetch("http://localhost:4000") */
 
   useEffect(() => {
-    fetch(`http://13.53.132.231`)
-      /* fetch("http://localhost:4000") */
+    fetch(`http://${SERVER_IP}`)
       .then((res) => {
         if (res.ok) {
           return res.json();

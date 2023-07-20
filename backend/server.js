@@ -5,7 +5,7 @@ const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const port = process.env.PORT;
-const myIP = process.env.MYIP;
+const SERVER_IP = process.env.SERVER_IP;
 const cors = require("cors");
 const app = express();
 
@@ -20,7 +20,8 @@ const corsOptions = {
     "http://localhost:3000",
     "http://localhost:4000",
     "http://skillmint.io",
-    `http://13.53.132.231`,
+    `http://${SERVER_IP}`,
+    "http://16.170.201.227",
   ],
 };
 app.use(cors(corsOptions));

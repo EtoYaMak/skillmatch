@@ -1,10 +1,9 @@
 // Making HTTP request
-
 import axios from "axios";
 
-const SERVER_IP = "13.53.132.231";
+const SERVER_IP = "16.170.201.227";
 /* const API_URL = `http://${SERVER_IP}/api/users/`; */
-const API_URL = `http://13.53.132.231/api/users/`;
+const API_URL = `http://${SERVER_IP}/api/users/`;
 /* const API_URL = "http://localhost:4000/api/users/"; */
 
 // Register User
