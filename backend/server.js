@@ -11,15 +11,14 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-/* app.use(express.urlencoded({ extended: false })); */
+app.use(express.urlencoded({ extended: false }));
 
 const corsOptions = {
   origin: [
     "http://localhost:3000",
     "http://localhost:4000",
     "http://skillmint.io",
-    `http://${SERVER_IP}`,
-    "http://16.170.247.204",
+    "http://16.171.24.160",
   ],
 };
 app.use(cors(corsOptions));

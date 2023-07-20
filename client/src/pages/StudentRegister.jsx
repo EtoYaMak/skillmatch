@@ -68,7 +68,7 @@ function StudentRegister() {
           {/* Navigate through forms*/}
           <div
             className="max-w-1/4 w-3/4 md:w-1/2 h-[40vh] justify-center rounded-3xl
-            ctext-2xl font-inter px-4 py-14 flex flex-col select-none"
+            bg-[#000]/70 text-[#aba6a6] text-2xl font-inter px-4 py-14 flex flex-col select-none"
           >
             <p className="leading-tight tracking-wide bg-transparent">
               Register to Start Posting Jobs

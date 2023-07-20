@@ -1,12 +1,11 @@
 import axios from "axios";
 
-const SERVER_IP = "16.170.201.227";
+/* const SERVER_IP = "16.170.201.227"; */
 /* "http://localhost:4000/api/contact", */
 export const sendContactForm = async (formData) => {
   try {
     const response = await axios.post(
-      `http://16.170.247.204/api/contact`,
-
+      "http://16.171.24.160/api/contact",
       formData
     );
     return response.data;
