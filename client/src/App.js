@@ -23,7 +23,7 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://35.178.166.193")
+    fetch("http://35.178.166.193:4000")
       /* fetch("http://localhost:4000") */
       .then((res) => {
         if (res.ok) {
