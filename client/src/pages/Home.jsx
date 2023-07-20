@@ -24,7 +24,9 @@ function Home() {
     };
   }, [navigate, isError, message, dispatch]);
 
-  const remoteJobs = jobs.filter((job) => job.remote === true);
+  const remoteJobs = jobs.filter(
+    (job) => job.setting.find((item) => item.name === "remote").value === true
+  );
   const [visibleJobs, setVisibleJobs] = useState(5);
 
   const showMoreJobs = () => {
@@ -48,9 +50,7 @@ function Home() {
       <div className="Carousel Slider cursor-pointer">
         <Slider {...settings}>
           {remoteJobs.length === 0 ? (
-            <p className="text-2xl font-mono">
-              Fetching Jobs || Check Backend...
-            </p>
+            <p className="text-2xl font-mono">No Jobs Available</p>
           ) : (
             remoteJobs.map((job) => (
               <div key={job._id} className="featuredCarousel">
