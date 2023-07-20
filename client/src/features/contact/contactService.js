@@ -5,7 +5,7 @@ import axios from "axios";
 export const sendContactForm = async (formData) => {
   try {
     const response = await axios.post(
-      "http://16.171.24.160:4000/api/contact",
+      "http://35.178.166.193:4000/api/contact",
       formData
     );
     return response.data;
