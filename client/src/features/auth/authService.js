@@ -3,7 +3,7 @@ import axios from "axios";
 
 /* const SERVER_IP = "16.170.201.227"; */
 /* const API_URL = `http://${SERVER_IP}/api/users/`; */
-const API_URL = `http://35.178.166.193:4000/api/users/`;
+const API_URL = "http://35.178.166.193/api/users/";
 /* const API_URL = "http://localhost:4000/api/users/"; */
 
 // Register User
