@@ -9,8 +9,6 @@ const SERVER_IP = process.env.SERVER_IP;
 const cors = require("cors");
 const app = express();
 
-// Database connection
-connectDB();
 // Middleware
 app.use(express.json());
 /* app.use(express.urlencoded({ extended: false })); */
@@ -21,7 +19,7 @@ const corsOptions = {
     "http://localhost:4000",
     "http://skillmint.io",
     `http://${SERVER_IP}`,
-    "http://16.170.201.227",
+    "http://16.170.247.204",
   ],
 };
 app.use(cors(corsOptions));
@@ -32,7 +30,8 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/students", require("./routes/studentRoutes"));
 app.use("/api/profiles", require("./routes/studentFormroutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
-
+// Database connection
+connectDB();
 // Error handling middleware
 /* app.use(express.static("../../client/public")); */
 app.use(errorHandler);
