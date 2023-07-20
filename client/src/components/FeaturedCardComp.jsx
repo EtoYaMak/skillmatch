@@ -30,7 +30,7 @@ function FeaturedCardComp({ job }) {
           <img
             src={job.logo}
             alt={job.company}
-            className="object-scale-down w-24 h-24 rounded-sm bg-transparent"
+            className="object-scale-down w-24 h-24 rounded-full bg-transparent"
           />
         </div>
 
