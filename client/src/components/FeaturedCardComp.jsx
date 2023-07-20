@@ -26,7 +26,7 @@ function FeaturedCardComp({ job }) {
         className="cards flex h-[90px] overflow-hidden bg-transparent  items-center rounded-md"
         onClick={handleClick}
       >
-        <div className="bg-transparent rounded-sm">
+        <div className="bg-transparent rounded-sm w-28">
           <img
             src={job.logo}
             alt={job.company}
