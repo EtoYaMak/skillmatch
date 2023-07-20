@@ -7,8 +7,8 @@ function JobDetailPage({ job }) {
   const {
     company,
     logo,
-    isNew,
-    featured,
+    /*     isNew,
+    featured, */
     position,
     location,
     type,

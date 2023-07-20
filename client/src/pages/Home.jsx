@@ -7,7 +7,7 @@ import "../assets/slick-carousel/slick/slick.css";
 import "../assets/slick-carousel/slick/slick-theme.css";
 import FeaturedCardComp from "../components/FeaturedCardComp";
 import JobBoardComponent from "../components/JobBoardComponent";
-import { Button, Icon } from "semantic-ui-react";
+import { /* Button, */ Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import "../assets/slider.css";
 import settings from "../components/level_2/slider_settings";

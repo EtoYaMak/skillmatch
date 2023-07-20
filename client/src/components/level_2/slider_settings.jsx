@@ -1,5 +1,5 @@
 // SliderSettings.js
-import { BiCircle } from "react-icons/bi";
+/* import { BiCircle } from "react-icons/bi"; */
 const settings = {
   dots: true,
   infinite: true,

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteJob, getMyJobs, reset } from "../features/jobs/jobSlice";
-import { FaClock, FaCog, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
+import { FaClock, FaCog, /* FaEdit, */ FaTrash, FaTimes } from "react-icons/fa";
 
 function UserDash() {
   const navigate = useNavigate();

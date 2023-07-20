@@ -35,11 +35,10 @@ function JobBoardComponent({ job }) {
   const handleSkill = () => {
     setShowDropdown(!showDropdown);
   };
-  const langs = job.languages ? [...job.languages] : [];
   const skills = job.skills ? [...job.skills] : [];
-  const typeNames = job.type
+  /*   const typeNames = job.type
     .map((type) => type.name.charAt(0).toUpperCase() + type.name.slice(1))
-    .join(" · ");
+    .join(" · "); */
 
   return (
     <div

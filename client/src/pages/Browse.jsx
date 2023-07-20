@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SearchComponent from "../components/Search";
 import JobBoardComponent from "../components/JobBoardComponent";
-import FilterComponent from "../components/Filter/Filter";
+/* import FilterComponent from "../components/Filter/Filter"; */
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllJobs, reset } from "../features/jobs/jobSlice";
