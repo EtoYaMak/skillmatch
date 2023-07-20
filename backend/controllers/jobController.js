@@ -100,7 +100,7 @@ const setJob = asyncHandler(async (req, res) => {
       throw new Error("File not selected");
     }
     const resizedImage = await sharp(req.file.path)
-      .resize({ width: 160 })
+      .resize({ width: 160, height: 160, fit: "cover", position: "center" })
       .toBuffer();
 
     await sharp(resizedImage).toFile(req.file.path);

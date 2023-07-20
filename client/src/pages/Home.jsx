@@ -85,9 +85,9 @@ function Home() {
                 {visibleJobs > 5 && (
                   <button
                     onClick={showLessJobs}
-                    className="secondary-btn show-less-btn"
+                    className="primary-btn text-lg font-semibold bg-[#d0333c] hover:bg-[#1c1f21] py-2 px-4 rounded-md text-[#d4d7d7] hover:text-[#d0333c]"
                   >
-                    Show Less{" "}
+                    Show Less
                     <Icon name="chevron up" className="pl-2 bg-transparent" />
                   </button>
                 )}
