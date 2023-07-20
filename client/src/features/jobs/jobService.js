@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const SERVER_IP = "13.53.134.165";
+const SERVER_IP = "13.53.132.231";
 
-const API_URL = `http://$${SERVER_IP}/api/jobs/`;
-const API_ID = `http://${SERVER_IP}/api/jobs`;
-const ALL_API_URL = `http://${SERVER_IP}/api/jobs/all`;
+const API_URL = `http://13.53.132.231/api/jobs/`;
+const API_ID = `http://13.53.132.231/api/jobs`;
+const ALL_API_URL = `http://13.53.132.231/api/jobs/all`;
 /* const API_URL = "http://localhost:4000/api/jobs/";
 const API_ID = "http://localhost:4000/api/jobs";
 const ALL_API_URL = "http://localhost:4000/api/jobs/all";

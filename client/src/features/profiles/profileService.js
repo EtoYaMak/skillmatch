@@ -1,7 +1,7 @@
 import axios from "axios";
-const SERVER_IP = "13.53.134.165";
+const SERVER_IP = "13.53.132.231";
 
-const API_URL = `http://${SERVER_IP}/api/profiles/`;
+const API_URL = `http://13.53.132.231/api/profiles/`;
 /* const API_URL = "http://localhost:4000/api/profiles/"; */
 
 const createProfile = async (formData, token) => {

@@ -23,7 +23,7 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch(`http://${process.env.SERVER_IP}`)
+    fetch(`http://13.53.132.231`)
       /* fetch("http://localhost:4000") */
       .then((res) => {
         if (res.ok) {
