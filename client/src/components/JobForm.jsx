@@ -80,6 +80,8 @@ function JobForm() {
     // Input validation
     const requiredFields = [
       { name: "Job Title", value: position },
+      { name: "City", value: city },
+      { name: "Country", value: selectedCountry },
       { name: "Location", value: location },
       { name: "Company Name", value: company },
       { name: "Company Website", value: website },
@@ -100,6 +102,8 @@ function JobForm() {
 
     // Sanitization
     const sanitizedPosition = sanitizeInput(position);
+    const sanitizedCity = sanitizeInput(city);
+    const sanitizedCountry = sanitizeInput(selectedCountry);
     const sanitizedLocation = sanitizeInput(location);
     const sanitizedCareerPage = sanitizeInput(careerPage);
     const sanitizedCompany = sanitizeInput(company);
@@ -110,6 +114,8 @@ function JobForm() {
     const formData = new FormData();
     formData.append("position", sanitizedPosition);
     formData.append("location", sanitizedLocation);
+    formData.append("city", sanitizedCity);
+    formData.append("country", sanitizedCountry);
     formData.append("careerPage", sanitizedCareerPage);
     formData.append("company", sanitizedCompany);
     formData.append("website", sanitizedWebsite);
@@ -134,6 +140,8 @@ function JobForm() {
 
     setPosition("");
     setLocation("");
+    setCity("");
+    setSelectedCountry("");
     setCareerPage("");
     setCompany("");
     setWebsite("");
@@ -161,7 +169,7 @@ function JobForm() {
     <section>
       <form
         onSubmit={onSubmit}
-        className="max-w-3xl mx-auto mb-20"
+        className="max-w-7xl mx-auto mb-20"
         method="post"
         encType="multipart/form-data"
       >
@@ -240,81 +248,81 @@ function JobForm() {
               </div>
             </div>
           </div>
-          <div className="typeWork grid grid-cols-2 my-5 text-white ">
+          <div className="typeWork flex flex-col sm:flex-row items-center justify-evenly text-white mt-4 ">
             {/* Type */}
-            <div className="col-start-1 sm:w-1/2 space-y-2 ">
-              <div className="type flex items-center">
+            <div className="flex gap-2 items-center mr-2">
+              <div className="type flex items-center space-x-1">
                 <input
                   type="checkbox"
                   value="Full-Time"
                   checked={fulltime}
                   onChange={(e) => setFulltime(e.target.checked)}
-                  className="checkbox checkbox-success focus:ring-0 "
+                  className="checkbox checkbox-bordered focus:ring-0 "
                 />
-                <span className="ml-2 text-xl">Full-Time</span>
+                <span className=" text-xl">Full-Time</span>
               </div>
-              <div className="type flex items-center">
+              <div className="type flex items-center space-x-1">
                 <input
                   type="checkbox"
                   value="Part-Time"
                   checked={parttime}
                   onChange={(e) => setParttime(e.target.checked)}
-                  className="checkbox checkbox-success focus:ring-0"
+                  className="checkbox checkbox-bordered focus:ring-0"
                 />
-                <span className="ml-2 h-full text-xl">Part-Time</span>
+                <span className=" h-full text-xl">Part-Time</span>
               </div>
-              <div className="type flex items-center">
+              <div className="type flex items-center space-x-1">
                 <input
                   type="checkbox"
                   value="Internship"
                   checked={internship}
                   onChange={(e) => setInternship(e.target.checked)}
-                  className="checkbox checkbox-success focus:ring-0"
+                  className="checkbox checkbox-bordered focus:ring-0"
                 />
-                <span className="ml-2 text-xl">Internship</span>
+                <span className=" text-xl">Internship</span>
               </div>
-              <div className="type flex items-center">
+              <div className="type flex items-center space-x-1">
                 <input
                   type="checkbox"
                   value="Contract"
                   checked={contract}
                   onChange={(e) => setContract(e.target.checked)}
-                  className="checkbox checkbox-success focus:ring-0"
+                  className="checkbox checkbox-bordered focus:ring-0"
                 />
-                <span className="ml-2 text-xl">Contract</span>
+                <span className=" text-xl">Contract</span>
               </div>
             </div>
             {/* Job Setting */}
-            <div className=" col-start-2 sm:w-1/2 sm:ml-4 space-y-2 ">
-              <div className="remoteWork flex items-center">
+            <div className="flex gap-2 ">
+              <div className="remoteWork flex justify-center items-center space-x-1 ">
                 <input
                   type="checkbox"
                   value="Remote"
                   checked={remote}
                   onChange={(e) => setRemote(e.target.checked)}
-                  className="checkbox checkbox-info focus:ring-0"
+                  className="checkbox checkbox-bordered focus:ring-0"
                 />
-                <span className="ml-2 text-xl">Remote</span>
+                <span className="text-xl">Remote</span>
               </div>
-              <div className="hybridWork flex items-center">
+              <div className="hybridWork flex items-center space-x-1 ">
                 <input
                   type="checkbox"
                   value="Hybrid"
                   checked={hybrid}
                   onChange={(e) => setHybrid(e.target.checked)}
-                  className="checkbox checkbox-info focus:ring-0"
+                  className="checkbox checkbox-bordered focus:ring-0"
                 />
-                <span className="ml-2 text-xl">Hybrid</span>
+                <span className=" text-xl">Hybrid</span>
               </div>
-              <div className="onsite flex items-center">
+              <div className="onsite flex items-center space-x-1 ">
                 <input
                   type="checkbox"
                   value="On-site"
                   checked={onsite}
                   onChange={(e) => setOnsite(e.target.checked)}
-                  className="checkbox checkbox-info"
+                  className="checkbox checkbox-bordered"
                 />
-                <span className="ml-2 text-xl">On-Site</span>
+                <span className=" text-xl">On-Site</span>
               </div>
             </div>
           </div>

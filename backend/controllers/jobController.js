@@ -108,15 +108,15 @@ const setJob = asyncHandler(async (req, res) => {
     const user = req.user.id;
     const postedBy = req.user.name;
     const type = [
-      { name: "fulltime", value: req.body.fulltime },
-      { name: "parttime", value: req.body.parttime },
-      { name: "internship", value: req.body.internship },
-      { name: "contract", value: req.body.contract },
+      { name: "Full-time", value: req.body.fulltime },
+      { name: "Part-time", value: req.body.parttime },
+      { name: "Internship", value: req.body.internship },
+      { name: "Contract", value: req.body.contract },
     ];
     const setting = [
-      { name: "remote", value: req.body.remote },
-      { name: "hybrid", value: req.body.hybrid },
-      { name: "onsite", value: req.body.onsite },
+      { name: "Remote", value: req.body.remote },
+      { name: "Hybrid", value: req.body.hybrid },
+      { name: "On-site", value: req.body.onsite },
     ];
     req.body.type = type;
     req.body.setting = setting;
@@ -162,7 +162,7 @@ const updateJob = asyncHandler(async (req, res) => {
 
   if (!ujob) {
     res.status(400);
-    throw new Error("Job not found BACKEND");
+    throw new Error("Job not found!");
   }
 
   const user = await User.findById(req.user.id);
@@ -170,13 +170,13 @@ const updateJob = asyncHandler(async (req, res) => {
   // Check for User
   if (!req.user) {
     res.status(401);
-    throw new Error("User Not Found BACKEND");
+    throw new Error("User Not Found!");
   }
 
   // Make Sure the logged in user matches the job user
   if (ujob.user.toString() !== req.user.id) {
     res.status(401);
-    throw new Error("User not Authorized BACKEND");
+    throw new Error("User not Authorized!");
   }
 
   const {

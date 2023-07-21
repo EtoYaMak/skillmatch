@@ -79,7 +79,7 @@ function Home() {
                   onClick={showMoreJobs}
                   className="primary-btn text-lg font-semibold bg-[#d0333c] hover:bg-[#1c1f21] py-2 px-4 rounded-md text-[#d4d7d7] hover:text-[#d0333c]"
                 >
-                  Show More{" "}
+                  Show More
                   <Icon name="chevron down" className="pl-2 bg-transparent" />
                 </button>
                 {visibleJobs > 5 && (

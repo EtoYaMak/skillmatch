@@ -12,7 +12,6 @@ const jobSchema = mongoose.Schema(
       type: String,
       ref: "User",
     },
-
     position: {
       type: String,
       /* required: [true, "Please enter the Job Title"], */

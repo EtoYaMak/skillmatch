@@ -17,7 +17,7 @@ function FeaturedCardComp({ job }) {
   };
   return (
     <div
-      className="mx-4 p-4 bg-white hover:bg-[#1c1f21]  shadow-[4px_6px_1px_0px_#d0333c] hover:shadow-[4px_6px_1px_0px_#17eb07] my-4 rounded-md"
+      className="mx-4 p-4 bg-white hover:bg-[#1c1f21]  shadow-[4px_6px_1px_0px_#d0333c] hover:shadow-[4px_6px_1px_0px_#17eb07] my-4 rounded-md duration-200 ease-in-out"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -35,13 +35,19 @@ function FeaturedCardComp({ job }) {
             />
           </Link>
           <div className="ml-2 bg-transparent w-3/4">
-            <h2 className="font-semibold text-2xl bg-transparent tracking-wide">
+            <h2
+              className={`bg-inherit block cursor-pointer font-semibold text-2xl tracking-wider ${
+                isHovered
+                  ? "text-md font-bold rounded-md text-[#d0333c] ease-in-out duration-500"
+                  : "text-md font-bold rounded-md text-gray-500 "
+              }`}
+            >
               {job.position}
             </h2>
             <h3
               className={`bg-inherit block cursor-pointer font-semibold text-lg tracking-wider ${
                 isHovered
-                  ? "text-md font-bold rounded-md text-[#d4d7d7] "
+                  ? "text-md font-bold rounded-md text-[#d4d7d7] ease-in-out duration-500"
                   : "text-md font-bold rounded-md text-gray-500 "
               }`}
             >

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RiExpandRightFill } from "react-icons/ri";
+
 function JobBoardComponent({ job }) {
   const jobId = job._id;
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
@@ -42,8 +44,8 @@ function JobBoardComponent({ job }) {
 
   return (
     <div
-      className="main grid grid-cols-12 items-center p-3 md:p-4 my-3
-     bg-[#fff] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-[#1c1f21] rounded-md select-none "
+      className="main grid grid-cols-12 items-center sm:p-3 p-4 my-3 
+     bg-[#fff] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-[#1c1f21] duration-500 ease-in-out rounded-md select-none "
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -142,9 +144,9 @@ function JobBoardComponent({ job }) {
 
       {/* Location */}
       <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end">
-        <div className=" p-3 bg-transparent w-fit">
+        <div className=" p-3 bg-transparent w-fit flex flex-col font-Inter">
           <p className="bg-transparent font-semibold text-lg tracking-normal">
-            {job.location}
+            {job.location ? job.location : `${job.city}, ${job.country}`}
           </p>
         </div>
       </div>

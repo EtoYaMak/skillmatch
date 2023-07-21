@@ -21,7 +21,9 @@ const Navbar = () => {
   const handleToggle = () => {
     setToggle(!toggle);
   };
-
+  const handleOptionClick = () => {
+    setIsOpen(false);
+  };
   const onSLogout = () => {
     dispatch(Slogout());
     dispatch(Sreset());
@@ -47,10 +49,10 @@ const Navbar = () => {
       }
     }
 
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
 
@@ -78,29 +80,44 @@ const Navbar = () => {
   return (
     <div className="relative flex justify-evenly items-center h-24  px-4 mx-auto z-50 bg-[#1c1f21] shadow-[0px_0px_2px_1px_#d0333c] select-none ">
       <h1 className="w-max text-5xl font-bold text-[#d4d7d7] bg-transparent">
-        <Link to="/" className=" hover:text-[#d0333c] ">
+        <Link
+          to="/"
+          className=" hover:text-[#d0333c] ease-in-out duration-500 "
+        >
           SKILLMINT.
         </Link>
       </h1>
 
       <ul className="uppercase gap-0 hidden md:flex bg-transparent justify-center items-center">
         <li className=" text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit ">
-          <Link to="/" className="py-9 px-4  hover:text-[#d0333c] ">
+          <Link
+            to="/"
+            className="py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300"
+          >
             Home
           </Link>
         </li>
         <li className="text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit">
-          <Link to="/browse" className="py-9 px-4  hover:text-[#d0333c] ">
+          <Link
+            to="/browse"
+            className="py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300"
+          >
             Browse
           </Link>
         </li>
         <li className="text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit">
-          <Link to="/post" className=" py-9 px-4  hover:text-[#d0333c] ">
+          <Link
+            to="/post"
+            className=" py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300 "
+          >
             Post
           </Link>
         </li>
         <li className="text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit">
-          <Link to="/contact" className=" py-9 px-4  hover:text-[#d0333c]">
+          <Link
+            to="/contact"
+            className=" py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300"
+          >
             Contact
           </Link>
         </li>
@@ -111,7 +128,7 @@ const Navbar = () => {
           >
             <button
               className="flex uppercase justify-center items-center text-xl  py-9 px-4 
-               text-[#d4d7d7] font-bold hover:text-[#d0333c] tracking-widest "
+               text-[#d4d7d7] font-bold hover:text-[#d0333c] tracking-widest  ease-in-out duration-300"
               onClick={() => setIsOpen(!isOpen)}
             >
               Profile{" "}
@@ -122,21 +139,25 @@ const Navbar = () => {
             </button>
             {isOpen && (
               <ul
-                className="ease-in-out duration-200 absolute 
-              rounded-lg my-1 space-y-0 bg-[#1c1f21]/80 hover:bg-[#000]/70 backdrop-blur-lg p-2 w-44"
+                className="ease-in-out duration-700  absolute 
+              rounded-lg my-1 space-y-0 bg-[#1c1f21]/80 hover:bg-[#000]/70 backdrop-blur-lg p-2 w-44 "
               >
                 <li className="rounded-md h-fit bg-transparent">
                   <button
-                    className="text-lg font-bold uppercase w-full py-4 bg-transparent hover:text-[#d0333c] "
-                    onClick={handleClick}
+                    className="text-lg font-bold uppercase w-full py-4 bg-transparent hover:text-[#d0333c] ease-in-out duration-300 "
+                    onClick={() => {
+                      setIsOpen(false);
+                      handleClick();
+                    }}
                   >
                     Dashboard
                   </button>
                 </li>
                 <li className="bg-transparent rounded-md h-fit">
                   <button
-                    className="text-lg font-bold uppercase w-full py-4  hover:text-[#d0333c] "
+                    className="text-lg font-bold uppercase w-full py-4  hover:text-[#d0333c] ease-in-out duration-300 "
                     onClick={() => {
+                      setIsOpen(false);
                       if (user) {
                         onLogout();
                       } else if (student) {
@@ -152,7 +173,10 @@ const Navbar = () => {
           </li>
         ) : (
           <li className="text-[#d4d7d7] font-bold text-xl text-center  bg-inherit">
-            <Link to="/login" className="py-9 px-4  hover:text-[#d0333c]  ">
+            <Link
+              to="/login"
+              className="py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300 "
+            >
               Login
             </Link>
           </li>
@@ -176,8 +200,8 @@ const Navbar = () => {
       <div
         className={
           toggle
-            ? "md:hidden fixed left-0 top-0 min-w-[65%] ease-in-out duration-200 bg-transparent "
-            : "ease-in-out duration-500 fixed left-[-100%] top-0"
+            ? "md:hidden fixed left-0 top-0 min-w-[65%] ease-in-out duration-700 bg-transparent "
+            : "ease-out duration-[1200ms] fixed left-[-100%] top-0"
         }
       >
         <Link to="/" className="">
@@ -196,44 +220,44 @@ const Navbar = () => {
           id="nav"
         >
           <li className=" backdrop-blur-sm bg-[#000]/70 ">
-            <div className="nav-link  flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70">
+            <div className="nav-link  flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
               <Link
                 to="/"
                 onClick={() => setToggle(false)}
-                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold ease-in-out duration-300"
               >
                 Home
               </Link>
             </div>
           </li>
           <li className="backdrop-blur-sm bg-[#000]/70">
-            <div className="nav-link flex items-center  bg-[#1c1f21]/80 hover:bg-[#000]/70">
+            <div className="nav-link flex items-center  bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
               <Link
                 to="/browse"
                 onClick={() => setToggle(false)}
-                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold ease-in-out duration-300 "
               >
                 Browse Jobs
               </Link>
             </div>
           </li>
           <li className=" backdrop-blur-sm bg-[#000]/70">
-            <div className="nav-link flex items-center  bg-[#1c1f21]/80 hover:bg-[#000]/70">
+            <div className="nav-link flex items-center  bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
               <Link
                 to="/post"
                 onClick={() => setToggle(false)}
-                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold ease-in-out duration-300"
               >
                 Post
               </Link>
             </div>
           </li>
           <li className=" backdrop-blur-sm bg-[#000]/70">
-            <div className="nav-link flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70">
+            <div className="nav-link flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
               <Link
                 to="/contact"
                 onClick={() => setToggle(false)}
-                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold"
+                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold ease-in-out duration-300"
               >
                 Contact
               </Link>
@@ -242,20 +266,20 @@ const Navbar = () => {
           {user || student ? (
             <ul className="bg-inherit ">
               <li className="backdrop-blur-sm bg-[#000]/70">
-                <div className="nav-link flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70">
+                <div className="nav-link flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
                   <Link
                     to="/dash"
                     onClick={() => setToggle(false)}
-                    className="flex-1 py-4 hover:text-[#d0333c]  hover:font-extrabold"
+                    className="flex-1 py-4 hover:text-[#d0333c]  hover:font-extrabold ease-in-out duration-300"
                   >
                     Dashboard
                   </Link>
                 </div>
               </li>
               <li className=" backdrop-blur-sm bg-[#000]/70 rounded-br-lg ">
-                <div className="nav-link flex items-center justify-center bg-[#1c1f21]/80 hover:bg-[#000]/70 rounded-br-lg">
+                <div className="nav-link flex items-center justify-center bg-[#1c1f21]/80 hover:bg-[#000]/70 rounded-br-lg ease-in-out duration-300">
                   <button
-                    className="text-lg font-bold uppercase w-full py-4 hover:text-[#d0333c] hover:font-extrabold "
+                    className="text-lg font-bold uppercase w-full py-4 hover:text-[#d0333c] hover:font-extrabold ease-in-out duration-300"
                     onClick={() => {
                       if (user) {
                         onLogout();

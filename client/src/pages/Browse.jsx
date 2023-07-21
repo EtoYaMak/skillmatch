@@ -40,6 +40,7 @@ function Browse() {
     : jobs;
 
   const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+  const reversedCurrentJobs = currentJobs.slice().reverse();
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -66,12 +67,12 @@ function Browse() {
 
         {/* JobBoard Component */}
         <div className="px-4 py-5 ">
-          {currentJobs.length === 0 ? (
+          {reversedCurrentJobs.length === 0 ? (
             <p className="text-2xl text-white tracking-[0.23em] mx-auto h-32 flex justify-center items-center">
               No jobs found
             </p>
           ) : (
-            currentJobs.map((job) => (
+            reversedCurrentJobs.map((job) => (
               <BrowseJobComponent job={job} key={job._id} />
             ))
           )}
