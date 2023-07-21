@@ -1,7 +1,7 @@
 // Making HTTP request
 import axios from "axios";
 
-const API_URL = "http://35.178.166.193/api/users/";
+const API_URL = "http://35.178.166.193:4000/api/users/";
 /* const API_URL = "http://localhost:4000/api/users/"; */
 
 // Register User
