@@ -18,8 +18,8 @@ const corsOptions = {
     "http://localhost:3000",
     "http://localhost:4000",
     "http://skillmint.io",
-    "http://35.178.166.193:4000",
-    "http://35.178.166.193",
+    "http://16.171.182.16:4000",
+    "http://16.171.182.16",
   ],
 };
 app.use(cors(corsOptions));

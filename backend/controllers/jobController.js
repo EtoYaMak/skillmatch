@@ -123,6 +123,8 @@ const setJob = asyncHandler(async (req, res) => {
 
     const {
       position,
+      city,
+      country,
       location,
       careerPage,
       company,
@@ -136,6 +138,8 @@ const setJob = asyncHandler(async (req, res) => {
       user,
       postedBy,
       position,
+      city,
+      country,
       location,
       careerPage,
       company,

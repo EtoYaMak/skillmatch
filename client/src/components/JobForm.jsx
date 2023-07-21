@@ -5,8 +5,7 @@ import DOMPurify from "dompurify";
 import ReactQuill from "react-quill";
 import "../assets/quill.snow.css"; // Import the CSS for the editor
 import { MdClose } from "react-icons/md";
-import countriesData from "../assets/countries-data.json";
-import Select, { StylesConfig } from "react-select";
+import countriesList from "../assets/countries-data.json";
 
 function JobForm() {
   const [position, setPosition] = useState("");
@@ -25,57 +24,20 @@ function JobForm() {
   const [onsite, setOnsite] = useState(false);
   const [formError, setFormError] = useState("");
   const [skills, setSkills] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [countries, setCountries] = useState(countriesList);
+  const [city, setCity] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const handleCityChange = (e) => {
+    setCity(e.target.value);
+  };
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+  };
 
   const dispatch = useDispatch();
 
-  const options = countriesData.map((country) => ({
-    value: country.Code,
-    label: country.Name,
-  }));
-  /*   const colourStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: "red",
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isDisabled
-        ? null
-        : state.isSelected
-        ? state.data.color
-        : state.isFocused
-        ? "rgba(0, 0, 0, 0.1)"
-        : null,
-      color: state.isDisabled
-        ? "#ccc"
-        : state.isSelected > 2
-        ? "white"
-        : "black",
-      cursor: state.isDisabled ? "not-allowed" : "default",
-    }),
-    input: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      opacity: 0.5,
-    }),
-    singleValue: (provided, state) => ({
-      ...provided,
-      padding: 0,
-      margin: 0,
-      color: state.data.color,
-    }),
-  }; */
-  // Handler for changing the selected location
-  const handleLocationChange = (selectedOption) => {
-    setSelectedLocation(selectedOption);
-  };
   const [showFormError, setShowFormError] = useState(true);
   const falseFlagsubmit = (e) => {
     if (e.key === "Enter") {
@@ -114,6 +76,7 @@ function JobForm() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const location = `${city}, ${selectedCountry}`;
     // Input validation
     const requiredFields = [
       { name: "Job Title", value: position },
@@ -220,8 +183,8 @@ function JobForm() {
               </button>
             </div>
           )}
-          <div className="sm:flex sm:space-x-8">
-            <div className="w-full sm:w-1/2">
+          <div className="flex flex-col">
+            <div className="w-full ">
               <div>
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                   Job Title
@@ -239,29 +202,41 @@ function JobForm() {
                 />
               </div>
             </div>
-            <div className="w-full sm:w-1/2">
+            <div className="w-full ">
               <div>
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                   Location
                 </label>
-                {/*                 <input
-                  type="text"
-                  name="location"
-                  id="location"
-                  className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-                  text-white/80 placeholder:text-white/40 text-xl"
-                  placeholder="Example: New York, USA"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  onKeyDown={falseFlagsubmit}
-                /> */}
-
-                <Select
-                  options={options}
-                  value={selectedLocation}
-                  onChange={handleLocationChange}
-                  placeholder="Example: New York, USA"
-                />
+                <span className="flex flex-row w-full justify-between space-x-4">
+                  <input
+                    type="text"
+                    className="input input-bordered bg-black/25 w-full text-white/90"
+                    id="city"
+                    name="city"
+                    value={city}
+                    onChange={handleCityChange}
+                  />
+                  <select
+                    id="dropdown"
+                    name="dropdown"
+                    value={selectedCountry}
+                    onChange={handleCountryChange}
+                    className="select select-bordered bg-black/25 text-white/90 w-full font-Inter flex flex-wrap"
+                  >
+                    <option disabled selected>
+                      Country
+                    </option>
+                    {countries.map((country) => (
+                      <option
+                        key={country.Code}
+                        value={country.Name}
+                        className="text-white"
+                      >
+                        {country.Name}
+                      </option>
+                    ))}
+                  </select>
+                </span>
               </div>
             </div>
           </div>
