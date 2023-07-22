@@ -60,16 +60,16 @@ function JobDetailPage({ job }) {
       <div className="sm:rounded-b-xl p-8  mb-8 md:w-[1024px] max-w-screen-lg bg-black/30 font-Inter">
         <div className="bg-transparent sm:space-y-0 space-y-4 flex flex-col min-w-min justify-between items-center">
           {/* Company and Position */}
-          <div className="flex flex-col sm:flex-row items-center bg-transparent max-w-fit sm:space-x-4 space-y-3 sm:space-y-0">
-            <div className="bg-transparent sm:w-1/4 flex justify-center items-center">
+          <div className="flex flex-col sm:flex-row items-center justify-center bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
+            <div className="bg-transparent  flex justify-center items-center">
               <img
                 src={logo}
                 alt={company}
-                className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover min-w-max"
+                className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover"
               />
             </div>
 
-            <div className=" bg-inherit sm:w-3/4 w-full text-start  sm:pl-2">
+            <div className=" bg-inherit  w-fit text-start  sm:pl-2">
               <h2 className="text-4xl bg-inherit text-[#d0333c] tracking-wide">
                 {position}
               </h2>
@@ -85,8 +85,8 @@ function JobDetailPage({ job }) {
                 setting.map((jobSetting, index) => (
                   <div
                     key={index}
-                    className="bg-white/80 tracking-widest font-semibold
-                     min-w-min text-center text-xl text-black/80 px-4 py-2 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
+                    className="bg-white/70 tracking-widest font-semibold
+                     min-w-min text-center text-lg text-black/80 px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
                   >
                     {jobSetting.name.charAt(0).toUpperCase() +
                       jobSetting.name.slice(1)}
@@ -101,9 +101,9 @@ function JobDetailPage({ job }) {
             {/* Full / Part / Intern / Contract */}
             <div className="mb-4 bg-inherit ">
               <div className="text-center mb-2 bg-inherit">
-                <p className=" font-bold text-xl uppercase bg-inherit text-[#d4d7d7] tracking-[0.20em]">
+                {/*                 <p className=" font-bold text-xl uppercase bg-inherit text-[#d4d7d7] tracking-[0.20em]">
                   work type
-                </p>
+                </p> */}
               </div>
               <div className="flex flex-wrap gap-2 justify-center bg-inherit">
                 {type &&
@@ -111,7 +111,7 @@ function JobDetailPage({ job }) {
                     <div
                       key={index}
                       className="bg-black/50 tracking-widest min-w-min
-                       text-center text-xl text-white px-4 py-2 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
+                       text-center text-lg text-white px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
                     >
                       {jobType.name.charAt(0).toUpperCase() +
                         jobType.name.slice(1)}
@@ -126,7 +126,7 @@ function JobDetailPage({ job }) {
           <div className="mx-4 flex sm:flex-row flex-col sm:space-y-0 space-y-2 mb-4 justify-between items-center h-full bg-inherit font-Inter">
             {/* Location */}
             <div className="bg-inherit">
-              <p className=" bg-inherit text-[#d0333c] hover:text-white/90 flex sm:flex-row flex-col items-center sm:items-baseline space-x-2 duration-300 ease-in-out">
+              <p className=" bg-inherit text-[#d0333c]  flex sm:flex-row flex-col items-center sm:items-baseline space-x-2 duration-300 ease-in-out">
                 <span className="bg-transparent text-xl">
                   <FaLocationDot
                     size={24}
@@ -145,7 +145,7 @@ function JobDetailPage({ job }) {
 
             {/* Career page */}
             <div className="bg-transparent flex flex-col justify-between items-start sm:justify-start sm:space-x-6">
-              <div className="bg-inherit space-y-2">
+              <div className="bg-inherit sm:space-y-0 space-x-2 flex">
                 <p className="text-xl bg-inherit text-[#d0333c] flex items-center justify-center space-x-2">
                   <span className="bg-inherit text-[#d4d7d7]">
                     <FaLink className="bg-transparent" size={24} />
@@ -159,6 +159,7 @@ function JobDetailPage({ job }) {
                     Career Page
                   </a>
                 </p>
+                {/* Website */}
                 <p className="text-xl bg-inherit text-[#d0333c] flex items-center justify-center space-x-2">
                   <span className="bg-inherit text-[#d4d7d7]">
                     <FaLink className="bg-transparent" size={24} />
@@ -173,7 +174,6 @@ function JobDetailPage({ job }) {
                   </a>
                 </p>
               </div>
-              {/* Website */}
             </div>
           </div>
         </div>

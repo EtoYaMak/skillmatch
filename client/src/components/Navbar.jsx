@@ -89,7 +89,7 @@ const Navbar = () => {
       </h1>
 
       <ul className="uppercase gap-0 hidden md:flex bg-transparent justify-center items-center select-none">
-        <li className=" text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit ">
+        <li className=" text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit">
           <Link
             to="/"
             className="py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300"
