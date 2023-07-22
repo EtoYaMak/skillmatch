@@ -163,17 +163,7 @@ function JobBoardComponent({ job }) {
                 : "bg-transparent font-semibold text-lg tracking-normal text-[#d4d7d7] "
             }`}
           >
-            {job.city ? job.city : `${job.location}`}
-          </p>
-          <p
-            class="bg-transparent font-semibold text-lg tracking-normal "
-            className={` block cursor-pointer ${
-              isHovered
-                ? "bg-transparent font-bold duration-300 ease-in-out text-lg tracking-normal "
-                : "bg-transparent font-semibold text-lg tracking-normal text-[#d4d7d7] "
-            }`}
-          >
-            {job.country}
+            {job.location ? job.location : `${job.city}, ${job.country}`}
           </p>
         </div>
       </div>
