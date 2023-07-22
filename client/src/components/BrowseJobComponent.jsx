@@ -150,8 +150,8 @@ function BrowseJobComponent({ job }) {
       </div>
 
       {/* Location */}
-      <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end">
-        <div className=" p-3 bg-transparent w-fit ">
+      <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end items-center">
+        <div className=" p-3 bg-transparent w-fit flex flex-col ">
           <p className="bg-transparent font-semibold text-md sm:text-lg tracking-widest text-white/80">
             {job.location ? job.location : `${job.city}, ${job.country}`}
           </p>
