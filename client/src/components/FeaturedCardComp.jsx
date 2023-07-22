@@ -17,7 +17,7 @@ function FeaturedCardComp({ job }) {
   };
   return (
     <div
-      className="mx-4 p-4 bg-white hover:bg-[#1c1f21]  shadow-[4px_6px_1px_0px_#d0333c] hover:shadow-[4px_6px_1px_0px_#17eb07] my-4 rounded-md duration-200 ease-in-out"
+      className="mx-4 p-4  bg-black/80 hover:bg-[#1c1f21]  shadow-[4px_6px_1px_0px_#d0333c] hover:shadow-[4px_6px_1px_0px_#17eb07] my-4 rounded-md duration-200 ease-in-out"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -29,17 +29,18 @@ function FeaturedCardComp({ job }) {
         <div className="flex w-full items-center bg-transparent">
           <Link className="ml-1 py-2 flex justify-center">
             <img
+              /* src={job.logo} */
               src={job.logo}
               alt={job.company}
-              className="bg-transparent w-24 h-24 rounded-full object-cover"
+              className="bg-transparent w-24 h-24 rounded-full object-cover min-w-max"
             />
           </Link>
           <div className="ml-2 bg-transparent w-3/4">
             <h2
               className={`bg-inherit block cursor-pointer font-semibold text-2xl tracking-wider ${
                 isHovered
-                  ? "text-md font-bold rounded-md text-[#d0333c] ease-in-out duration-500"
-                  : "text-md font-bold rounded-md text-gray-500 "
+                  ? "text-md font-bold rounded-md text-[#17eb07] ease-in-out duration-200"
+                  : "text-md font-bold rounded-md text-[#d0333c] "
               }`}
             >
               {job.position}
@@ -47,8 +48,8 @@ function FeaturedCardComp({ job }) {
             <h3
               className={`bg-inherit block cursor-pointer font-semibold text-lg tracking-wider ${
                 isHovered
-                  ? "text-md font-bold rounded-md text-[#d4d7d7] ease-in-out duration-500"
-                  : "text-md font-bold rounded-md text-gray-500 "
+                  ? "text-md font-bold rounded-md text-white ease-in-out duration-500"
+                  : "text-md font-bold rounded-md text-white/90 "
               }`}
             >
               {job.company}

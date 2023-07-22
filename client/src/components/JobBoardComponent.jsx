@@ -37,6 +37,7 @@ function JobBoardComponent({ job }) {
   const handleSkill = () => {
     setShowDropdown(!showDropdown);
   };
+
   const skills = job.skills ? [...job.skills] : [];
   /*   const typeNames = job.type
     .map((type) => type.name.charAt(0).toUpperCase() + type.name.slice(1))
@@ -45,7 +46,7 @@ function JobBoardComponent({ job }) {
   return (
     <div
       className="main grid grid-cols-12 items-center sm:p-3 p-4 my-3 
-     bg-[#fff] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-[#1c1f21] duration-500 ease-in-out rounded-md select-none "
+     bg-[#fff] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-[#1c1f21] duration-300 ease-in-out rounded-md select-none hover:px-2"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -58,12 +59,11 @@ function JobBoardComponent({ job }) {
           <img
             src={job.logo}
             alt={job.company}
-            /* className="w-[70px] min-h-[70px] md:w-[70px] md:h-[70px] rounded-full bg-transparent" */
-            className="bg-transparent w-24 h-24 rounded-full object-cover"
+            className="bg-transparent w-24 h-24 rounded-full object-cover min-w-max"
           />
         </Link>
-        <div className="ml-5 bg-transparent md:w-4/6 w-fit">
-          <h2 className="font-semibold text-2xl bg-transparent tracking-wide">
+        <div className="ml-5 bg-transparent sm:w-5/6 w-fit">
+          <h2 className="font-semibold text-xl sm:text-2xl bg-transparent tracking-wide text-center sm:text-start">
             {job.position}
           </h2>
           <h3
@@ -88,8 +88,8 @@ function JobBoardComponent({ job }) {
                 /*className="text-[#d4d7d7] bg-[#1c1f21] font-bold  p-2 rounded-md cursor-zoom-in" THIS*/
                 className={` block cursor-pointer p-2 ${
                   isHovered
-                    ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
-                    : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
+                    ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21] duration-300 ease-in-out"
+                    : "text-md font-bold rounded-md text-white bg-[#1c1f21] duration-300 ease-in-out"
                 }`}
                 onClick={handleSkill}
               >
@@ -100,8 +100,8 @@ function JobBoardComponent({ job }) {
             <span
               className={`block cursor-pointer p-2 ${
                 isHovered
-                  ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#2c3033] hover:text-[#d0333c]"
-                  : "text-md font-bold rounded-md text-white bg-[#1c1f21]"
+                  ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#2c3033] hover:text-[#d0333c] duration-300 ease-in-out"
+                  : "text-md font-bold rounded-md text-white bg-[#1c1f21] duration-300 ease-in-out"
               }`}
               onClick={handleSkill}
             >
@@ -118,9 +118,9 @@ function JobBoardComponent({ job }) {
           {showDropdown && (
             <div
               ref={dropdownRef}
-              className="bg-transparent flex flex-wrap w-fit gap-2 text-inherit "
+              className="bg-transparent flex flex-wrap w-fit gap-2 text-inherit duration-300 ease-in-out"
             >
-              {skills.map((skill, index) => (
+              {skills.slice(0, 5).map((skill, index) => (
                 <span
                   key={index}
                   className={` block cursor-pointer p-2 sm:mt-0  mt-2 ${
@@ -129,10 +129,12 @@ function JobBoardComponent({ job }) {
                       : "text-md font-bold  rounded-md text-white"
                   } ${
                     isHovered
-                      ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
-                      : "text-md font-bold rounded-md text-white bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
+                      ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21] duration-300 ease-in-out"
+                      : "text-md font-bold rounded-md text-white bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21] duration-300 ease-in-out"
                   }`}
-                  onClick={() => setSelectedSkillIndex(index)}
+                  onClick={() =>
+                    setTimeout(() => setSelectedSkillIndex(index), 1000)
+                  }
                 >
                   {skill}
                 </span>
@@ -145,7 +147,14 @@ function JobBoardComponent({ job }) {
       {/* Location */}
       <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end">
         <div className=" p-3 bg-transparent w-fit flex flex-col font-Inter">
-          <p className="bg-transparent font-semibold text-lg tracking-normal">
+          <p
+            class="bg-transparent font-semibold text-lg tracking-normal "
+            className={` block cursor-pointer ${
+              isHovered
+                ? "bg-transparent font-bold duration-300 ease-in-out text-lg tracking-normal "
+                : "bg-transparent font-semibold text-lg tracking-normal text-[#1c1f21] "
+            }`}
+          >
             {job.location ? job.location : `${job.city}, ${job.country}`}
           </p>
         </div>

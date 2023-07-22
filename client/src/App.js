@@ -39,10 +39,9 @@ function App() {
   }, []);
 
   return (
-    <div className="App min-h-screen">
+    <div className="App bg-[#2c3033] h-fit">
       <Navbar />
-      {/*       <h1 className="text-white hover:text-black text-center">{message}</h1>
-       */}{" "}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/browse" element={<Browse />} />

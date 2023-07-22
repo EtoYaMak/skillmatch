@@ -30,11 +30,11 @@ function Home() {
   const [visibleJobs, setVisibleJobs] = useState(5);
 
   const showMoreJobs = () => {
-    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 5);
+    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 3);
   };
 
   const showLessJobs = () => {
-    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs - 5);
+    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs - 3);
   };
 
   const sortedJobs = [...jobs].sort(
@@ -42,18 +42,18 @@ function Home() {
   );
 
   return (
-    <div className="justify-between items-center max-w-[1240px] max-h-fit px-4 my-5 mx-auto mb-5">
-      <h1 className="text-center font-semibold my-5 text-3xl text-[#d0333c] select-none">
-        Remote Jobs
+    <div className="justify-between items-center max-w-[1240px] h-fit px-4 my-5 mx-auto mb-5 bg-inherit">
+      <h1 className="text-center font-semibold my-5 text-3xl text-[#f2f3f3] select-none font-Inter ">
+        REMOTE
       </h1>
 
       <div className="Carousel Slider cursor-pointer">
         <Slider {...settings}>
           {remoteJobs.length === 0 ? (
-            <p className="text-2xl font-mono">No Jobs Available</p>
+            <p className="text-2xl font-Inter">No Jobs Available</p>
           ) : (
             remoteJobs.map((job) => (
-              <div key={job._id} className="featuredCarousel">
+              <div key={job._id} className="">
                 <FeaturedCardComp job={job} />
               </div>
             ))
@@ -61,11 +61,11 @@ function Home() {
         </Slider>
       </div>
 
-      <h1 className="text-center font-semibold mt-10 pb-4 text-3xl text-[#d0333c] select-none">
-        Recent Job Postings
+      <h1 className="text-center font-semibold mt-10 pb-4 text-3xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
+        RECENT
       </h1>
 
-      <div className="recent pb-5">
+      <div className="recent pb-5 ">
         {sortedJobs.length === 0 ? (
           <p className="text-2xl text-white text-center">No jobs found</p>
         ) : (

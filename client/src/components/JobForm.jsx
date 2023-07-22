@@ -229,16 +229,21 @@ function JobForm() {
                     name="dropdown"
                     value={selectedCountry}
                     onChange={handleCountryChange}
-                    className="select select-bordered bg-black/25 text-white/90 w-full font-Inter flex flex-wrap"
+                    className="select select-bordered bg-black/90 backdrop-blur-md text-white/90 w-full font-Inter flex flex-wrap text-xl"
                   >
-                    <option disabled selected>
-                      Country
+                    <option
+                      disabled
+                      selected
+                      className="text-xl text-center text-white/70"
+                      id="defaultCountry"
+                    >
+                      Select A Country
                     </option>
                     {countries.map((country) => (
                       <option
                         key={country.Code}
                         value={country.Name}
-                        className="text-white"
+                        className="text-white text-xl text-center"
                       >
                         {country.Name}
                       </option>
@@ -248,10 +253,10 @@ function JobForm() {
               </div>
             </div>
           </div>
-          <div className="typeWork flex flex-col sm:flex-row items-center justify-evenly text-white mt-4 ">
+          <div className="typeWork  sm:grid sm:grid-cols-2  text-white/75 font-Inter my-2 p-2">
             {/* Type */}
-            <div className="flex gap-2 items-center mr-2">
-              <div className="type flex items-center space-x-1">
+            <div className="grid grid-cols-2 gap-2">
+              <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
                 <input
                   type="checkbox"
                   value="Full-Time"
@@ -261,7 +266,7 @@ function JobForm() {
                 />
                 <span className=" text-xl">Full-Time</span>
               </div>
-              <div className="type flex items-center space-x-1">
+              <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch ">
                 <input
                   type="checkbox"
                   value="Part-Time"
@@ -271,7 +276,7 @@ function JobForm() {
                 />
                 <span className=" h-full text-xl">Part-Time</span>
               </div>
-              <div className="type flex items-center space-x-1">
+              <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
                 <input
                   type="checkbox"
                   value="Internship"
@@ -281,7 +286,7 @@ function JobForm() {
                 />
                 <span className=" text-xl">Internship</span>
               </div>
-              <div className="type flex items-center space-x-1">
+              <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
                 <input
                   type="checkbox"
                   value="Contract"
@@ -293,8 +298,8 @@ function JobForm() {
               </div>
             </div>
             {/* Job Setting */}
-            <div className="flex gap-2 ">
-              <div className="remoteWork flex justify-center items-center space-x-1 ">
+            <div className="flex flex-wrap sm:justify-between justify-between   sm:mt-0 mt-2">
+              <div className="remoteWork space-x-2 sm:space-x-3 flex items-center text-start">
                 <input
                   type="checkbox"
                   value="Remote"
@@ -304,7 +309,7 @@ function JobForm() {
                 />
                 <span className="text-xl">Remote</span>
               </div>
-              <div className="hybridWork flex items-center space-x-1 ">
+              <div className="hybridWork space-x-2 sm:space-x-3 flex items-center justify-center ">
                 <input
                   type="checkbox"
                   value="Hybrid"
@@ -314,7 +319,7 @@ function JobForm() {
                 />
                 <span className=" text-xl">Hybrid</span>
               </div>
-              <div className="onsite flex items-center space-x-1 ">
+              <div className="onsite  space-x-2 sm:space-x-3 flex items-center justify-end">
                 <input
                   type="checkbox"
                   value="On-site"
@@ -326,7 +331,7 @@ function JobForm() {
               </div>
             </div>
           </div>
-          <div className="mt-6 text-white tracking-wider text-lg">
+          <div className="mt-4 text-white tracking-wider text-lg">
             <ReactQuill
               placeholder="Job Description"
               className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/25 

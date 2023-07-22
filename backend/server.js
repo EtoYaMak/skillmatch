@@ -14,13 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "http://localhost:4000",
-    "http://skillmint.io",
-    "http://35.178.166.193:4000",
-    "http://35.178.166.193",
-  ],
+  origin: ["http://35.178.166.193"],
 };
 app.use(cors(corsOptions));
 

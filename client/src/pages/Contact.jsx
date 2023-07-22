@@ -46,7 +46,7 @@ const Contact = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto  bg-[#2c3033]">
       <section className="text-gray-400 body-font font-Inter">
         <div className="container px-5 py-5 mt-[10vh] mx-auto bg-[#1c1f21] rounded-xl">
           <div className="flex flex-col text-center w-full mb-4 bg-inherit mt-10 ">
