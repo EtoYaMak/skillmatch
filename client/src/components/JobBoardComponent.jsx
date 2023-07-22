@@ -59,7 +59,7 @@ function JobBoardComponent({ job }) {
           <img
             src={job.logo}
             alt={job.company}
-            className="bg-transparent w-24 h-24 rounded-full object-cover min-w-max"
+            className="bg-transparent w-24 h-24 rounded-full object-cover"
           />
         </Link>
         <div className="ml-5 bg-transparent sm:w-5/6 w-fit">
