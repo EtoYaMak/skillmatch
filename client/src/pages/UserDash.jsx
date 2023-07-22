@@ -77,7 +77,7 @@ function UserDash() {
                     >
                       <div className="ThirdOne flex flex-row space-x-2 justify-evenly  w-full bg-transparent">
                         <div className="flex bg-transparent items-center w-full">
-                          <div className="bg-transparent object-contain w-full p-2 ">
+                          <div className="bg-transparent min-w-max p-2 ">
                             <img
                               src={job.logo}
                               alt={job.position}
