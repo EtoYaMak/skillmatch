@@ -108,7 +108,7 @@ function JobForm() {
     const sanitizedCareerPage = sanitizeInput(careerPage);
     const sanitizedCompany = sanitizeInput(company);
     const sanitizedWebsite = sanitizeInput(website);
-    const sanitizedDescription = sanitizeInput(description);
+    /*     const sanitizedDescription = sanitizeInput(description); */
     const sanitizedSkills = skills.map((skill) => sanitizeInput(skill));
 
     const formData = new FormData();
@@ -130,7 +130,7 @@ function JobForm() {
     formData.append("hybrid", hybrid);
     formData.append("onsite", onsite);
     // desc
-    formData.append("description", sanitizedDescription);
+    formData.append("description", description);
     // skills
     sanitizedSkills.forEach((skill) => {
       formData.append("skills[]", skill);
@@ -337,6 +337,7 @@ function JobForm() {
               className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/25 
               text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest"
               onChange={handleDescriptionChange}
+              value={description}
             />
           </div>
           {/* Skills */}

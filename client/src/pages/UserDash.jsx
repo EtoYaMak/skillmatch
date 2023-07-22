@@ -54,7 +54,7 @@ function UserDash() {
 
   return (
     <div className="flex bg-transparent justify-center p-4">
-      <div className="bg-inherit w-full max-w-screen-md py-6">
+      <div className="bg-inherit w-full max-w-[1240px] py-6">
         <h1 className="text-2xl font-semibold text-center text-[#d4d7d7] font-Inter select-none">
           Welcome, {user.name}
         </h1>
@@ -77,7 +77,7 @@ function UserDash() {
                     >
                       <div className="ThirdOne flex flex-row space-x-2 justify-evenly  w-full bg-transparent">
                         <div className="flex bg-transparent items-center w-full">
-                          <div className="bg-transparent object-contain w-fit p-2 ">
+                          <div className="bg-transparent object-contain w-full p-2 ">
                             <img
                               src={job.logo}
                               alt={job.position}

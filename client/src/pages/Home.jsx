@@ -43,7 +43,7 @@ function Home() {
 
   return (
     <div className="justify-between items-center max-w-[1240px] h-fit px-4 my-5 mx-auto mb-5 bg-inherit">
-      <h1 className="text-center font-semibold my-5 text-3xl text-[#f2f3f3] select-none font-Inter ">
+      <h1 className="text-center font-semibold my-5 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
         REMOTE
       </h1>
 
@@ -61,7 +61,7 @@ function Home() {
         </Slider>
       </div>
 
-      <h1 className="text-center font-semibold mt-10 pb-4 text-3xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
+      <h1 className="text-center font-semibold mt-10 pb-4 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
         RECENT
       </h1>
 

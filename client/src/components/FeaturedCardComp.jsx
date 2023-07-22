@@ -29,7 +29,6 @@ function FeaturedCardComp({ job }) {
         <div className="flex w-full items-center bg-transparent">
           <Link className="ml-1 py-2 flex justify-center">
             <img
-              /* src={job.logo} */
               src={job.logo}
               alt={job.company}
               className="bg-transparent w-24 h-24 rounded-full object-cover"

@@ -54,6 +54,9 @@ function Browse() {
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
+  const sortedJobs = [...jobs].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
 
   return (
     <div className="main mx-auto max-w-[1240px] px-4 md:px-6 min-h-fit ">
@@ -67,12 +70,12 @@ function Browse() {
 
         {/* JobBoard Component */}
         <div className="px-4 py-5 ">
-          {reversedCurrentJobs.length === 0 ? (
+          {sortedJobs.length === 0 ? (
             <p className="text-2xl text-white tracking-[0.23em] mx-auto h-32 flex justify-center items-center">
               No jobs found
             </p>
           ) : (
-            reversedCurrentJobs.map((job) => (
+            sortedJobs.map((job) => (
               <BrowseJobComponent job={job} key={job._id} />
             ))
           )}

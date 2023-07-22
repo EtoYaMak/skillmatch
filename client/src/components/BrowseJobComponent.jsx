@@ -36,6 +36,7 @@ function BrowseJobComponent({ job }) {
     setShowDropdown(!showDropdown);
   };
   const skills = job.skills ? [...job.skills] : [];
+
   /*   const typeNames = job.type
     .map((type) => type.name.charAt(0).toUpperCase() + type.name.slice(1))
     .join(" · "); */

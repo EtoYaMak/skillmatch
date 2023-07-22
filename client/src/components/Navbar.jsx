@@ -88,7 +88,7 @@ const Navbar = () => {
         </Link>
       </h1>
 
-      <ul className="uppercase gap-0 hidden md:flex bg-transparent justify-center items-center">
+      <ul className="uppercase gap-0 hidden md:flex bg-transparent justify-center items-center select-none">
         <li className=" text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit ">
           <Link
             to="/"
