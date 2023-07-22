@@ -30,11 +30,11 @@ function Home() {
   const [visibleJobs, setVisibleJobs] = useState(5);
 
   const showMoreJobs = () => {
-    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 3);
+    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 5);
   };
 
   const showLessJobs = () => {
-    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs - 3);
+    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs - 5);
   };
 
   const sortedJobs = [...jobs].sort(
@@ -53,7 +53,7 @@ function Home() {
             <p className="text-2xl font-Inter">No Jobs Available</p>
           ) : (
             remoteJobs.map((job) => (
-              <div key={job._id} className="">
+              <div key={job._id}>
                 <FeaturedCardComp job={job} />
               </div>
             ))

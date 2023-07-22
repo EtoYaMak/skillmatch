@@ -32,7 +32,7 @@ function FeaturedCardComp({ job }) {
               /* src={job.logo} */
               src={job.logo}
               alt={job.company}
-              className="bg-transparent w-24 h-24 rounded-full object-cover min-w-max"
+              className="bg-transparent w-24 h-24 rounded-full object-cover"
             />
           </Link>
           <div className="ml-2 bg-transparent w-3/4">
