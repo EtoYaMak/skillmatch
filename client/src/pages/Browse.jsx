@@ -56,7 +56,7 @@ function Browse() {
   };
 
   return (
-    <div className="main mx-auto md:max-w-4xl lg:max-w-6xl xl:max-w-7xl px-4 md:px-6 min-h-fit ">
+    <div className="main mx-auto max-w-[1240px] px-4 md:px-6 min-h-fit ">
       <div className="h-fit pb-2">
         {/* Search component */}
         <div className="md:flex md:space-x-4 mt-6">
