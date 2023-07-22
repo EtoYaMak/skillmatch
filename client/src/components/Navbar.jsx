@@ -200,23 +200,21 @@ const Navbar = () => {
       <div
         className={
           toggle
-            ? "md:hidden fixed left-0 top-0 min-w-[65%] ease-in-out duration-700 bg-transparent "
+            ? "md:hidden absolute left-0 top-0 min-w-[65%]  ease-in-out duration-700 bg-transparent "
             : "ease-out duration-[1200ms] fixed left-[-100%] top-0"
         }
       >
         <Link to="/" className="">
           <h1
             className="cursor-pointer h-24 flex flex-col justify-center 
-          text-center w-full text-5xl font-bold text-white hover:text-white          
+          text-center w-full text-5xl font-bold text-white hover:text-white  bg-transparent         
            "
-          >
-            SKILLMINT.
-          </h1>
+          ></h1>
         </Link>
 
         <ul
-          className="uppercase  text-zinc-300 text-lg  text-center font-semibold
-           border-t border-[#d0333c] bg-transparent "
+          className="uppercase  text-zinc-300 text-lg  text-center font-semibold 
+           border-t border-[#d0333c] bg-[#1c1f21]/90 hover:bg-[#1c1f21]/0 space-y-0 "
           id="nav"
         >
           <li className=" backdrop-blur-sm bg-[#000]/70 ">

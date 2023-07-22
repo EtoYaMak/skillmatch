@@ -46,9 +46,9 @@ const Contact = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-w-7xl mx-auto  bg-[#2c3033]">
-      <section className="text-gray-400 body-font font-Inter">
-        <div className="container px-5 py-5 mt-[10vh] mx-auto bg-[#1c1f21] rounded-xl">
+    <div className="max-w-6xl mx-auto  bg-[#2c3033] h-full  flex flex-col justify-center items-center">
+      <section className="text-gray-400 body-font font-Inter mb-8">
+        <div className="container px-5 py-5 mx-auto bg-[#1c1f21] rounded-b-xl">
           <div className="flex flex-col text-center w-full mb-4 bg-inherit mt-10 ">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-1 text-[#d4d7d7] bg-inherit font-Inter">
               Contact Us
@@ -70,7 +70,7 @@ const Contact = () => {
               onSubmit={handleSubmit}
               className="flex flex-wrap m-2 bg-inherit"
             >
-              <div className="p-2 w-full sm:w-1/2 bg-inherit">
+              <div className="p-2 w-full bg-inherit">
                 <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="name"
@@ -88,7 +88,7 @@ const Contact = () => {
                   />
                 </div>
               </div>
-              <div className="p-2 w-full sm:w-1/2 bg-inherit">
+              <div className="p-2 w-full  bg-inherit">
                 <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="email"
@@ -120,7 +120,7 @@ const Contact = () => {
                     name="message"
                     value={message}
                     onChange={handleChange}
-                    className="textarea textarea-bordered w-full bg-white/10 h-36 leading-6 transition-colors duration-200 ease-in-out text-lg text-white/80"
+                    className="textarea textarea-bordered w-full bg-white/10 h-48 leading-6 transition-colors duration-200 ease-in-out text-lg text-white/80"
                   ></textarea>
                 </div>
               </div>
