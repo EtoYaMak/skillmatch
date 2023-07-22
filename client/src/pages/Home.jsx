@@ -24,8 +24,8 @@ function Home() {
     };
   }, [navigate, isError, message, dispatch]);
 
-  const remoteJobs = jobs.filter(
-    (job) => job.setting.find((item) => item.name === "remote").value === true
+  const remoteJobs = jobs.filter((job) =>
+    job.setting.find((item) => item.name === "remote" && item.value === true)
   );
   const [visibleJobs, setVisibleJobs] = useState(5);
 
