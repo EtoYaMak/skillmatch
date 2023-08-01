@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://35.178.166.193/api/jobs/";
-const API_ID = "http://35.178.166.193/api/jobs";
-const ALL_API_URL = "http://35.178.166.193/api/jobs/all";
+const API_URL = "http://18.169.159.127/api/jobs/";
+const API_ID = "http://18.169.159.127/api/jobs";
+const ALL_API_URL = "http://18.169.159.127/api/jobs/all";
 /* const API_URL = "http://localhost:4000/api/jobs/";
 const API_ID = "http://localhost:4000/api/jobs";
 const ALL_API_URL = "http://localhost:4000/api/jobs/all"; */

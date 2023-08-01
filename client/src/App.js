@@ -24,8 +24,8 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://35.178.166.193")
-    /* fetch("http://localhost:4000") */
+    fetch("http://18.169.159.127")
+      /* fetch("http://localhost:4000") */
       .then((res) => {
         if (res.ok) {
           return res.json();
