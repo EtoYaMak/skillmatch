@@ -39,8 +39,16 @@ function Browse() {
       )
     : jobs;
 
-  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
-  const reversedCurrentJobs = currentJobs.slice().reverse();
+  /*   const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob); */
+  // Get current jobs in the reversed order (latest posts first)
+  const reversedCurrentJobs = filteredJobs.slice().reverse();
+
+  // Calculate the current page's jobs based on the reversedCurrentJobs
+
+  const currentJobs = reversedCurrentJobs.slice(
+    indexOfFirstJob,
+    indexOfLastJob
+  );
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -70,12 +78,13 @@ function Browse() {
 
         {/* JobBoard Component */}
         <div className="px-4 py-5 ">
-          {sortedJobs.length === 0 ? (
+          {currentJobs.length === 0 ? (
             <p className="text-2xl text-white tracking-[0.23em] mx-auto h-32 flex justify-center items-center">
               No jobs found
             </p>
           ) : (
-            sortedJobs.map((job) => (
+            // Reverse the currentJobs array to show latest posts first
+            currentJobs.map((job) => (
               <BrowseJobComponent job={job} key={job._id} />
             ))
           )}
