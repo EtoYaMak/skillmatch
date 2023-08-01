@@ -8,8 +8,10 @@ function JobDetailComponent(props) {
   const dispatch = useDispatch();
   const { jobId } = useParams();
 
-  const jobs = useSelector((state) => state.jobs);
-  const job = jobs.job;
+  // Updated selector to access the job data correctly
+  const job = useSelector((state) =>
+    state.jobs.jobs.find((job) => job._id === jobId)
+  );
 
   // Dispatch the getJobId action when the component mounts
   useEffect(() => {
@@ -17,8 +19,8 @@ function JobDetailComponent(props) {
   }, [dispatch, jobId]);
 
   // Handle loading and error states
-  const isLoading = jobs.isLoading;
-  const isError = jobs.isError;
+  const isLoading = useSelector((state) => state.jobs.isLoading);
+  const isError = useSelector((state) => state.jobs.isError);
 
   if (isLoading) {
     return <div className="flex justify-center text-cyan-400 ">Loading...</div>;

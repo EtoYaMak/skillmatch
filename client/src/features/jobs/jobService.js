@@ -1,7 +1,5 @@
 import axios from "axios";
 
-/* const SERVER_IP = "16.170.201.227"; */
-
 const API_URL = "http://35.178.166.193/api/jobs/";
 const API_ID = "http://35.178.166.193/api/jobs";
 const ALL_API_URL = "http://35.178.166.193/api/jobs/all";
@@ -53,18 +51,44 @@ const getMyJobs = async (token) => {
 
   return response.data;
 };
+
 // Update job #PRIVATE
-const updateJob = async (jobId, jobData, token) => {
+const updateJob = async (jobId, formData, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
+      // Do not set Content-Type for multipart/form-data; it will be automatically set
     },
   };
 
-  const response = await axios.put(API_URL + jobId, jobData, config);
+  // Create a new FormData object and append each form field to it
+  const formDataObj = new FormData();
+  formDataObj.append("position", formData.position);
+  formDataObj.append("city", formData.city);
+  formDataObj.append("country", formData.country);
+  formDataObj.append("location", formData.location);
+  formDataObj.append("careerPage", formData.careerPage);
+  formDataObj.append("company", formData.company);
+  formDataObj.append("website", formData.website);
+  formDataObj.append("description", formData.description);
+  formDataObj.append("skills", formData.skills.join(",")); // If skills is an array, join them with commas
+  formDataObj.append("fulltime", formData.fulltime);
+  formDataObj.append("parttime", formData.parttime);
+  formDataObj.append("internship", formData.internship);
+  formDataObj.append("contract", formData.contract);
+  formDataObj.append("remote", formData.remote);
+  formDataObj.append("hybrid", formData.hybrid);
+  formDataObj.append("onsite", formData.onsite);
 
+  // Append the logo file if available
+  if (formData.logo) {
+    formDataObj.append("logo", formData.logo);
+  }
+
+  const response = await axios.put(`${API_URL}${jobId}`, formDataObj, config);
   return response.data;
 };
+
 // Delete my Job #PRIVATE
 const deleteJob = async (jobId, token) => {
   const config = {

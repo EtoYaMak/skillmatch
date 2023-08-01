@@ -37,9 +37,11 @@ const Navbar = () => {
   };
   const handleClick = () => {
     if (user) {
-      navigate("/dash");
+      navigate("/Dash");
+    } else if (student) {
+      navigate("/DashboardS");
     } else {
-      navigate("/studentDash");
+      navigate("/");
     }
   };
   useEffect(() => {
@@ -265,13 +267,15 @@ const Navbar = () => {
             <ul className="bg-inherit ">
               <li className="backdrop-blur-sm bg-[#000]/70">
                 <div className="nav-link flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
-                  <Link
-                    to="/dash"
-                    onClick={() => setToggle(false)}
+                  <button
+                    onClick={() => {
+                      handleClick();
+                      setToggle(false);
+                    }}
                     className="flex-1 py-4 hover:text-[#d0333c]  hover:font-extrabold ease-in-out duration-300"
                   >
                     Dashboard
-                  </Link>
+                  </button>
                 </div>
               </li>
               <li className=" backdrop-blur-sm bg-[#000]/70 rounded-br-lg ">

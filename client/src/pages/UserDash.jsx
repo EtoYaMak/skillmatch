@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteJob, getMyJobs, reset } from "../features/jobs/jobSlice";
 import { FaClock, FaCog, /* FaEdit, */ FaTrash, FaTimes } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 
 function UserDash() {
   const navigate = useNavigate();
@@ -42,6 +43,11 @@ function UserDash() {
   };
 
   const [dropdownOpen, setDropdownOpen] = useState({});
+
+  // Event handler for the Edit Job option in the edit dropdown
+  const handleEdit = (jobId) => {
+    navigate(`/jobs/${jobId}/update`);
+  };
 
   const toggleDropdown = (jobId) => {
     setDropdownOpen((prevState) => ({
@@ -129,11 +135,19 @@ function UserDash() {
                           <div className="dropdown-menu absolute mt-[10em] sm:ml-[1em]  bg-[#1c1f21]/70 backdrop-blur-sm rounded shadow-sm  text-white p-2 animate-fadeIn ">
                             <button
                               className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
+                              onClick={() => handleEdit(job._id)}
+                            >
+                              <FaEdit className="mr-2 w-5 h-5 bg-transparent" />
+                              Edit
+                            </button>
+                            <button
+                              className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
                               onClick={() => handleDeleteOption(job._id)}
                             >
                               <FaTrash className="mr-2 w-5 h-5 bg-transparent" />
                               Delete
                             </button>
+
                             <button
                               className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
                               onClick={() => handleCloseOption(job._id)}

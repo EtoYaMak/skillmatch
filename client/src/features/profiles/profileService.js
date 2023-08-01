@@ -25,15 +25,19 @@ const getProfile = async (token) => {
   return response.data;
 };
 
-const updateProfile = async (formData, token) => {
+const updateProfile = async (updatedFormData, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
     },
   };
-
-  const response = await axios.put(API_URL + formData.id, formData, config);
+  const response = await axios.put(
+    API_URL + updatedFormData._id,
+    updatedFormData,
+    config
+  );
+  console.log(API_URL + updatedFormData._id);
+  /*   console.log(updatedFormData.cv); */
   return response.data;
 };
 
@@ -49,8 +53,8 @@ const deleteProfile = async (profileId, token) => {
 
 const profileService = {
   createProfile,
-  updateProfile,
   getProfile,
+  updateProfile,
   deleteProfile,
 };
 

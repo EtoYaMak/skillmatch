@@ -6,8 +6,7 @@ const studentFormModel = require("../models/studentFormModel");
 const multer = require("multer");
 const path = require("path");
 const DIR = path.join(__dirname, "../../client/public/submissions/");
-/* const DIR = "../../client/public/submissions"; */
-
+/* const DIR = "../../client/public/submissions/"; */
 const getProfile = asyncHandler(async (req, res) => {
   const studentId = req.student.id;
   const profile = await studentForm.findOne({ student: studentId });
@@ -61,13 +60,20 @@ const setSForm = asyncHandler(async (req, res) => {
   });
 
   fileUpload.single("cv")(req, res, async (err) => {
-    if (err) {
-      // Handle any errors that occurred while parsing the form data
-      throw new Error("No File was selected!");
-      /*       if (!filename) {
+    //if (err) {
+    // Handle any errors that occurred while parsing the form data
+    // throw new Error("No File was selected!");
+    /*       if (!filename) {
         
       } */
-      /* return res.status(500).send(err); */
+    /* return res.status(500).send(err); */
+    // }
+    if (err) {
+      // Handle any errors that occurred while parsing the form data
+      if (!filename) {
+        throw new Error("No File was selected!");
+      }
+      return res.status(500).send(err);
     }
 
     // Extract form data
@@ -91,6 +97,58 @@ const setSForm = asyncHandler(async (req, res) => {
 });
 
 const updateSForm = asyncHandler(async (req, res) => {
+  const formId = req.params.id;
+
+  // Find the existing student profile by ID
+  const existingProfile = await studentForm.findById(formId);
+
+  if (!existingProfile) {
+    res.status(404);
+    throw new Error("Student form not found");
+  }
+
+  // Check if the logged-in student owns the profile
+  if (existingProfile.student.toString() !== req.student.id) {
+    res.status(403);
+    throw new Error("Not authorized to update this student form");
+  }
+
+  // Update the form data
+  if (req.body.University) {
+    existingProfile.University = req.body.University;
+  }
+  if (req.body.Degree) {
+    existingProfile.Degree = req.body.Degree;
+  }
+  if (req.body.DegreeTitle) {
+    existingProfile.DegreeTitle = req.body.DegreeTitle;
+  }
+
+  // Handle file update if a new CV file is provided
+  if (req.file && req.file.filename) {
+    const cv = "/submissions/" + req.file.filename;
+
+    // Delete the old CV file if it exists
+    if (existingProfile.cv) {
+      const oldCVPath = path.join(
+        __dirname,
+        "..",
+        "public",
+        existingProfile.cv
+      );
+      fs.unlinkSync(oldCVPath);
+    }
+
+    existingProfile.cv = cv;
+  }
+
+  // Save the updated profile
+  const updatedProfile = await existingProfile.save();
+
+  res.json(updatedProfile);
+});
+
+/* const updateSForm = asyncHandler(async (req, res) => {
   const formId = req.params.id;
 
   // Find the existing student profile by ID
@@ -137,36 +195,35 @@ const updateSForm = asyncHandler(async (req, res) => {
 
   res.json(updatedProfile);
 });
+ */
 
 const deleteProfile = asyncHandler(async (req, res) => {
-  const dprofile = await studentFormModel.findById(req.params.id);
+  const formId = req.params.id;
 
-  if (!dprofile) {
-    res.status(409);
-    throw new Error("Job Not Found");
+  // Find the existing student profile by ID
+  const existingProfile = await studentForm.findById(formId);
+
+  if (!existingProfile) {
+    res.status(404);
+    throw new Error("Student form not found");
   }
-
   const student = await Student.findById(req.student.id);
 
-  // Check for User
+  // Check for Student
   if (!req.student) {
     res.status(401);
-    throw new Error("User Not Found");
+    throw new Error("Student Not Found");
   }
-
-  // Make Sure the logged in user matches the job user
-  if (dprofile.student.toString() !== req.student.id) {
-    res.status(401);
-    throw new Error("User not Authorized");
-  }
-  // Delete the CV file if it exists
-  if (dprofile.cv) {
-    const cvFilePath = path.join(DIR, dprofile.cv.substr(11));
-    fs.unlinkSync(cvFilePath);
+  // Check if the logged-in student owns the profile
+  if (existingProfile.student.toString() !== req.student.id) {
+    res.status(403);
+    throw new Error("Not authorized to update this student form");
   }
   await studentFormModel.findByIdAndDelete(req.params.id);
 
   res.status(200).json({ id: req.params.id });
+
+  console.error("Testing deleteProfile");
 });
 
 module.exports = {

@@ -18,13 +18,14 @@ import StudentLogin from "./pages/StudentLogin";
 import StudentDash from "./pages/StudentDash";
 import JobDetailComponent from "./components/JobDetailComponent";
 import JobUpdatePage from "./components/JobUpdatePage";
+import StudentProfile from "./components/studentProfile";
 
 function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetch("http://35.178.166.193")
-      /* fetch("http://localhost:4000") */
+    /* fetch("http://localhost:4000") */
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -52,7 +53,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/registerS" element={<StudentRegister />} />
         <Route path="/dash" element={<UserDash />} />
-        <Route path="/studentDash" element={<StudentDash />} />
+        <Route path="/dashboardS" element={<StudentDash />} />
 
         <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
         <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />

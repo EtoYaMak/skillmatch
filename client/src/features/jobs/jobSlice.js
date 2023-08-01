@@ -49,7 +49,10 @@ export const getJobId = createAsyncThunk(
   async (jobId, thunkAPI) => {
     try {
       // Return the job with the specified ID from the response data
-      return await jobService.getJobById(jobId);
+      const job = await jobService.getJobById(jobId);
+
+      // Return an array containing the single job object to match the structure of the job list
+      return [job];
     } catch (error) {
       // If there is an error, throw it
       const message =
@@ -63,16 +66,20 @@ export const getJobId = createAsyncThunk(
   }
 );
 
-// Get all jobs PUBLIC
-//USED AT @Browse
+// Get all jobs (Public access for viewing all jobs and Private access for user dashboard)
 export const getAllJobs = createAsyncThunk(
   "jobs/getAllJobs",
   async (_, thunkAPI) => {
     try {
-      // Return the list of jobs from the response data
-      return await jobService.getAllJobs();
+      // Check if the user is authenticated to include the token in the request
+      const isAuthenticated = thunkAPI.getState().auth.isAuthenticated;
+      if (isAuthenticated) {
+        const token = thunkAPI.getState().auth.user.token;
+        return await jobService.getMyJobs(token); // For user dashboard (private)
+      } else {
+        return await jobService.getAllJobs(); // For public access (all jobs)
+      }
     } catch (error) {
-      // If there is an error, throw it
       const message =
         (error.response &&
           error.response.data &&
@@ -103,13 +110,14 @@ export const getMyJobs = createAsyncThunk(
     }
   }
 );
-// Update user job post #PRIVATE
+// Update jobpost
+// USED @JobForm
 export const updateJob = createAsyncThunk(
-  "jobs/update",
-  async ({ jobId, jobData }, thunkAPI) => {
+  "jobs/updateJob",
+  async ({ jobId, formData }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await jobService.updateJob(jobId, jobData, token);
+      return await jobService.updateJob(jobId, formData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -121,6 +129,7 @@ export const updateJob = createAsyncThunk(
     }
   }
 );
+
 //Delete user jobpost
 export const deleteJob = createAsyncThunk(
   "jobs/delete",
@@ -201,31 +210,43 @@ export const jobSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      // Get job by ID
+      // Get job by ID
       .addCase(getJobId.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getJobId.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.job = action.payload;
+        state.jobs = action.payload; // Store the retrieved job directly in the 'jobs' array
       })
       .addCase(getJobId.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      // ...
+      // Add the updateJob case
       .addCase(updateJob.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateJob.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // Update the corresponding job in the state with the updated job data
+
+        // Assuming the backend returns the updated job object in the payload
+        // Find the index of the job in the state.jobs array and update it
         const updatedJob = action.payload;
-        state.jobs = state.jobs.map((job) =>
-          job._id === updatedJob._id ? updatedJob : job
+        const jobIndex = state.jobs.findIndex(
+          (job) => job._id === updatedJob._id
         );
+        if (jobIndex !== -1) {
+          // Update the job in the jobs array
+          state.jobs[jobIndex] = updatedJob;
+          // Also, update the job field (used for individual job display) if the job ID matches
+          if (state.job?._id === updatedJob._id) {
+            state.job = updatedJob;
+          }
+        }
       })
       .addCase(updateJob.rejected, (state, action) => {
         state.isLoading = false;

@@ -28,32 +28,6 @@ export const createProfile = createAsyncThunk(
   }
 );
 
-export const updateProfile = createAsyncThunk(
-  "profiles/update",
-  async (formData, thunkAPI) => {
-    try {
-      console.table(formData);
-      const token = thunkAPI.getState().students.student.token;
-      const updatedProfileData = {
-        id: formData.id,
-        University: formData.University,
-        Degree: formData.Degree,
-        DegreeTitle: formData.DegreeTitle,
-        cv: formData.cv, // Make sure to pass the file directly
-      };
-      return await profileService.updateProfile(updatedProfileData, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
 export const getProfile = createAsyncThunk(
   "profiles/get",
   async (_, thunkAPI) => {
@@ -74,10 +48,31 @@ export const getProfile = createAsyncThunk(
 
 export const deleteProfile = createAsyncThunk(
   "profiles/delete",
-  async (id, thunkAPI) => {
+  async (profileId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().students.student.token;
-      return await profileService.deleteProfile(id, token);
+      return await profileService.deleteProfile(profileId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const updateProfile = createAsyncThunk(
+  "profiles/update",
+  async (updatedFormData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().students.student.token;
+      console.table(updatedFormData);
+      /*  console.log(updatedFormData.cv); */
+
+      return await profileService.updateProfile(updatedFormData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -111,27 +106,7 @@ export const profileSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(updateProfile.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(updateProfile.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        const updatedProfile = action.payload;
-        const existingProfileIndex = state.profiles.findIndex(
-          (profile) => profile._id === updatedProfile._id
-        );
-        if (existingProfileIndex !== -1) {
-          const updatedProfiles = [...state.profiles];
-          updatedProfiles[existingProfileIndex] = updatedProfile;
-          state.profiles = updatedProfiles;
-        }
-      })
-      .addCase(updateProfile.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
+
       .addCase(getProfile.pending, (state) => {
         state.isLoading = true;
       })
@@ -144,7 +119,7 @@ export const profileSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.profile = null;
+        state.profiles = null;
       })
       .addCase(deleteProfile.pending, (state) => {
         state.isLoading = true;
@@ -155,6 +130,20 @@ export const profileSlice = createSlice({
         state.profiles = [];
       })
       .addCase(deleteProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        // If you want to update the state after successful update
+        state.profiles = [action.payload];
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

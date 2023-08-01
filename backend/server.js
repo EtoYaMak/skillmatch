@@ -15,9 +15,10 @@ app.use(express.urlencoded({ extended: false }));
 
 const corsOptions = {
   origin: [
-    "http://35.178.166.193",
-    "http://localhost",
+        "http://35.178.166.193",
+    /* "http://localhost", */
     "http://localhost:3000",
+    "http://localhost:4000",
   ],
 };
 app.use(cors(corsOptions));
@@ -45,7 +46,6 @@ if (process.env.NODE_ENV === "production") {
   );
 } else {
   app.get("/", (req, res) => {
-    app.use(express.static(path.join(__dirname, "../client/public")));
     res.status(200).json({ message: "Connected to backend" });
   });
 }
