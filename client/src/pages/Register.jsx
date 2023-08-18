@@ -13,7 +13,6 @@ function Register() {
     email: "",
     password: "",
     password2: "",
-    //Should isActive be intialized here?
   });
 
   const { name, email, password, password2 } = formData;
@@ -46,7 +45,6 @@ function Register() {
         name,
         email,
         password,
-        //Should isActive be included here and send to register function in authSlice.js?
       };
 
       dispatch(register(userData));

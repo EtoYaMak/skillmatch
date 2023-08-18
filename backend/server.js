@@ -8,7 +8,6 @@ const port = process.env.PORT;
 const SERVER_IP = process.env.SERVER_IP;
 const cors = require("cors");
 const app = express();
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
