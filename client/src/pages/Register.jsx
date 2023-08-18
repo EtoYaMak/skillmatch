@@ -13,6 +13,7 @@ function Register() {
     email: "",
     password: "",
     password2: "",
+    //Should isActive be intialized here?
   });
 
   const { name, email, password, password2 } = formData;
@@ -22,18 +23,12 @@ function Register() {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
-
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-
-    if (isSuccess || user) {
+    if (isSuccess) {
+      toast.success("Please check your email to activate your account");
       navigate("/");
     }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [isSuccess, navigate]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -51,6 +46,7 @@ function Register() {
         name,
         email,
         password,
+        //Should isActive be included here and send to register function in authSlice.js?
       };
 
       dispatch(register(userData));

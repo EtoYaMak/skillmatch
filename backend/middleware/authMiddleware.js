@@ -18,7 +18,10 @@ const protect = asyncHandler(async (req, res, next) => {
 
       // GET user from the token
       req.user = await User.findById(decoded.id).select("-password");
-
+      if (req.user && !req.user.isActive) {
+        res.status(403);
+        throw new Error("Account not activated");
+      }
       next();
     } catch (error) {
       console.log(error);

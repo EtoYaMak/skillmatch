@@ -43,10 +43,10 @@ function Home() {
 
   return (
     <div className="justify-between items-center max-w-[1240px] h-fit px-4 my-5 mx-auto mb-5 bg-inherit">
+      {/* Conditionally render the message */}
       <h1 className="text-center font-semibold my-5 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
         REMOTE
       </h1>
-
       <div className="Carousel Slider cursor-pointer">
         <Slider {...settings}>
           {remoteJobs.length === 0 ? (
@@ -60,11 +60,9 @@ function Home() {
           )}
         </Slider>
       </div>
-
       <h1 className="text-center font-semibold mt-10 pb-4 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
         RECENT
       </h1>
-
       <div className="recent pb-5 ">
         {sortedJobs.length === 0 ? (
           <p className="text-2xl text-white text-center">No jobs found</p>

@@ -29,7 +29,23 @@ export const register = createAsyncThunk(
     }
   }
 );
-
+// Activate user account
+export const activateAccount = createAsyncThunk(
+  "auth/activate",
+  async (token, thunkAPI) => {
+    try {
+      return await authService.activate(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 // Login user
 export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   try {
@@ -48,6 +64,8 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
+//
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -91,6 +109,19 @@ export const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(activateAccount.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(activateAccount.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        // you may want to set a success message or handle user information if provided by your API
+      })
+      .addCase(activateAccount.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });

@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 const corsOptions = {
   origin: [
     "http://18.169.159.127",
-    /* "http://localhost", */
+    "http://localhost",
     "http://localhost:3000",
     "http://localhost:4000",
   ],

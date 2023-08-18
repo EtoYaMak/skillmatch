@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const API_URL = "http://18.169.159.127/api/jobs/";
+/* const API_URL = "http://18.169.159.127/api/jobs/";
 const API_ID = "http://18.169.159.127/api/jobs";
-const ALL_API_URL = "http://18.169.159.127/api/jobs/all";
-/* const API_URL = "http://localhost:4000/api/jobs/";
+const ALL_API_URL = "http://18.169.159.127/api/jobs/all"; */
+const API_URL = "http://localhost:4000/api/jobs/";
 const API_ID = "http://localhost:4000/api/jobs";
-const ALL_API_URL = "http://localhost:4000/api/jobs/all"; */
+const ALL_API_URL = "http://localhost:4000/api/jobs/all";
 
 // Create new job
 const createJob = async (formData, token) => {

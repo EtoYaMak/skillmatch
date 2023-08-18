@@ -19,21 +19,28 @@ const Post = () => {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 min-h-fit">
       <div className="pb-1 select-none h-fit pt-10">
         {user ? (
-          <>
-            <section className="text-center h-it ">
-              <h1 className="flex-wrap max-[520px]:text-3xl text-4xl font-extrabold text-[#d4d7d7] w-full">
-                Welcome{" "}
-                <span className="text-[#d0333c]/80 w-full">
-                  {user && user.name}
-                </span>
-              </h1>
-              <p className="text-xl pt-2 pb-4 uppercase text-[#aba6a6]/80 font-semibold">
-                Use the form below to submit a job.
-              </p>
-            </section>
+          user.isActive ? (
+            <>
+              <section className="text-center h-it ">
+                <h1 className="flex-wrap max-[520px]:text-3xl text-4xl font-extrabold text-[#d4d7d7] w-full">
+                  Welcome{" "}
+                  <span className="text-[#d0333c]/80 w-full">{user.name}</span>
+                </h1>
+                <p className="text-xl pt-2 pb-4 uppercase text-[#aba6a6]/80 font-semibold">
+                  Use the form below to submit a job.
+                </p>
+              </section>
 
-            <JobForm />
-          </>
+              <JobForm />
+            </>
+          ) : (
+            <div className="text-center h-[50vh] flex justify-center items-center">
+              <p className="text-2xl text-white tracking-[0.15em]">
+                Your account is not activated. Please activate your account to
+                post a job.
+              </p>
+            </div>
+          )
         ) : (
           <div className="text-center h-[50vh] flex justify-center items-center">
             <p className="text-2xl text-white tracking-[0.15em]">
