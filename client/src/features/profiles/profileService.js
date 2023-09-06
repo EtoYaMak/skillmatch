@@ -25,6 +25,16 @@ const getProfile = async (token) => {
   return response.data;
 };
 
+const getStudentProfile = async (studentId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL + `view/${studentId}`, config);
+  return response.data;
+};
+
 const updateProfile = async (updatedFormData, token) => {
   const config = {
     headers: {
@@ -56,6 +66,7 @@ const profileService = {
   getProfile,
   updateProfile,
   deleteProfile,
+  getStudentProfile,
 };
 
 export default profileService;

@@ -632,11 +632,12 @@
   margin-top: 5px;
   padding-left: 16px;
 }
+
 .ql-snow .ql-editor code,
 .ql-snow .ql-editor pre {
-  background-color: #f0f0f0;
   border-radius: 3px;
 }
+
 .ql-snow .ql-editor pre {
   white-space: pre-wrap;
   margin-bottom: 5px;

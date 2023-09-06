@@ -7,6 +7,7 @@ const multer = require("multer");
 const path = require("path");
 const DIR = path.join(__dirname, "../../client/public/submissions/");
 /* const DIR = "../../client/public/submissions/"; */
+
 const getProfile = asyncHandler(async (req, res) => {
   const studentId = req.student.id;
   const profile = await studentForm.findOne({ student: studentId });
@@ -18,6 +19,25 @@ const getProfile = asyncHandler(async (req, res) => {
 
   res.json(profile);
 });
+
+//
+//FOR JOB POSTER DASHBOARD
+const getStudentProfileForJobPoster = asyncHandler(async (req, res) => {
+  const studentId = req.params.studentId; // Get studentId from URL parameter
+  const profile = await studentForm.findOne({ student: studentId });
+
+  if (!profile) {
+    res.status(404);
+    throw new Error("Student profile not found");
+  }
+
+  // You might want to perform additional authorization checks here
+  // to ensure that the Job Poster is allowed to access this profile.
+
+  res.json(profile);
+});
+//
+//
 
 const setSForm = asyncHandler(async (req, res) => {
   // MULTER
@@ -148,55 +168,6 @@ const updateSForm = asyncHandler(async (req, res) => {
   res.json(updatedProfile);
 });
 
-/* const updateSForm = asyncHandler(async (req, res) => {
-  const formId = req.params.id;
-
-  // Find the existing student profile by ID
-  const existingProfile = await studentForm.findById(formId);
-
-  if (!existingProfile) {
-    res.status(404);
-    throw new Error("Student form not found");
-  }
-
-  // Check if the logged-in student owns the profile
-  if (existingProfile.student.toString() !== req.student.id) {
-    res.status(403);
-    throw new Error("Not authorized to update this student form");
-  }
-
-  // Update the form data
-  existingProfile.University =
-    req.body.University || existingProfile.University;
-  existingProfile.Degree = req.body.Degree || existingProfile.Degree;
-  existingProfile.DegreeTitle =
-    req.body.DegreeTitle || existingProfile.DegreeTitle;
-
-  // Handle file update
-  if (req.file && req.file.filename) {
-    const cv = "/submissions/" + req.file.filename;
-
-    // Delete the old CV file if it exists
-    if (existingProfile.cv) {
-      const oldCVPath = path.join(
-        __dirname,
-        "..",
-        "public",
-        existingProfile.cv
-      );
-      fs.unlinkSync(oldCVPath);
-    }
-
-    existingProfile.cv = cv;
-  }
-
-  // Save the updated profile
-  const updatedProfile = await existingProfile.save();
-
-  res.json(updatedProfile);
-});
- */
-
 const deleteProfile = asyncHandler(async (req, res) => {
   const formId = req.params.id;
 
@@ -230,5 +201,6 @@ module.exports = {
   setSForm,
   updateSForm,
   getProfile,
+  getStudentProfileForJobPoster,
   deleteProfile,
 };

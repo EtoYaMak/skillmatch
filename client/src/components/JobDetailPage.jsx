@@ -1,10 +1,18 @@
 import React from "react";
+
 import DOMPurify from "dompurify";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { FaLink } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-import { MdNoEncryption } from "react-icons/md";
+
+import { applyToJob } from "../features/jobs/jobSlice";
 
 function JobDetailPage({ job }) {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { student } = useSelector((state) => state.students);
+
   const {
     company,
     logo,
@@ -54,7 +62,34 @@ function JobDetailPage({ job }) {
     color: "white",
     // Add more styles as needed
   };
+  // Check if the user is a student (student object exists)
+  const isStudent = !!student;
 
+  // Determine whether to show the Apply button based on user role
+  const showApplyButton = isStudent && !user;
+  const showRegisterButton = !isStudent && !user;
+  // Attach the applyToJob function to the Apply button
+  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
+  const handleApply = async () => {
+    try {
+      // Call the applyToJob function here
+
+      // Set the applicationSubmitted state to true after successful application
+      setApplicationSubmitted(true);
+      dispatch(applyToJob({ jobId: job._id, studentId: student._id }));
+    } catch (error) {
+      console.error("Error submitting application:", error);
+    }
+  };
+
+  /*   const handleApply = async () => {
+    try {
+      await dispatch(applyToJob({ jobId: job._id, studentId: student._id }));
+      console.log("Application submitted successfully");
+    } catch (error) {
+      console.error("Error submitting application:", error);
+    }
+  }; */
   return (
     <div className="flex justify-center items-center overflow-hidden select-none">
       <div className="sm:rounded-b-xl p-8  mb-8 md:w-[1024px] max-w-screen-lg bg-black/30 font-Inter">
@@ -82,16 +117,18 @@ function JobDetailPage({ job }) {
           <div className=" bg-transparent font-Inter ">
             <div className="flex flex-row gap-2 justify-center bg-transparent">
               {setting &&
-                setting.map((jobSetting, index) => (
-                  <div
-                    key={index}
-                    className="bg-white/70 tracking-widest font-semibold
-                     min-w-min text-center text-lg text-black/80 px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
-                  >
-                    {jobSetting.name.charAt(0).toUpperCase() +
-                      jobSetting.name.slice(1)}
-                  </div>
-                ))}
+                setting
+                  .filter((jobSetting) => jobSetting.value) // Only keep settings with value true
+                  .map((jobSetting, index) => (
+                    <div
+                      key={index}
+                      className="bg-white/70 tracking-widest font-semibold
+                   min-w-min text-center text-lg text-black/80 px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
+                    >
+                      {jobSetting.name.charAt(0).toUpperCase() +
+                        jobSetting.name.slice(1)}
+                    </div>
+                  ))}
             </div>
           </div>
         </div>
@@ -107,16 +144,18 @@ function JobDetailPage({ job }) {
               </div>
               <div className="flex flex-wrap gap-2 justify-center bg-inherit">
                 {type &&
-                  type.map((jobType, index) => (
-                    <div
-                      key={index}
-                      className="bg-black/50 tracking-widest min-w-min
+                  type
+                    .filter((jobType) => jobType.value)
+                    .map((jobType, index) => (
+                      <div
+                        key={index}
+                        className="bg-black/50 tracking-widest min-w-min
                        text-center text-lg text-white px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
-                    >
-                      {jobType.name.charAt(0).toUpperCase() +
-                        jobType.name.slice(1)}
-                    </div>
-                  ))}
+                      >
+                        {jobType.name.charAt(0).toUpperCase() +
+                          jobType.name.slice(1)}
+                      </div>
+                    ))}
               </div>
             </div>
           </div>
@@ -211,34 +250,36 @@ function JobDetailPage({ job }) {
             dangerouslySetInnerHTML={{ __html: modifiedHTML }}
             style={customStyles} //
           ></div>
-
-          {/* Apply button */}
-          <div className="flex justify-center mt-8 bg-inherit">
-            <a
-              href={careerPage}
-              target="_blank"
-              rel="noopener noreferrer"
+        </div>
+        {/* Apply button */}
+        {showApplyButton && (
+          <div className="flex justify-center mt-8 bg-transparent">
+            <button
+              onClick={handleApply}
               className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover:bg-[#d0333c] hover:text-[#d4d7d7]
-               border-[#d0333c] hover:border-[#d4d7d7] transition-colors duration-200 ease-in-out"
+             border-[#d0333c] hover:border-[#d4d7d7] transition-colors duration-200 ease-in-out"
             >
               Apply Now
+            </button>
+            {applicationSubmitted && (
+              <div className="popup">
+                <p>Application Successful!</p>
+              </div>
+            )}
+          </div>
+        )}
+        {/* Register button for unregistered users */}
+        {showRegisterButton && (
+          <div className="flex justify-center mt-8 bg-transparent">
+            <a
+              href="/registerS"
+              className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover:bg-[#d0333c] hover:text-[#d4d7d7]
+      border-[#d0333c] hover:border-[#d4d7d7] transition-colors duration-200 ease-in-out"
+            >
+              Register to Start Applying
             </a>
           </div>
-
-          {/* New and Featured tags */}
-          {/*           <div className="mt-4 flex justify-center">
-            {isNew && (
-              <span className="bg-blue-500 text-white px-4 py-2 rounded-sm text-lg mr-4">
-                New!
-              </span>
-            )}
-            {featured && (
-              <span className="bg-yellow-500 text-white px-4 py-2 rounded-sm text-lg">
-                Featured
-              </span>
-            )}
-          </div> */}
-        </div>
+        )}
       </div>
     </div>
   );

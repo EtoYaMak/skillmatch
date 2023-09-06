@@ -6,6 +6,7 @@ const ALL_API_URL = "http://18.169.159.127/api/jobs/all"; */
 const API_URL = "http://localhost:4000/api/jobs/";
 const API_ID = "http://localhost:4000/api/jobs";
 const ALL_API_URL = "http://localhost:4000/api/jobs/all";
+const STU_URL = "http://localhost:4000/api/students/";
 
 // Create new job
 const createJob = async (formData, token) => {
@@ -16,6 +17,7 @@ const createJob = async (formData, token) => {
     },
   };
   const response = await axios.post(API_URL, formData, config);
+  console.log("formData Service: ", formData);
   return response.data;
 };
 
@@ -102,6 +104,27 @@ const deleteJob = async (jobId, token) => {
   return response.data;
 };
 
+//
+//
+// Apply to a job
+const applyToJob = async (jobId, studentId) => {
+  const requestData = { jobId, studentId };
+  const response = await axios.post(`${API_URL}apply`, requestData);
+  return response.data;
+};
+
+// Update application status
+const updateApplicationStatus = async (jobId, studentId, newStatus) => {
+  const requestData = { jobId, studentId, newStatus };
+  const response = await axios.put(
+    `${API_URL}updateApplicationStatus/${jobId}/${studentId}`,
+    requestData
+  );
+  return response.data;
+};
+//
+
+//
 const jobService = {
   createJob,
   getJobById,
@@ -109,6 +132,8 @@ const jobService = {
   getAllJobs,
   updateJob,
   deleteJob,
+  applyToJob,
+  updateApplicationStatus,
 };
 
 export default jobService;

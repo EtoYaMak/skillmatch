@@ -1,11 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const Job = require("../models/jobModel");
 const User = require("../models/userModel");
+const Student = require("../models/studentModel");
+const upload = require("../config/multerConfig"); // Import multer instance
 const multer = require("multer");
 const sharp = require("sharp");
 const fs = require("fs");
 
 const path = require("path");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 //
 const DIR = path.join(__dirname, "../../client/public/uploads/");
@@ -69,45 +72,8 @@ const getJobs = asyncHandler(async (req, res) => {
 // @desc Set Jobs
 // @route POST /api/jobs
 // @access Private
-
-const setJob = asyncHandler(async (req, res) => {
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, DIR);
-    },
-    filename: function (req, file, cb) {
-      cb(
-        null,
-        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-      );
-    },
-  });
-
-  const fileFilter = (req, file, cb) => {
-    if (
-      file.mimetype === "image/jpeg" ||
-      file.mimetype === "image/jpg" ||
-      file.mimetype === "image/png"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-    }
-  };
-
-  const dataUpload = multer();
-  const fileUpload = multer({
-    storage: storage,
-    limits: {
-      fileSize: 1024 * 1024 * 2.5,
-    },
-    fileFilter,
-  });
-
-  fileUpload.single("logo")(req, res, async (err) => {
-    if (err) {
-      throw new Error("File not selected");
-    }
+const setJob = async (req, res) => {
+  try {
     const resizedImage = await sharp(req.file.path)
       .resize({ width: 160, height: 160, fit: "cover", position: "center" })
       .toBuffer();
@@ -158,15 +124,58 @@ const setJob = asyncHandler(async (req, res) => {
       setting,
       description,
       skills,
+      applicants: [],
     });
     res.status(200).json(newJob);
-  });
-});
-
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 // @desc Update Jobs
 // @route PUT /api/jobs/:id
 // @access Private
-const updateJob = asyncHandler(async (req, res) => {
+const updateJob = async (req, res) => {
+  try {
+    const jobId = req.params.id; // Assuming you pass the job ID in the URL
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+
+    // Check if the user is authorized to update the job (you can add your own authorization logic)
+
+    // Check if a new logo file is uploaded
+    if (req.file) {
+      // Resize and save the new logo
+      const resizedImage = await sharp(req.file.path)
+        .resize({ width: 160, height: 160, fit: "cover", position: "center" })
+        .toBuffer();
+
+      await sharp(resizedImage).toFile(req.file.path);
+
+      job.logo = "/uploads/" + req.file.filename;
+    }
+
+    // Update other job properties
+    job.position = req.body.position || job.position;
+    job.city = req.body.city || job.city;
+    job.country = req.body.country || job.country;
+    job.location = req.body.location || job.location;
+    job.careerPage = req.body.careerPage || job.careerPage;
+    job.company = req.body.company || job.company;
+    job.website = req.body.website || job.website;
+    job.description = req.body.description || job.description;
+    job.skills = req.body.skills || job.skills;
+
+    // Save the updated job
+    const updatedJob = await job.save();
+    res.status(200).json(updatedJob);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+/* const updateJob = asyncHandler(async (req, res) => {
   const ujob = await Job.findById(req.params.id);
 
   if (!ujob) {
@@ -241,7 +250,7 @@ const updateJob = asyncHandler(async (req, res) => {
   const updatedJob = await ujob.save();
 
   res.status(200).json(updatedJob);
-});
+}); */
 
 // @desc Delete Jobs
 // @route DELETE /api/jobs/:id
@@ -280,6 +289,92 @@ const deleteJob = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id });
 });
 
+//
+//
+// Method to update the application status
+const updateApplicationStatus = asyncHandler(async (req, res) => {
+  const { jobId, studentId } = req.params;
+  const { newStatus } = req.body;
+
+  try {
+    const job = await Job.findById(jobId);
+    if (!job) {
+      res.status(404);
+      throw new Error("Job not found");
+    }
+
+    // Update status in job's applicants array
+    const applicant = job.applicants.find(
+      (applicant) => applicant.student.toString() === studentId
+    );
+    if (!applicant) {
+      res.status(404);
+      throw new Error("Applicant not found");
+    }
+    applicant.status = newStatus;
+
+    await job.save();
+
+    // Update the student's status as well
+    await Student.updateOne(
+      { _id: studentId, "appliedJobs.job": jobId },
+      { $set: { "appliedJobs.$.status": newStatus } }
+    );
+
+    res.json({ message: "Application status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//
+//Student Applies to Job
+//
+const applyToJob = async (req, res) => {
+  const { jobId, studentId } = req.body;
+
+  try {
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    // Check if student has already applied to this job
+    const alreadyApplied = student.appliedJobs.find((app) =>
+      app.job.equals(jobId)
+    );
+    if (alreadyApplied) {
+      return res
+        .status(400)
+        .json({ message: "Student has already applied to this job" });
+    }
+
+    // Update the job's applicants array
+    job.applicants.push({ student: studentId, timestamp: Date.now() });
+
+    // Update the student's appliedJobs array
+    student.appliedJobs.push({ job: jobId, timestamp: Date.now() });
+
+    await job.save();
+    await student.save();
+    console.log("After save - student: ", student);
+
+    return res.status(200).json({ message: "Application successful" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
+
+//
+//Exports
+//
 module.exports = {
   getJobID,
   getJobs,
@@ -287,4 +382,6 @@ module.exports = {
   setJob,
   updateJob,
   deleteJob,
+  updateApplicationStatus,
+  applyToJob,
 };

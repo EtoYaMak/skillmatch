@@ -73,6 +73,26 @@ const jobSchema = mongoose.Schema(
         type: String,
       },
     ],
+    //
+    //Applications array similar logic to StudentSchema
+    //Job.id and Status
+    //
+    applicants: [
+      {
+        student: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Student",
+        },
+        status: {
+          type: String, // Accepted/Pending/Denied
+          default: "Pending", // Initial status
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

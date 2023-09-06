@@ -32,9 +32,9 @@ export const register = createAsyncThunk(
 // Activate user account
 export const activateAccount = createAsyncThunk(
   "auth/activate",
-  async (token, thunkAPI) => {
+  async ({ type, token }, thunkAPI) => {
     try {
-      return await authService.activate(token);
+      return await authService.activate(type, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -59,7 +59,41 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
     return thunkAPI.rejectWithValue(message);
   }
 });
+// Forgot Password
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async (email, thunkAPI) => {
+    try {
+      return await authService.forgotPassword(email);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
+// Reset Password
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async ({ type, token, password }, thunkAPI) => {
+    try {
+      return await authService.resetPassword(type, token, password);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 // Logout user
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
@@ -88,7 +122,7 @@ export const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
-        state.Loading = false;
+        state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
         state.user = null;
@@ -102,7 +136,7 @@ export const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
-        state.Loading = false;
+        state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
         state.user = null;
@@ -113,12 +147,39 @@ export const authSlice = createSlice({
       .addCase(activateAccount.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(activateAccount.fulfilled, (state) => {
+      .addCase(activateAccount.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // you may want to set a success message or handle user information if provided by your API
+        state.user.isActive = action.payload.isActive;
       })
       .addCase(activateAccount.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // New cases for forgotPassword
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      // New cases for resetPassword
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

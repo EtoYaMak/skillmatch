@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { login, reset } from "../features/auth/authSlice";
+import { login, reset, requestPasswordReset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
 
 function Login() {
@@ -96,7 +96,7 @@ function Login() {
                 </label>
                 <input
                   type="email"
-                  className="form-control input bg-white/5 text-xl text-white"
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="email"
                   name="email"
                   value={email}
@@ -111,7 +111,7 @@ function Login() {
                 </label>
                 <input
                   type="password"
-                  className="form-control input bg-white/5 text-xl text-white"
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="password"
                   name="password"
                   value={password}
@@ -130,18 +130,19 @@ function Login() {
               </div>
               <div className="flex flex-col justify-center items-center gap-2">
                 <span className="mt-2 text-xl font-bold gap-2 bg-transparent text-white font-Inter">
-                  Create a new account
+                  <Link to="/register" className="bg-transparent mb-2 ">
+                    Create a new account
+                  </Link>
                 </span>
-                <Link to="/register" className="bg-transparent mb-2">
-                  <button
-                    className="btn btn-outline text-[#fff]/80 border-[#d0333c]/10 hover:bg-[#fff]/90 hover:border-[#d0333c] hover:text-[#d0333c]
-                   flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
-                  >
-                    Register
-                  </button>
-                </Link>
               </div>
             </form>
+            <div className="mt-2 flex flex-col justify-center items-center gap-2">
+              <span className="mt-2 text-xl font-bold gap-2 bg-transparent text-white font-Inter">
+                <Link to="/password-reset" className="">
+                  Forgot your password?
+                </Link>
+              </span>
+            </div>
           </section>
         </div>
       </div>

@@ -6,6 +6,7 @@ import {
   updateProfile,
   deleteProfile,
 } from "../features/profiles/profileSlice";
+
 function StudeProfile() {
   const dispatch = useDispatch();
   // Get the profile data from the Redux store
@@ -112,6 +113,7 @@ function StudeProfile() {
       window.open(fileURL, "_blank");
     }
   };
+
   // Function to handle file download
   const handleDownload = () => {
     const fileURL = process.env.PUBLIC_URL + formData.cv;
@@ -124,15 +126,9 @@ function StudeProfile() {
   };
 
   const fileFromDatabase = process.env.PUBLIC_URL + formData.cv; // Replace this with the actual path fetched from the database
-  /*   const originalFileName = formData.cv;
 
-  // Check if formData.cv is not null and has a value
-  const fileNameWithoutPrefix = originalFileName
-    ? originalFileName.substring(16)
-    : ""; */
   const handleSubmitNew = (e) => {
     e.preventDefault();
-
     dispatch(createProfile(formData));
   };
 

@@ -27,7 +27,6 @@ function JobForm() {
   const [countries, setCountries] = useState(countriesList);
   const [city, setCity] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
-
   const handleCityChange = (e) => {
     setCity(e.target.value);
   };
@@ -120,6 +119,7 @@ function JobForm() {
     formData.append("company", sanitizedCompany);
     formData.append("website", sanitizedWebsite);
     formData.append("logo", fileName);
+    console.log("logo", fileName);
     // type
     formData.append("fulltime", fulltime);
     formData.append("parttime", parttime);
@@ -233,7 +233,7 @@ function JobForm() {
                   >
                     <option
                       disabled
-                      selected
+                      defaultValue
                       className="text-xl text-center text-white/70"
                       id="defaultCountry"
                     >

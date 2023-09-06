@@ -96,7 +96,7 @@ function Register() {
                 </label>
                 <input
                   type="text"
-                  className="form-control input bg-white/5 text-xl text-white "
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c] "
                   id="name"
                   name="name"
                   value={name}
@@ -111,7 +111,7 @@ function Register() {
                 </label>
                 <input
                   type="email"
-                  className="form-control input bg-white/5 text-xl text-white"
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="email"
                   name="email"
                   value={email}
@@ -126,7 +126,7 @@ function Register() {
                 </label>
                 <input
                   type="password"
-                  className="form-control input bg-white/5 text-xl text-white"
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="password"
                   name="password"
                   value={password}
@@ -141,7 +141,7 @@ function Register() {
                 </label>
                 <input
                   type="password"
-                  className="input bg-white/5 text-xl text-white"
+                  className="input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="password2"
                   name="password2"
                   value={password2}

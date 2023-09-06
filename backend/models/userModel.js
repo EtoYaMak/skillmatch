@@ -19,10 +19,14 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false, // Set default to false, user must activate account
     },
+    type: {
+      type: Number, // 1, 2, etc. based on what each type represents
+      required: true,
+    },
     activationToken: String,
     activationTokenExpires: Date,
     resetPasswordToken: String,
-    resetPasswordTokenExpires: Date,
+    resetPasswordExpires: Date,
   },
   {
     timestamps: true,

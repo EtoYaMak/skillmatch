@@ -5,9 +5,25 @@ const User = require("../models/userModel");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
+// Initialize Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
+//@desc Get user data
+//@route GET /api/users/me
+//@access PRIVATE
+const getMe = asyncHandler(async (req, res) => {
+  res.status(200).json(req.user);
+});
+
 //@desc Register new User
 //@route POST /api/users
-//@access Public
+//@access PUBLIC
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -34,6 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password: hashedPassword,
     isActive: false,
+    type: 1,
   });
 
   // Generate activation token
@@ -47,7 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // Create the activation link
   const activationLink = `${req.protocol}://${req.get(
     "host"
-  )}/api/users/activate/${activationToken}`;
+  )}/api/users/activate/1/${activationToken}`;
 
   // Send email
   const transporter = nodemailer.createTransport({
@@ -62,7 +79,8 @@ const registerUser = asyncHandler(async (req, res) => {
       from: process.env.EMAIL_USERNAME,
       to: user.email,
       subject: "Activate Your Account",
-      text: `Please click the following link to activate your account: ${activationLink}`,
+      /* text: `Please click the following link to activate your account: ${activationLink}`, */
+      text: `Please click the following link to activate your account:\n\nhttp://localhost:3000/activate/${user.type}/${activationToken}\n\n`,
     })
     .catch((error) => {
       console.error("Failed to send activation email:", error);
@@ -75,19 +93,29 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
-      isActive: user.isActive, // Include this field in the response
+      isActive: user.isActive,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
     throw new Error("Invalid User Data");
   }
 });
-//!!!!!!!!!!!!!!!!!
+
+//@desc Reset Password
+//@route GET /api/users/activate/:token
+//@access PUBLIC
 const activateUser = asyncHandler(async (req, res) => {
-  const token = req.params.token;
+  console.log("Activate student endpoint hit activateUser");
+  const { type, token } = req.params;
+  if (type !== "1") {
+    res.status(400);
+    throw new Error("Invalid account type for activation");
+  }
   const user = await User.findOne({
     activationToken: token,
     activationTokenExpires: { $gt: Date.now() },
+    type: type,
   });
 
   if (!user) {
@@ -100,66 +128,14 @@ const activateUser = asyncHandler(async (req, res) => {
   user.activationTokenExpires = undefined;
   await user.save();
 
-  res.status(200).json({ message: "Account activated successfully" });
-});
-
-//!!!!!!!!!!!!!!!!!
-const requestPasswordReset = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) {
-    res.status(404);
-    throw new Error("User not found");
-  }
-
-  // Generate and save password reset token
-  user.passwordResetToken = crypto.randomBytes(20).toString("hex");
-  user.passwordResetTokenExpires = Date.now() + 3600000; // 1 hour
-  await user.save();
-
-  // Create reset link
-  const resetLink = `${req.protocol}://${req.get("host")}/api/users/reset/${
-    user.passwordResetToken
-  }`;
-
-  // Send email
-  await transporter.sendMail({
-    to: user.email,
-    subject: "Password Reset",
-    text: `Please click the following link to reset your password: ${resetLink}`,
-  });
-
   res
     .status(200)
-    .json({ message: "Please check your email to reset your password" });
-});
-//!!!!!!!!!!!!!!!!!
-const resetPassword = asyncHandler(async (req, res) => {
-  const token = req.params.token;
-  const user = await User.findOne({
-    passwordResetToken: token,
-    passwordResetTokenExpires: { $gt: Date.now() },
-  });
-
-  if (!user) {
-    res.status(400);
-    throw new Error("Invalid or expired reset token");
-  }
-
-  // Hash the new password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-  user.password = hashedPassword;
-  user.passwordResetToken = undefined;
-  user.passwordResetTokenExpires = undefined;
-  await user.save();
-
-  res.status(200).json({ message: "Password reset successfully" });
+    .json({ message: "Account activated successfully", isActive: true });
 });
 
 //@desc Authenticate a user
 //@route POST /api/users/login
-//@access Public
+//@access PUBLIC
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -186,19 +162,62 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc Get user data
-//@route GET /api/users/me
-//@access Private
-const getMe = asyncHandler(async (req, res) => {
-  /*   const { _id, name, email } = await User.findById(req.user.id) */
-  /* 
-    res.status(200).json({
-        id: _id,
-        name,
-        email,
-    }) */
-  res.status(200).json(req.user);
-});
+// Updated forgotPassword
+const forgotPassword = async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const token = crypto.randomBytes(20).toString("hex");
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+  await user.save();
+
+  // Send email using Nodemailer
+  const mailOptions = {
+    to: user.email,
+    from: process.env.EMAIL_USERNAME, // Replace with your email
+    subject: "Password Reset",
+    text: `You are receiving this because you (or someone else) requested a password reset. Click the link below to reset your password:\n\nhttp://localhost:3000/reset/${user.type}/${token}\n\n`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(500).json({ message: "Error sending email" });
+    } else {
+      res.status(200).json({ message: "Email sent successfully" });
+    }
+  });
+};
+
+// Reset Password
+const resetPassword = async (req, res) => {
+  const { type, token } = req.params;
+  if (type !== "1") {
+    res.status(400);
+    throw new Error("Invalid account type for activation");
+  }
+  const user = await User.findOne({
+    resetPasswordToken: req.params.token,
+    resetPasswordExpires: { $gt: Date.now() },
+    type: type,
+  });
+
+  if (!user) {
+    return res.status(400).json({ message: "Invalid or expired token" });
+  }
+
+  const newPassword = req.body.password;
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+  res.status(200).json({ message: "Password updated successfully" });
+};
 
 // Generate JWT
 const generateToken = (id) => {
@@ -210,8 +229,8 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   activateUser,
-  requestPasswordReset,
-  resetPassword,
   loginUser,
+  forgotPassword,
+  resetPassword,
   getMe,
 };

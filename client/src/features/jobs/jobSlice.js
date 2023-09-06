@@ -27,7 +27,6 @@ export const createJob = createAsyncThunk(
   "jobs/create",
   async (formData, thunkAPI) => {
     try {
-      console.log(formData); // Log the contents of formData
       const token = thunkAPI.getState().auth.user.token;
       return await jobService.createJob(formData, token);
     } catch (error) {
@@ -43,7 +42,7 @@ export const createJob = createAsyncThunk(
 );
 
 // Get job by ID
-// USED @Dash -> View Job
+// USER @Dash -> View Job
 export const getJobId = createAsyncThunk(
   "jobs/getJobId",
   async (jobId, thunkAPI) => {
@@ -148,6 +147,53 @@ export const deleteJob = createAsyncThunk(
     }
   }
 );
+
+//
+//// Apply to a job
+export const applyToJob = createAsyncThunk(
+  "jobs/applyToJob",
+  async ({ jobId, studentId }, thunkAPI) => {
+    try {
+      const response = await jobService.applyToJob(jobId, studentId);
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Update application status
+export const updateApplicationStatus = createAsyncThunk(
+  "jobs/updateApplicationStatus",
+  async ({ jobId, studentId, newStatus }, thunkAPI) => {
+    try {
+      const response = await jobService.updateApplicationStatus(
+        jobId,
+        studentId,
+        newStatus
+      );
+      return { jobId, studentId, newStatus }; // Return the payload with the expected structure
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+//
+
+//
 export const jobSlice = createSlice({
   name: "job",
   initialState,
@@ -249,6 +295,59 @@ export const jobSlice = createSlice({
         }
       })
       .addCase(updateJob.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      //
+      //Applications
+      //
+      // Apply to a job
+      .addCase(applyToJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(applyToJob.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+
+        // Log the action payload to see its structure
+        console.log("Action payload:", action.payload);
+
+        // Check if the payload contains the expected data
+        if (action.payload && action.payload.someImportantField) {
+          // Push the payload data to the applications array
+          state.applications.push(action.payload);
+        }
+      })
+      .addCase(applyToJob.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // Update application status
+      .addCase(updateApplicationStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateApplicationStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+
+        const { jobId, studentId, newStatus } = action.payload;
+
+        // Find the job index within the jobs array
+        const jobIndex = state.jobs.findIndex((job) => job._id === jobId);
+        if (jobIndex !== -1) {
+          // Find the applicant index within the applicants array of the specific job
+          const applicantIndex = state.jobs[jobIndex].applicants.findIndex(
+            (applicant) => applicant.student === studentId
+          );
+          if (applicantIndex !== -1) {
+            // Update the applicant's status
+            state.jobs[jobIndex].applicants[applicantIndex].status = newStatus;
+          }
+        }
+      })
+      .addCase(updateApplicationStatus.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

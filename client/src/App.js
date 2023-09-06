@@ -4,27 +4,43 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
 
-import Home from "./pages/Home";
+import "./App.css";
 import Navbar from "./components/Navbar";
+
+import Home from "./pages/Home";
 import Browse from "./pages/Browse";
 import Contact from "./pages/Contact";
+import Post from "./pages/Post";
+
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Post from "./pages/Post";
-import "./App.css";
+import PasswordResetUser from "./components/PasswordResetUser";
+import PasswordResetUserForm from "./components/PasswordResetUserForm";
+
 import UserDash from "./pages/UserDash";
+import JobApplicants from "./components/JobApplicants";
+import UserDashJobs from "./components/UserDashJobs";
+
 import StudentRegister from "./pages/StudentRegister";
 import StudentLogin from "./pages/StudentLogin";
 import StudentDash from "./pages/StudentDash";
+import StudentApplications from "./components/StudentApplications";
+
+import ActivateAccount from "./components/ActivateAccount";
+import ActivationModal from "./components/ActivationModal";
+
 import JobDetailComponent from "./components/JobDetailComponent";
 import JobUpdatePage from "./components/JobUpdatePage";
-import StudentProfile from "./components/studentProfile";
-import ActivateAccount from "./components/ActivateAccount";
-import { useSelector } from "react-redux";
+
+import PaymentModal from "./components/PaymentModal";
+
+import { useSelector, useDispatch } from "react-redux";
 
 function App() {
   const [message, setMessage] = useState("");
-  const user = useSelector((state) => state.auth.user); // Access the user data in your state
+
+  const user = useSelector((state) => state.auth.user);
+  const student = useSelector((state) => state.students.student);
 
   useEffect(() => {
     /* fetch("http://18.169.159.127") */
@@ -41,29 +57,58 @@ function App() {
         setMessage("Error: " + error.message);
       });
   }, []);
+  // State to control the modal
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(null);
+  useEffect(() => {
+    if (user && user.isActive) {
+      setModalOpen(false);
+    } else if (user && !user.isActive) {
+      setModalType("user");
+      setModalOpen(true);
+    } else if (student && !student.isActive) {
+      setModalType(`student-${student.type}`);
+      setModalOpen(true);
+    } else if (student && student.isActive) {
+      setModalOpen(false);
+    }
+  }, [user, student]);
 
   return (
     <div className="App bg-[#2c3033] h-fit">
       <Navbar />
-      {user && !user.isActive && (
-        <div className="w-2/4 mt-4 select-none hover:scale-[100.4%] mx-auto text-lg font-Inter text-white text-center bg-[#d0333c] rounded-xl">
-          Account not activated, Check your email for activation link!
-        </div>
-      )}
+      <ActivationModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        type={modalType}
+      />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/post" element={<Post />} />
         <Route path="/contact" element={<Contact />} />
+
         <Route path="/login" element={<Login />} />
-        <Route path="/loginS" element={<StudentLogin />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/activate/:token" component={<ActivateAccount />} />
+        <Route path="/password-reset" element={<PasswordResetUser />} />
+        <Route path="/reset/:type/:token" element={<PasswordResetUserForm />} />
+        <Route path="/activate/:type/:token" element={<ActivateAccount />} />
+
+        <Route path="/loginS" element={<StudentLogin />} />
         <Route path="/registerS" element={<StudentRegister />} />
+
         <Route path="/dash" element={<UserDash />} />
+        <Route path="/userjobs" element={<UserDashJobs />} />
         <Route path="/dashboardS" element={<StudentDash />} />
+
+        <Route path="/myapplications" element={<StudentApplications />} />
+        <Route path="/jobapplicants/:jobId" element={<JobApplicants />} />
+
         <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
         <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
+
+        <Route path="/payment/:transactionId" element={<PaymentModal />} />
       </Routes>
       <ToastContainer />
     </div>

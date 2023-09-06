@@ -102,7 +102,7 @@ function StudentRegister() {
                 </label>
                 <input
                   type="text"
-                  className="form-control input bg-white/5 text-xl text-white "
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c] "
                   id="name"
                   name="name"
                   value={name}
@@ -117,7 +117,7 @@ function StudentRegister() {
                 </label>
                 <input
                   type="email"
-                  className="form-control input bg-white/5 text-xl text-white"
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="email"
                   name="email"
                   value={email}
@@ -132,7 +132,7 @@ function StudentRegister() {
                 </label>
                 <input
                   type="password"
-                  className="form-control input bg-white/5 text-xl text-white"
+                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="password"
                   name="password"
                   value={password}
@@ -147,7 +147,7 @@ function StudentRegister() {
                 </label>
                 <input
                   type="password"
-                  className="input bg-white/5 text-xl text-white"
+                  className="input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                   id="password2"
                   name="password2"
                   value={password2}
@@ -168,13 +168,12 @@ function StudentRegister() {
                 <span className="mt-2 text-xl font-boldgap-2 bg-transparent text-white font-Inter pb-2">
                   Already have an account?
                 </span>
-                <Link to="/loginS" className="my-2">
-                  <button
-                    className="btn btn-outline text-[#fff]/80 border-[#d0333c]/10 hover:bg-[#fff]/90 hover:border-[#d0333c] hover:text-[#d0333c]
+                <Link
+                  to="/loginS"
+                  className=" my-2 btn btn-outline text-[#fff]/80 border-[#d0333c]/10 hover:bg-[#fff]/90 hover:border-[#d0333c] hover:text-[#d0333c]
                flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
-                  >
-                    Login
-                  </button>
+                >
+                  Login
                 </Link>
               </div>
             </form>

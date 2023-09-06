@@ -1,38 +1,66 @@
-import { useEffect } from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { activateAccount } from "../features/auth/authSlice";
+import { activateAccountS } from "../features/students/studentSlice";
+import { toast } from "react-toastify";
 
-function ActivateAccount() {
+const ActivateAccount = () => {
   const dispatch = useDispatch();
-  const { token } = useParams();
   const navigate = useNavigate();
-
-  const { isSuccess, isError, message } = useSelector(
-    (state) => state.auth // Adjust based on your state shape
+  const { type, token } = useParams();
+  const [componentLoaded, setComponentLoaded] = React.useState(false);
+  React.useEffect(() => {
+    setComponentLoaded(true);
+  }, []);
+  // Single useSelector call to conditionally get the relevant state
+  const relevantState = useSelector((state) => {
+    if (type === "1") return state.auth;
+    if (type === "2") return state.students;
+    return null;
+  });
+  console.log("State: ", relevantState);
+  const activate = useCallback(
+    async (action) => {
+      try {
+        const response = await dispatch(action({ type, token }));
+        console.log("response: ", response);
+        if (response.payload && !response.error) {
+          toast.success("Account Activated Successfully");
+          if (type === "2") navigate("/dashboardS");
+          if (type === "1") navigate("/dash");
+        } else {
+          toast.error("Account Activation Failed");
+        }
+      } catch (error) {
+        toast.error("Account Activation Failed: Network error");
+      }
+    },
+    [dispatch, navigate, type, token]
   );
 
-  useEffect(() => {
-    dispatch(activateAccount(token));
-  }, [dispatch, token]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      // Redirect to the login page or another page of your choice
-      navigate("/login");
+  React.useEffect(() => {
+    if (componentLoaded) {
+      if (type === "2") {
+        activate(activateAccountS);
+        console.log("activateAccountS dispatched");
+      } else if (type === "1") {
+        activate(activateAccount);
+      } else {
+        toast.error("Unknown account type");
+      }
     }
-  }, [isSuccess, navigate]);
+  }, [activate, type, componentLoaded]);
 
   return (
     <div>
-      {isError ? (
-        <h1>Error activating your account: {message}</h1>
+      {relevantState && relevantState.isError ? (
+        <h1 className="text-2xl text-red-500">Error activating your account</h1>
       ) : (
-        <h1>Activating your account...</h1>
-        // Optionally, show a spinner or other loading indicator here
+        <h1 className="text-2xl text-white">Activating your account...</h1>
       )}
     </div>
   );
-}
+};
 
-export default ActivateAccount;
+export default React.memo(ActivateAccount);

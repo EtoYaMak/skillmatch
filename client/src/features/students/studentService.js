@@ -30,10 +30,52 @@ const Slogin = async (studentData) => {
 const Slogout = () => {
   localStorage.removeItem("student");
 };
+
+//
+const fetchStudentData = async (token) => {
+  try {
+    const response = await axios.get(API_URL + "me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+//
+// Activate Account
+const activateS = async (type, token) => {
+  const response = await axios.post(API_URL + `activate/${type}/${token}`);
+  return response.data;
+};
+
+// Forgot Password
+const forgotPasswordS = async (email) => {
+  const response = await axios.post(API_URL + "forgot", { email });
+  return response.data;
+};
+
+// Reset Password
+const resetPasswordS = async (type, token, password) => {
+  const response = await axios.post(API_URL + `reset/${type}/${token}`, {
+    password,
+  });
+  return response.data;
+};
+//
+
 const studentService = {
   Sregister,
   Slogout,
   Slogin,
+  fetchStudentData,
+  activateS,
+  forgotPasswordS,
+  resetPasswordS,
 };
 
 export default studentService;
