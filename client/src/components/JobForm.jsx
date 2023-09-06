@@ -27,6 +27,7 @@ function JobForm() {
   const [countries, setCountries] = useState(countriesList);
   const [city, setCity] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
+
   const handleCityChange = (e) => {
     setCity(e.target.value);
   };
@@ -119,7 +120,6 @@ function JobForm() {
     formData.append("company", sanitizedCompany);
     formData.append("website", sanitizedWebsite);
     formData.append("logo", fileName);
-    console.log("logo", fileName);
     // type
     formData.append("fulltime", fulltime);
     formData.append("parttime", parttime);
@@ -153,6 +153,7 @@ function JobForm() {
     setInternship(false);
     setContract(false);
     setHybrid(false);
+    setRemote(false);
     setOnsite(false);
     setSkills([]);
   };
@@ -192,6 +193,7 @@ function JobForm() {
             </div>
           )}
           <div className="flex flex-col">
+            {/* Job Title */}
             <div className="w-full ">
               <div>
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
@@ -210,6 +212,7 @@ function JobForm() {
                 />
               </div>
             </div>
+            {/* Location */}
             <div className="w-full ">
               <div>
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
@@ -218,7 +221,7 @@ function JobForm() {
                 <span className="flex flex-row w-full justify-between space-x-4">
                   <input
                     type="text"
-                    className="input input-bordered bg-black/25 w-full text-white/90"
+                    className="input input-bordered text-xl bg-black/25 w-full text-white/90"
                     id="city"
                     name="city"
                     value={city}
@@ -232,8 +235,7 @@ function JobForm() {
                     className="select select-bordered bg-black/90 backdrop-blur-md text-white/90 w-full font-Inter flex flex-wrap text-xl"
                   >
                     <option
-                      disabled
-                      defaultValue
+                      defaultValue={" "}
                       className="text-xl text-center text-white/70"
                       id="defaultCountry"
                     >
@@ -243,7 +245,7 @@ function JobForm() {
                       <option
                         key={country.Code}
                         value={country.Name}
-                        className="text-white text-xl text-center"
+                        className="text-white bg-black/90 text-xl text-center"
                       >
                         {country.Name}
                       </option>
@@ -256,6 +258,7 @@ function JobForm() {
           <div className="typeWork  sm:grid sm:grid-cols-2  text-white/75 font-Inter my-2 p-2">
             {/* Type */}
             <div className="grid grid-cols-2 gap-2">
+              {/* Full-Time */}
               <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
                 <input
                   type="checkbox"
@@ -266,6 +269,7 @@ function JobForm() {
                 />
                 <span className=" text-xl">Full-Time</span>
               </div>
+              {/* Part-Time */}
               <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch ">
                 <input
                   type="checkbox"
@@ -276,6 +280,7 @@ function JobForm() {
                 />
                 <span className=" h-full text-xl">Part-Time</span>
               </div>
+              {/* Internship */}
               <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
                 <input
                   type="checkbox"
@@ -286,6 +291,7 @@ function JobForm() {
                 />
                 <span className=" text-xl">Internship</span>
               </div>
+              {/* Contract */}
               <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
                 <input
                   type="checkbox"
@@ -299,6 +305,7 @@ function JobForm() {
             </div>
             {/* Job Setting */}
             <div className="flex flex-wrap sm:justify-between justify-between   sm:mt-0 mt-2">
+              {/* Remote */}
               <div className="remoteWork space-x-2 sm:space-x-3 flex items-center text-start">
                 <input
                   type="checkbox"
@@ -309,6 +316,7 @@ function JobForm() {
                 />
                 <span className="text-xl">Remote</span>
               </div>
+              {/* Hybrid */}
               <div className="hybridWork space-x-2 sm:space-x-3 flex items-center justify-center ">
                 <input
                   type="checkbox"
@@ -319,6 +327,7 @@ function JobForm() {
                 />
                 <span className=" text-xl">Hybrid</span>
               </div>
+              {/* On-site */}
               <div className="onsite  space-x-2 sm:space-x-3 flex items-center justify-end">
                 <input
                   type="checkbox"
@@ -331,6 +340,7 @@ function JobForm() {
               </div>
             </div>
           </div>
+          {/* Description */}
           <div className="mt-4 text-white tracking-wider text-lg">
             <ReactQuill
               placeholder="Job Description"
@@ -346,6 +356,7 @@ function JobForm() {
               <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
                 Skills
               </label>
+              {/* SKILLS.MAP */}
               <div className="flex flex-wrap mb-1">
                 {skills.map((skill, index) => (
                   <div
@@ -363,6 +374,7 @@ function JobForm() {
                   </div>
                 ))}
               </div>
+              {/* SKILL INPUT */}
               <input
                 type="text"
                 name="skills"
@@ -376,6 +388,7 @@ function JobForm() {
             </div>
           </div>
           <div className="sm:flex sm:space-x-8 bg-transparent">
+            {/* Company Name */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="bg-transparent">
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
@@ -394,6 +407,7 @@ function JobForm() {
                 />
               </div>
             </div>
+            {/* Career Page URL */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="bg-transparent">
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
@@ -415,6 +429,7 @@ function JobForm() {
           </div>
 
           <div className="sm:flex sm:space-x-8 bg-transparent">
+            {/* Logo */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="form-group bg-transparent">
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
@@ -429,6 +444,7 @@ function JobForm() {
                 />
               </div>
             </div>
+            {/* Company URL */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="bg-transparent">
                 <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
@@ -449,7 +465,7 @@ function JobForm() {
             </div>
           </div>
         </div>
-
+        {/* SUBMIT */}
         <div className="form-group flex justify-center items-center bg-transparent backdrop-blur-sm">
           <button
             className="btn btn-lg
