@@ -66,7 +66,7 @@ const jobSchema = mongoose.Schema(
       type: String,
     },
     description: {
-      type: String, // Add a new field for job description
+      type: String,
     },
     skills: [
       {

@@ -10,7 +10,7 @@ const {
   updateJob,
   deleteJob,
   applyToJob, //
-  updateApplicationStatus, //
+  updateApplicationStatus,
 } = require("../controllers/jobController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -34,4 +34,5 @@ router.put(
   "/updateApplicationStatus/:jobId/:studentId",
   updateApplicationStatus
 );
+
 module.exports = router;

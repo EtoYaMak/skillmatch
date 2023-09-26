@@ -178,6 +178,7 @@ export const updateApplicationStatus = createAsyncThunk(
         studentId,
         newStatus
       );
+      console.log("Response Slice:", response);
       return { jobId, studentId, newStatus }; // Return the payload with the expected structure
     } catch (error) {
       const message =

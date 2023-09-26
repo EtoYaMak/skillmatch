@@ -8,8 +8,6 @@ const sharp = require("sharp");
 const fs = require("fs");
 
 const path = require("path");
-const stripe = require("stripe")(process.env.STRIPE_SECRET);
-
 //
 const DIR = path.join(__dirname, "../../client/public/uploads/");
 /* const DIR = "../../client/public/uploads"; */
@@ -175,82 +173,6 @@ const updateJob = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-/* const updateJob = asyncHandler(async (req, res) => {
-  const ujob = await Job.findById(req.params.id);
-
-  if (!ujob) {
-    res.status(400);
-    throw new Error("Job not found!");
-  }
-
-  const user = await User.findById(req.user.id);
-
-  // Check for User
-  if (!req.user) {
-    res.status(401);
-    throw new Error("User Not Found!");
-  }
-
-  // Make Sure the logged-in user matches the job user
-  if (ujob.user.toString() !== req.user.id) {
-    res.status(401);
-    throw new Error("User not Authorized!");
-  }
-
-  // Update the job fields
-  ujob.position = req.body.position;
-  ujob.city = req.body.city;
-  ujob.country = req.body.country;
-  ujob.location = req.body.location;
-  ujob.careerPage = req.body.careerPage;
-  ujob.company = req.body.company;
-  ujob.website = req.body.website;
-  ujob.description = req.body.description;
-  ujob.skills = req.body.skills;
-
-  // Create an array with the values of the fulltime, parttime, internship, and contract fields
-  const type = [
-    { name: "fulltime", value: req.body.fulltime },
-    { name: "parttime", value: req.body.parttime },
-    { name: "internship", value: req.body.internship },
-    { name: "contract", value: req.body.contract },
-  ];
-  const setting = [
-    { name: "remote", value: req.body.remote },
-    { name: "hybrid", value: req.body.hybrid },
-    { name: "onsite", value: req.body.onsite },
-  ];
-
-  // Update the job types
-  ujob.type = type;
-
-  // Update the job settings
-  ujob.setting = setting;
-
-  // If a new logo file is uploaded, resize and save it
-  if (req.file) {
-    const resizedImage = await sharp(req.file.path)
-      .resize({ width: 160, height: 160, fit: "cover", position: "center" })
-      .toBuffer();
-
-    await sharp(resizedImage).toFile(req.file.path);
-
-    // Delete the old image file associated with the job
-    const imagePath = path.join(DIR, ujob.logo.substr(9));
-    fs.unlink(imagePath, (err) => {
-      if (err) {
-        console.error("Error deleting image file:", err);
-      }
-    });
-
-    // Set the new logo path
-    ujob.logo = "/uploads/" + req.file.filename;
-  }
-
-  const updatedJob = await ujob.save();
-
-  res.status(200).json(updatedJob);
-}); */
 
 // @desc Delete Jobs
 // @route DELETE /api/jobs/:id
