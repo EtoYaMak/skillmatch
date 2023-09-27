@@ -32,9 +32,9 @@ import ActivationModal from "./components/ActivationModal";
 import JobDetailComponent from "./components/JobDetailComponent";
 import JobUpdatePage from "./components/JobUpdatePage";
 
-import PaymentModal from "./components/PaymentModal";
-
 import { useSelector, useDispatch } from "react-redux";
+import PaymentForm from "./components/PaymentForm";
+import StripeContainer from "./components/StripeContainer";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -107,9 +107,9 @@ function App() {
 
         <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
         <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
-
-        <Route path="/payment/:transactionId" element={<PaymentModal />} />
+        <Route path="/payment" element={<StripeContainer />} />
       </Routes>
+
       <ToastContainer />
     </div>
   );

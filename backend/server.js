@@ -7,10 +7,10 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT;
-
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 // Middleware
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const corsOptions = {
   origin: [
@@ -30,7 +30,35 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/students", require("./routes/studentRoutes"));
 app.use("/api/profiles", require("./routes/studentFormroutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
+// Payment
+app.post("/payment", cors(), async (req, res) => {
+  let { amount, id, return_url, allow_redirects } = req.body; // Include return_url in the request body
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: "USD",
+      description: "Skillmint Job Portal",
+      payment_method: id,
+      confirm: true,
+      return_url, // Include the return_url
+      setup_future_usage: allow_redirects ? "on_session" : "off_session",
+    });
 
+    console.log("PaymentIntent", paymentIntent.status);
+
+    // Send the client a client_secret to confirm the payment on the client side
+    res.json({
+      clientSecret: paymentIntent.client_secret,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error", error);
+    res.json({
+      message: "Payment failed",
+      success: false,
+    });
+  }
+});
 // Error handling middleware
 app.use(errorHandler);
 
