@@ -28,6 +28,7 @@ export const createJob = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
+      console.table(formData);
       return await jobService.createJob(formData, token);
     } catch (error) {
       const message =

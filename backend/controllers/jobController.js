@@ -75,8 +75,12 @@ const setJob = async (req, res) => {
     const resizedImage = await sharp(req.file.path)
       .resize({ width: 160, height: 160, fit: "cover", position: "center" })
       .toBuffer();
+    // Generate a new file name for the resized image
+    const resizedFileName = `resized_${req.file.filename}`;
 
-    await sharp(resizedImage).toFile(req.file.path);
+    // Save the resized image to a different file path or directory
+    await sharp(resizedImage).toFile(path.join(DIR, resizedFileName));
+    //await sharp(resizedImage).toFile(req.file.path);
 
     const user = req.user.id;
     const postedBy = req.user.name;
@@ -105,7 +109,8 @@ const setJob = async (req, res) => {
       description,
       skills,
     } = req.body;
-    const logo = "/uploads/" + req.file.filename;
+    //const logo = "/uploads/" + req.file.filename;
+    const logo = "/uploads/" + resizedFileName; // Use the new file name
 
     const newJob = await Job.create({
       user,

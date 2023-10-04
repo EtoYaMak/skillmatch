@@ -2,9 +2,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { createJob } from "../features/jobs/jobSlice";
-import { MdClose } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -27,9 +25,9 @@ const CARD_OPTIONS = {
 };
 
 export default function PaymentForm() {
+  const { user } = useSelector((state) => state.auth);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -40,6 +38,7 @@ export default function PaymentForm() {
 
   const handleSuccessfulPayment = () => {
     // Perform any necessary post-payment actions and send a signal back to JobForm
+    sessionStorage.setItem("paymentSuccess", "true");
     navigate("/post", { state: { paymentSuccess: true } });
   };
 
@@ -65,10 +64,10 @@ export default function PaymentForm() {
         const response = await axios.post("http://localhost:4000/payment", {
           amount: 2000,
           id,
+          description: user.name,
           return_url: "http://localhost:3000/dash", // Replace with your actual return_url
           allow_redirects: true,
         });
-
         if (response.data.success) {
           console.log("Successful payment");
           setSuccess(true);

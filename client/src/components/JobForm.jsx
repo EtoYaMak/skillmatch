@@ -7,7 +7,7 @@ import "../assets/quill.snow.css"; // Import the CSS for the editor
 import { MdClose } from "react-icons/md";
 import countriesList from "../assets/countries-data.json";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import PaymentPromptModal from "./PaymentPromptModal";
 import PaymentForm from "./PaymentForm";
 
 function JobForm() {
@@ -16,8 +16,16 @@ function JobForm() {
   const [careerPage, setCareerPage] = useState("");
   const [company, setCompany] = useState("");
   const [website, setWebsite] = useState("");
-  const [fileName, setFileName] = useState("");
   const [description, setDescription] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [countries, setCountries] = useState(countriesList);
+  const [city, setCity] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  //File
+  const [fileName, setFileName] = useState("");
+
+  //CheckBoxes
   const [remote, setRemote] = useState(false);
   const [contract, setContract] = useState(false);
   const [fulltime, setFulltime] = useState(false);
@@ -25,21 +33,126 @@ function JobForm() {
   const [internship, setInternship] = useState(false);
   const [hybrid, setHybrid] = useState(false);
   const [onsite, setOnsite] = useState(false);
+  const [showFormError, setShowFormError] = useState(true);
+
+  //Form Error
   const [formError, setFormError] = useState("");
-  const [skills, setSkills] = useState([]);
-  const [countries, setCountries] = useState(countriesList);
-  const [city, setCity] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
-  //
+
   //Payment Var.
-  //
   const [paymentStarted, setPaymentStarted] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false); // Track payment success
-  const formData = new FormData();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const locationState = useLocation().state;
 
+  useEffect(() => {
+    const storedPaymentSuccess = sessionStorage.getItem("paymentSuccess");
+    if (storedPaymentSuccess === "true") {
+      setPaymentSuccess(true);
+    } else if (locationState?.paymentSuccess) {
+      setPaymentSuccess(true);
+    } else {
+      console.error("Payment Not Successful");
+    }
+  }, [locationState]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    // Clear the successful payment signal from sessionStorage
+    // sessionStorage.removeItem("paymentSuccess");
+    const location = `${city}, ${selectedCountry}`;
+    // Input validation
+    const requiredFields = [
+      { name: "Job Title", value: position },
+      { name: "City", value: city },
+      { name: "Country", value: selectedCountry },
+      { name: "Location", value: location },
+      { name: "Company Name", value: company },
+      { name: "Company Website", value: website },
+      { name: "Job link", value: careerPage },
+      { name: "Description", value: description },
+      { name: "Logo", value: fileName },
+      { name: "Skills", value: skills.length > 0 },
+    ];
+
+    const missingFields = requiredFields
+      .filter((field) => !field.value)
+      .map((field) => field.name);
+    if (missingFields.length > 0) {
+      setFormError(`${missingFields.join(" » ")}`);
+      setShowFormError(true);
+      return;
+    }
+
+    // Sanitization
+    const sanitizedPosition = sanitizeInput(position);
+    const sanitizedCity = sanitizeInput(city);
+    const sanitizedCountry = sanitizeInput(selectedCountry);
+    const sanitizedLocation = sanitizeInput(location);
+    const sanitizedCareerPage = sanitizeInput(careerPage);
+    const sanitizedCompany = sanitizeInput(company);
+    const sanitizedWebsite = sanitizeInput(website);
+    /*     const sanitizedDescription = sanitizeInput(description); */
+    const sanitizedSkills = skills.map((skill) => sanitizeInput(skill));
+
+    const formData = new FormData();
+    formData.append("position", sanitizedPosition);
+    formData.append("location", sanitizedLocation);
+    formData.append("city", sanitizedCity);
+    formData.append("country", sanitizedCountry);
+    formData.append("careerPage", sanitizedCareerPage);
+    formData.append("company", sanitizedCompany);
+    formData.append("website", sanitizedWebsite);
+    formData.append("logo", fileName);
+    // type
+    formData.append("fulltime", fulltime);
+    formData.append("parttime", parttime);
+    formData.append("internship", internship);
+    formData.append("contract", contract);
+    // setting
+    formData.append("remote", remote);
+    formData.append("hybrid", hybrid);
+    formData.append("onsite", onsite);
+    // desc
+    formData.append("description", description);
+    // skills
+    sanitizedSkills.forEach((skill) => {
+      formData.append("skills[]", skill);
+    });
+
+    dispatch(createJob(formData));
+    // Clear the successful payment signal from sessionStorage
+    sessionStorage.removeItem("paymentSuccess");
+    setPosition("");
+    setLocation("");
+    setCity("");
+    setSelectedCountry("");
+    setCareerPage("");
+    setCompany("");
+    setWebsite("");
+    setRemote(false);
+    setFileName("");
+    setDescription("");
+    setFulltime(false);
+    setParttime(false);
+    setInternship(false);
+    setContract(false);
+    setHybrid(false);
+    setRemote(false);
+    setOnsite(false);
+    setSkills([]);
+  };
+
+  const startPayment = () => {
+    setPaymentStarted(true);
+    //saveFormDataToStorage();
+    // Use navigate to programmatically navigate to the payment page.
+    navigate("/payment");
+    // Replace "/payment" with the actual route path for your PaymentForm component.
+  };
+
+  //Handle Changes
   const handleCityChange = (e) => {
     setCity(e.target.value);
   };
@@ -48,7 +161,6 @@ function JobForm() {
     setSelectedCountry(e.target.value);
   };
 
-  const [showFormError, setShowFormError] = useState(true);
   const falseFlagsubmit = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -68,8 +180,12 @@ function JobForm() {
     const value = e.target.value.trim();
     if (value && (e.key === "," || e.key === " ")) {
       e.preventDefault();
-      const trimmedValue = value.replace(/-,+$/, ""); // Remove trailing commas
-      const sanitizedValue = trimmedValue.replace(/[^a-zA-Z0-9-.\s+#]/g, ""); // Remove special characters except "-", ".", "+", and whitespace
+      // const trimmedValue = value.replace(/-,+$/, ""); // Remove trailing commas
+      //const sanitizedValue = value.replace(/[^a-zA-Z0-9\-+\s#.]|(?<=\.)$/g, ""); // Remove special characters except "-", ".", "+", and whitespace
+      const sanitizedValue = value
+        .replace(/\.+$/, "")
+        .replace(/[^a-zA-Z0-9\-+/\s#.&]/g, "");
+
       setSkills([...skills, sanitizedValue]);
       e.target.value = "";
     }
@@ -81,110 +197,6 @@ function JobForm() {
       const updatedSkills = [...skills];
       updatedSkills.splice(skillIndex, 1);
       setSkills(updatedSkills);
-    }
-  };
-
-  useEffect(() => {
-    if (locationState?.paymentSuccess) {
-      // Handle successful payment, e.g., show a success message
-      console.log("Payment successful JOBFORM");
-      setPaymentSuccess(true); // Set payment success to true
-      // Now, you can dispatch(createJob(formData)) or perform any other actions.
-    }
-  }, [locationState]);
-
-  const startPayment = () => {
-    setPaymentStarted(true);
-    // Use navigate to programmatically navigate to the payment page.
-    navigate("/payment"); // Replace "/payment" with the actual route path for your PaymentForm component.
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (paymentSuccess) {
-      const location = `${city}, ${selectedCountry}`;
-      // Input validation
-      const requiredFields = [
-        { name: "Job Title", value: position },
-        { name: "City", value: city },
-        { name: "Country", value: selectedCountry },
-        { name: "Location", value: location },
-        { name: "Company Name", value: company },
-        { name: "Company Website", value: website },
-        { name: "Job link", value: careerPage },
-        { name: "Description", value: description },
-        { name: "Logo", value: fileName },
-        { name: "Skills", value: skills.length > 0 },
-      ];
-
-      const missingFields = requiredFields
-        .filter((field) => !field.value)
-        .map((field) => field.name);
-
-      if (missingFields.length > 0) {
-        setFormError(`${missingFields.join(" » ")}`);
-        setShowFormError(true);
-        return;
-      }
-
-      // Sanitization
-      const sanitizedPosition = sanitizeInput(position);
-      const sanitizedCity = sanitizeInput(city);
-      const sanitizedCountry = sanitizeInput(selectedCountry);
-      const sanitizedLocation = sanitizeInput(location);
-      const sanitizedCareerPage = sanitizeInput(careerPage);
-      const sanitizedCompany = sanitizeInput(company);
-      const sanitizedWebsite = sanitizeInput(website);
-      /*     const sanitizedDescription = sanitizeInput(description); */
-      const sanitizedSkills = skills.map((skill) => sanitizeInput(skill));
-
-      formData.append("position", sanitizedPosition);
-      formData.append("location", sanitizedLocation);
-      formData.append("city", sanitizedCity);
-      formData.append("country", sanitizedCountry);
-      formData.append("careerPage", sanitizedCareerPage);
-      formData.append("company", sanitizedCompany);
-      formData.append("website", sanitizedWebsite);
-      formData.append("logo", fileName);
-      // type
-      formData.append("fulltime", fulltime);
-      formData.append("parttime", parttime);
-      formData.append("internship", internship);
-      formData.append("contract", contract);
-      // setting
-      formData.append("remote", remote);
-      formData.append("hybrid", hybrid);
-      formData.append("onsite", onsite);
-      // desc
-      formData.append("description", description);
-      // skills
-      sanitizedSkills.forEach((skill) => {
-        formData.append("skills[]", skill);
-      });
-
-      //dispatch
-      dispatch(createJob(formData));
-      //
-      setPosition("");
-      setLocation("");
-      setCity("");
-      setSelectedCountry("");
-      setCareerPage("");
-      setCompany("");
-      setWebsite("");
-      setRemote(false);
-      setFileName("");
-      setDescription("");
-      setFulltime(false);
-      setParttime(false);
-      setInternship(false);
-      setContract(false);
-      setHybrid(false);
-      setRemote(false);
-      setOnsite(false);
-      setSkills([]);
-    } else {
-      // Handle case where payment was not successful
-      console.log("Payment not successful. Cannot submit the form.");
     }
   };
 
@@ -477,6 +489,7 @@ function JobForm() {
                     accept="image/*"
                     className="form-control-file file-input w-full bg-black/25 text-white/40 text-lg"
                     onChange={(e) => setFileName(e.target.files[0])}
+                    //onChange={(e) => setFileName(e.target.files[0]?.name || "")}
                   />
                 </div>
               </div>
