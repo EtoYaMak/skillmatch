@@ -21,16 +21,6 @@ const Post = () => {
         {user ? (
           user.isActive ? (
             <>
-              <section className="text-center h-it ">
-                <h1 className="flex-wrap max-[520px]:text-3xl text-4xl font-extrabold text-[#d4d7d7] w-full">
-                  Welcome{" "}
-                  <span className="text-[#d0333c]/80 w-full">{user.name}</span>
-                </h1>
-                <p className="text-xl pt-2 pb-4 uppercase text-[#aba6a6]/80 font-semibold">
-                  Use the form below to submit a job.
-                </p>
-              </section>
-
               <JobForm />
             </>
           ) : (
