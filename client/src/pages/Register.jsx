@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { register, reset } from "../features/auth/authSlice";
+import { Sregister, Sreset } from "../features/students/studentSlice";
+
 import Spinner from "../components/Spinner";
 import PrivacyPolicyModal from "../components/level_2/PrivacyPolicyModal";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
@@ -20,6 +21,15 @@ function Register() {
   const { name, email, password, password2 } = formData;
   const passwordsMatch = password === password2;
 
+  // Initialize state for selected role
+  const [selectedRole, setSelectedRole] = useState("poster");
+
+  // Function to handle role selection change
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+    console.log(selectedRole);
+  };
+
   //hooks
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,29 +37,71 @@ function Register() {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+  /*  const { student, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.students
+  ); */
   //State Hooks
-  const [isPrivacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
+  const [isTCOpen, setTCOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
   useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
     if (isSuccess) {
       toast.success("Please check your email to activate your account");
       navigate("/");
     }
-  }, [isSuccess, navigate]);
+  }, [isError, isSuccess, message, navigate]);
+
   //Funcs
   const isPasswordValid = (password) => {
-    // Implement your password validation logic here
-    // Example: Return true if the password meets your criteria
-    return password.length >= 8; // Minimum length of 8 characters
-  };
-  const openPrivacyPolicy = () => {
-    setPrivacyPolicyOpen(true);
+    // Define your password criteria
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasSpecialCharacter = /[!@#$%^&*]/.test(password);
+    const hasNoSpaces = !/\s/.test(password);
+
+    // Create an array to store validation messages
+    const validationMessages = [];
+
+    // Check each criterion and add a message if not met
+    if (password.length < minLength) {
+      validationMessages.push(
+        `Password should be at least ${minLength} characters.`
+      );
+    }
+    if (!hasUppercase) {
+      validationMessages.push(
+        `Password should include at least one uppercase letter.`
+      );
+    }
+    if (!hasLowercase) {
+      validationMessages.push(
+        `Password should include at least one lowercase letter.`
+      );
+    }
+    if (!hasSpecialCharacter) {
+      validationMessages.push(
+        `Password should include at least one special character.`
+      );
+    }
+    if (!hasNoSpaces) {
+      validationMessages.push(`Password should not contain spaces.`);
+    }
+
+    // Return the validation messages or an empty array if all criteria are met
+    return validationMessages;
   };
 
-  const closePrivacyPolicy = () => {
-    setPrivacyPolicyOpen(false);
+  const openTC = () => {
+    setTCOpen(true);
+  };
+
+  const closeTC = () => {
+    setTCOpen(false);
   };
 
   //onChange form fields
@@ -60,47 +112,34 @@ function Register() {
     }));
   };
   //Submit
-  const privacyPolicyCheckbox = document.getElementById(
-    "privacy-policy-checkbox"
-  );
-  /* 
+
   const onSubmit = (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      toast.error("Passwords do not match");
-    } else {
-      const userData = {
-        name,
-        email,
-        password,
-      };
-
-      dispatch(register(userData));
-    }
-  }; */
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    const privacyPolicyCheckbox = document.getElementById(
-      "privacy-policy-checkbox"
-    );
-
-    if (privacyPolicyCheckbox.checked) {
-      if (!passwordsMatch) {
-        toast.error("Passwords do not match");
-      } else if (!isPasswordValid(password)) {
-        toast.error("Password does not meet validation criteria");
-      } else {
+    const termsConditionsCheckbox = document.getElementById("tc");
+    if (termsConditionsCheckbox.checked) {
+      // Dispatch the registration action based on the selected role
+      if (selectedRole === "poster") {
+        // Dispatch the action for poster registration
         const userData = {
           name,
           email,
           password,
         };
-
+        console.log("ROLE TYPE USER");
+        console.log(userData);
         dispatch(register(userData));
+      } else if (selectedRole === "applicant") {
+        // Dispatch the action for applicant registration
+        const studentData = {
+          name,
+          email,
+          password,
+        };
+        console.log("ROLE TYPE STUDENT");
+        console.log(studentData);
+        dispatch(Sregister(studentData));
       }
     } else {
-      // Display a message to the user indicating that they need to accept the Privacy Policy.
       toast.error("Please accept the Privacy Policy before registering.");
     }
   };
@@ -112,91 +151,58 @@ function Register() {
 
   return (
     <>
-      <div className="h-full">
-        <PrivacyPolicyModal
-          isOpen={isPrivacyPolicyOpen}
-          onClose={closePrivacyPolicy}
-        />
-      </div>
-
-      <div className="min-h-screen max-h-fit h-full w-full mx-auto">
-        <div className="flex flex-col md:flex-row justify-evenly items-center mt-10 gap-4  mx-auto max-w-[960px]">
-          {/* Navigate through forms*/}
-          <div
-            className="max-w-1/4 w-3/4 md:w-1/2 h-[40vh] justify-center 
-           rounded-3xl bg-gray-100 text-slate-500 text-2xl font-inter px-4 py-14 flex flex-col gap-2 select-none"
-          >
-            <p className="bg-inherit leading-tight tracking-wide">
-              Want to Apply for Jobs?
+      <div className="hero min-h-[91vh] z-1">
+        <div className="hero-content flex-col lg:flex-row-reverse">
+          <div className="text-center lg:text-left font-Inter">
+            <h1 className="text-5xl font-bold text-white">Register!</h1>
+            <p className="py-6 text-xl text-white">
+              Unlock Your Career Opportunities or Start Building Your Team
+              Today!
             </p>
-            <Link
-              to="/registerS"
-              className="text-3xl font-inter font-bold text-slate-800 hover:text-[#d0333c] mb-10"
-            >
-              Register to Start Applying
-            </Link>
-            <p className="bg-inherit text-right tracking-wide">
-              Already have an Account?
-            </p>
-            <Link
-              to="/loginS"
-              className="text-3xl font-inter text-right font-bold text-slate-800 hover:text-[#d0333c]"
-            >
-              Login to Start Applying
-            </Link>
           </div>
-
-          <section className="my-10  rounded-md p-2">
-            <p className="text-3xl flex gap-2 font-Inter font-light m-2 p-2 text-white bg-transparent">
-              <FaUser className="bg-inherit" />
-              Register to Start Posting
-            </p>
-            <form onSubmit={onSubmit} className="bg-transparent">
-              <div className="form-group pb-2 grid bg-inherit">
-                <label className="text-white text-2xl font-Inter p-2 bg-inherit">
-                  Full Name
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl shadow-black/60 bg-base-100">
+            <form onSubmit={onSubmit} className="card-body">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Name</span>
                 </label>
                 <input
                   type="text"
-                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c] "
-                  id="name"
                   name="name"
                   value={name}
                   placeholder="Enter your name"
                   onChange={onChange}
+                  className="input input-bordered text-white"
                   required
                 />
               </div>
-
-              <div className="form-group pb-2 grid bg-inherit">
-                <label className="text-white text-2xl font-Inter p-2 bg-inherit">
-                  Email
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Email</span>
                 </label>
                 <input
                   type="email"
-                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
-                  id="email"
                   name="email"
                   value={email}
                   placeholder="Enter your email"
                   onChange={onChange}
+                  className="input input-bordered text-white"
                   required
                 />
               </div>
-
-              <div className="form-group pb-2 grid bg-inherit">
-                <label className="text-white text-2xl font-Inter p-2 bg-inherit">
-                  Password
+              {/* Password */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Password</span>
                 </label>
-                <div className="flex items-center">
+                <div className="flex flex-row items-center">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c] flex-1"
-                    id="password"
                     name="password"
                     value={password}
                     placeholder="Enter password"
                     onChange={onChange}
+                    className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                     required
                   />
                   <button
@@ -212,25 +218,20 @@ function Register() {
                   </button>
                 </div>
               </div>
-
-              <div className="form-group pb-2 grid bg-inherit">
-                <label className="text-white text-2xl font-Inter p-2 bg-inherit">
-                  Confirm Password
+              {/* Confirm Password */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Confirm Password</span>
                 </label>
-                <div className="flex items-center">
+                <div className="flex flex-row items-center">
                   <input
                     type={showPassword2 ? "text" : "password"}
-                    //className="input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c] flex-1"
-                    className={`form-control input  bg-white/5 text-xl text-white  ${
-                      password !== "" && password2 !== "" && !passwordsMatch
-                        ? "ring-[#d0333c]"
-                        : "ring-green-500"
-                    } flex-1`}
-                    id="password2"
+                    className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
                     name="password2"
                     value={password2}
                     placeholder="Confirm password"
                     onChange={onChange}
+                    //className="input input-bordered text-white w-full "
                     required
                   />
                   <button
@@ -245,76 +246,110 @@ function Register() {
                     )}
                   </button>
                 </div>
-              </div>
-              {/* Password matching feedback */}
-              {password !== "" && password2 !== "" && !passwordsMatch && (
-                <div className="password-mismatch-feedback text-white underline underline-offset-2 decoration-red-600">
-                  Passwords do not match
-                </div>
-              )}
 
-              {/* Password validation feedback */}
-              {password !== "" && !isPasswordValid(password) && (
-                <div className="password-validation-feedback text-white underline underline-offset-2 decoration-red-600">
-                  Password does not meet validation criteria
+                {/* Password matching feedback */}
+                {password !== "" && password2 !== "" && !passwordsMatch && (
+                  <div className="mt-1 text-white text-xs font-Inter text-center ">
+                    <p className="ml-1 text-white">Passwords do not match</p>
+                  </div>
+                )}
+
+                {/* Password validation feedback */}
+                {password !== "" && isPasswordValid(password).length > 0 && (
+                  <div className="text-white text-xs font-Inter toast toast-center">
+                    {isPasswordValid(password).map((message, index) => (
+                      <p className="alert bg-red-700 text-white" key={index}>
+                        {message}
+                      </p>
+                    ))}
+                  </div>
+                )}
+                {/* ROLE SELECTION */}
+                <div>
+                  <label className="label">
+                    <span className="label-text">Select Your Role</span>
+                  </label>
+                  {/* POSTER ROLE */}
+                  <div className="flex items-end">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="poster"
+                      id="poster"
+                      className="mt-4 mx-1 radio radio-error focus:text-red-500 hover:text-red-500"
+                      checked={selectedRole === "poster"}
+                      onChange={handleRoleChange}
+                    />
+                    <label htmlFor="" className=" mt-4 mx-1 text-white">
+                      I would like to POST
+                    </label>
+                  </div>
+                  {/* APPLICANT ROLE */}
+                  <div className="flex items-end">
+                    <input
+                      type="radio"
+                      name="role"
+                      value="applicant"
+                      id="applicant"
+                      className="mt-4 mx-1 radio radio-error focus:text-red-500 hover:text-red-500"
+                      checked={selectedRole === "applicant"}
+                      onChange={handleRoleChange}
+                    />
+                    <label htmlFor="" className=" mt-4 mx-1 text-white">
+                      I would like to APPLY
+                    </label>
+                  </div>
                 </div>
-              )}
-              {/* Priacy Policy Confirm */}
-              <div className="flex flex-row">
-                <label
-                  for="privacy-policy-checkbox"
-                  className="flex gap-1 flex-row items-center text-white"
-                >
+                {/* TERMS & CONDITIONS */}
+                <div className="flex items-end">
                   <input
                     type="checkbox"
-                    id="privacy-policy-checkbox"
-                    name="privacy-policy-checkbox"
-                    className="checkbox checkbox-sm checkbox-success"
+                    name="tc"
+                    id="tc"
+                    className="mt-4 mx-1 checkbox "
                   />
-                  <p>I accept the</p>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      openPrivacyPolicy();
-                    }}
-                    className="text-red-600 underline"
-                  >
-                    Privacy Policy
-                  </a>
-                  <p>and</p>
-                  <a href="" target="_blank" className="text-red-600 underline">
-                    Terms & Conditions
-                  </a>
-                </label>
+                  <p className="mt-4 mx-1 text-white">
+                    I accept{" "}
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        openTC();
+                      }}
+                      className="text-red-600 underline"
+                    >
+                      terms & conditions
+                    </a>
+                    .
+                  </p>
+                </div>
               </div>
-              {/* Register Button */}
-              <div className="form-group w-max mx-auto bg-inherit my-2">
+              {/* REGISTER BUTTON */}
+              <div className="form-control mt-4">
                 <button
                   type="submit"
-                  className="btn btn-outline text-[#000]/80 border-white/10 bg-white/80 hover:bg-[#d0333c] hover:border-[#d4d7d7] hover:text-[#d4d7d7]
-                  flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
+                  className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
+                  flex text-lg font-Inter tracking-wide"
                 >
                   Register
                 </button>
               </div>
-              {/* Login?  */}
-              <div className="flex flex-col justify-center items-center bg-inherit">
-                <span className="mt-2 text-xl font-boldgap-2 bg-transparent text-white font-Inter pb-2">
-                  Already have an account?
-                </span>
-                <Link to="/login" className="my-2">
-                  <button
-                    className="btn btn-outline text-[#fff]/80 border-[#d0333c]/10 hover:bg-[#fff]/90 hover:border-[#d0333c] hover:text-[#d0333c]
-               flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
-                  >
-                    Login
-                  </button>
-                </Link>
-              </div>
+              {/* LOGIN REDIRECT */}
+              <Link
+                to="/login"
+                className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
+              >
+                <h1 className="text-white">Already have an account? </h1>
+                <a href="" className="text-white">
+                  Login now
+                </a>
+              </Link>
             </form>
-          </section>
+          </div>
         </div>
+      </div>
+      <div className="h-full z-99">
+        <PrivacyPolicyModal isOpen={isTCOpen} onClose={closeTC} />
       </div>
     </>
   );

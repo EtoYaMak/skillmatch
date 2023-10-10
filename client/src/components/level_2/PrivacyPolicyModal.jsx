@@ -28,7 +28,7 @@ const PrivacyPolicyModal = ({ isOpen, onClose }) => {
   };
   return (
     <div
-      className={`inset-0 fixed flex items-center justify-center bg-white w-1/2 h-fit font-Inter ${
+      className={`inset-0 fixed flex items-center justify-end bg-white w-full h-fit font-Inter ${
         isOpen ? "block" : "hidden"
       }`}
     >

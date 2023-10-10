@@ -64,7 +64,10 @@ function StudentRegister() {
   return (
     <>
       <div className="min-h-screen max-h-fit h-full w-full mx-auto">
-        <div className="flex flex-col md:flex-row justify-evenly items-center mt-10 gap-4  mx-auto max-w-[960px]">
+        <div
+          className="flex flex-col md:flex-row justify-evenly items-center
+         mt-10 gap-4  mx-auto max-w-[960px]"
+        >
           {/* Navigate through forms*/}
           <div
             className="max-w-1/4 w-3/4 md:w-1/2 h-[40vh] justify-center rounded-3xl
