@@ -250,8 +250,9 @@ function JobForm() {
               <span className="text-[#d0333c]/80 w-full"> {user.name}</span>
             </h1>
             {isHidden ? (
-              <p className="text-xl pt-2 pb-4 uppercase text-[#aba6a6]/80 font-semibold">
-                Enhance Your Job Listing: Secure Your Job Post with Payment
+              <p className="text-xl pt-2 pb-4 text-white font-semibold">
+                Enhance Your Job Listing <br />
+                Make a payment via Stripe
               </p>
             ) : (
               <p className="text-xl pt-2 pb-4 uppercase text-white font-semibold">
@@ -573,7 +574,7 @@ function JobForm() {
           )}
 
           {/* SUBMIT */}
-          <div className="form-group flex justify-center items-center bg-transparent backdrop-blur-sm">
+          <div className="form-group flex justify-center items-center bg-transparent ">
             {paymentSuccess ? (
               <button
                 className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-lg uppercase transition-colors duration-300 ease-in-out"

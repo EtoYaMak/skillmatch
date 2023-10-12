@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { login, reset, requestPasswordReset } from "../features/auth/authSlice";
+import { login, reset } from "../features/auth/authSlice";
+import { Slogin } from "../features/students/studentSlice";
 import Spinner from "../components/Spinner";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -21,18 +23,29 @@ function Login() {
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
+  const { student } = useSelector((state) => state.students);
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Initialize state for selected role
+  const [selectedRole, setSelectedRole] = useState("poster");
+
+  // Function to handle role selection change
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+    console.log(selectedRole);
+  };
 
   useEffect(() => {
     if (isError) {
       toast.error(message);
     }
 
-    if (isSuccess || user) {
+    if (isSuccess || user || student) {
       navigate("/");
     }
 
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [user, student, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -40,114 +53,171 @@ function Login() {
       [e.target.name]: e.target.value,
     }));
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const userData = {
-      email,
-      password,
-    };
-
-    dispatch(login(userData));
+    if (selectedRole === "poster") {
+      // Dispatch the action for poster registration
+      const userData = {
+        email,
+        password,
+      };
+      console.log("ROLE TYPE USER");
+      console.log(userData);
+      dispatch(login(userData));
+    } else if (selectedRole === "applicant") {
+      // Dispatch the action for applicant registration
+      const studentData = {
+        email,
+        password,
+      };
+      console.log("ROLE TYPE STUDENT");
+      console.log(studentData);
+      dispatch(Slogin(studentData));
+    } else {
+      toast.error("Please accept the Privacy Policy before registering.");
+    }
   };
-
   if (isLoading) {
     return <Spinner />;
   }
 
   return (
-    <>
-      <div className="min-h-screen max-h-fit h-full w-full mx-auto">
-        <div className="flex flex-col md:flex-row justify-evenly items-center mt-10 gap-4  mx-auto max-w-[960px]">
-          {/* Navigate through forms*/}
-          <div
-            className="max-w-1/4 w-3/4 md:w-1/2 h-[40vh] justify-center rounded-3xl
-            bg-white text-slate-500 text-2xl font-inter px-4 py-14 flex flex-col select-none"
-          >
-            <p className="bg-inherit leading-tight tracking-wide">
-              Want to Apply for Jobs?
+    <div className="loginPageMain w-2/3 mx-auto h-[75vh] my-5 font-Inter">
+      <div className="hero  rounded-lg h-full px-4">
+        <div className="hero-content flex-col lg:flex-row-reverse ">
+          <div className="sm:px-12 text-center lg:text-left text-white">
+            <h1 className="text-5xl font-bold">Login</h1>
+            <p className="py-6">
+              Unlock Your Career Opportunities or Start Building Your Team
+              Today!
             </p>
-            <Link
-              to="/registerS"
-              className="text-3xl font-inter font-bold text-slate-800 mb-10 bg-transparent hover:text-[#d0333c]"
-            >
-              Register an Job Seeker Account
-            </Link>
-            <p className="bg-inherit text-right tracking-wide">
-              Already have one?
-            </p>
-            <Link
-              to="/loginS"
-              className="text-3xl font-inter text-right font-bold text-slate-800 bg-transparent hover:text-[#d0333c]"
-            >
-              Login to Start Applying
-            </Link>
           </div>
-
-          <section className="my-10  rounded-md p-2 ">
-            <p className="text-3xl flex gap-2 font-Inter font-light m-2 p-2 text-white bg-transparent">
-              <FaSignInAlt />
-              Login as an Employer
-            </p>
-            <form onSubmit={onSubmit} className="bg-transparent">
-              <div className="form-group pb-2 grid">
-                <label className="text-white text-2xl font-Inter p-2">
-                  Email
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-[#1c1f21]">
+            <form onSubmit={onSubmit} className="card-body">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Email</span>
                 </label>
                 <input
                   type="email"
-                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
-                  id="email"
                   name="email"
                   value={email}
-                  placeholder="Enter Email Address"
+                  placeholder="Enter your email"
                   onChange={onChange}
+                  className="input input-bordered text-white"
+                  required
                 />
+              </div>
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Password</span>
+                </label>
+                <div className="flex flex-row items-center">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={password}
+                    placeholder="Enter password"
+                    onChange={onChange}
+                    className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="toggle-password-button ml-2 text-white"
+                  >
+                    {showPassword ? (
+                      <AiFillEyeInvisible size={24} />
+                    ) : (
+                      <AiFillEye size={24} />
+                    )}
+                  </button>
+                </div>
+                <label className="ForgotPassword">
+                  <Link
+                    to="/password-reset"
+                    className="text-xs font-medium text-[#d0333c]/80 hover:text-[#d0333c] hover:underline "
+                  >
+                    Forgot password?
+                  </Link>
+                </label>
               </div>
 
-              <div className="form-group pb-2 grid">
-                <label className="text-white text-2xl font-Inter p-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
-                  id="password"
-                  name="password"
-                  value={password}
-                  placeholder="Enter Password"
-                  onChange={onChange}
-                />
+              {/* ROLE SELECTION */}
+              <div className="flex flex-col justify-center w-full mt-4">
+                <span className="text-center text-gray-300 text-sm">
+                  Select Your Role
+                </span>
+
+                <div className="flex flex-row justify-around mt-2">
+                  <label
+                    htmlFor="poster"
+                    className={`btn btn-ghost  w-36 ${
+                      selectedRole === "poster"
+                        ? "bg-white/10 text-white"
+                        : "text-white/25"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="poster"
+                      name="role"
+                      value="poster"
+                      className=" radio radio-mark"
+                      onChange={handleRoleChange}
+                      checked={selectedRole === "poster"}
+                    />
+                    Poster
+                  </label>
+                  <label
+                    htmlFor="applicant"
+                    className={`btn btn-ghost w-36 ${
+                      selectedRole === "applicant"
+                        ? "bg-white/10 text-white "
+                        : "text-white/25"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="applicant"
+                      name="role"
+                      value="applicant"
+                      className="radio radio-mark"
+                      onChange={handleRoleChange}
+                      checked={selectedRole === "applicant"}
+                    />
+                    Applicant
+                  </label>
+                </div>
               </div>
-              <div className="form-group w-max mx-auto m-2 flex flex-col">
+              <div className="form-control mt-6">
                 <button
-                  type="submit"
-                  className="btn btn-outline text-[#000]/80 border-white/10 bg-white/80 hover:bg-[#d0333c] hover:border-[#d4d7d7] hover:text-[#d4d7d7]
-                  flex mx-auto text-xl font-Inter tracking-widest w-[10em]"
+                  className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
+                  flex text-lg font-Inter tracking-wide"
                 >
                   Login
                 </button>
               </div>
-              <div className="flex flex-col justify-center items-center gap-2">
-                <span className="mt-2 text-xl font-bold gap-2 bg-transparent text-white font-Inter">
-                  <Link to="/register" className="bg-transparent mb-2 ">
-                    Create a new account
-                  </Link>
-                </span>
-              </div>
+              {/* LOGIN REDIRECT */}
+              <Link
+                to="/register"
+                className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
+              >
+                <h1 className="text-white">Not registered? </h1>
+                <a href="" className="text-white">
+                  Register now
+                </a>
+              </Link>
             </form>
-            <div className="mt-2 flex flex-col justify-center items-center gap-2">
-              <span className="mt-2 text-xl font-bold gap-2 bg-transparent text-white font-Inter">
-                <Link to="/password-reset" className="">
-                  Forgot your password?
-                </Link>
-              </span>
-            </div>
-          </section>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 export default Login;
+/*  */

@@ -160,7 +160,7 @@ function Register() {
               Today!
             </p>
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl shadow-black/60 bg-base-100">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl shadow-black/60 bg-[#1c1f21]">
             <form onSubmit={onSubmit} className="card-body">
               <div className="form-control">
                 <label className="label">
@@ -265,41 +265,54 @@ function Register() {
                   </div>
                 )}
                 {/* ROLE SELECTION */}
-                <div>
-                  <label className="label">
-                    <span className="label-text">Select Your Role</span>
-                  </label>
-                  {/* POSTER ROLE */}
-                  <div className="flex items-end">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="poster"
-                      id="poster"
-                      className="mt-4 mx-1 radio radio-error focus:text-red-500 hover:text-red-500"
-                      checked={selectedRole === "poster"}
-                      onChange={handleRoleChange}
-                    />
-                    <label htmlFor="" className=" mt-4 mx-1 text-white">
-                      I would like to POST
+                {/* ROLE SELECTION */}
+                <div className="flex flex-col justify-center w-full mt-4">
+                  <span className="text-center text-gray-300 text-sm">
+                    Select Your Role
+                  </span>
+
+                  <div className="flex flex-row justify-around mt-2">
+                    <label
+                      htmlFor="poster"
+                      className={`btn btn-ghost  w-36 ${
+                        selectedRole === "poster"
+                          ? "bg-white/10 text-white"
+                          : "text-white/25"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        id="poster"
+                        name="role"
+                        value="poster"
+                        className=" radio radio-mark"
+                        onChange={handleRoleChange}
+                        checked={selectedRole === "poster"}
+                      />
+                      Poster
                     </label>
-                  </div>
-                  {/* APPLICANT ROLE */}
-                  <div className="flex items-end">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="applicant"
-                      id="applicant"
-                      className="mt-4 mx-1 radio radio-error focus:text-red-500 hover:text-red-500"
-                      checked={selectedRole === "applicant"}
-                      onChange={handleRoleChange}
-                    />
-                    <label htmlFor="" className=" mt-4 mx-1 text-white">
-                      I would like to APPLY
+                    <label
+                      htmlFor="applicant"
+                      className={`btn btn-ghost w-36 ${
+                        selectedRole === "applicant"
+                          ? "bg-white/10 text-white "
+                          : "text-white/25"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        id="applicant"
+                        name="role"
+                        value="applicant"
+                        className="radio radio-mark"
+                        onChange={handleRoleChange}
+                        checked={selectedRole === "applicant"}
+                      />
+                      Applicant
                     </label>
                   </div>
                 </div>
+
                 {/* TERMS & CONDITIONS */}
                 <div className="flex items-end">
                   <input

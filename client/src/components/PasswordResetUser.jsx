@@ -7,16 +7,27 @@ import { forgotPasswordS } from "../features/students/studentSlice";
 
 function PasswordResetUser() {
   const [email, setEmail] = useState("");
-  const [accountType, setAccountType] = useState("");
   const dispatch = useDispatch();
+
+  // Initialize state for selected role
+  const [selectedRole, setSelectedRole] = useState("poster");
+
+  // Function to handle role selection change
+  const handleRoleChange = (event) => {
+    setSelectedRole(event.target.value);
+    console.log(selectedRole);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
     if (email) {
       const action =
-        accountType === "Job Poster Account" ? forgotPassword : forgotPasswordS;
+        selectedRole === "Job Poster Account"
+          ? forgotPassword
+          : forgotPasswordS;
       try {
-        await dispatch(action(email)); // Dispatch action
+        dispatch(action(email));
         toast.success("Password reset link sent to your email");
       } catch (error) {
         toast.error(error.message);
@@ -27,76 +38,90 @@ function PasswordResetUser() {
   };
 
   return (
-    <div className="w-1/2 mx-auto py-[5vh] font-Inter">
-      <div className="bg-black/20 p-8 rounded shadow-md w-full max-w-md mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-white">Reset Password</h2>
-        <form onSubmit={onSubmit}>
-          <div className="mb-4">
-            <label
-              className="block text-white text-md font-bold mb-2"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="form-control input bg-white/5 text-xl text-white focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c] w-full"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+    <div className="w-2/3 mx-auto h-[75vh] my-5 font-Inter">
+      <div className="hero  rounded-lg h-full px-4">
+        <div className="hero-content flex-col lg:flex-row-reverse ">
+          <div className="sm:px-12 text-center lg:text-left text-white">
+            <h1 className="text-5xl font-bold">Request password reset</h1>
+            <p className="py-6">
+              Enter your email to request a password reset link
+            </p>
           </div>
-          <div className="mb-4">
-            <label
-              className="block text-white text-md font-bold mb-2"
-              htmlFor="accountType"
-            >
-              Account Type
-            </label>
-            <input
-              type="checkbox"
-              id="jobPosterAccount"
-              name="accountType"
-              value="Job Poster Account"
-              className="checkbox checkbox-ghost"
-              checked={accountType === "Job Poster Account"}
-              onChange={(e) => setAccountType(e.target.value)}
-            />
-            <label htmlFor="jobPosterAccount" className="text-white mx-2">
-              Job Poster Account
-            </label>
-            <input
-              type="checkbox"
-              id="jobSeekerAccount"
-              name="accountType"
-              value="Job Seeker Account"
-              className="checkbox checkbox-ghost"
-              checked={accountType === "Job Seeker Account"}
-              onChange={(e) => setAccountType(e.target.value)}
-            />
-            <label htmlFor="jobSeekerAccount" className="text-white mx-2">
-              Job Seeker Account
-            </label>
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-base-300">
+            <form onSubmit={onSubmit} className="card-body">
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Email</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  placeholder="Enter your email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="input input-bordered text-white"
+                  required
+                />
+              </div>
+
+              {/* ROLE SELECTION */}
+              <div className="flex flex-col justify-center w-full mt-4">
+                <span className="text-center text-gray-300 text-sm">
+                  Select Your Role
+                </span>
+
+                <div className="flex flex-row justify-around mt-2">
+                  <label
+                    htmlFor="poster"
+                    className={`btn btn-ghost  w-36 ${
+                      selectedRole === "poster"
+                        ? "bg-white/10 text-white"
+                        : "text-white/25"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="poster"
+                      name="role"
+                      value="poster"
+                      className=" radio radio-mark"
+                      onChange={handleRoleChange}
+                      checked={selectedRole === "poster"}
+                    />
+                    Poster
+                  </label>
+                  <label
+                    htmlFor="applicant"
+                    className={`btn btn-ghost w-36 ${
+                      selectedRole === "applicant"
+                        ? "bg-white/10 text-white "
+                        : "text-white/25"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="applicant"
+                      name="role"
+                      value="applicant"
+                      className="radio radio-mark"
+                      onChange={handleRoleChange}
+                      checked={selectedRole === "applicant"}
+                    />
+                    Applicant
+                  </label>
+                </div>
+              </div>
+              <div className="form-control mt-6">
+                <button
+                  className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
+                  flex text-lg font-Inter tracking-wide"
+                >
+                  Reset
+                </button>
+              </div>
+            </form>
           </div>
-          <div className="flex justify-center my-4 ">
-            <button
-              type="submit"
-              className="btn btn-ghost bg-white/20 hover:bg-white text-white hover:text-[#d0333c] font-bold ease-in-out duration-300"
-            >
-              Reset Password
-            </button>
-          </div>
-          <div className="flex justify-center ">
-            <Link
-              to="/login"
-              className="btn btn-ghost text-white hover:bg-white/10 hover:text-[#d0333c] ease-in-out duration-300"
-            >
-              Back to Login
-            </Link>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );
