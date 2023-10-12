@@ -3,10 +3,10 @@ import axios from "axios";
 /* const API_URL = "http://18.169.159.127/api/jobs/";
 const API_ID = "http://18.169.159.127/api/jobs";
 const ALL_API_URL = "http://18.169.159.127/api/jobs/all"; */
-const API_URL = "http://localhost:4000/api/jobs/";
-const API_ID = "http://localhost:4000/api/jobs";
-const ALL_API_URL = "http://localhost:4000/api/jobs/all";
-const STU_URL = "http://localhost:4000/api/students/";
+const API_URL = "/api/jobs/";
+const API_ID = "/api/jobs";
+const ALL_API_URL = "/api/jobs/all";
+const STU_URL = "/api/students/";
 
 // Create new job
 const createJob = async (formData, token) => {

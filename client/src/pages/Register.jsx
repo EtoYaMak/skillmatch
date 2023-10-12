@@ -34,26 +34,52 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //Redux State
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
-  /*  const { student, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.students
-  ); */
+  const {
+    user,
+    isLoading: authIsLoading,
+    isError: authIsError,
+    isSuccess: authIsSuccess,
+    message: authMessage,
+  } = useSelector((state) => state.auth);
+
+  const {
+    student,
+    isLoading: studentsIsLoading,
+    isError: studentsIsError,
+    isSuccess: studentsIsSuccess,
+    message: studentsMessage,
+  } = useSelector((state) => state.students);
+
   //State Hooks
   const [isTCOpen, setTCOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
+    if (authIsError || studentsIsError) {
+      toast.error(authIsError ? authMessage : studentsMessage);
     }
-    if (isSuccess) {
-      toast.success("Please check your email to activate your account");
+    if (studentsIsSuccess || authIsSuccess || user || student) {
       navigate("/");
     }
-  }, [isError, isSuccess, message, navigate]);
+
+    if (authIsSuccess) {
+      dispatch(reset());
+    } else if (studentsIsSuccess) {
+      dispatch(Sreset());
+    }
+  }, [
+    user,
+    student,
+    authIsError,
+    studentsIsError,
+    authIsSuccess,
+    studentsIsSuccess,
+    authMessage,
+    studentsMessage,
+    navigate,
+    dispatch,
+  ]);
 
   //Funcs
   const isPasswordValid = (password) => {
@@ -145,7 +171,7 @@ function Register() {
   };
 
   //
-  if (isLoading) {
+  if (authIsLoading || studentsIsLoading) {
     return <Spinner />;
   }
 

@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { resetPassword } from "../features/auth/authSlice";
-import { resetPasswordS } from "../features/students/studentSlice";
+import { resetPassword, reset } from "../features/auth/authSlice";
+import { resetPasswordS, Sreset } from "../features/students/studentSlice";
 import { toast } from "react-toastify";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 function PasswordResetUserForm() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   //FormData
   const [formData, setFormData] = useState({
     password: "",
@@ -85,6 +87,12 @@ function PasswordResetUserForm() {
     } catch (error) {
       toast.error(error.message);
     }
+    if (type === "1") {
+      dispatch(reset());
+    } else if (type === "2") {
+      dispatch(Sreset());
+    }
+    navigate("/login");
   };
 
   return (

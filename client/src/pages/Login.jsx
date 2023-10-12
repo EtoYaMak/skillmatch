@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login, reset } from "../features/auth/authSlice";
-import { Slogin } from "../features/students/studentSlice";
+import { Slogin, Sreset } from "../features/students/studentSlice";
 import Spinner from "../components/Spinner";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
@@ -20,10 +20,25 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  /*   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
-  const { student } = useSelector((state) => state.students);
+  const { student, isLoading, isError, isSuccess, message } = useSelector((state) => state.students); */
+  const {
+    user,
+    isLoading: authIsLoading,
+    isError: authIsError,
+    isSuccess: authIsSuccess,
+    message: authMessage,
+  } = useSelector((state) => state.auth);
+
+  const {
+    student,
+    isLoading: studentsIsLoading,
+    isError: studentsIsError,
+    isSuccess: studentsIsSuccess,
+    message: studentsMessage,
+  } = useSelector((state) => state.students);
   const [showPassword, setShowPassword] = useState(false);
 
   // Initialize state for selected role
@@ -36,16 +51,31 @@ function Login() {
   };
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
+    if (authIsError || studentsIsError) {
+      toast.error(authIsError ? authMessage : studentsMessage);
     }
 
-    if (isSuccess || user || student) {
+    if (studentsIsSuccess || authIsSuccess || user || student) {
       navigate("/");
     }
 
-    dispatch(reset());
-  }, [user, student, isError, isSuccess, message, navigate, dispatch]);
+    if (authIsSuccess) {
+      dispatch(reset());
+    } else if (studentsIsSuccess) {
+      dispatch(Sreset());
+    }
+  }, [
+    user,
+    student,
+    authIsError,
+    studentsIsError,
+    authIsSuccess,
+    studentsIsSuccess,
+    authMessage,
+    studentsMessage,
+    navigate,
+    dispatch,
+  ]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -57,29 +87,27 @@ function Login() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (selectedRole === "poster") {
-      // Dispatch the action for poster registration
-      const userData = {
-        email,
-        password,
-      };
-      console.log("ROLE TYPE USER");
-      console.log(userData);
-      dispatch(login(userData));
-    } else if (selectedRole === "applicant") {
-      // Dispatch the action for applicant registration
-      const studentData = {
-        email,
-        password,
-      };
-      console.log("ROLE TYPE STUDENT");
-      console.log(studentData);
-      dispatch(Slogin(studentData));
-    } else {
-      toast.error("Please accept the Privacy Policy before registering.");
+    try {
+      if (selectedRole === "poster") {
+        // Dispatch the action for poster registration
+        const userData = {
+          email,
+          password,
+        };
+        dispatch(login(userData));
+      } else if (selectedRole === "applicant") {
+        const studentData = {
+          email,
+          password,
+        };
+        dispatch(Slogin(studentData));
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
-  if (isLoading) {
+
+  if (authIsLoading || studentsIsLoading) {
     return <Spinner />;
   }
 

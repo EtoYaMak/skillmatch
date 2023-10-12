@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import { forgotPassword } from "../features/auth/authSlice";
-import { forgotPasswordS } from "../features/students/studentSlice";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { forgotPassword, reset } from "../features/auth/authSlice";
+import { forgotPasswordS, Sreset } from "../features/students/studentSlice";
 
 function PasswordResetUser() {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // Initialize state for selected role
   const [selectedRole, setSelectedRole] = useState("poster");
 
@@ -32,9 +32,16 @@ function PasswordResetUser() {
       } catch (error) {
         toast.error(error.message);
       }
+
+      if (selectedRole == "poster") {
+        dispatch(reset());
+      } else if (selectedRole == "applicant") {
+        dispatch(Sreset());
+      }
     } else {
       toast.error("Please enter your email to reset password");
     }
+    navigate("/login");
   };
 
   return (

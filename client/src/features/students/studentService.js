@@ -2,7 +2,7 @@
 import axios from "axios";
 
 /* const API_URL = "http://18.169.159.127/api/students/"; */
-const API_URL = "http://localhost:4000/api/students/";
+const API_URL = "/api/students/";
 
 // Register Student
 const Sregister = async (studentData) => {

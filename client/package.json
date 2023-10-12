@@ -14,6 +14,8 @@
     "axios": "^1.4.0",
     "data.js": "^0.12.11",
     "dompurify": "^3.0.5",
+    "dotenv": "^16.3.1",
+    "path-browserify": "^1.0.1",
     "postcss": "^8.4.26",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

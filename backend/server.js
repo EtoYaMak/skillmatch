@@ -7,6 +7,9 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT;
+const IP_ADDRESS = process.env.SERVER_MAIN_ADDRESS;
+const IP_ADDRESS_BACK = process.env.SERVER_ADDRESS;
+const IP_ADDRESS_FRONT = process.env.SERVER_ADDRESS_FRONT;
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 // Middleware
 app.use(express.urlencoded({ extended: false }));
@@ -14,9 +17,9 @@ app.use(express.json());
 
 const corsOptions = {
   origin: [
-    "http://18.169.159.127",
-    "http://localhost:3000", // Frontend URL
-    "http://localhost:4000", // Backend URL
+    `http://${IP_ADDRESS}`, // Address w/o port URL
+    `http://${IP_ADDRESS_FRONT}`, // Frontend URL
+    `http://${IP_ADDRESS_BACK}`, // Backend URL
   ],
 };
 
@@ -76,8 +79,10 @@ if (process.env.NODE_ENV === "production") {
 } else {
   app.get("/", (req, res) => {
     app.use(express.static("../client/public"));
-    res.status(200).json({ message: "Connected to backend" });
+    res.status(200).json({
+      message: `Connected to backend`,
+    });
   });
 }
 // Start the server
-app.listen(port, () => console.log(`Server @ ${port}`));
+app.listen(port, () => console.log(`Server @ ${port} `));

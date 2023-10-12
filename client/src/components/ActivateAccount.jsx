@@ -1,8 +1,12 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { activateAccount } from "../features/auth/authSlice";
-import { activateAccountS } from "../features/students/studentSlice";
+import { activateAccount, logout, reset } from "../features/auth/authSlice";
+import {
+  activateAccountS,
+  Slogout,
+  Sreset,
+} from "../features/students/studentSlice";
 import { toast } from "react-toastify";
 
 const ActivateAccount = () => {
@@ -27,8 +31,16 @@ const ActivateAccount = () => {
         console.log("response: ", response);
         if (response.payload && !response.error) {
           toast.success("Account Activated Successfully");
-          if (type === "2") navigate("/dashboardS");
-          if (type === "1") navigate("/dash");
+          if (type === "2") {
+            dispatch(Slogout());
+            dispatch(Sreset());
+            navigate("/login");
+          }
+          if (type === "1") {
+            dispatch(logout());
+            dispatch(reset());
+            navigate("/login");
+          }
         } else {
           toast.error("Account Activation Failed");
         }

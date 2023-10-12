@@ -32,7 +32,6 @@ const Navbar = () => {
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
-
     navigate("/");
   };
   const handleClick = () => {
