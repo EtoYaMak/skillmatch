@@ -23,7 +23,7 @@ const CARD_OPTIONS = {
     },
   },
 };
-
+const amount = 20000; //IN CENTS $20...     /1000
 export default function PaymentForm() {
   const { user } = useSelector((state) => state.auth);
   const [success, setSuccess] = useState(false);
@@ -62,7 +62,7 @@ export default function PaymentForm() {
         // Confirm the PaymentIntent with the return_url
         const { id } = paymentMethod;
         const response = await axios.post("http://localhost:4000/payment", {
-          amount: 2000,
+          amount: amount,
           id,
           description: user.name,
           return_url: "http://localhost:3000/dash", // Replace with your actual return_url
@@ -82,11 +82,17 @@ export default function PaymentForm() {
   };
 
   return (
-    <div className="mx-auto h-[calc(100vh-45vh)] flex justify-center items-center">
+    <div className="mx-auto flex justify-center items-center">
       {!success ? (
-        <form onSubmit={handleSubmit} className="w-1/2 m-auto p-4">
-          <h1 className="text-white text-center text-5xl my-4 font-Inter h-full p-4">
-            Paying with Stripe
+        <form onSubmit={handleSubmit} className="sm:w-1/2 m-auto p-4 w-full">
+          <h1 className="font-Inter font-bold text-gray-100 text-center text-xl sm:text-5xl p-4">
+            Stripe Checkout
+          </h1>
+          <h1 className="text-center p-4 text-white font-Inter  font-medium text-md">
+            Skillmint Job Listing Payment
+          </h1>
+          <h1 className="text-center p-4 text-white font-Inter  font-medium text-md">
+            Amount: ${amount / 1000}
           </h1>
           <fieldset className="FormGroupPF">
             <div className="FormRowPF">

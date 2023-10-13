@@ -58,7 +58,7 @@ function BrowseJobComponent({ job }) {
             src={job.logo}
             alt={job.company}
             /* className="w-[70px] min-h-[70px] md:w-[70px] md:h-[70px] rounded-full bg-transparent" */
-            className="bg-transparent w-24 h-24 rounded-full object-cover"
+            className=" w-24 h-24 rounded-full object-cover bg-black"
           />
         </Link>
         <div className="ml-5 bg-transparent md:w-4/6 w-fit">
@@ -71,9 +71,7 @@ function BrowseJobComponent({ job }) {
           >
             {job.position}
           </h2>
-          {/*           <h2 className="font-semibold text-xl sm:text-2xl bg-transparent tracking-wide ">
-            {job.position}
-          </h2> */}
+
           <h3
             className={`bg-inherit block cursor-pointer font-semibold text-lg tracking-wider ${
               isHovered

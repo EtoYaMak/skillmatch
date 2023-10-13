@@ -28,7 +28,19 @@ function JobDetailPage({ job }) {
     careerPage,
     description,
     skills,
+    createdAt,
   } = job;
+
+  console.log(logo);
+  // Define a function to format the date
+  const formatCreatedAtDate = (createdAt) => {
+    const createdAtDate = new Date(createdAt);
+    const day = createdAtDate.getDate();
+    const month = createdAtDate.getMonth() + 1; // Months are zero-indexed
+    const year = createdAtDate.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+  const formattedCreatedAt = formatCreatedAtDate(createdAt);
 
   const sanitizedHTML = DOMPurify.sanitize(description, {
     USE_PROFILES: { html: true },
@@ -82,17 +94,9 @@ function JobDetailPage({ job }) {
     }
   };
 
-  /*   const handleApply = async () => {
-    try {
-      await dispatch(applyToJob({ jobId: job._id, studentId: student._id }));
-      console.log("Application submitted successfully");
-    } catch (error) {
-      console.error("Error submitting application:", error);
-    }
-  }; */
   return (
-    <div className="flex justify-center items-center overflow-hidden select-none">
-      <div className="sm:rounded-b-xl p-8  mb-8 md:w-[1024px] max-w-screen-lg bg-black/30 font-Inter">
+    <div className="bg-transparent pb-8">
+      <div className="mx-auto rounded-b-xl p-8   w-full sm:w-[1024px]  bg-black/30 font-Inter">
         <div className="bg-transparent sm:space-y-0 space-y-4 flex flex-col min-w-min justify-between items-center">
           {/* Company and Position */}
           <div className="flex flex-col sm:flex-row items-center justify-center bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
@@ -100,7 +104,7 @@ function JobDetailPage({ job }) {
               <img
                 src={logo}
                 alt={company}
-                className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover"
+                className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover bg-black"
               />
             </div>
 
@@ -111,6 +115,15 @@ function JobDetailPage({ job }) {
               <h3 className="text-2xl font-mono font-semibold bg-inherit text-[#d4d7d7] tracking-widest">
                 {company}
               </h3>
+              <div className=" text-zinc-400 font-Inter flex flex-row justify-end ">
+                Date Posted:
+                <div
+                  className="select-none tooltip tooltip-bottom ml-1"
+                  data-tip="DD/MM/YYYY"
+                >
+                  <button>{formattedCreatedAt}</button>
+                </div>
+              </div>
             </div>
           </div>
           {/* Remote / Hybrid / Onsite */}

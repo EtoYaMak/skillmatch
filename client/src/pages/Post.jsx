@@ -16,15 +16,15 @@ const Post = () => {
   }, [user, navigate]);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 min-h-fit">
-      <div className="pb-1 select-none h-fit pt-10">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
+      <div className="pb-1 select-none pt-10">
         {user ? (
           user.isActive ? (
             <>
               <JobForm />
             </>
           ) : (
-            <div className="text-center h-[50vh] flex justify-center items-center">
+            <div className="text-center min-h-fit flex justify-center items-center">
               <p className="text-2xl text-white tracking-[0.15em]">
                 Your account is not activated. Please activate your account to
                 post a job.
@@ -32,7 +32,7 @@ const Post = () => {
             </div>
           )
         ) : (
-          <div className="text-center h-[50vh] flex justify-center items-center">
+          <div className="text-center flex justify-center items-center">
             <p className="text-2xl text-white tracking-[0.15em]">
               Want to post a job?{" "}
               <Link

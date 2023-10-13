@@ -46,7 +46,7 @@ function JobBoardComponent({ job }) {
   return (
     <div
       className="main grid grid-cols-12 items-center sm:p-3 p-4 my-3 
-      bg-[#1c1f21] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-black/50 duration-500 ease-in-out rounded-md select-none hover:py-6"
+      bg-[#1c1f21] text-[#d0333c] shadow-[2px_4px_1px_0px_#d0333c] hover:bg-black/50 duration-500 ease-in-out rounded-md select-none hover:py-4 "
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -55,14 +55,14 @@ function JobBoardComponent({ job }) {
         className="col-span-12 md:col-span-5 flex items-center bg-transparent cursor-pointer w-full "
         onClick={handleClick}
       >
-        <Link className="">
+        <Link className="min-w-fit">
           <img
             src={job.logo}
             alt={job.company}
-            className="bg-transparent w-24 h-24 rounded-full object-cover"
+            className="bg-black w-24 h-24 rounded-full object-cover"
           />
         </Link>
-        <div className="ml-5 bg-transparent sm:w-5/6 w-fit">
+        <div className="ml-5 bg-transparent md:w-5/6 max-w-fit">
           <h2
             className={`font-semibold text-xl sm:text-2xl bg-transparent tracking-wide text-center sm:text-start  ${
               isHovered
@@ -156,7 +156,6 @@ function JobBoardComponent({ job }) {
       <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end">
         <div className=" p-3 bg-transparent w-fit flex flex-col font-Inter">
           <p
-            class="bg-transparent font-semibold text-lg tracking-normal "
             className={` block cursor-pointer ${
               isHovered
                 ? "bg-transparent font-bold duration-300 ease-in-out text-lg tracking-normal "

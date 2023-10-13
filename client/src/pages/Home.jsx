@@ -7,7 +7,10 @@ import "../assets/slick-carousel/slick/slick.css";
 import "../assets/slick-carousel/slick/slick-theme.css";
 import FeaturedCardComp from "../components/FeaturedCardComp";
 import JobBoardComponent from "../components/JobBoardComponent";
-import { /* Button, */ Icon } from "semantic-ui-react";
+import {
+  HiOutlineChevronDoubleDown,
+  HiOutlineChevronDoubleUp,
+} from "react-icons/hi";
 import "semantic-ui-css/semantic.min.css";
 import "../assets/slider.css";
 import settings from "../components/level_2/slider_settings";
@@ -28,6 +31,10 @@ function Home() {
     job.setting.find((item) => item.name === "remote" && item.value === true)
   );
   const [visibleJobs, setVisibleJobs] = useState(5);
+  const itemsPerPage = 5; // Adjust this to the number of jobs to display per page
+  const sortedJobs = [...jobs].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
 
   const showMoreJobs = () => {
     setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 5);
@@ -37,14 +44,10 @@ function Home() {
     setVisibleJobs((prevVisibleJobs) => prevVisibleJobs - 5);
   };
 
-  const sortedJobs = [...jobs].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
-
   return (
-    <div className="justify-between items-center max-w-[1240px] h-fit px-4 my-5 mx-auto mb-5 bg-inherit">
+    <div className="justify-between items-center max-w-[1240px]  px-4  mx-auto  bg-inherit">
       {/* Conditionally render the message */}
-      <h1 className="text-center font-semibold my-5 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
+      <h1 className="text-center font-semibold py-4 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
         REMOTE
       </h1>
       <div className="Carousel Slider cursor-pointer">
@@ -63,7 +66,7 @@ function Home() {
       <h1 className="text-center font-semibold mt-10 pb-4 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
         RECENT
       </h1>
-      <div className="recent pb-5 ">
+      <div className="recent pb-10 ">
         {sortedJobs.length === 0 ? (
           <p className="text-2xl text-white text-center">No jobs found</p>
         ) : (
@@ -71,26 +74,35 @@ function Home() {
             {sortedJobs.slice(0, visibleJobs).map((job) => (
               <JobBoardComponent job={job} key={job._id} />
             ))}
-            {visibleJobs < sortedJobs.length && (
-              <div className="load-more-btn-container flex justify-center gap-2 py-4">
+
+            {/* Show More and Show Less buttons */}
+            <div className="flex flex-row justify-center items-center gap-10 ">
+              {sortedJobs.length > visibleJobs && (
                 <button
                   onClick={showMoreJobs}
-                  className="primary-btn text-lg font-semibold bg-[#d0333c] hover:bg-[#1c1f21] py-2 px-4 rounded-md text-[#d4d7d7] hover:text-[#d0333c]"
+                  className="duration-200 ease-in-out 
+                   bg-[#d0333c] hover:bg-[#1c1f21] 
+                    text-[#d4d7d7] hover:text-[#d0333c]
+                    w-12 h-12 rounded-full
+                    flex items-center justify-center
+                    "
                 >
-                  Show More
-                  <Icon name="chevron down" className="pl-2 bg-transparent" />
+                  <HiOutlineChevronDoubleDown size={16} />
                 </button>
-                {visibleJobs > 5 && (
-                  <button
-                    onClick={showLessJobs}
-                    className="primary-btn text-lg font-semibold bg-[#d0333c] hover:bg-[#1c1f21] py-2 px-4 rounded-md text-[#d4d7d7] hover:text-[#d0333c]"
-                  >
-                    Show Less
-                    <Icon name="chevron up" className="pl-2 bg-transparent" />
-                  </button>
-                )}
-              </div>
-            )}
+              )}
+              {visibleJobs > itemsPerPage && (
+                <button
+                  onClick={showLessJobs}
+                  className="primary-btn duration-200 ease-in-out
+                   flex items-center justify-center
+                    bg-[#d0333c] hover:bg-[#1c1f21] 
+                     text-[#d4d7d7] hover:text-[#d0333c]
+                     w-12 h-12  rounded-full"
+                >
+                  <HiOutlineChevronDoubleUp size={16} />
+                </button>
+              )}
+            </div>
           </>
         )}
       </div>

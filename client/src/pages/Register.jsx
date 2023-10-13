@@ -379,9 +379,7 @@ function Register() {
                 className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
               >
                 <h1 className="text-white">Already have an account? </h1>
-                <a href="" className="text-white">
-                  Login now
-                </a>
+                <a className="text-white">Login now</a>
               </Link>
             </form>
           </div>

@@ -17,9 +17,9 @@ app.use(express.json());
 
 const corsOptions = {
   origin: [
-    `http://${IP_ADDRESS}`, // Address w/o port URL
-    `http://${IP_ADDRESS_FRONT}`, // Frontend URL
-    `http://${IP_ADDRESS_BACK}`, // Backend URL
+    `${IP_ADDRESS}`, // Address w/o port URL
+    `${IP_ADDRESS_FRONT}`, // Frontend URL
+    `${IP_ADDRESS_BACK}`, // Backend URL
   ],
 };
 

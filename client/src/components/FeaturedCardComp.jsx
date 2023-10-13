@@ -31,7 +31,7 @@ function FeaturedCardComp({ job }) {
             <img
               src={job.logo}
               alt={job.company}
-              className="bg-transparent w-24 h-24 rounded-full object-cover"
+              className="w-24 h-24 rounded-full object-cover bg-black"
             />
           </Link>
           <div className="ml-2 bg-transparent w-3/4">

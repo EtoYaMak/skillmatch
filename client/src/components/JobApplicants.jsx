@@ -167,7 +167,7 @@ function JobApplicants() {
   ) : !job ? (
     <div className="text-white">No job available</div>
   ) : (
-    <div className="w-5/6 min-w-fit mx-auto font-Inter bg-[#25292b] rounded-xl p-4">
+    <div className="w-5/6 min-w-fit mx-auto font-Inter bg-[#25292b] rounded-b-xl p-4 mb-8 min-h-fit h-[40vh]">
       <div className="">
         <h1 className="text-[#d0333c] tracking-wider text-2xl text-center font-Inter font-bold uppercase">
           {job.position}{" "}

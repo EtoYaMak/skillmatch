@@ -148,6 +148,7 @@ function JobForm() {
     setRemote(false);
     setOnsite(false);
     setSkills([]);
+    navigate("/dash");
   };
 
   const startPayment = () => {
@@ -244,8 +245,8 @@ function JobForm() {
           method="post"
           encType="multipart/form-data"
         >
-          <section className="text-center tracking-wider font-Inter">
-            <h1 className="flex-wrap max-[520px]:text-3xl text-4xl font-extrabold text-[#d4d7d7] w-full">
+          <section className="text-center tracking-wider font-Inter bg-black/25 rounded-xl p-3 w-fit mx-auto">
+            <h1 className="flex-wrap text-xl sm:text-3xl font-extrabold text-[#d4d7d7] w-full">
               Welcome
               <span className="text-[#d0333c]/80 w-full"> {user.name}</span>
             </h1>
@@ -255,13 +256,13 @@ function JobForm() {
                 Make a payment via Stripe
               </p>
             ) : (
-              <p className="text-xl pt-2 pb-4 uppercase text-white font-semibold">
+              <p className="text-md sm:text-xl pt-2 pb-4 uppercase text-white font-semibold">
                 You can now{" "}
-                <span className="px-1 text-xl text-[#d0333c]/80 underline decoration-white underline-offset-4 font-bold ">
+                <span className="px-1 text-md sm:text-xl text-[#d0333c]/80 underline decoration-white underline-offset-4 font-bold ">
                   post
                 </span>
                 a job. Use the{" "}
-                <span className="px-1 text-xl text-[#d0333c]/80 underline decoration-white underline-offset-4 font-bold ">
+                <span className="px-1 text-md sm:text-xl text-[#d0333c]/80 underline decoration-white underline-offset-4 font-bold ">
                   form
                 </span>{" "}
                 below.
@@ -574,7 +575,7 @@ function JobForm() {
           )}
 
           {/* SUBMIT */}
-          <div className="form-group flex justify-center items-center bg-transparent ">
+          <div className="form-group flex justify-center items-center bg-transparent py-10 ">
             {paymentSuccess ? (
               <button
                 className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-lg uppercase transition-colors duration-300 ease-in-out"

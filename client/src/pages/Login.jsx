@@ -235,9 +235,7 @@ function Login() {
                 className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
               >
                 <h1 className="text-white">Not registered? </h1>
-                <a href="" className="text-white">
-                  Register now
-                </a>
+                <a className="text-white">Register now</a>
               </Link>
             </form>
           </div>

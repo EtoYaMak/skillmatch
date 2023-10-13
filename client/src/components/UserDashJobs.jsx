@@ -5,7 +5,7 @@ import { deleteJob, getMyJobs } from "../features/jobs/jobSlice";
 import { FaClock, FaCog, FaTrash, FaTimes } from "react-icons/fa";
 import { FaEdit, FaUsers } from "react-icons/fa";
 
-function UserDashJobs({ user, jobs }) {
+function UserDashJobs({ user, jobs, createdAt }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
@@ -55,6 +55,7 @@ function UserDashJobs({ user, jobs }) {
     };
   }, []);
   const currentDate = new Date();
+
   return (
     <div className="flex bg-transparent justify-center p-4">
       <div className="bg-inherit w-full max-w-[1240px] py-6">
@@ -70,7 +71,7 @@ function UserDashJobs({ user, jobs }) {
               {jobs.map((job) => (
                 <div
                   key={job._id}
-                  className="Main Tile w-full bg-black/40 hover:bg-black/90 rounded-lg my-2"
+                  className="Main Tile w-full bg-black/40 hover:bg-black/50 rounded-lg my-2"
                 >
                   <div
                     ref={dropdownRef}
@@ -106,65 +107,90 @@ function UserDashJobs({ user, jobs }) {
 
                     <div className="flex w-full md:w-1/2 justify-around md:justify-evenly items-center bg-transparent">
                       {/* TIME */}
-                      <div className="ThirdTwo flex flex-row md:flex-row items-center space-x-2 bg-transparent">
+                      <div className="ThirdTwo flex flex-row md:flex-col items-center space-x-2 bg-transparent select-none  font-Inter gap-1">
                         <FaClock
-                          className="text-[#d4d7d7] bg-inherit"
-                          size={24}
+                          className="bg-inherit text-[#d4d7d7]  hover:text-[#d0333c] duration-200 ease-in-out"
+                          size={14}
                         />
-                        <span className="text-lg text-[#d4d7d7] bg-inherit">
+                        <span className="text-md text-[#d4d7d7] hover:text-[#d0333c] bg-inherit duration-200 ease-in-out">
                           {calculateTimeSinceJobWasPosted(
                             currentDate,
                             job.createdAt
                           )}
                         </span>
+                        <span className="text-sm text-zinc-400 hover:text-[#d0333c] bg-inherit duration-200 ease-in-out">
+                          {formatCreatedAtDate(job.createdAt)}
+                        </span>
                       </div>
                       {/* TIME END*/}
 
                       {/* COG WHEEL */}
-                      <div className="ThirdThree flex items-center bg-inherit pr-5">
+                      <div className="ThirdThree flex flex-col items-center bg-inherit gap-1">
+                        <h1 className="text-gray-400 font-Inter pointer-events-none opacity-0">
+                          Settings
+                        </h1>
                         <button
-                          className="cog-wheel bg-[#aba6a6]/80 hover:bg-[#d0333c]  rounded-full w-12 h-12 flex items-center justify-center "
+                          className="cog-wheel hover:bg-[#d0333c] duration-300 ease-in-out rounded-full w-12 h-12 flex items-center justify-center "
                           onClick={() => toggleDropdown(job._id)}
                         >
                           <FaCog
                             size={24}
-                            className="text-[#fff] bg-transparent pointer-events-none"
+                            className="text-[#fff] bg-transparent pointer-events-non"
                           />
                         </button>
                         {dropdownOpen[job._id] && (
-                          <div className="dropdown-menu absolute mt-[10em] sm:ml-[1em]  bg-[#1c1f21]/70 backdrop-blur-sm rounded shadow-sm  text-white p-2 animate-fadeIn ">
-                            <button
-                              className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
-                              onClick={() => handleEdit(job._id)}
+                          <div className="dropdown-menu absolute mt-20 sm:ml-[1em]  bg-[#1c1f21]/70 backdrop-blur-sm rounded-xl shadow-sm  text-white p-2 animate-fadeIn">
+                            <ul
+                              tabIndex={0}
+                              className="dropdown-content z-[1] menu p-2  rounded-box w-fit font-Inter"
                             >
-                              <FaEdit className="mr-2 w-5 h-5 bg-transparent" />
-                              Edit
-                            </button>
-                            <button
-                              className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
-                              onClick={() => handleDeleteOption(job._id)}
-                            >
-                              <FaTrash className="mr-2 w-5 h-5 bg-transparent" />
-                              Delete
-                            </button>
-
-                            <button
-                              className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
-                              onClick={() => handleCloseOption(job._id)}
-                            >
-                              <FaTimes className="mr-2 w-5 h-5 bg-transparent" />
-                              Close
-                            </button>
+                              <li>
+                                <a
+                                  //onClick={() => handleEdit(job._id)}
+                                  //className="text-white hover:text-[#d0333c]"
+                                  className="text-gray-500 hover:text-gray-500 hover:cursor-not-allowed hover:bg-transparent"
+                                >
+                                  <FaEdit className="mr-2 w-5 h-5 bg-transparent" />
+                                  Edit
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  onClick={() => handleDeleteOption(job._id)}
+                                  className="text-white hover:text-[#d0333c]"
+                                >
+                                  <FaTrash className="mr-2 w-5 h-5 bg-transparent" />
+                                  Delete
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  onClick={() => handleCloseOption(job._id)}
+                                  className="text-white hover:text-[#d0333c]"
+                                >
+                                  <FaTimes className="mr-2 w-5 h-5 bg-transparent" />
+                                  Close
+                                </a>
+                              </li>
+                            </ul>
                           </div>
                         )}
                       </div>
                       {/* COG WHEEL END */}
-                      <Link
-                        to={`/jobapplicants/${job._id}`}
-                        className="bg-[#aba6a6]/80 hover:bg-[#d0333c] rounded-full w-12 h-12 flex items-center justify-center ml-2"
-                      >
-                        <FaUsers className="text-[#fff] bg-transparent pointer-events-none" />
-                      </Link>
+                      <div className="flex flex-col justify-center items-center gap-1">
+                        <h1 className="text-gray-400 font-Inter pointer-events-none">
+                          Applicants
+                        </h1>
+                        <Link
+                          to={`/jobapplicants/${job._id}`}
+                          className=" hover:bg-[#d0333c] duration-300 ease-in-out rounded-full w-12 h-12 flex items-center justify-center "
+                        >
+                          <FaUsers
+                            size={24}
+                            className="text-[#fff] bg-transparent pointer-events-none"
+                          />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -173,7 +199,7 @@ function UserDashJobs({ user, jobs }) {
           </>
         ) : (
           <>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-600 text-center">
               You have not posted any jobs.
             </p>
           </>
@@ -205,13 +231,55 @@ function calculateTimeSinceJobWasPosted(currentDate, createdAt) {
   );
 
   if (weeksSinceJobWasPosted > 0) {
-    return `${weeksSinceJobWasPosted} Weeks ago`;
+    return `${weeksSinceJobWasPosted} Week${
+      weeksSinceJobWasPosted > 1 ? "s" : ""
+    } ago`;
   } else if (daysSinceJobWasPosted > 0) {
-    return `${daysSinceJobWasPosted} Days ago`;
+    return `${daysSinceJobWasPosted} Day${
+      daysSinceJobWasPosted > 1 ? "s" : ""
+    } ago`;
   } else if (hoursSinceJobWasPosted > 0) {
-    return `${hoursSinceJobWasPosted} hours ago`;
+    return `${hoursSinceJobWasPosted} Hour${
+      hoursSinceJobWasPosted > 1 ? "s" : ""
+    } ago`;
   } else {
-    return `${minutesSinceJobWasPosted} minutes ago`;
+    return `${minutesSinceJobWasPosted} Minute${
+      minutesSinceJobWasPosted > 1 ? "s" : ""
+    } ago`;
   }
 }
+
+// Define a function to format the date
+const formatCreatedAtDate = (createdAt) => {
+  const createdAtDate = new Date(createdAt);
+  const day = createdAtDate.getDate();
+  const month = createdAtDate.getMonth() + 1; // Months are zero-indexed
+  const year = createdAtDate.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 export default UserDashJobs;
+{
+  /*                             <button
+                              className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
+                              onClick={() => handleEdit(job._id)}
+                            >
+                              <FaEdit className="mr-2 w-5 h-5 bg-transparent" />
+                              Edit
+                            </button>
+                            <button
+                              className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
+                              onClick={() => handleDeleteOption(job._id)}
+                            >
+                              <FaTrash className="mr-2 w-5 h-5 bg-transparent" />
+                              Delete
+                            </button>
+
+                            <button
+                              className="dropdown-option flex items-center rounded-md py-2 px-4 w-full text-[#fff] hover:bg-black/80 hover:text-[#d0333c] hover:font-semibold transition duration-300"
+                              onClick={() => handleCloseOption(job._id)}
+                            >
+                              <FaTimes className="mr-2 w-5 h-5 bg-transparent" />
+                              Close
+                            </button> */
+}

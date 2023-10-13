@@ -36,6 +36,8 @@ import { useSelector, useDispatch } from "react-redux";
 import PaymentForm from "./components/PaymentForm";
 import StripeContainer from "./components/StripeContainer";
 
+import Footer from "./components/Footer";
+
 function App() {
   const [message, setMessage] = useState("");
 
@@ -75,43 +77,50 @@ function App() {
   }, [user, student]);
 
   return (
-    <div className="App bg-[#2c3033] h-fit">
-      <Navbar />
-      <ActivationModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        type={modalType}
-      />
+    <>
+      <div className="App bg-[#2c3033] min-h-screen">
+        <Navbar />
+        <ActivationModal
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          type={modalType}
+        />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/browse" element={<Browse />} />
-        <Route path="/post" element={<Post />} />
-        <Route path="/contact" element={<Contact />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/browse" element={<Browse />} />
+          <Route path="/post" element={<Post />} />
+          <Route path="/contact" element={<Contact />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/password-reset" element={<PasswordResetUser />} />
-        <Route path="/reset/:type/:token" element={<PasswordResetUserForm />} />
-        <Route path="/activate/:type/:token" element={<ActivateAccount />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/password-reset" element={<PasswordResetUser />} />
+          <Route
+            path="/reset/:type/:token"
+            element={<PasswordResetUserForm />}
+          />
+          <Route path="/activate/:type/:token" element={<ActivateAccount />} />
 
-        <Route path="/loginS" element={<StudentLogin />} />
-        <Route path="/registerS" element={<StudentRegister />} />
+          <Route path="/loginS" element={<StudentLogin />} />
+          <Route path="/registerS" element={<StudentRegister />} />
 
-        <Route path="/dash" element={<UserDash />} />
-        <Route path="/userjobs" element={<UserDashJobs />} />
-        <Route path="/dashboardS" element={<StudentDash />} />
+          <Route path="/dash" element={<UserDash />} />
+          <Route path="/userjobs" element={<UserDashJobs />} />
+          <Route path="/dashboardS" element={<StudentDash />} />
 
-        <Route path="/myapplications" element={<StudentApplications />} />
-        <Route path="/jobapplicants/:jobId" element={<JobApplicants />} />
+          <Route path="/myapplications" element={<StudentApplications />} />
+          <Route path="/jobapplicants/:jobId" element={<JobApplicants />} />
 
-        <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
-        <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
-        <Route path="/payment" element={<StripeContainer />} />
-      </Routes>
-
-      <ToastContainer />
-    </div>
+          <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
+          <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
+          <Route path="/payment" element={<StripeContainer />} />
+        </Routes>
+        <ToastContainer />
+      </div>
+      <div className="bg-[#2c3033]">
+        <Footer />
+      </div>
+    </>
   );
 }
 
