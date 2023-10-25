@@ -6,8 +6,161 @@ import {
   updateProfile,
   deleteProfile,
 } from "../features/profiles/profileSlice";
+import { useNavigate } from "react-router-dom";
 
+// Separate component for the profile form
+function ProfileForm({ handleView, handleDownload, profile }) {
+  return (
+    <form
+      className="space-y-4 px-4 sm:px-0 sm:w-2/4 select-none mx-auto font-Inter"
+      encType="multipart/form-data"
+    >
+      {/* Profile form content */}
+      {/* EXISTING PROFILE VIEW */}
+      <div className="space-y-1 ">
+        <label className="text-xl text-white ml-2">University</label>
+        <input
+          type="text"
+          name="University"
+          className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+          value={profile.University}
+          disabled
+        />
+      </div>
+      <div className="space-y-1 ">
+        <label className="text-xl text-white ml-2">Degree</label>
+        <select
+          id="Degree"
+          name="Degree"
+          className="select select-disabled border-2 border-[#d0333c] text-white/90 text-xl w-full "
+          value={profile.Degree}
+          disabled
+        >
+          <option value="BSc">BSc</option>
+          <option value="MSc">MSc</option>
+          <option value="PhD">PhD</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div className="space-y-1 ">
+        <label className="text-xl text-white ml-2">Degree Title</label>
+        <input
+          type="text"
+          name="DegreeTitle"
+          value={profile.DegreeTitle}
+          className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+          disabled
+        />
+      </div>
+      <div className="space-y-2 flex flex-col ">
+        {/*  <label htmlFor="cv" className="text-xl text-white ml-2">
+              CV
+            </label>
+                        {fileNameWithoutPrefix && (
+              <p className="text-lg text-white/60 w-full border-t border-[#ff0] select-none">
+                {fileNameWithoutPrefix}
+              </p>
+            )} */}
+      </div>
+      <div className="flex flex-row space-x-4 w-full justify-center font-Inter text-lg">
+        {/* If you prefer a button instead of a link */}
+        <button
+          onClick={handleView}
+          className="btn btn-outline text-white w-1/3 rounded-sm hover:bg-white"
+        >
+          View CV
+        </button>
+        <button
+          onClick={handleDownload}
+          className="btn btn-outline text-white w-1/3 rounded-sm hover:bg-white"
+        >
+          Download CV
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// Separate component for creating a new profile
+function CreateNewProfileForm({
+  formData,
+  handleSubmitNew,
+  handleFileChange,
+  setFormData,
+}) {
+  return (
+    <form
+      className="space-y-4 px-4 sm:px-0 w-full sm:w-2/4 select-none mx-auto font-Inter"
+      encType="multipart/form-data"
+    >
+      {/* Create new profile form content */}
+
+      <div className="space-y-1">
+        <label className="text-xl text-white ml-1">University</label>
+        <input
+          type="text"
+          name="University"
+          className="input input-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full "
+          value={formData.University}
+          onChange={(e) =>
+            setFormData({ ...formData, University: e.target.value })
+          }
+        />
+      </div>
+      <div className="space-y-1">
+        <label className="text-xl text-white ml-1">Degree</label>
+        <select
+          id="Degree"
+          name="Degree"
+          className="select select-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full"
+          value={formData.Degree}
+          onChange={(e) => setFormData({ ...formData, Degree: e.target.value })}
+        >
+          <option value="BSc">BSc</option>
+          <option value="MSc">MSc</option>
+          <option value="PhD">PhD</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div className="space-y-1">
+        <label className="text-xl text-white ml-1">Degree Title</label>
+        <input
+          type="text"
+          name="DegreeTitle"
+          value={formData.DegreeTitle}
+          className="input input-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full "
+          onChange={(e) =>
+            setFormData({ ...formData, DegreeTitle: e.target.value })
+          }
+        />
+      </div>
+      <div className="space-y-1">
+        <label htmlFor="cv" className="block text-xl text-white ml-1">
+          CV
+        </label>
+        <input
+          type="file"
+          id="cv"
+          name="cv"
+          onChange={handleFileChange}
+          className="file-input file-input-bordered border-2 hover:text-[#d0333c] border-[#d0333c] text-white/80 "
+        />
+      </div>
+
+      <div className="flex justify-center">
+        <button
+          onClick={handleSubmitNew}
+          className="btn btn-block bg-black/40 text-white text-lg hover:bg-[#d0333c] border-none"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  );
+}
+//
 function StudeProfile() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   // Get the profile data from the Redux store
   const profile = useSelector((state) => state.profiles.profiles);
@@ -22,6 +175,51 @@ function StudeProfile() {
   const [activeForm, setActiveForm] = useState("profile");
   const [isChecked, setIsChecked] = useState(false);
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      await dispatch(getProfile());
+    };
+    fetchProfile();
+  }, [dispatch]);
+  const profileExists = profile && Object.keys(profile).length > 0;
+  console.log(profile.University);
+  /*   useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const fetchedProfile = await dispatch(getProfile()).unwrap();
+
+        if (fetchedProfile && fetchedProfile.length > 0) {
+          // Profile exists
+          console.log("Profile Found in useEffect: ", profile.University);
+          setProfileExists(true);
+          console.log("setProfileExists should be TRUE: ", profileExists);
+          const profileData = fetchedProfile[0];
+          setFormData({
+            Degree: profileData.Degree,
+            DegreeTitle: profileData.DegreeTitle,
+            University: profileData.University,
+            cv: profileData.cv,
+          });
+        } else {
+          // No profile exists
+          setFormData({
+            Degree: "BSc",
+            DegreeTitle: "",
+            University: "",
+            cv: null,
+          });
+          console.log("No Profile Found in useEffect: ", profile.University);
+          setProfileExists(false);
+          console.log("setProfileExists should be FALSE: ", profileExists);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, [dispatch]);
+ */
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -69,8 +267,10 @@ function StudeProfile() {
           // Optionally, you can show an error message to the user
         });
     }
+    // Reload the page
+    window.location.reload();
   };
-  useEffect(() => {
+  /*   useEffect(() => {
     const fetchProfile = async () => {
       try {
         // Dispatch the getProfile thunk to fetch the profile data
@@ -100,17 +300,28 @@ function StudeProfile() {
     };
 
     fetchProfile();
-  }, [dispatch]);
+  }, [dispatch]); */
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, cv: file });
   };
   // Function to handle file view
-  const handleView = () => {
+  /*   const handleView = () => {
     if (fileFromDatabase) {
       const fileURL = process.env.PUBLIC_URL + fileFromDatabase;
       window.open(fileURL, "_blank");
+    }
+  }; */
+  // Function to handle file view
+  const handleView = () => {
+    if (fileFromDatabase) {
+      const fileURL = process.env.PUBLIC_URL + fileFromDatabase;
+      // Create an anchor element to open the file in a new tab
+      const link = document.createElement("a");
+      link.href = fileURL;
+      link.target = "_blank"; // Open in a new tab
+      link.click(); // Trigger the click event
     }
   };
 
@@ -125,11 +336,13 @@ function StudeProfile() {
     document.body.removeChild(link);
   };
 
-  const fileFromDatabase = process.env.PUBLIC_URL + formData.cv; // Replace this with the actual path fetched from the database
+  const fileFromDatabase = process.env.PUBLIC_URL + profile.cv; // Replace this with the actual path fetched from the database
 
   const handleSubmitNew = (e) => {
     e.preventDefault();
     dispatch(createProfile(formData));
+    // Reload the page
+    window.location.reload();
   };
 
   const handleSubmitUpdate = async (e) => {
@@ -178,234 +391,119 @@ function StudeProfile() {
           Delete Profile
         </button>
       </div>
-      {activeForm === "profile" && !profile && (
-        <form
-          className="space-y-4 px-4 sm:px-0 w-full sm:w-2/4 select-none mx-auto font-Inter"
-          encType="multipart/form-data"
-        >
-          {/* NO EXISTING PROFILE // CREATE NEW PROFILE */}
-          <div className="space-y-1">
-            <label className="text-xl text-white ml-1">University</label>
-            <input
-              type="text"
-              name="University"
-              className="input input-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              value={formData.University}
-              onChange={(e) =>
-                setFormData({ ...formData, University: e.target.value })
-              }
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="text-xl text-white ml-1">Degree</label>
-            <select
-              id="Degree"
-              name="Degree"
-              className="select select-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full"
-              value={formData.Degree}
-              onChange={(e) =>
-                setFormData({ ...formData, Degree: e.target.value })
-              }
-            >
-              <option value="BSc">BSc</option>
-              <option value="MSc">MSc</option>
-              <option value="PhD">PhD</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div className="space-y-1">
-            <label className="text-xl text-white ml-1">Degree Title</label>
-            <input
-              type="text"
-              name="DegreeTitle"
-              value={formData.DegreeTitle}
-              className="input input-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              onChange={(e) =>
-                setFormData({ ...formData, DegreeTitle: e.target.value })
-              }
-            />
-          </div>
-          <div className="space-y-1">
-            <label htmlFor="cv" className="block text-xl text-white ml-1">
-              CV
-            </label>
-            <input
-              type="file"
-              id="cv"
-              name="cv"
-              onChange={handleFileChange}
-              className="file-input file-input-bordered border-2 hover:text-[#d0333c] border-[#d0333c] text-white/80 "
-            />
-          </div>
-
-          <div className="flex justify-center">
-            <button
-              onClick={handleSubmitNew}
-              className="btn btn-block bg-black/40 text-white text-lg hover:bg-[#d0333c] border-none"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      )}
-      {activeForm === "profile" && profile && (
-        <form
-          className="space-y-4 px-4 sm:px-0 sm:w-2/4 select-none mx-auto font-Inter"
-          encType="multipart/form-data"
-        >
-          {/* EXISTING PROFILE VIEW */}
-          <div className="space-y-1 ">
-            <label className="text-xl text-white ml-2">University</label>
-            <input
-              type="text"
-              name="University"
-              className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              value={formData.University}
-              disabled
-            />
-          </div>
-          <div className="space-y-1 ">
-            <label className="text-xl text-white ml-2">Degree</label>
-            <select
-              id="Degree"
-              name="Degree"
-              className="select select-disabled border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              value={formData.Degree}
-              disabled
-            >
-              <option value="BSc">BSc</option>
-              <option value="MSc">MSc</option>
-              <option value="PhD">PhD</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div className="space-y-1 ">
-            <label className="text-xl text-white ml-2">Degree Title</label>
-            <input
-              type="text"
-              name="DegreeTitle"
-              value={formData.DegreeTitle}
-              className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              disabled
-            />
-          </div>
-          <div className="space-y-2 flex flex-col ">
-            {/*  <label htmlFor="cv" className="text-xl text-white ml-2">
-              CV
-            </label>
-                        {fileNameWithoutPrefix && (
-              <p className="text-lg text-white/60 w-full border-t border-[#ff0] select-none">
-                {fileNameWithoutPrefix}
-              </p>
-            )} */}
-          </div>
-          <div className="flex flex-row space-x-4 w-full justify-center font-Inter text-lg">
-            {/* If you prefer a button instead of a link */}
-            <button
-              onClick={handleView}
-              className="btn btn-outline text-white w-1/3 rounded-sm hover:bg-white"
-            >
-              View CV
-            </button>
-            <button
-              onClick={handleDownload}
-              className="btn btn-outline text-white w-1/3 rounded-sm hover:bg-white"
-            >
-              Download CV
-            </button>
-          </div>
-        </form>
-      )}
-      {activeForm === "updateProfile" && profile && (
+      {activeForm === "profile" && !profileExists ? (
+        <CreateNewProfileForm
+          formData={formData}
+          handleSubmitNew={handleSubmitNew}
+          handleFileChange={handleFileChange}
+          setFormData={setFormData}
+        />
+      ) : activeForm === "profile" && profileExists ? (
+        <ProfileForm
+          formData={formData}
+          handleView={handleView}
+          handleDownload={handleDownload}
+          profile={profile}
+        />
+      ) : activeForm === "updateProfile" && profileExists ? (
         <form
           onSubmit={handleSubmitUpdate}
           className="space-y-4 px-4 sm:px-0 w-full sm:w-2/4 select-none mx-auto font-Inter"
           encType="multipart/form-data"
         >
-          {/* UPDATE EXISTING PROFILE */}
-          <div className="space-y-1">
-            <label className="text-xl text-white ml-2">University</label>
-            <input
-              type="text"
-              name="University"
-              className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              value={formData.University}
-              onChange={(e) =>
-                setFormData({ ...formData, University: e.target.value })
-              }
-            />
-          </div>
-          <div className="space-y-1">
-            <label className="text-xl text-white ml-2">Degree</label>
-            <select
-              id="Degree"
-              name="Degree"
-              className="select select-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              value={formData.Degree}
-              onChange={(e) =>
-                setFormData({ ...formData, Degree: e.target.value })
-              }
-            >
-              <option value="BSc">BSc</option>
-              <option value="MSc">MSc</option>
-              <option value="PhD">PhD</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div className="space-y-1">
-            <label className="text-xl text-white ml-2">Degree Title</label>
-            <input
-              type="text"
-              name="DegreeTitle"
-              value={formData.DegreeTitle}
-              className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-              onChange={(e) =>
-                setFormData({ ...formData, DegreeTitle: e.target.value })
-              }
-            />
-          </div>
-          <div className="flex justify-center font-Inter">
-            <button
-              type="submit"
-              className="btn btn-block bg-black/40 text-white text-lg hover:bg-[#d0333c] border-none"
-            >
-              Update Profile
-            </button>
-          </div>
-        </form>
-      )}
-      {activeForm === "deleteProfile" && (
-        <div className="mx-auto flex flex-col items-center justify-evenly space-y-4">
-          <div className="mx-auto flex flex-col items-center justify-evenly space-y-4 ">
-            <h1 className="text-2xl text-white">
-              Are you sure you want do delete your profile?
-            </h1>
-            <span className="flex flex-row items-baseline space-x-4">
+          {/* Your Update Profile Form Content */}
+          <form
+            onSubmit={handleSubmitUpdate}
+            className="space-y-4 px-4 sm:px-0 w-full sm:w-2/4 select-none mx-auto font-Inter"
+            encType="multipart/form-data"
+          >
+            {/* UPDATE EXISTING PROFILE */}
+            <div className="space-y-1">
+              <label className="text-xl text-white ml-2">University</label>
               <input
-                type="checkbox"
-                className="checkbox checkbox-warning"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
+                type="text"
+                name="University"
+                className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+                placeholder={profile.University}
+                onChange={(e) =>
+                  setFormData({ ...formData, University: e.target.value })
+                }
               />
-              <p className="text-red-600 font-bold text-lg">
-                I agree and understand this action!
-              </p>
-            </span>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xl text-white ml-2">Degree</label>
+              <select
+                id="Degree"
+                name="Degree"
+                className="select select-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+                placeholder={profile.Degree}
+                onChange={(e) =>
+                  setFormData({ ...formData, Degree: e.target.value })
+                }
+              >
+                <option value="BSc">BSc</option>
+                <option value="MSc">MSc</option>
+                <option value="PhD">PhD</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div className="space-y-1">
+              <label className="text-xl text-white ml-2">Degree Title</label>
+              <input
+                type="text"
+                name="DegreeTitle"
+                placeholder={profile.DegreeTitle}
+                className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+                onChange={(e) =>
+                  setFormData({ ...formData, DegreeTitle: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex justify-center font-Inter">
+              <button
+                type="submit"
+                className="btn btn-block bg-black/40 text-white text-lg hover:bg-[#d0333c] border-none"
+              >
+                Update Profile
+              </button>
+            </div>
+          </form>
+        </form>
+      ) : activeForm === "deleteProfile" ? (
+        <div className="mx-auto flex flex-col items-center justify-evenly space-y-4">
+          {/* Your Delete Profile Form Content */}
+          <div className="mx-auto flex flex-col items-center justify-evenly space-y-4">
+            <div className="mx-auto flex flex-col items-center justify-evenly space-y-4 ">
+              <h1 className="text-2xl text-white">
+                Are you sure you want do delete your profile?
+              </h1>
+              <span className="flex flex-row items-baseline space-x-4">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-warning"
+                  checked={isChecked}
+                  onChange={handleCheckboxChange}
+                />
+                <p className="text-red-600 font-bold text-lg">
+                  I agree and understand this action!
+                </p>
+              </span>
 
-            <button
-              className={`btn  ${
-                isChecked
-                  ? " bg-black/80 hover:bg-[#d0333c] text-white"
-                  : " text-white/20"
-              } text-lg btn-wide border-none`}
-              onClick={handleDeleteProfile}
-              disabled={!isChecked}
-            >
-              Delete Profile
-            </button>
+              <button
+                className={`btn  ${
+                  isChecked
+                    ? " bg-black/80 hover:bg-[#d0333c] text-white"
+                    : " text-white/20"
+                } text-lg btn-wide border-none`}
+                onClick={handleDeleteProfile}
+                disabled={!isChecked}
+              >
+                Delete Profile
+              </button>
+            </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

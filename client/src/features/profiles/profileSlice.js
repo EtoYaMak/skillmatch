@@ -13,7 +13,6 @@ export const createProfile = createAsyncThunk(
   "profiles/create",
   async (formData, thunkAPI) => {
     try {
-      console.table(formData);
       const token = thunkAPI.getState().students.student.token;
       return await profileService.createProfile(formData, token);
     } catch (error) {
@@ -113,6 +112,7 @@ export const profileSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createProfile.fulfilled, (state, action) => {
+        console.log("Fulfilled action payload:", action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         state.profiles.push(action.payload);
@@ -135,7 +135,7 @@ export const profileSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.profiles = null;
+        state.profiles = [];
       })
       .addCase(deleteProfile.pending, (state) => {
         state.isLoading = true;

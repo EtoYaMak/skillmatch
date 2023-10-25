@@ -11,7 +11,6 @@ const createProfile = async (formData, token) => {
     },
   };
   const response = await axios.post(API_URL, formData, config);
-  console.table(...formData);
   return response.data;
 };
 

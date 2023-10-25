@@ -13,8 +13,10 @@ const getProfile = asyncHandler(async (req, res) => {
   const profile = await studentForm.findOne({ student: studentId });
 
   if (!profile) {
-    res.status(404);
-    throw new Error("Student profile not found");
+    // Instead of just sending a 404 status, add a custom property to the response
+    return res
+      .status(404)
+      .json({ message: "No profile found for the student" });
   }
 
   res.json(profile);
@@ -80,14 +82,6 @@ const setSForm = asyncHandler(async (req, res) => {
   });
 
   fileUpload.single("cv")(req, res, async (err) => {
-    //if (err) {
-    // Handle any errors that occurred while parsing the form data
-    // throw new Error("No File was selected!");
-    /*       if (!filename) {
-        
-      } */
-    /* return res.status(500).send(err); */
-    // }
     if (err) {
       // Handle any errors that occurred while parsing the form data
       if (!filename) {
@@ -190,11 +184,16 @@ const deleteProfile = asyncHandler(async (req, res) => {
     res.status(403);
     throw new Error("Not authorized to update this student form");
   }
+  // Delete the linked file (CV)
+  const cvFilePath = path.join(DIR, existingProfile.cv.substr(13));
+  fs.unlink(cvFilePath, (err) => {
+    if (err) {
+      console.error(`Error deleting CV file: ${err}`);
+    }
+  });
   await studentFormModel.findByIdAndDelete(req.params.id);
 
   res.status(200).json({ id: req.params.id });
-
-  console.error("Testing deleteProfile");
 });
 
 module.exports = {
