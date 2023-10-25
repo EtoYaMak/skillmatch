@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const studentForm = require("../models/studentFormModel");
 const Student = require("../models/studentModel");
 const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const studentFormModel = require("../models/studentFormModel");
 const multer = require("multer");
 const path = require("path");
@@ -42,72 +44,82 @@ const getStudentProfileForJobPoster = asyncHandler(async (req, res) => {
 //
 
 const setSForm = asyncHandler(async (req, res) => {
-  // MULTER
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, DIR);
-    },
-    filename: function (req, file, cb) {
-      const fileNameWithoutExtension = path.parse(file.originalname).name;
-      const uniqueSuffix =
-        Date.now() +
-        "-" +
-        Math.round(Math.random() * 1e9) +
-        path.extname(file.originalname);
-      cb(
-        null,
-        file.fieldname + "-" + fileNameWithoutExtension + "-" + uniqueSuffix
-      );
-    },
-  });
-
-  const fileFilter = (req, file, cb) => {
-    // Only allow certain file types
-    if (
-      file.mimetype === "application/pdf" ||
-      file.mimetype === "application/docx"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-    }
-  };
-
-  const fileUpload = multer({
-    storage: storage,
-    limits: {
-      fileSize: 1024 * 1024 * 5, // Limit file size to 5MB
-    },
-    fileFilter,
-  });
-
-  fileUpload.single("cv")(req, res, async (err) => {
-    if (err) {
-      // Handle any errors that occurred while parsing the form data
-      if (!filename) {
-        throw new Error("No File was selected!");
-      }
-      return res.status(500).send(err);
-    }
-
-    // Extract form data
-    const student = req.student.id;
-    const studentName = req.student.name;
-    const cv = "/submissions/" + req.file.filename;
-    const { University, Degree, DegreeTitle } = req.body;
-
-    // Create Profile
-    const sProfile = await studentForm.create({
-      student,
-      studentName,
-      University,
-      Degree,
-      DegreeTitle,
-      cv,
+  try {
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, DIR);
+      },
+      filename: function (req, file, cb) {
+        const fileNameWithoutExtension = path.parse(file.originalname).name;
+        const uniqueSuffix =
+          Date.now() +
+          "-" +
+          Math.round(Math.random() * 1e9) +
+          path.extname(file.originalname);
+        cb(
+          null,
+          file.fieldname + "-" + fileNameWithoutExtension + "-" + uniqueSuffix
+        );
+      },
     });
 
-    res.status(200).json(sProfile);
-  });
+    const fileFilter = (req, file, cb) => {
+      // Only allow certain file types
+      if (
+        file.mimetype === "application/pdf" ||
+        file.mimetype === "application/docx"
+      ) {
+        cb(null, true);
+      } else {
+        cb(null, false);
+      }
+    };
+
+    const fileUpload = multer({
+      storage,
+      limits: {
+        fileSize: 1024 * 1024 * 5,
+      },
+      fileFilter,
+    });
+
+    fileUpload.single("cv")(req, res, async (err) => {
+      if (err) {
+        return res
+          .status(400)
+          .json({ message: "File upload failed", details: err });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No File was selected!" });
+      }
+
+      const { University, Degree, DegreeTitle } = req.body;
+      if (!University || !Degree || !DegreeTitle) {
+        return res
+          .status(400)
+          .json({ message: "Missing required form fields" });
+      }
+
+      const student = req.student.id;
+      const studentName = req.student.name;
+      const cv = "/submissions/" + req.file.filename;
+
+      const sProfile = await studentForm.create({
+        student,
+        studentName,
+        University,
+        Degree,
+        DegreeTitle,
+        cv,
+      });
+
+      res.status(200).json(sProfile);
+    });
+  } catch (error) {
+    console.error(`An error occurred: ${error}`);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 const updateSForm = asyncHandler(async (req, res) => {
@@ -163,39 +175,38 @@ const updateSForm = asyncHandler(async (req, res) => {
 });
 
 const deleteProfile = asyncHandler(async (req, res) => {
-  const formId = req.params.id;
+  try {
+    const formId = req.params.id;
+    const existingProfile = await studentForm.findById(formId);
 
-  // Find the existing student profile by ID
-  const existingProfile = await studentForm.findById(formId);
-
-  if (!existingProfile) {
-    res.status(404);
-    throw new Error("Student form not found");
-  }
-  const student = await Student.findById(req.student.id);
-
-  // Check for Student
-  if (!req.student) {
-    res.status(401);
-    throw new Error("Student Not Found");
-  }
-  // Check if the logged-in student owns the profile
-  if (existingProfile.student.toString() !== req.student.id) {
-    res.status(403);
-    throw new Error("Not authorized to update this student form");
-  }
-  // Delete the linked file (CV)
-  const cvFilePath = path.join(DIR, existingProfile.cv.substr(13));
-  fs.unlink(cvFilePath, (err) => {
-    if (err) {
-      console.error(`Error deleting CV file: ${err}`);
+    if (!existingProfile) {
+      res.status(404).json({ message: "Student form not found" });
+      return;
     }
-  });
-  await studentFormModel.findByIdAndDelete(req.params.id);
 
-  res.status(200).json({ id: req.params.id });
+    const student = await Student.findById(req.student.id);
+    if (!req.student || !student) {
+      res.status(401).json({ message: "Student not found" });
+      return;
+    }
+
+    if (existingProfile.student.toString() !== req.student.id) {
+      res
+        .status(403)
+        .json({ message: "Not authorized to update this student form" });
+      return;
+    }
+
+    const cvFilePath = path.join(DIR, existingProfile.cv.substr(13));
+    await unlinkAsync(cvFilePath); // Promisified fs.unlink
+
+    await studentFormModel.findByIdAndDelete(req.params.id);
+    res.status(200).json({ id: req.params.id });
+  } catch (error) {
+    console.error(`An error occurred: ${error}`);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
-
 module.exports = {
   setSForm,
   updateSForm,
