@@ -69,8 +69,11 @@ app.use(errorHandler);
 
 // Serve static files and set default route
 if (process.env.NODE_ENV === "production") {
+  //Path to Build
   const clientBuildPath = path.join(__dirname, "../client/build");
+  //Use Build
   app.use(express.static(clientBuildPath));
+  //Use Local Public
   app.use(express.static(path.join(__dirname, "../client/public")));
 
   app.get("*", (req, res) =>

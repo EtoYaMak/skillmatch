@@ -42,9 +42,9 @@ function App() {
   const user = useSelector((state) => state.auth.user);
   const student = useSelector((state) => state.students.student);
 
-  useEffect(() => {
-    /* fetch("http://18.169.159.127") */
-    fetch("http://localhost:4000")
+  /*   useEffect(() => {
+    fetch("http://18.169.159.127")
+      // fetch("http://localhost:4000") 
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -56,7 +56,7 @@ function App() {
       .catch((error) => {
         setMessage("Error: " + error.message);
       });
-  }, []);
+  }, []); */
   // State to control the modal
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null);
