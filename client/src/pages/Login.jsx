@@ -43,7 +43,6 @@ function Login() {
   // Function to handle role selection change
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
-    console.log(selectedRole);
   };
 
   useEffect(() => {

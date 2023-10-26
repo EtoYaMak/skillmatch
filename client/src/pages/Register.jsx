@@ -27,7 +27,6 @@ function Register() {
   // Function to handle role selection change
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
-    console.log(selectedRole);
   };
 
   //hooks
@@ -151,8 +150,7 @@ function Register() {
           email,
           password,
         };
-        console.log("ROLE TYPE USER");
-        console.log(userData);
+
         dispatch(register(userData));
       } else if (selectedRole === "applicant") {
         // Dispatch the action for applicant registration
@@ -161,8 +159,7 @@ function Register() {
           email,
           password,
         };
-        console.log("ROLE TYPE STUDENT");
-        console.log(studentData);
+
         dispatch(Sregister(studentData));
       }
     } else {

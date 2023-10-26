@@ -17,7 +17,7 @@ const createJob = async (formData, token) => {
     },
   };
   const response = await axios.post(API_URL, formData, config);
-  console.log("formData Service: ", formData);
+
   return response.data;
 };
 

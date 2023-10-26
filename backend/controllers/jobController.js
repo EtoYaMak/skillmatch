@@ -289,7 +289,6 @@ const applyToJob = async (req, res) => {
 
     await job.save();
     await student.save();
-    console.log("After save - student: ", student);
 
     return res.status(200).json({ message: "Application successful" });
   } catch (error) {

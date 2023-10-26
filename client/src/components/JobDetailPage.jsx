@@ -31,7 +31,6 @@ function JobDetailPage({ job }) {
     createdAt,
   } = job;
 
-  console.log(logo);
   // Define a function to format the date
   const formatCreatedAtDate = (createdAt) => {
     const createdAtDate = new Date(createdAt);

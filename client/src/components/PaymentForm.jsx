@@ -69,15 +69,14 @@ export default function PaymentForm() {
           allow_redirects: true,
         });
         if (response.data.success) {
-          console.log("Successful payment");
           setSuccess(true);
           handleSuccessfulPayment(); // Signal successful payment
         }
       } catch (error) {
-        console.log("Error", error);
+        console.error("Error", error);
       }
     } else {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
 

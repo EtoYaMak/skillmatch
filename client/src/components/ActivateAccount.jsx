@@ -23,12 +23,12 @@ const ActivateAccount = () => {
     if (type === "2") return state.students;
     return null;
   });
-  console.log("State: ", relevantState);
+
   const activate = useCallback(
     async (action) => {
       try {
         const response = await dispatch(action({ type, token }));
-        console.log("response: ", response);
+
         if (response.payload && !response.error) {
           toast.success("Account Activated Successfully");
           if (type === "2") {
@@ -55,7 +55,6 @@ const ActivateAccount = () => {
     if (componentLoaded) {
       if (type === "2") {
         activate(activateAccountS);
-        console.log("activateAccountS dispatched");
       } else if (type === "1") {
         activate(activateAccount);
       } else {

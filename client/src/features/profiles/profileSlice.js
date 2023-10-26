@@ -68,8 +68,6 @@ export const updateProfile = createAsyncThunk(
   async (updatedFormData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().students.student.token;
-      console.table(updatedFormData);
-      /*  console.log(updatedFormData.cv); */
 
       return await profileService.updateProfile(updatedFormData, token);
     } catch (error) {
@@ -112,7 +110,6 @@ export const profileSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createProfile.fulfilled, (state, action) => {
-        console.log("Fulfilled action payload:", action.payload);
         state.isLoading = false;
         state.isSuccess = true;
         state.profiles.push(action.payload);

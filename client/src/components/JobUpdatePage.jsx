@@ -34,9 +34,8 @@ function JobUpdatePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Dispatch the updateJob action with the updated form data
-    console.log(jobId + "Before Dispatch updateJob");
+
     dispatch(updateJob(jobId, formData));
-    console.log(jobId + " After Dispatch updateJob");
   };
 
   return (

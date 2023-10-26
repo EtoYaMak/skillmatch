@@ -182,44 +182,7 @@ function StudeProfile() {
     fetchProfile();
   }, [dispatch]);
   const profileExists = profile && Object.keys(profile).length > 0;
-  console.log(profile.University);
-  /*   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const fetchedProfile = await dispatch(getProfile()).unwrap();
 
-        if (fetchedProfile && fetchedProfile.length > 0) {
-          // Profile exists
-          console.log("Profile Found in useEffect: ", profile.University);
-          setProfileExists(true);
-          console.log("setProfileExists should be TRUE: ", profileExists);
-          const profileData = fetchedProfile[0];
-          setFormData({
-            Degree: profileData.Degree,
-            DegreeTitle: profileData.DegreeTitle,
-            University: profileData.University,
-            cv: profileData.cv,
-          });
-        } else {
-          // No profile exists
-          setFormData({
-            Degree: "BSc",
-            DegreeTitle: "",
-            University: "",
-            cv: null,
-          });
-          console.log("No Profile Found in useEffect: ", profile.University);
-          setProfileExists(false);
-          console.log("setProfileExists should be FALSE: ", profileExists);
-        }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
-
-    fetchProfile();
-  }, [dispatch]);
- */
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -251,7 +214,7 @@ function StudeProfile() {
         .unwrap() // This unwraps the promise returned by createAsyncThunk
         .then(() => {
           // Handle success if needed
-          console.log("Profile successfully deleted!");
+
           setFormData({
             Degree: "BSc",
             DegreeTitle: "",
@@ -363,7 +326,7 @@ function StudeProfile() {
         /*         cv: null, */
       });
     } catch (error) {
-      console.log("Error updating profile:", error);
+      console.error("Error updating profile:", error);
     }
   };
 

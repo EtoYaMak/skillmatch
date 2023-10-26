@@ -48,9 +48,6 @@ app.post("/payment", cors(), async (req, res) => {
       setup_future_usage: allow_redirects ? "on_session" : "off_session",
     });
 
-    console.log("PaymentIntent", paymentIntent.status);
-    console.log("PaymentIntent", paymentIntent.description);
-
     // Send the client a client_secret to confirm the payment on the client side
     res.json({
       clientSecret: paymentIntent.client_secret,

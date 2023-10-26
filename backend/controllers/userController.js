@@ -107,7 +107,6 @@ const registerUser = asyncHandler(async (req, res) => {
 //@route GET /api/users/activate/:token
 //@access PUBLIC
 const activateUser = asyncHandler(async (req, res) => {
-  console.log("Activate student endpoint hit activateUser");
   const { type, token } = req.params;
   if (type !== "1") {
     res.status(400);

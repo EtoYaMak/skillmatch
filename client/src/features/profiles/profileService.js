@@ -45,8 +45,7 @@ const updateProfile = async (updatedFormData, token) => {
     updatedFormData,
     config
   );
-  console.log(API_URL + updatedFormData._id);
-  /*   console.log(updatedFormData.cv); */
+
   return response.data;
 };
 
