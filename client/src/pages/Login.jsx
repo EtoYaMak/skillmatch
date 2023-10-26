@@ -20,10 +20,6 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  /*   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  );
-  const { student, isLoading, isError, isSuccess, message } = useSelector((state) => state.students); */
   const {
     user,
     isLoading: authIsLoading,

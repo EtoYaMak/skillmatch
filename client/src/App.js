@@ -21,8 +21,6 @@ import UserDash from "./pages/UserDash";
 import JobApplicants from "./components/JobApplicants";
 import UserDashJobs from "./components/UserDashJobs";
 
-import StudentRegister from "./pages/StudentRegister";
-import StudentLogin from "./pages/StudentLogin";
 import StudentDash from "./pages/StudentDash";
 import StudentApplications from "./components/StudentApplications";
 
@@ -100,9 +98,6 @@ function App() {
             element={<PasswordResetUserForm />}
           />
           <Route path="/activate/:type/:token" element={<ActivateAccount />} />
-
-          <Route path="/loginS" element={<StudentLogin />} />
-          <Route path="/registerS" element={<StudentRegister />} />
 
           <Route path="/dash" element={<UserDash />} />
           <Route path="/userjobs" element={<UserDashJobs />} />
