@@ -23,7 +23,7 @@ const CARD_OPTIONS = {
     },
   },
 };
-const amount = 20000; //IN CENTS $20...     /1000
+const amount = 2000; //IN CENTS $20...     x100
 export default function PaymentForm() {
   const { user } = useSelector((state) => state.auth);
   const [success, setSuccess] = useState(false);
