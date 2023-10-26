@@ -96,7 +96,7 @@ function JobDetailPage({ job }) {
 
   return (
     <div className="bg-transparent pb-8">
-      <div className="mx-auto rounded-b-xl p-8   w-full sm:w-[1024px]  bg-black/30 font-Inter">
+      <div className="mx-auto rounded-b-xl p-8   w-full max-w-[1240px]  bg-black/30 font-Inter">
         <div className="bg-transparent sm:space-y-0 space-y-4 flex flex-col min-w-min justify-between items-center">
           {/* Company and Position */}
           <div className="flex flex-col sm:flex-row items-center justify-center bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
@@ -285,7 +285,7 @@ function JobDetailPage({ job }) {
         {showRegisterButton && (
           <div className="flex justify-center mt-8 bg-transparent">
             <a
-              href="/registerS"
+              href="/register"
               className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover:bg-[#d0333c] hover:text-[#d4d7d7]
       border-[#d0333c] hover:border-[#d4d7d7] transition-colors duration-200 ease-in-out"
             >
