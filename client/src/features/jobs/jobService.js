@@ -20,6 +20,18 @@ const createJob = async (formData, token) => {
 
   return response.data;
 };
+// Create new job
+const SAcreateJob = async (formData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+  };
+  const response = await axios.post(API_URL, formData, config);
+
+  return response.data;
+};
 
 // Fetch job by ID #PUBLIC
 const getJobById = async (jobId) => {
@@ -127,6 +139,7 @@ const updateApplicationStatus = async (jobId, studentId, newStatus) => {
 //
 const jobService = {
   createJob,
+  SAcreateJob,
   getJobById,
   getMyJobs,
   getAllJobs,

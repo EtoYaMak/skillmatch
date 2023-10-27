@@ -115,14 +115,17 @@ const Navbar = () => {
             Browse
           </Link>
         </li>
-        <li className="text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit">
-          <Link
-            to="/post"
-            className=" py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300 "
-          >
-            Post
-          </Link>
-        </li>
+        {!SAuser ? (
+          <li className="text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit">
+            <Link
+              to="/post"
+              className=" py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300 "
+            >
+              Post
+            </Link>
+          </li>
+        ) : null}
+
         <li className="text-[#d4d7d7] font-bold tracking-widest text-xl text-center  bg-inherit">
           <Link
             to="/contact"
@@ -251,17 +254,20 @@ const Navbar = () => {
               </Link>
             </div>
           </li>
-          <li className=" backdrop-blur-sm bg-[#000]/70">
-            <div className="nav-link flex items-center  bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
-              <Link
-                to="/post"
-                onClick={() => setToggle(false)}
-                className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold ease-in-out duration-300"
-              >
-                Post
-              </Link>
-            </div>
-          </li>
+          {!SAuser ? (
+            <li className=" backdrop-blur-sm bg-[#000]/70">
+              <div className="nav-link flex items-center  bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
+                <Link
+                  to="/post"
+                  onClick={() => setToggle(false)}
+                  className="flex-1 py-4 hover:text-[#d0333c] hover:font-extrabold ease-in-out duration-300"
+                >
+                  Post
+                </Link>
+              </div>
+            </li>
+          ) : null}
+
           <li className=" backdrop-blur-sm bg-[#000]/70">
             <div className="nav-link flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
               <Link

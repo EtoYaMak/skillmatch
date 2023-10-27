@@ -11,6 +11,7 @@ import { applyToJob } from "../features/jobs/jobSlice";
 function JobDetailPage({ job }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { SAuser } = useSelector((state) => state.SAuser);
   const { student } = useSelector((state) => state.students);
 
   const {
@@ -77,7 +78,7 @@ function JobDetailPage({ job }) {
   const isStudent = !!student;
 
   // Determine whether to show the Apply button based on user role
-  const showApplyButton = isStudent && !user;
+  const showApplyButton = isStudent && !user && !SAuser;
   const showRegisterButton = !isStudent && !user;
   // Attach the applyToJob function to the Apply button
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);

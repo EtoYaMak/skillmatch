@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Job = require("../models/jobModel");
 const User = require("../models/userModel");
+const SAuser = require("../models/superuserModel");
 const Student = require("../models/studentModel");
 const upload = require("../config/multerConfig"); // Import multer instance
 const multer = require("multer");
@@ -80,10 +81,33 @@ const setJob = async (req, res) => {
 
     // Save the resized image to a different file path or directory
     await sharp(resizedImage).toFile(path.join(DIR, resizedFileName));
-    //await sharp(resizedImage).toFile(req.file.path);
 
-    const user = req.user.id;
-    const postedBy = req.user.name;
+    //const user = req.user.id;
+    //const postedBy = req.user.name;
+    let user, postedBy;
+    console.log("userType received in request:", req.body.userType);
+    console.log("SAuser received in request:", req.SAuser.name);
+    console.log("user received in request:", req.user.id);
+
+    if (req.body.userType === "user" && req.user && req.user.id) {
+      // Regular User
+      user = req.User.id;
+      postedBy = req.User.name;
+    } else if (
+      req.body.userType === "superuser" &&
+      req.SAuser &&
+      req.SAuser.id
+    ) {
+      // Superuser
+      user = req.SAuser.id;
+      postedBy = req.SAuser.name;
+    } else {
+      // Handle the case when the userType is not specified or user is not defined
+      return res
+        .status(400)
+        .json({ error: "Invalid user type in the request." });
+    }
+
     const type = [
       { name: "Full-time", value: req.body.fulltime },
       { name: "Part-time", value: req.body.parttime },

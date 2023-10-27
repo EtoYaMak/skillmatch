@@ -41,6 +41,26 @@ export const createJob = createAsyncThunk(
     }
   }
 );
+//Create new jobpost
+//USED @JobForm
+export const SAcreateJob = createAsyncThunk(
+  "jobs/SAcreate",
+  async (formData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().SAuser.SAuser.token;
+
+      return await jobService.createJob(formData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 // Get job by ID
 // USER @Dash -> View Job
@@ -214,6 +234,20 @@ export const jobSlice = createSlice({
         state.jobs.push(action.payload);
       })
       .addCase(createJob.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      //create
+      .addCase(SAcreateJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SAcreateJob.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.jobs.push(action.payload);
+      })
+      .addCase(SAcreateJob.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
