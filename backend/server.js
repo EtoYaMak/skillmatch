@@ -33,6 +33,7 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/students", require("./routes/studentRoutes"));
 app.use("/api/profiles", require("./routes/studentFormroutes"));
 app.use("/api/contact", require("./routes/contactRoutes"));
+app.use("/api/superusers", require("./routes/superusers"));
 // Payment
 app.post("/payment", cors(), async (req, res) => {
   let { amount, id, description, return_url, allow_redirects } = req.body; // Include return_url in the request body

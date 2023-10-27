@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { activateAccount, logout, reset } from "../features/auth/authSlice";
 import {
+  SAactivateAccount,
+  SAlogout,
+  SAreset,
+} from "../features/SAuser/adminSlice";
+import {
   activateAccountS,
   Slogout,
   Sreset,
@@ -21,6 +26,7 @@ const ActivateAccount = () => {
   const relevantState = useSelector((state) => {
     if (type === "1") return state.auth;
     if (type === "2") return state.students;
+    if (type === "99") return state.SAuser;
     return null;
   });
 
@@ -41,6 +47,11 @@ const ActivateAccount = () => {
             dispatch(reset());
             navigate("/login");
           }
+          if (type === "99") {
+            dispatch(SAlogout());
+            dispatch(SAreset());
+            navigate("/loginAdmin");
+          }
         } else {
           toast.error("Account Activation Failed");
         }
@@ -57,6 +68,8 @@ const ActivateAccount = () => {
         activate(activateAccountS);
       } else if (type === "1") {
         activate(activateAccount);
+      } else if (type === "99") {
+        activate(SAactivateAccount);
       } else {
         toast.error("Unknown account type");
       }

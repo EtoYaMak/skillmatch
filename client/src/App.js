@@ -17,6 +17,12 @@ import Login from "./pages/Login";
 import PasswordResetUser from "./components/PasswordResetUser";
 import PasswordResetUserForm from "./components/PasswordResetUserForm";
 
+import RegisterAdmin from "./components/RegisterAdmin";
+import LoginAdmin from "./components/LoginAdmin";
+import PasswordResetAdmin from "./components/PasswordResetAdmin";
+import PasswordResetAdminForm from "./components/PasswordResetAdminForm";
+import AdminDash from "./components/AdminDash";
+
 import UserDash from "./pages/UserDash";
 import JobApplicants from "./components/JobApplicants";
 import UserDashJobs from "./components/UserDashJobs";
@@ -89,7 +95,7 @@ function App() {
           <Route path="/browse" element={<Browse />} />
           <Route path="/post" element={<Post />} />
           <Route path="/contact" element={<Contact />} />
-
+          {/* Normal */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/password-reset" element={<PasswordResetUser />} />
@@ -97,6 +103,20 @@ function App() {
             path="/reset/:type/:token"
             element={<PasswordResetUserForm />}
           />
+          {/* Super */}
+          <Route path="/loginAdmin" element={<LoginAdmin />} />
+          <Route path="/registerAdmin" element={<RegisterAdmin />} />
+          <Route
+            path="/password-reset-admin"
+            element={<PasswordResetAdmin />}
+          />
+          <Route
+            path="/reset/:type/:token"
+            element={<PasswordResetAdminForm />}
+          />
+          <Route path="/adminDash" element={<AdminDash />} />
+
+          {/* Admin End */}
           <Route path="/activate/:type/:token" element={<ActivateAccount />} />
 
           <Route path="/dash" element={<UserDash />} />

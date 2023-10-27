@@ -4,6 +4,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
+import { SAlogout, SAreset } from "../features/SAuser/adminSlice";
 import { Slogout, Sreset } from "../features/students/studentSlice";
 
 const Navbar = () => {
@@ -13,6 +14,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { student } = useSelector((state) => state.students);
+  const { SAuser } = useSelector((state) => state.SAuser);
 
   const [toggle, setToggle] = useState(false);
 
@@ -34,11 +36,18 @@ const Navbar = () => {
     dispatch(reset());
     navigate("/");
   };
+  const onSALogout = () => {
+    dispatch(SAlogout());
+    dispatch(SAreset());
+    navigate("/");
+  };
   const handleClick = () => {
     if (user) {
       navigate("/Dash");
     } else if (student) {
       navigate("/DashboardS");
+    } else if (SAuser) {
+      navigate("/adminDash");
     } else {
       navigate("/");
     }
@@ -122,7 +131,7 @@ const Navbar = () => {
             Contact
           </Link>
         </li>
-        {user || student ? (
+        {user || student || SAuser ? (
           <li
             className="text-[#d4d7d7] font-bold  text-center  bg-inherit "
             ref={dropdownRef}
@@ -163,6 +172,8 @@ const Navbar = () => {
                         onLogout();
                       } else if (student) {
                         onSLogout();
+                      } else if (SAuser) {
+                        onSALogout();
                       }
                     }}
                   >
@@ -262,7 +273,7 @@ const Navbar = () => {
               </Link>
             </div>
           </li>
-          {user || student ? (
+          {user || student || SAuser ? (
             <ul className="bg-inherit ">
               <li className="backdrop-blur-sm bg-[#000]/70">
                 <div className="nav-link flex items-center bg-[#1c1f21]/80 hover:bg-[#000]/70 ease-in-out duration-300">
@@ -287,6 +298,9 @@ const Navbar = () => {
                         setToggle(false);
                       } else if (student) {
                         onSLogout();
+                        setToggle(false);
+                      } else if (SAuser) {
+                        onSALogout();
                         setToggle(false);
                       }
                     }}
