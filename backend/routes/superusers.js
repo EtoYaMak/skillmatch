@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { protectAdmin } = require("../middleware/adminMiddleware");
+const { protect } = require("../middleware/authMiddleware");
 const {
   registerSuperuser,
   activateSuperuser,
@@ -14,6 +14,6 @@ router.post("/login", loginSuperuser);
 router.post("/activate/:type/:token", activateSuperuser);
 router.post("/forgot", forgotPassword);
 router.post("/reset/:type/:token", resetPassword);
-router.get("/me", protectAdmin, getMe);
+router.get("/me", protect, getMe);
 
 module.exports = router;
