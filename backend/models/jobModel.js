@@ -5,13 +5,11 @@ const jobSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "userType",
     },
-
     postedBy: {
       type: String,
-      ref: "userType",
     },
+
     position: {
       type: String,
       /* required: [true, "Please enter the Job Title"], */

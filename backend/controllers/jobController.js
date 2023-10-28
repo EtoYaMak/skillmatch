@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Job = require("../models/jobModel");
 const User = require("../models/userModel");
-const SAuser = require("../models/superuserModel");
+const Superuser = require("../models/superuserModel");
 const Student = require("../models/studentModel");
 const upload = require("../config/multerConfig"); // Import multer instance
 const multer = require("multer");
@@ -77,37 +77,20 @@ const setJob = async (req, res) => {
       .resize({ width: 160, height: 160, fit: "cover", position: "center" })
       .toBuffer();
     // Generate a new file name for the resized image
-    const resizedFileName = `resized_${req.file.filename}`;
+    const resizedFileName = `job_${req.file.filename}`;
 
-    // Save the resized image to a different file path or directory
-    await sharp(resizedImage).toFile(path.join(DIR, resizedFileName));
+    // Define the path for the resized image
+    const resizedImagePath = path.join(DIR, resizedFileName);
 
-    //const user = req.user.id;
-    //const postedBy = req.user.name;
-    let user, postedBy;
-    console.log("userType received in request:", req.body.userType);
-    console.log("SAuser received in request:", req.SAuser.name);
-    console.log("user received in request:", req.user.id);
+    // Save the resized image to the specified path
+    await sharp(resizedImage).toFile(resizedImagePath);
+    // Remove the original image
+    fs.unlinkSync(req.file.path); // Requires the 'fs' module
 
-    if (req.body.userType === "user" && req.user && req.user.id) {
-      // Regular User
-      user = req.User.id;
-      postedBy = req.User.name;
-    } else if (
-      req.body.userType === "superuser" &&
-      req.SAuser &&
-      req.SAuser.id
-    ) {
-      // Superuser
-      user = req.SAuser.id;
-      postedBy = req.SAuser.name;
-    } else {
-      // Handle the case when the userType is not specified or user is not defined
-      return res
-        .status(400)
-        .json({ error: "Invalid user type in the request." });
-    }
-
+    const user = req.user.id;
+    console.log(user);
+    const postedBy = req.user.name;
+    console.log(postedBy);
     const type = [
       { name: "Full-time", value: req.body.fulltime },
       { name: "Part-time", value: req.body.parttime },

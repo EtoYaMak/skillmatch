@@ -61,11 +61,11 @@ export default function PaymentForm() {
       try {
         // Confirm the PaymentIntent with the return_url
         const { id } = paymentMethod;
-        const response = await axios.post("http://18.169.159.127/payment", {
+        const response = await axios.post("http://localhost:3000/payment", {
           amount: amount,
           id,
           description: user.name,
-          return_url: "http://18.169.159.127/dash", // Replace with your actual return_url
+          return_url: "http://localhost:3000/dash", // Replace with your actual return_url
           allow_redirects: true,
         });
         if (response.data.success) {

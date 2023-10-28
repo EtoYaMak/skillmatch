@@ -49,7 +49,7 @@ export const SAcreateJob = createAsyncThunk(
     try {
       const token = thunkAPI.getState().SAuser.SAuser.token;
 
-      return await jobService.createJob(formData, token);
+      return await jobService.SAcreateJob(formData, token);
     } catch (error) {
       const message =
         (error.response &&

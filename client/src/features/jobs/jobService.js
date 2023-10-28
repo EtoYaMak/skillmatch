@@ -6,7 +6,6 @@ const ALL_API_URL = "http://18.169.159.127/api/jobs/all"; */
 const API_URL = "/api/jobs/";
 const API_ID = "/api/jobs";
 const ALL_API_URL = "/api/jobs/all";
-const STU_URL = "/api/students/";
 
 // Create new job
 const createJob = async (formData, token) => {

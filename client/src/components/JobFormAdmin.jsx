@@ -83,7 +83,7 @@ function JobFormAdmin() {
     const sanitizedSkills = skills.map((skill) => sanitizeInput(skill));
 
     const formData = new FormData();
-    formData.append("userType", "superuser");
+
     formData.append("position", sanitizedPosition);
     formData.append("location", sanitizedLocation);
     formData.append("city", sanitizedCity);

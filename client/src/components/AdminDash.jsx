@@ -1,8 +1,17 @@
 import React from "react";
+import { useEffect } from "react";
 import JobFormAdmin from "./JobFormAdmin";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 function AdminDash() {
   const { SAuser } = useSelector((state) => state.SAuser);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!SAuser) {
+      navigate("/Dash");
+    }
+  }, [SAuser, navigate]);
   return (
     <div className="h-fit py-4 px-2">
       <div className="flex flex-wrap w-full gap-2">
