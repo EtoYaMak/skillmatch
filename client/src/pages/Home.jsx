@@ -28,7 +28,7 @@ function Home() {
   }, [navigate, isError, message, dispatch]);
 
   const remoteJobs = jobs.filter((job) =>
-    job.setting.find((item) => item.name === "remote" && item.value === true)
+    job.setting.find((item) => item.name === "Remote" && item.value === true)
   );
   const [visibleJobs, setVisibleJobs] = useState(5);
   const itemsPerPage = 5; // Adjust this to the number of jobs to display per page
@@ -53,7 +53,7 @@ function Home() {
       <div className="Carousel Slider cursor-pointer">
         <Slider {...settings}>
           {remoteJobs.length === 0 ? (
-            <p className="text-2xl font-Inter">No Jobs Available</p>
+            <p className="text-2xl font-Inter">No Jobs Found</p>
           ) : (
             remoteJobs.map((job) => (
               <div key={job._id}>
