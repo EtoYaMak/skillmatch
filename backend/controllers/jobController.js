@@ -88,9 +88,9 @@ const setJob = async (req, res) => {
     fs.unlinkSync(req.file.path); // Requires the 'fs' module
 
     const user = req.user.id;
-    console.log(user);
+
     const postedBy = req.user.name;
-    console.log(postedBy);
+
     const type = [
       { name: "Full-time", value: req.body.fulltime },
       { name: "Part-time", value: req.body.parttime },
