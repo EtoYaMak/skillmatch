@@ -130,6 +130,25 @@ export const getMyJobs = createAsyncThunk(
     }
   }
 );
+// Get user JobPosts PRIVATE
+//USED @Dashboard Poster
+export const SAgetMyJobs = createAsyncThunk(
+  "jobs/SAgetMyJobs",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().SAuser.SAuser.token;
+      return await jobService.SAgetMyJobs(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 // Update jobpost
 // USED @JobForm
 export const updateJob = createAsyncThunk(
@@ -156,6 +175,24 @@ export const deleteJob = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
+      return await jobService.deleteJob(id, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+//Delete user jobpost
+export const SAdeleteJob = createAsyncThunk(
+  "jobs/SAdelete",
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().SAuser.SAuser.token;
       return await jobService.deleteJob(id, token);
     } catch (error) {
       const message =
@@ -266,6 +303,20 @@ export const jobSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      //get
+      .addCase(SAgetMyJobs.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SAgetMyJobs.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.jobs = action.payload;
+      })
+      .addCase(SAgetMyJobs.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
       .addCase(deleteJob.pending, (state) => {
         state.isLoading = true;
       })
@@ -275,6 +326,19 @@ export const jobSlice = createSlice({
         state.jobs = state.jobs.filter((job) => job._id !== action.payload.id);
       })
       .addCase(deleteJob.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(SAdeleteJob.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SAdeleteJob.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.jobs = state.jobs.filter((job) => job._id !== action.payload.id);
+      })
+      .addCase(SAdeleteJob.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

@@ -6,10 +6,11 @@ import UserDashJobs from "../components/UserDashJobs";
 function UserDash() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const { SAuser } = useSelector((state) => state.SAuser);
   const jobs = useSelector((state) => state.jobs.jobs);
   const [activeTab, setActiveTab] = useState("profile");
 
-  if (!user) {
+  if (!user && !SAuser) {
     navigate("/login");
     return <p>Unauthorized access ~ Login to view your Dashboard</p>;
   }
@@ -28,9 +29,11 @@ function UserDash() {
           Profile
         </button>
       </div>
-      <div className="p-4">
+      <div className="p-4 sm:w-[960px] mx-auto">
         {/* Pass the user and jobs props to UserDashJobs */}
-        {activeTab === "profile" && <UserDashJobs user={user} jobs={jobs} />}
+        {activeTab === "profile" && (
+          <UserDashJobs user={user} SAuser={SAuser} jobs={jobs} />
+        )}
       </div>
     </div>
   );

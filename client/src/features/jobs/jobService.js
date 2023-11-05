@@ -64,6 +64,18 @@ const getMyJobs = async (token) => {
 
   return response.data;
 };
+// Fetch My Jobs #PRIVATE
+const SAgetMyJobs = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(API_URL, config);
+
+  return response.data;
+};
 
 // Update job #PRIVATE
 const updateJob = async (jobId, formData, token) => {
@@ -114,6 +126,18 @@ const deleteJob = async (jobId, token) => {
 
   return response.data;
 };
+// Delete my Job #PRIVATE
+const SAdeleteJob = async (jobId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.delete(API_URL + jobId, config);
+
+  return response.data;
+};
 
 //
 //
@@ -141,9 +165,11 @@ const jobService = {
   SAcreateJob,
   getJobById,
   getMyJobs,
+  SAgetMyJobs,
   getAllJobs,
   updateJob,
   deleteJob,
+  SAdeleteJob,
   applyToJob,
   updateApplicationStatus,
 };
