@@ -74,7 +74,7 @@ function JobDetailPage({ job, Applied }) {
   };
   // Check if the user is a student (student object exists)
   const isStudent = !!student;
-  const showRegisterButton = !isStudent && !user;
+  const showRegisterButton = !isStudent && !user && !SAuser;
 
   // Determine whether to show the Apply button based on user role
   const showApplyButton = isStudent && !user && !SAuser;
@@ -83,14 +83,17 @@ function JobDetailPage({ job, Applied }) {
   const [isApplied, setIsApplied] = useState(false);
 
   // Check if the student has applied when the component mounts and on changes to job.applicants
+
   useEffect(() => {
     if (isStudent) {
       const hasApplied = job.applicants.some(
-        (applicant) => applicant.student === student._id
+        (applicant) => applicant.student?._id === student?._id
       );
       setIsApplied(hasApplied);
+    } else {
+      console.error("useEffect Error");
     }
-  }, [isStudent, job.applicants, student._id]);
+  }, [isStudent, job.applicants, student?._id]);
 
   const handleApply = async () => {
     try {
@@ -279,15 +282,18 @@ function JobDetailPage({ job, Applied }) {
           ></div>
         </div>
         {/* Apply button */}
-        <div className="flex justify-center mt-8 bg-transparent">
-          <button
-            onClick={handleApply}
-            className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover-bg-[#d0333c] hover-text-[#d4d7d7] border-[#d0333c] hover-border-[#d4d7d7] transition-colors duration-200 ease-in-out"
-            disabled={isApplied || applicationSubmitted}
-          >
-            {isApplied || applicationSubmitted ? "Applied" : "Apply Now"}
-          </button>
-        </div>
+        {student && (
+          <div className="flex justify-center mt-8 bg-transparent">
+            <button
+              onClick={handleApply}
+              className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover-bg-[#d0333c] hover-text-[#d4d7d7] border-[#d0333c] hover-border-[#d4d7d7] transition-colors duration-200 ease-in-out"
+              disabled={isApplied || applicationSubmitted}
+            >
+              {isApplied || applicationSubmitted ? "Applied" : "Apply Now"}
+            </button>
+          </div>
+        )}
+
         {/* Register button for unregistered users */}
         {showRegisterButton && (
           <div className="flex justify-center mt-8 bg-transparent">
