@@ -98,6 +98,23 @@ export const getStudentProfile = createAsyncThunk(
     }
   }
 );
+export const SAgetStudentProfile = createAsyncThunk(
+  "profiles/SAgetStudentProfile",
+  async (studentId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().SAuser.SAuser.token; // Assuming user token
+      return await profileService.SAgetStudentProfile(studentId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -181,6 +198,30 @@ export const profileSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(getStudentProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(SAgetStudentProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SAgetStudentProfile.fulfilled, (state, action) => {
+        const profileToAdd = action.payload;
+
+        // Check if a profile with the same _id already exists
+        const existingProfileIndex = state.profiles.findIndex(
+          (profile) => profile._id === profileToAdd._id
+        );
+
+        if (existingProfileIndex === -1) {
+          // Profile doesn't exist, add it
+          state.profiles.push(profileToAdd);
+        }
+
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(SAgetStudentProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

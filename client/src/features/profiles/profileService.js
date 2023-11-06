@@ -33,6 +33,15 @@ const getStudentProfile = async (studentId, token) => {
   const response = await axios.get(API_URL + `view/${studentId}`, config);
   return response.data;
 };
+const SAgetStudentProfile = async (studentId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL + `view/${studentId}`, config);
+  return response.data;
+};
 
 const updateProfile = async (updatedFormData, token) => {
   const config = {
@@ -65,6 +74,7 @@ const profileService = {
   updateProfile,
   deleteProfile,
   getStudentProfile,
+  SAgetStudentProfile,
 };
 
 export default profileService;

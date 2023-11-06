@@ -23,46 +23,34 @@ function AdminDash() {
   };
 
   return (
-    <div className="h-full py-4 px-2">
-      <div className="">
-        <div className=" h-fit max-w-fit card bg-base-300 mx-auto rounded-box w-38">
-          <ul className="menu flex-row bg-base-200 text-white  rounded-box">
-            <li>
-              <a
-                onClick={() => handleTabClick("jobs")}
-                className={active === "jobs" ? "active" : ""}
-              >
-                My Jobs
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={() => handleTabClick("post")}
-                className={active === "post" ? "active" : ""}
-              >
-                Post a Job
-              </a>
-            </li>
-            <li className="pointer-events-none text-gray-500">
-              <a>Users</a>
-            </li>
-          </ul>
+    <div className="h-full ">
+      <div className="max-w-[960px] mx-auto">
+        <div className="border-b-2 border-b-[#d0333c] text-center p-4 space-x-4">
+          {/* Render tabs to switch between profile and applications */}
+          <button
+            className={`btn btn-ghost  ${
+              active === "jobs"
+                ? "font-bold btn-active text-[#d0333c] scale-105"
+                : "text-white"
+            }`}
+            onClick={() => handleTabClick("jobs")}
+          >
+            My Jobs
+          </button>
+          <button
+            className={` btn btn-ghost  ${
+              active === "post"
+                ? "font-bold btn-active text-[#d0333c] scale-105"
+                : "text-white"
+            }`}
+            onClick={() => handleTabClick("post")}
+          >
+            Post Job
+          </button>
         </div>
-
-        <div className="divider w-min[900px]:divider-horizontal"></div>
-        <div className="bg-white rounded-box w-fit p-4 mx-auto">
-          {/*           className={`${
-            active === "post"
-              ? "grid h-full flex-grow card bg-base-300 rounded-box  p-4"
-              : ""
-          } ${
-            active === "jobs"
-              ? "grid h-full flex-grow card bg-base-300 rounded-box  p-4"
-              : ""
-          }`}*/}
+        <div className="bg-black/40 rounded-box w-full p-4 mx-auto">
           {active === "post" && <JobFormAdmin />}
           {active === "jobs" && <UserDashJobs SAuser={SAuser} jobs={jobs} />}
-          {/* Add additional tab content here */}
         </div>
       </div>
     </div>

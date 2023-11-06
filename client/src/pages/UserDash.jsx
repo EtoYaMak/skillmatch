@@ -17,7 +17,7 @@ function UserDash() {
 
   return (
     <div className="min-h-screen bg-transparent">
-      <div className="bg-transparent p-4 text-center border-b-2 border-b-[#d0333c] w-2/4 mx-auto mt-12">
+      <div className="bg-transparent p-4 text-center border-b-2 border-b-[#d0333c]  mx-auto mt-12">
         {/* Render tabs to switch between profile and applications */}
         <button
           className={`mr-4 btn btn-ghost  ${
@@ -29,7 +29,7 @@ function UserDash() {
           Profile
         </button>
       </div>
-      <div className="p-4 sm:w-[960px] mx-auto">
+      <div className="w-fit mx-auto">
         {/* Pass the user and jobs props to UserDashJobs */}
         {activeTab === "profile" && (
           <UserDashJobs user={user} SAuser={SAuser} jobs={jobs} />

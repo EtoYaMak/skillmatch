@@ -10,7 +10,7 @@ import {
 import { FaClock, FaCog, FaTrash, FaTimes, FaChessKing } from "react-icons/fa";
 import { FaEdit, FaUsers } from "react-icons/fa";
 
-function UserDashJobs({ user, SAuser, jobs }) {
+function UserDashJobs({ createdAt, user, SAuser, jobs }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,30 +39,35 @@ function UserDashJobs({ user, SAuser, jobs }) {
   };
 
   return (
-    <div className="flex flex-wrap gap-4  mx-auto h-fit w-fit ">
+    <div className="flex flex-wrap gap-2 min-[640px]:justify-center">
       {jobs.length > 0 ? (
         <>
           {jobs.map((job) => (
             <div
               key={job._id}
-              className="card card-compact w-56 bg-transparent shadow-xl"
+              className="card card-compact max-[640px]:card-side w-full h-fit  min-[640px]:w-56 bg-transparent shadow-xl my-2"
             >
-              <figure className="w-56 h-52 bg-transparent min-w-fit pointer-events-none ">
+              <figure className="bg-transparent min-w-fit pointer-events-none ">
                 <img
                   src={job.logo}
                   alt={job.position}
-                  className="w-full h-full"
+                  className="w-full h-full "
                 />
                 {/* w-56 h-52 */}
               </figure>
-              <span className="bg-black opacity-10 h-[1px]"></span>
-              <div className="card-body bg-white rounded-b-box">
-                <h2 className="card-title select-none hover:underline decoration-slate-900/20 underline-offset-2">
+
+              <div className="p-[3px] w-full max-[640px]:flex max-[640px]:flex-col items-center justify-evenly sm:card-body bg-white max-[640px]:rounded-r-box sm:rounded-b-box">
+                <h2 className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2">
                   {job.position}
                 </h2>
-                <p className="text-center text-lg select-none">{job.company}</p>
+                <p className="text-center text-lg select-none flex flex-col">
+                  {job.company}
+                  <span className="text-xs text-zinc-500">
+                    {formatCreatedAtDate(job.createdAt)}
+                  </span>
+                </p>
                 <div className="card-actions justify-center">
-                  <ul className="menu menu-horizontal bg-white/5 rounded-box items-center">
+                  <ul className="menu menu-horizontal p-2 bg-white/5 rounded-box items-center">
                     <li>
                       <a
                         href={`/jobapplicants/${job._id}`}
@@ -100,5 +105,12 @@ function UserDashJobs({ user, SAuser, jobs }) {
     </div>
   );
 }
-
+// Define a function to format the date
+const formatCreatedAtDate = (createdAt) => {
+  const createdAtDate = new Date(createdAt);
+  const day = createdAtDate.getDate();
+  const month = createdAtDate.getMonth() + 1; // Months are zero-indexed
+  const year = createdAtDate.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 export default UserDashJobs;

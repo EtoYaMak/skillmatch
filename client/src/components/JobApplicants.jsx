@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getJobId, updateApplicationStatus } from "../features/jobs/jobSlice";
-import { getStudentProfile } from "../features/profiles/profileSlice";
+import {
+  getStudentProfile,
+  SAgetStudentProfile,
+} from "../features/profiles/profileSlice";
 import { useParams } from "react-router-dom";
 
 function ProfileCard({ profile, onUpdateStatus, job }) {
@@ -121,11 +124,10 @@ function JobApplicants() {
   const profiles = useSelector((state) => state.profiles.profiles);
   const jobStatus = useSelector((state) => state.jobs.isLoading);
   const jobError = useSelector((state) => state.jobs.isError);
+  const SAuser = useSelector((state) => state.SAuser.SAuser);
+  const user = useSelector((state) => state.auth.user);
   const [renderedProfiles, setRenderedProfiles] = useState(new Set());
 
-  /*   useEffect(() => {
-    dispatch(getJobId(jobId));
-  }, []); */
   useEffect(() => {
     if (!job) {
       // Fetch only if job isn't already in the state
@@ -137,14 +139,23 @@ function JobApplicants() {
     if (job && job.applicants) {
       job.applicants.forEach((applicant) => {
         if (!renderedProfiles.has(applicant.student)) {
-          dispatch(getStudentProfile(applicant.student));
-          setRenderedProfiles((prevProfiles) =>
-            new Set(prevProfiles).add(applicant.student)
-          );
+          if (user) {
+            dispatch(getStudentProfile(applicant.student));
+            setRenderedProfiles((prevProfiles) =>
+              new Set(prevProfiles).add(applicant.student)
+            );
+          } else if (SAuser) {
+            dispatch(SAgetStudentProfile(applicant.student));
+            setRenderedProfiles((prevProfiles) =>
+              new Set(prevProfiles).add(applicant.student)
+            );
+          } else {
+            console.error("Unkown user student profile request");
+          }
         }
       });
     }
-  }, [dispatch, job, renderedProfiles]);
+  }, [user, SAuser, dispatch, job, renderedProfiles]);
 
   //
 

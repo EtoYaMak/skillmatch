@@ -8,7 +8,7 @@ function StudentDash() {
   const student = useSelector((state) => state.students.student);
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("applications");
 
   if (!student) {
     navigate("/loginS");

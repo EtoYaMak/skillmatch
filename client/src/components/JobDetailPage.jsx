@@ -2,13 +2,13 @@ import React from "react";
 
 import DOMPurify from "dompurify";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaLink } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 
 import { applyToJob } from "../features/jobs/jobSlice";
 
-function JobDetailPage({ job }) {
+function JobDetailPage({ job, Applied }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { SAuser } = useSelector((state) => state.SAuser);
@@ -17,8 +17,6 @@ function JobDetailPage({ job }) {
   const {
     company,
     logo,
-    /*     isNew,
-    featured, */
     position,
     location,
     city,
@@ -76,19 +74,35 @@ function JobDetailPage({ job }) {
   };
   // Check if the user is a student (student object exists)
   const isStudent = !!student;
+  const showRegisterButton = !isStudent && !user;
 
   // Determine whether to show the Apply button based on user role
   const showApplyButton = isStudent && !user && !SAuser;
-  const showRegisterButton = !isStudent && !user;
-  // Attach the applyToJob function to the Apply button
+
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
+  const [isApplied, setIsApplied] = useState(false);
+
+  // Check if the student has applied when the component mounts and on changes to job.applicants
+  useEffect(() => {
+    if (isStudent) {
+      const hasApplied = job.applicants.some(
+        (applicant) => applicant.student === student._id
+      );
+      setIsApplied(hasApplied);
+    }
+  }, [isStudent, job.applicants, student._id]);
+
   const handleApply = async () => {
     try {
       // Call the applyToJob function here
+      await dispatch(applyToJob({ jobId: job._id, studentId: student._id }));
 
-      // Set the applicationSubmitted state to true after successful application
+      // Update isApplied to true immediately when the application is successful
+      setIsApplied(true);
+      // Set the applicationSubmitted state to true after a successful application
       setApplicationSubmitted(true);
-      dispatch(applyToJob({ jobId: job._id, studentId: student._id }));
+      // Refresh the window after a successful application
+      window.location.reload();
     } catch (error) {
       console.error("Error submitting application:", error);
     }
@@ -265,22 +279,15 @@ function JobDetailPage({ job }) {
           ></div>
         </div>
         {/* Apply button */}
-        {showApplyButton && (
-          <div className="flex justify-center mt-8 bg-transparent">
-            <button
-              onClick={handleApply}
-              className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover:bg-[#d0333c] hover:text-[#d4d7d7]
-             border-[#d0333c] hover:border-[#d4d7d7] transition-colors duration-200 ease-in-out"
-            >
-              Apply Now
-            </button>
-            {applicationSubmitted && (
-              <div className="popup">
-                <p>Application Successful!</p>
-              </div>
-            )}
-          </div>
-        )}
+        <div className="flex justify-center mt-8 bg-transparent">
+          <button
+            onClick={handleApply}
+            className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover-bg-[#d0333c] hover-text-[#d4d7d7] border-[#d0333c] hover-border-[#d4d7d7] transition-colors duration-200 ease-in-out"
+            disabled={isApplied || applicationSubmitted}
+          >
+            {isApplied || applicationSubmitted ? "Applied" : "Apply Now"}
+          </button>
+        </div>
         {/* Register button for unregistered users */}
         {showRegisterButton && (
           <div className="flex justify-center mt-8 bg-transparent">
