@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RiExpandRightFill } from "react-icons/ri";
+import countriesData from "../assets/countries-data.json";
+
 function BrowseJobComponent({ job }) {
   const jobId = job._id;
   const navigate = useNavigate();
@@ -40,120 +42,63 @@ function BrowseJobComponent({ job }) {
   /*   const typeNames = job.type
     .map((type) => type.name.charAt(0).toUpperCase() + type.name.slice(1))
     .join(" · "); */
-
+  // Find the country code based on a partial match of the country name
+  const countryCode = countriesData.find(
+    (country) => country.Name === job.country
+  )?.Code;
   return (
     <div
-      className="main grid grid-cols-12 items-center p-3 md:p-4 my-3 font-Inter
-     bg-[#1c1f21] text-[#d0333c]  shadow-[2px_4px_1px_0px_#d0333c] hover:bg-black/50 rounded-md select-none duration-300 ease-in-out hover:py-5"
+      className="jobcomp  min-[640px]:px-4 px-3 py-3 max-[640px]:gap-2 my-4 h-fit sm:h-32 flex flex-col min-[600px]:flex-row items-center shadow-[0px_4px_8px_rgb(0,0,0,0.3)] rounded-2xl font-Poppin max-w-full"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Job Info */}
-      <div
-        className="col-span-12 md:col-span-5 flex items-center bg-transparent cursor-pointer w-full "
-        onClick={handleClick}
-      >
-        <Link className="">
+      <div className="flex flex-row flex-1 items-center sm:max-w-lg w-full">
+        <div className="flex justify-center items-center max-w-fit ">
           <img
             src={job.logo}
             alt={job.company}
-            /* className="w-[70px] min-h-[70px] md:w-[70px] md:h-[70px] rounded-full bg-transparent" */
-            className=" w-24 h-24 rounded-full object-cover bg-black"
+            className=" rounded-full w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
           />
-        </Link>
-        <div className="ml-5 bg-transparent md:w-4/6 w-fit">
-          <h2
-            className={`font-semibold text-xl sm:text-2xl bg-transparent tracking-wide ${
-              isHovered
-                ? "text-md font-bold rounded-md text-[#d4d7d7] "
-                : "text-md font-bold rounded-md text-[#d0333c]"
-            }`}
-          >
+        </div>
+        <div className="flex-1 min-[768px]:pl-6 pl-4 select-none ">
+          <h1 className="font-Poppins min-[900px]:text-xl min-[768px]:text-lg text-lg font-bold w-fit">
             {job.position}
-          </h2>
-
-          <h3
-            className={`bg-inherit block cursor-pointer font-semibold text-lg tracking-wider ${
-              isHovered
-                ? "text-md font-bold rounded-md text-[#d0333c] "
-                : "text-md font-bold rounded-md text-zinc-200 "
-            }`}
-          >
+          </h1>
+          <h1 className="font-Poppins text-md font-medium hover:underline">
             {job.company}
-          </h3>
+          </h1>
         </div>
       </div>
-
-      {/* Skills */}
-      <div className="skills col-span-8 w-fit md:col-span-4 bg-transparent ">
-        <div className="bg-transparent flex flex-wrap w-fit sm:flex-row gap-2 ">
-          {!showDropdown &&
-            skills.slice(0, 2).map((skill, index) => (
-              <span
-                key={index}
-                /*className="text-[#d4d7d7] bg-[#1c1f21] font-bold  p-2 rounded-md cursor-zoom-in" THIS*/
-                className={` block cursor-pointer p-2 duration-300 ease-in-out  ${
-                  isHovered
-                    ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21] "
-                    : "text-md font-bold rounded-md text-white bg-black/25"
-                }`}
-                onClick={handleSkill}
-              >
-                {skill}
-              </span>
-            ))}
-          {!showDropdown && skills.length > 2 && (
-            <span
-              className={`block cursor-pointer p-2 duration-300 ease-in-out ${
-                isHovered
-                  ? "text-md font-bold rounded-md text-[#d4d7d7] bg-black/25 hover:bg-[#2c3033] hover:text-[#fff]"
-                  : "text-md font-bold rounded-md text-white bg-black/25"
-              }`}
-              onClick={handleSkill}
-            >
-              <span
-                className={`bg-transparent flex justify-center items-center gap-1
-              ${isHovered ? "" : ""}`}
-              >
-                +{skills.length - 2}
-                <RiExpandRightFill size={17} className="bg-transparent" />
-              </span>
-            </span>
-          )}
-
-          {showDropdown && (
-            <div
-              ref={dropdownRef}
-              className="bg-transparent flex flex-wrap w-fit gap-2 text-inherit "
-            >
-              {skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className={` block cursor-pointer p-2 sm:mt-0  mt-2 duration-300 ease-in-out ${
-                    selectedSkillIndex === index
-                      ? "text-md font-bold rounded-md text-white "
-                      : "text-md font-bold  rounded-md text-white "
-                  } ${
-                    isHovered
-                      ? "text-md font-bold rounded-md text-[#d4d7d7] bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
-                      : "text-md font-bold rounded-md text-white bg-[#d0333c] hover:bg-[#d4d7d7] hover:text-[#1c1f21]"
-                  }`}
-                  onClick={() => setSelectedSkillIndex(index)}
-                >
-                  {skill}
-                </span>
-              ))}
+      <div className="flex  gap-1  items-center justify-center w-full flex-1 flex-row min-[760px]:flex-col">
+        <div className="flex  gap-2  items-center justify-center flex-1">
+          <div className="text-white min-w-max max-w-md w-full flex-1 flex items-center justify-center select-none">
+            <h1 className="font-Poppins font-medium  py-1 text-xs sm:text-[12px] text-center w-fit bg-[#C83055] rounded-3xl  px-2">
+              {job.city} ❍ {countryCode}
+            </h1>
+          </div>
+          {/* Skills */}
+          <div className="skills flex-1 pointer-events-none select-none ">
+            <div className="bg-transparent flex flex-wrap items-center justify-center min-w-max gap-1 text-sm text-white">
+              {!showDropdown &&
+                skills.slice(0, 2).map((skill, index) => (
+                  <span
+                    key={index}
+                    className={`font-Poppins text-xs sm:text-sm px-2 py-1 bg-[#3D4EE5] rounded-3xl ${
+                      isHovered ? " " : " "
+                    }`}
+                    //onClick={handleSkill}
+                  >
+                    {skill}
+                  </span>
+                ))}
             </div>
-          )}
+          </div>
         </div>
-      </div>
 
-      {/* Location */}
-      <div className="col-span-4 md:col-span-3 bg-transparent cursor-default w-full md:w-full h-fit flex flex-wrap justify-end items-center">
-        <div className=" p-3 bg-transparent w-fit flex flex-col justify-end">
-          <p className="bg-transparent font-semibold text-md sm:text-lg tracking-widest text-white/80 text-end">
-            {job.location ? job.location : `${job.city}, ${job.country}`}
-          </p>
+        <div className=" text-white flex justify-center select-none px-2 hidden">
+          <h1 className="my-auto p-2 px-4 bg-[#3D4EE5] w-fit rounded-3xl uppercase font-Poppins font-semibold">
+            Apply
+          </h1>
         </div>
       </div>
     </div>

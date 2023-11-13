@@ -181,7 +181,7 @@ function JobForm() {
       <div className="custom-toast">
         {" "}
         {/* Apply your custom styles here */}
-        <p className="custom-toast-text text-lg font-Inter">
+        <p className="custom-toast-text text-lg font-Poppins">
           Oh! Looks like you missed some fields!
         </p>
       </div>,
@@ -246,43 +246,45 @@ function JobForm() {
           method="post"
           encType="multipart/form-data"
         >
-          <section className="text-center tracking-wider font-Inter bg-black/25 rounded-xl p-3 w-fit mx-auto">
-            <h1 className="flex-wrap text-xl sm:text-3xl font-extrabold text-[#d4d7d7] w-full">
+          <section className="text-center tracking-wider font-Poppins  rounded-xl p-3 w-fit mx-auto">
+            <h1 className="flex-wrap text-xl sm:text-3xl font-extrabold text-[#000]/80 w-full">
               Welcome
-              <span className="text-[#d0333c]/80 w-full"> {user.name}</span>
+              <span className="text-[#000] w-full"> {user.name}</span>
             </h1>
             {isHidden ? (
-              <p className="text-xl pt-2 pb-4 text-white font-semibold">
+              <p className="text-xl pt-2 pb-4 text-black/70 font-semibold">
                 Enhance Your Job Listing <br />
                 Make a payment via Stripe
               </p>
             ) : (
-              <p className="text-md sm:text-xl pt-2 pb-4 uppercase text-white font-semibold">
+              <p className="text-md sm:text-xl pt-2 pb-4 uppercase text-black font-semibold">
+                Thank You! For the Payment! <br />
                 You can now{" "}
                 <span className="px-1 text-md sm:text-xl text-[#d0333c]/80 underline decoration-white underline-offset-4 font-bold ">
                   post
                 </span>
-                a job. Use the{" "}
+                a job{" "}
+                {/* - Use the{" "}
                 <span className="px-1 text-md sm:text-xl text-[#d0333c]/80 underline decoration-white underline-offset-4 font-bold ">
                   form
                 </span>{" "}
-                below.
+                below. */}
               </p>
             )}
           </section>
           {isHidden ? null : (
             <>
-              <div className="mb-8">
+              <div className="mb-8 bg-[#333]/10 p-8 w-full rounded-[54px]">
                 {showFormError && formError && (
                   <div className="flex flex-col min-[390px]:flex-row items-center justify-center bg-black/60 shadow-sm shadow-red-500 rounded-lg w-fit p-2 mx-auto">
                     <p
                       className="flex flex-col text-md text-[#d4d7d7] tracking-wide leading-normal font-bold p-2 items-center"
                       onClick={handleFormErrorClose}
                     >
-                      <span className="font-Inter align-baseline text-[#d0333c] text-xl cursor-pointer">
+                      <span className="font-Poppins align-baseline text-[#d0333c] text-xl cursor-pointer">
                         Missing Fields!
                       </span>
-                      <span className="font-Inter align-baseline text-white text-xl cursor-pointer">
+                      <span className="font-Poppins align-baseline text-white text-xl cursor-pointer">
                         {formError}
                       </span>
                     </p>
@@ -300,17 +302,17 @@ function JobForm() {
                 )}
                 <div className="flex flex-col">
                   {/* Job Title */}
-                  <div className="w-full ">
+                  <div className="w-full font-Poppins ">
                     <div>
-                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                         Job Title
                       </label>
                       <input
                         type="text"
                         name="position"
                         id="position"
-                        className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
+                        className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 font-semibold rounded-3xl
+                        text-black placeholder:text-black/70 text-xl "
                         placeholder="Example: Front-End Developer "
                         value={position}
                         onChange={(e) => setPosition(e.target.value)}
@@ -319,15 +321,16 @@ function JobForm() {
                     </div>
                   </div>
                   {/* Location */}
-                  <div className="w-full ">
+                  <div className="w-full font-Poppins ">
                     <div>
-                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                         Location
                       </label>
                       <span className="flex flex-row w-full justify-between space-x-4">
                         <input
                           type="text"
-                          className="input input-bordered text-xl bg-black/25 w-full text-white/90"
+                          className="input input-bordered text-xl bg-black/25 w-full font-semibold
+                          text-black rounded-3xl"
                           id="city"
                           name="city"
                           value={city}
@@ -338,11 +341,11 @@ function JobForm() {
                           name="dropdown"
                           value={selectedCountry}
                           onChange={handleCountryChange}
-                          className="select select-bordered bg-black/90 backdrop-blur-md text-white/90 w-full font-Inter flex flex-wrap text-xl"
+                          className="select select-bordered rounded-3xl bg-black/25 backdrop-blur-md text-black w-full font-Poppins flex flex-wrap text-xl"
                         >
                           <option
                             defaultValue={" "}
-                            className="text-xl text-center text-white/70"
+                            className="text-xl text-center text-black bg-black/25"
                             id="defaultCountry"
                           >
                             Select A Country
@@ -361,7 +364,7 @@ function JobForm() {
                     </div>
                   </div>
                 </div>
-                <div className="typeWork  sm:grid sm:grid-cols-2  text-white/75 font-Inter my-2 p-2">
+                <div className="typeWork  sm:grid sm:grid-cols-2  text-black/75 font-Poppins my-2 p-2">
                   {/* Type */}
                   <div className="grid grid-cols-2 gap-2">
                     {/* Full-Time */}
@@ -447,19 +450,19 @@ function JobForm() {
                   </div>
                 </div>
                 {/* Description */}
-                <div className="mt-4 text-white tracking-wider text-lg">
+                <div className="mt-4 text-black tracking-wider text-lg rounded-3xl">
                   <ReactQuill
                     placeholder="Job Description"
-                    className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/25 
-            text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest"
+                    className="textarea rounded-3xl textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/25
+            text-white placeholder:text-black/60 text-xl font-Poppins placeholder:text-2xl placeholder:tracking-widest"
                     onChange={handleDescriptionChange}
                     value={description}
                   />
                 </div>
                 {/* Skills */}
-                <div className="w-full bg-transparent">
+                <div className="w-full bg-transparent font-Poppins">
                   <div className="bg-transparent">
-                    <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                    <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                       Skills
                     </label>
                     {/* SKILLS.MAP */}
@@ -467,7 +470,7 @@ function JobForm() {
                       {skills.map((skill, index) => (
                         <div
                           key={index}
-                          className="bg-[#d0333c]/80 text-[#d4d7d7] px-3 py-1 text-lg font-bold tracking-wide rounded-md m-1  "
+                          className="bg-[#000]/80 text-white font-Poppins px-3 py-1 text-lg font-semibold tracking-wide rounded-3xl m-1  "
                         >
                           {skill}
                           <button
@@ -485,27 +488,27 @@ function JobForm() {
                       type="text"
                       name="skills"
                       id="skills"
-                      className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-              text-white/80 placeholder:text-white/40 text-xl placeholder:tracking-wide"
+                      className="w-full rounded-3xl input input-bordered transition-colors duration-300 ease-in-out bg-black/25 font-semibold
+                      text-black  placeholder:text-black/70 text-xl placeholder:tracking-wide"
                       placeholder="<spacebar> or <comma> to split Skills."
                       onKeyUp={handleSkillChange}
                       onKeyDown={falseFlagsubmit}
                     />
                   </div>
                 </div>
-                <div className="sm:flex sm:space-x-8 bg-transparent">
+                <div className="sm:flex sm:space-x-8 bg-transparent font-Poppins">
                   {/* Company Name */}
-                  <div className="w-full sm:w-1/2 bg-transparent">
+                  <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
                     <div className="bg-transparent">
-                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                         Company Name
                       </label>
                       <input
                         type="text"
                         name="company"
                         id="company"
-                        className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
+                        className="w-full rounded-3xl input input-bordered transition-colors duration-300 ease-in-out bg-black/25 font-semibold
+                        text-black placeholder:text-white/70 text-xl "
                         placeholder="ABC Co."
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
@@ -514,17 +517,17 @@ function JobForm() {
                     </div>
                   </div>
                   {/* Career Page URL */}
-                  <div className="w-full sm:w-1/2 bg-transparent">
+                  <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
                     <div className="bg-transparent">
-                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                         Career Page URL
                       </label>
                       <input
                         type="text"
                         name="careerPage"
                         id="careerPage"
-                        className="w-full input input-bordered  transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
+                        className="w-full rounded-3xl input input-bordered  transition-colors duration-300 ease-in-out bg-black/25 font-semibold
+                        text-black placeholder:text-black/70 text-xl "
                         placeholder="https://www.careers.example.com/jobID?JobName"
                         value={careerPage}
                         onChange={(e) => setCareerPage(e.target.value)}
@@ -536,33 +539,33 @@ function JobForm() {
 
                 <div className="sm:flex sm:space-x-8 bg-transparent">
                   {/* Logo */}
-                  <div className="w-full sm:w-1/2 bg-transparent">
+                  <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
                     <div className="form-group bg-transparent">
-                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                         Logo
                       </label>
                       <input
                         type="file"
                         name="logo"
                         accept="image/*"
-                        className="form-control-file file-input w-full bg-black/25 text-white/40 text-lg"
+                        className="rounded-3xl form-control-file file-input w-full bg-black/20 text-black/70 text-lg"
                         onChange={(e) => setFileName(e.target.files[0])}
                         //onChange={(e) => setFileName(e.target.files[0]?.name || "")}
                       />
                     </div>
                   </div>
                   {/* Company URL */}
-                  <div className="w-full sm:w-1/2 bg-transparent">
+                  <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
                     <div className="bg-transparent">
-                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                         Company URL
                       </label>
                       <input
                         type="text"
                         name="website"
                         id="website"
-                        className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
+                        className="rounded-3xl w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 font-semibold
+                text-black placeholder:text-black/70 text-xl "
                         placeholder="https://www.companyname.com"
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
@@ -579,7 +582,7 @@ function JobForm() {
           <div className="form-group flex justify-center items-center bg-transparent py-10 ">
             {paymentSuccess ? (
               <button
-                className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-lg uppercase transition-colors duration-300 ease-in-out"
+                className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
                 type="submit"
               >
                 Submit
@@ -591,7 +594,7 @@ function JobForm() {
                     startPayment();
                   }
                 }}
-                className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-lg uppercase transition-colors duration-300 ease-in-out"
+                className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
                 type="button"
               >
                 Pay Now

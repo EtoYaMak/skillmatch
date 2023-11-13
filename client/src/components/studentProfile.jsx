@@ -12,47 +12,47 @@ import { useNavigate } from "react-router-dom";
 function ProfileForm({ handleView, handleDownload, profile }) {
   return (
     <form
-      className="space-y-4 px-4 sm:px-0 sm:w-2/4 select-none mx-auto font-Inter"
+      className="space-y-4 px-4 w-full select-none mx-auto font-Poppins"
       encType="multipart/form-data"
     >
       {/* Profile form content */}
       {/* EXISTING PROFILE VIEW */}
-      <div className="space-y-1 ">
-        <label className="text-xl text-white ml-2">University</label>
+      <div className="space-y-1 flex flex-col">
+        <label className="text-xl  text-black ml-2 font-Poppins ">
+          University
+        </label>
         <input
           type="text"
           name="University"
-          className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+          className=" font-Poppins input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
           value={profile.University}
           disabled
         />
       </div>
-      <div className="space-y-1 ">
-        <label className="text-xl text-white ml-2">Degree</label>
-        <select
-          id="Degree"
-          name="Degree"
-          className="select select-disabled border-2 border-[#d0333c] text-white/90 text-xl w-full "
-          value={profile.Degree}
-          disabled
-        >
-          <option value="BSc">BSc</option>
-          <option value="MSc">MSc</option>
-          <option value="PhD">PhD</option>
-          <option value="Other">Other</option>
-        </select>
+      <div className="flex flex-col sm:flex-row gap-2">
+        <div className="space-y-1 w-24 flex flex-col">
+          <label className="font-Poppins text-xl text-black ml-2">Degree</label>
+          <input
+            type="text"
+            name="DegreeTitle"
+            value={profile.Degree}
+            className="font-Poppins input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+            disabled
+          />
+        </div>
+        <div className="space-y-1 font-Poppins w-full flex flex-col ">
+          <label className="text-xl text-black ml-2">Degree Title</label>
+          <input
+            type="text"
+            name="DegreeTitle"
+            value={profile.DegreeTitle}
+            className="font-Poppins input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+            disabled
+          />
+        </div>
       </div>
-      <div className="space-y-1 ">
-        <label className="text-xl text-white ml-2">Degree Title</label>
-        <input
-          type="text"
-          name="DegreeTitle"
-          value={profile.DegreeTitle}
-          className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-          disabled
-        />
-      </div>
-      <div className="space-y-2 flex flex-col ">
+
+      <div className="space-y-2 flex flex-col font-Poppins ">
         {/*  <label htmlFor="cv" className="text-xl text-white ml-2">
               CV
             </label>
@@ -62,17 +62,17 @@ function ProfileForm({ handleView, handleDownload, profile }) {
               </p>
             )} */}
       </div>
-      <div className="flex flex-row space-x-4 w-full justify-center font-Inter text-lg">
+      <div className="flex flex-row space-x-4 w-full justify-center font-Poppins  text-xl">
         {/* If you prefer a button instead of a link */}
         <button
           onClick={handleView}
-          className="btn btn-outline text-white w-1/3 rounded-sm hover:bg-white"
+          className="btn btn-outline bg-black/80 text-white  rounded-3xl hover:bg-white"
         >
           View CV
         </button>
         <button
           onClick={handleDownload}
-          className="btn btn-outline text-white w-1/3 rounded-sm hover:bg-white"
+          className="btn btn-outline bg-black/80 text-white  rounded-3xl hover:bg-white"
         >
           Download CV
         </button>
@@ -90,52 +90,56 @@ function CreateNewProfileForm({
 }) {
   return (
     <form
-      className="space-y-4 px-4 sm:px-0 w-full sm:w-2/4 select-none mx-auto font-Inter"
+      className="space-y-4 px-4 sm:px-0 w-full select-none mx-auto font-Poppins"
       encType="multipart/form-data"
     >
       {/* Create new profile form content */}
 
-      <div className="space-y-1">
-        <label className="text-xl text-white ml-1">University</label>
+      <div className="space-y-1 font-Poppins flex flex-col">
+        <label className="text-xl text-black ml-1">University</label>
         <input
           type="text"
           name="University"
-          className="input input-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full "
+          className="input input-primary border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl w-full "
           value={formData.University}
           onChange={(e) =>
             setFormData({ ...formData, University: e.target.value })
           }
         />
       </div>
-      <div className="space-y-1">
-        <label className="text-xl text-white ml-1">Degree</label>
-        <select
-          id="Degree"
-          name="Degree"
-          className="select select-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full"
-          value={formData.Degree}
-          onChange={(e) => setFormData({ ...formData, Degree: e.target.value })}
-        >
-          <option value="BSc">BSc</option>
-          <option value="MSc">MSc</option>
-          <option value="PhD">PhD</option>
-          <option value="Other">Other</option>
-        </select>
+      <div className="flex flex-col sm:flex-row w-full gap-2 font-Poppins">
+        <div className="space-y-1 flex flex-col">
+          <label className="text-xl text-black ml-1">Degree</label>
+          <select
+            id="Degree"
+            name="Degree"
+            className="select select-bordered  border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl w-full "
+            value={formData.Degree}
+            onChange={(e) =>
+              setFormData({ ...formData, Degree: e.target.value })
+            }
+          >
+            <option value="BSc">BSc</option>
+            <option value="MSc">MSc</option>
+            <option value="PhD">PhD</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div className="space-y-1 flex flex-col">
+          <label className="text-xl text-black ml-1">Degree Title</label>
+          <input
+            type="text"
+            name="DegreeTitle"
+            value={formData.DegreeTitle}
+            className="input input-bordered border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl "
+            onChange={(e) =>
+              setFormData({ ...formData, DegreeTitle: e.target.value })
+            }
+          />
+        </div>
       </div>
-      <div className="space-y-1">
-        <label className="text-xl text-white ml-1">Degree Title</label>
-        <input
-          type="text"
-          name="DegreeTitle"
-          value={formData.DegreeTitle}
-          className="input input-bordered border-2 border-[#d0333c] text-white/90 text-xl w-full "
-          onChange={(e) =>
-            setFormData({ ...formData, DegreeTitle: e.target.value })
-          }
-        />
-      </div>
-      <div className="space-y-1">
-        <label htmlFor="cv" className="block text-xl text-white ml-1">
+      <div className="space-y-1 flex flex-col">
+        <label htmlFor="cv" className="block text-xl text-black ml-1">
           CV
         </label>
         <input
@@ -143,7 +147,7 @@ function CreateNewProfileForm({
           id="cv"
           name="cv"
           onChange={handleFileChange}
-          className="file-input file-input-bordered border-2 hover:text-[#d0333c] border-[#d0333c] text-white/80 "
+          className="file-input file-input-error  text-black bg-black/25 text-lg"
         />
       </div>
 
@@ -331,28 +335,30 @@ function StudeProfile() {
   };
 
   return (
-    <div className="Container flex flex-col items-center bg-[#2c3033] h-full">
-      <div className="Buttons flex flex-col w-full md:flex-row gap-4 sm:w-full justify-center py-10">
+    <div className="Container flex flex-col items-center  w-full mx-auto p-4 rounded-3xl h-full">
+      <div className="Buttons flex flex-col w-full md:flex-row gap-4 justify-center py-10">
         <button
-          className="btn w-full md:btn-wide h-fit py-2 text-white text-lg bg-black/40 hover:bg-[#d0333c] border-none"
+          className="btn max-w-sm md:btn-wide h-fit py-2 text-white text-lg bg-black hover:bg-[#d0333c] border-none"
           onClick={switchToProfileForm}
         >
           Profile
         </button>
         {profile && Object.keys(profile).length > 0 && (
-          <button
-            className="btn w-full md:btn-wide h-fit py-2 text-white text-lg bg-black/40 hover:bg-[#d0333c] border-none"
-            onClick={switchToUpdateForm}
-          >
-            Update Profile
-          </button>
+          <>
+            <button
+              className="btn max-w-sm md:btn-wide h-fit py-2 text-white text-lg bg-black hover:bg-[#d0333c] border-none "
+              onClick={switchToUpdateForm}
+            >
+              Update Profile
+            </button>
+            <button
+              className="btn  max-w-sm md:btn-wide h-fit py-2 text-white text-lg bg-black hover:bg-[#d0333c] border-none"
+              onClick={switchToDeleteForm}
+            >
+              Delete Profile
+            </button>
+          </>
         )}
-        <button
-          className="btn  w-full md:btn-wide h-fit py-2 text-white text-lg bg-black/40 hover:bg-[#d0333c] border-none"
-          onClick={switchToDeleteForm}
-        >
-          Delete Profile
-        </button>
       </div>
       {activeForm === "profile" && !profileExists ? (
         <CreateNewProfileForm
@@ -371,61 +377,64 @@ function StudeProfile() {
       ) : activeForm === "updateProfile" && profileExists ? (
         <form
           onSubmit={handleSubmitUpdate}
-          className="space-y-4 px-4 sm:px-0 w-full sm:w-2/4 select-none mx-auto font-Inter"
+          className="space-y-4 px-4 sm:px-0 w-full select-none mx-auto font-Inter"
           encType="multipart/form-data"
         >
           {/* Your Update Profile Form Content */}
           <form
             onSubmit={handleSubmitUpdate}
-            className="space-y-4 px-4 sm:px-0 w-full sm:w-2/4 select-none mx-auto font-Inter"
+            className="space-y-4 px-1 sm:px-0 w-full  select-none mx-auto font-Inter"
             encType="multipart/form-data"
           >
             {/* UPDATE EXISTING PROFILE */}
-            <div className="space-y-1">
-              <label className="text-xl text-white ml-2">University</label>
+            <div className="space-y-1 font-Poppins flex flex-col">
+              <label className="text-xl text-black ml-2">University</label>
               <input
                 type="text"
                 name="University"
-                className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
+                className="input input-primary border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl w-full "
                 placeholder={profile.University}
                 onChange={(e) =>
                   setFormData({ ...formData, University: e.target.value })
                 }
               />
             </div>
-            <div className="space-y-1">
-              <label className="text-xl text-white ml-2">Degree</label>
-              <select
-                id="Degree"
-                name="Degree"
-                className="select select-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-                placeholder={profile.Degree}
-                onChange={(e) =>
-                  setFormData({ ...formData, Degree: e.target.value })
-                }
-              >
-                <option value="BSc">BSc</option>
-                <option value="MSc">MSc</option>
-                <option value="PhD">PhD</option>
-                <option value="Other">Other</option>
-              </select>
+            <div className="flex flex-col sm:flex-row w-full gap-2">
+              <div className="space-y-1 font-Poppins w-32  flex flex-col">
+                <label className="text-xl text-black ml-2">Degree</label>
+                <select
+                  id="Degree"
+                  name="Degree"
+                  className="select select-primary border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl w-full "
+                  placeholder={profile.Degree}
+                  onChange={(e) =>
+                    setFormData({ ...formData, Degree: e.target.value })
+                  }
+                >
+                  <option value="BSc">BSc</option>
+                  <option value="MSc">MSc</option>
+                  <option value="PhD">PhD</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div className="space-y-1 font-Poppins w-full  flex flex-col">
+                <label className="text-xl text-black ml-2">Degree Title</label>
+                <input
+                  type="text"
+                  name="DegreeTitle"
+                  placeholder={profile.DegreeTitle}
+                  className="input input-primary border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl w-full "
+                  onChange={(e) =>
+                    setFormData({ ...formData, DegreeTitle: e.target.value })
+                  }
+                />
+              </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-xl text-white ml-2">Degree Title</label>
-              <input
-                type="text"
-                name="DegreeTitle"
-                placeholder={profile.DegreeTitle}
-                className="input input-primary border-2 border-[#d0333c] text-white/90 text-xl w-full "
-                onChange={(e) =>
-                  setFormData({ ...formData, DegreeTitle: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex justify-center font-Inter">
+
+            <div className="flex justify-center font-Poppins">
               <button
                 type="submit"
-                className="btn btn-block bg-black/40 text-white text-lg hover:bg-[#d0333c] border-none"
+                className="btn btn-block bg-black text-white text-lg hover:bg-[#d0333c] border-none"
               >
                 Update Profile
               </button>
@@ -433,14 +442,14 @@ function StudeProfile() {
           </form>
         </form>
       ) : activeForm === "deleteProfile" ? (
-        <div className="mx-auto flex flex-col items-center justify-evenly space-y-4">
+        <div className="mx-auto flex flex-col items-center justify-evenly space-y-4 font-Poppins">
           {/* Your Delete Profile Form Content */}
           <div className="mx-auto flex flex-col items-center justify-evenly space-y-4">
             <div className="mx-auto flex flex-col items-center justify-evenly space-y-4 ">
-              <h1 className="text-2xl text-white">
+              <h1 className="text-2xl text-black">
                 Are you sure you want do delete your profile?
               </h1>
-              <span className="flex flex-row items-baseline space-x-4">
+              <span className="flex flex-row items-center justify-center space-x-4">
                 <input
                   type="checkbox"
                   className="checkbox checkbox-warning"
@@ -456,7 +465,7 @@ function StudeProfile() {
                 className={`btn  ${
                   isChecked
                     ? " bg-black/80 hover:bg-[#d0333c] text-white"
-                    : " text-white/20"
+                    : " text-black"
                 } text-lg btn-wide border-none`}
                 onClick={handleDeleteProfile}
                 disabled={!isChecked}

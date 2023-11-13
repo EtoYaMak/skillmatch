@@ -2,30 +2,32 @@ import React from "react";
 
 const StudentApplicationsCard = ({ job, status }) => {
   return (
-    <div className="cards flex h-[110px] w-1/2 mx-auto overflow-hidden bg-[#222]  items-center rounded-md  p-3">
-      <div className="flex w-full items-center bg-transparent">
-        <h1 className="ml-1 py-2 flex justify-center">
+    <div className=" bg-white shadow-[0px_4px_8px_rgb(0,0,0,0.3)] rounded-3xl  items-center  p-3 font-Poppins">
+      <div className="flex w-full bg-transparent">
+        <div className="flex justify-center items-center max-w-fit ">
           <img
             src={job.logo}
             alt={job.company}
-            className="bg-transparent w-24 h-24 rounded-full object-cover"
+            className=" rounded-full w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
           />
-        </h1>
-        <div className="ml-2 bg-transparent w-3/5 flex flex-col items-start">
-          <h2 className="bg-inherit block cursor-pointer font-semibold text-2xl tracking-wider text-[#d0333c]">
-            {job.position}
-          </h2>
-          <h2 className="bg-inherit block cursor-pointer font-semibold text-lg tracking-wider text-[#fff]">
-            {job.company}
-          </h2>
         </div>
-        <div className="mx-2 bg-transparent w-2/6 flex flex-col items-end">
-          <h2 className="bg-inherit block cursor-pointer font-semibold text-2xl tracking-wider text-[#d0333c]">
-            Application Status
-          </h2>
-          <h2 className="bg-inherit block cursor-pointer font-semibold text-lg tracking-wider text-[#fff]">
-            {status}
-          </h2>
+        <div className="text-black w-full">
+          <div className="flex-1 min-[768px]:pl-3 pl-2 select-none items-start text-start ">
+            <h1 className="font-Poppins min-[900px]:text-xl min-[768px]:text-lg text-lg font-bold w-fit">
+              {job.position}
+            </h1>
+            <h1 className="text-start font-Poppins text-md font-medium hover:underline">
+              {job.company}
+            </h1>
+          </div>
+          <div className="mx-2 bg-transparent  flex flex-col items-end font-Poppins">
+            <h2 className="bg-inherit block cursor-pointer font-bold text-lg  text-[#000]">
+              Application Status
+            </h2>
+            <h2 className="bg-inherit block cursor-pointer  font-Poppins text-[#000]">
+              {status}
+            </h2>
+          </div>
         </div>
       </div>
     </div>

@@ -43,11 +43,24 @@ function Home() {
   const showLessJobs = () => {
     setVisibleJobs((prevVisibleJobs) => prevVisibleJobs - 5);
   };
+  // Function to calculate the height of each card based on its content
+  const calculateCardHeight = (job) => {
+    // Add your logic to calculate the height based on job content
+    // For example, you can use the number of lines in the job description
+    const numberOfLines = job.description.split("\n").length;
+    const baseHeight = 100; // Adjust this based on your design
+    const lineHeight = 20; // Adjust this based on your design
+    return baseHeight + numberOfLines * lineHeight;
+  };
+  // Assuming jobs is an array of job objects
+  const maxCardHeight = Math.max(
+    ...jobs.map((job) => calculateCardHeight(job))
+  );
 
   return (
     <div className="justify-between items-center max-w-[1240px]  px-4  mx-auto  bg-inherit">
       {/* Conditionally render the message */}
-      <h1 className="text-center font-semibold py-4 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
+      <h1 className="text-center font-medium py-4 text-2xl text-[#333] select-none font-Poppins tracking-wide">
         REMOTE
       </h1>
       <div className="Carousel Slider cursor-pointer">
@@ -56,14 +69,18 @@ function Home() {
             <p className="text-2xl font-Inter">No Jobs Found</p>
           ) : (
             remoteJobs.map((job) => (
-              <div key={job._id}>
+              <div
+                key={job._id}
+                className=""
+                style={{ minHeight: `${maxCardHeight}px` }}
+              >
                 <FeaturedCardComp job={job} />
               </div>
             ))
           )}
         </Slider>
       </div>
-      <h1 className="text-center font-semibold mt-10 pb-4 text-2xl text-[#f2f3f3] select-none font-Inter tracking-[0.25em]">
+      <h1 className="text-center font-medium mt-10 text-2xl text-[#333] select-none font-Poppins tracking-wide">
         RECENT
       </h1>
       <div className="recent pb-10 ">
@@ -76,13 +93,13 @@ function Home() {
             ))}
 
             {/* Show More and Show Less buttons */}
-            <div className="flex flex-row justify-center items-center gap-10 ">
+            <div className="flex flex-row justify-center items-center gap-10  ">
               {sortedJobs.length > visibleJobs && (
                 <button
                   onClick={showMoreJobs}
-                  className="duration-200 ease-in-out 
-                   bg-[#d0333c] hover:bg-[#1c1f21] 
-                    text-[#d4d7d7] hover:text-[#d0333c]
+                  className="duration-200 ease-in-out  shadow-[0px_4px_7px_rgb(0,0,0,0.4)]
+                   bg-[#1c1f21] hover:bg-[#d0333c] 
+                    text-[#d4d7d7] hover:text-[#d4d7d7]
                     w-12 h-12 rounded-full
                     flex items-center justify-center
                     "
@@ -93,10 +110,10 @@ function Home() {
               {visibleJobs > itemsPerPage && (
                 <button
                   onClick={showLessJobs}
-                  className="primary-btn duration-200 ease-in-out
+                  className="primary-btn duration-200 ease-in-out shadow-[0px_4px_7px_rgb(0,0,0,0.4)]
                    flex items-center justify-center
-                    bg-[#d0333c] hover:bg-[#1c1f21] 
-                     text-[#d4d7d7] hover:text-[#d0333c]
+                   bg-[#1c1f21] hover:bg-[#d0333c] 
+                   text-[#d4d7d7] hover:text-[#d4d7d7]
                      w-12 h-12  rounded-full"
                 >
                   <HiOutlineChevronDoubleUp size={16} />

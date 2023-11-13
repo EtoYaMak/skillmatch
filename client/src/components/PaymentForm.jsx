@@ -18,8 +18,8 @@ const CARD_OPTIONS = {
       "::placeholder": { color: "#fff" },
     },
     invalid: {
-      iconColor: "#ffc7ee",
-      color: "#ffc7ee",
+      iconColor: "#fffff00",
+      color: "#fffff00",
     },
   },
 };
@@ -84,14 +84,14 @@ export default function PaymentForm() {
     <div className="mx-auto flex justify-center items-center">
       {!success ? (
         <form onSubmit={handleSubmit} className="sm:w-1/2 m-auto p-4 w-full">
-          <h1 className="font-Inter font-bold text-gray-100 text-center text-xl sm:text-5xl p-4">
+          <h1 className="font-Inter font-bold text-black text-center text-xl sm:text-5xl p-4">
             Stripe Checkout
           </h1>
-          <h1 className="text-center p-4 text-white font-Inter  font-medium text-md">
+          <h1 className="text-center p-4 text-black/70 font-Inter  font-medium text-md">
             Skillmint Job Listing Payment
           </h1>
-          <h1 className="text-center p-4 text-white font-Inter  font-medium text-md">
-            Amount: ${amount / 1000}
+          <h1 className="text-center p-4 text-black/70 font-Inter  font-medium text-md">
+            Amount: ${amount / 100}
           </h1>
           <fieldset className="FormGroupPF">
             <div className="FormRowPF">

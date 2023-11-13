@@ -16,7 +16,7 @@ const Post = () => {
   }, [user, navigate]);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 ">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 font-Poppin ">
       <div className="pb-1 select-none pt-10">
         {user ? (
           user.isActive ? (
@@ -25,20 +25,17 @@ const Post = () => {
             </>
           ) : (
             <div className="text-center min-h-fit flex justify-center items-center">
-              <p className="text-2xl text-white tracking-[0.15em]">
+              <p className="text-2xl text-white font-Poppins ">
                 Your account is not activated. Please activate your account to
                 post a job.
               </p>
             </div>
           )
         ) : (
-          <div className="text-center flex justify-center items-center">
-            <p className="text-2xl text-white tracking-[0.15em]">
+          <div className="text-center flex justify-center items-center ">
+            <p className="text-2xl text-white font-Poppins ">
               Want to post a job?{" "}
-              <Link
-                to="/register"
-                className="text-[#d0333c] hover:text-[#aba6a6] hover:border-b-2 border-[#d0333c]"
-              >
+              <Link to="/register" className="text-[#333]/70 hover:text-[#000]">
                 Click here to register as a job poster
               </Link>
               .

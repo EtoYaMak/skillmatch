@@ -6,6 +6,9 @@ module.exports = {
     extend: {
       fontFamily: {
         Inter: ["Inter", "Sans-serif"],
+        Poppins: ["Poppins", "sans-serif"],
+        Oswald: ["Oswald", "sans-serif"],
+        Handlee: ["Handlee", "cursive"],
       },
     },
   },

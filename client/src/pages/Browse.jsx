@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SearchComponent from "../components/Search";
 import BrowseJobComponent from "../components/BrowseJobComponent";
-/* import FilterComponent from "../components/Filter/Filter"; */
+import {
+  MdOutlineArrowForwardIos,
+  MdOutlineArrowBackIos,
+} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllJobs, reset } from "../features/jobs/jobSlice";
@@ -14,7 +17,7 @@ function Browse() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const jobsPerPage = 6;
+  const jobsPerPage = 7;
 
   useEffect(() => {
     dispatch(getAllJobs());
@@ -67,7 +70,7 @@ function Browse() {
   );
 
   return (
-    <div className="main mx-auto max-w-[1240px] px-4 md:px-6 min-h-fit ">
+    <div className="main mx-auto max-w-[1240px] px-4 md:px-6 ">
       <div className="h-fit pb-2">
         {/* Search component */}
         <div className="md:flex md:space-x-4 mt-6">
@@ -93,40 +96,42 @@ function Browse() {
         {/* Pagination */}
         <div className="flex justify-center items-center mb-2">
           <button
-            className={`btn btn-ghost  ${
-              currentPage === 1 ? "text-[#939393] " : "text-[#d4d7d7] "
+            className={`rounded-full text-white p-1 mx-2 ${
+              currentPage === 1
+                ? "bg-black/20" //Next Not Available
+                : "bg-black" //Next Available
             }`}
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            Prev
+            <MdOutlineArrowBackIos />
           </button>
           {pageNumbers.map((number) => (
             <button
               key={number}
-              className={`px-3 py-1  ${
+              className={`btn btn-circle btn-sm sm:btn-md mx-[1px] ${
                 currentPage === number
-                  ? "bg-[#d0333c]  font-semibold mx-1 rounded-sm text-white"
-                  : "text-[#fff] bg-[#1c1f21] font-medium  mx-1 rounded-sm "
+                  ? "bg-[#000] text-white ring-0"
+                  : " bg-[#333] text-white ring-0" //Active Page Number, InActive
               }`}
               onClick={() => paginate(number)}
             >
               {number}
             </button>
           ))}
-          <button
-            className={` btn btn-ghost  ${
+
+          <MdOutlineArrowForwardIos
+            className={` rounded-full text-white p-1 mx-2 ${
               currentPage === Math.ceil(filteredJobs.length / jobsPerPage)
-                ? "text-[#939393] "
-                : "text-[#d4d7d7] "
+                ? "bg-black/20" //Next Not Available
+                : "bg-black" //Next Available
             }`}
+            size={12}
             onClick={() => paginate(currentPage + 1)}
             disabled={
               currentPage === Math.ceil(filteredJobs.length / jobsPerPage)
             }
-          >
-            Next
-          </button>
+          />
         </div>
       </div>
     </div>
