@@ -82,7 +82,7 @@ function App() {
 
   return (
     <>
-      <div className="App bg-[#fff] min-h-screen">
+      <div className="App bg-[#fff] min-h-screen h-fit">
         <Navbar />
         <ActivationModal
           isOpen={isModalOpen}

@@ -47,10 +47,10 @@ const Contact = () => {
 
   return (
     <div className="max-w-6xl mx-auto  bg-[#000]/10 rounded-3xl h-full  flex flex-col justify-center items-center">
-      <section className="text-gray-400 body-font font-Inter mb-8">
+      <section className="text-gray-400 body-font font-Poppins mb-8">
         <div className="container px-5 py-5 mx-auto bg-transparent rounded-b-xl">
           <div className="flex flex-col text-center w-full mb-4 bg-inherit mt-10 ">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-1 text-[#000] bg-inherit font-Inter">
+            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-1 text-[#000] bg-inherit font-Poppins">
               Contact Us
             </h1>
             <p className="lg:w-2/3 mx-auto leading-relaxed text-2xl bg-inherit text-[#000]">
@@ -74,7 +74,7 @@ const Contact = () => {
                 <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="name"
-                    className="leading-7 text-xl p-2 text-[#000] bg-inherit font-Inter font-semibold"
+                    className="leading-7 text-xl p-2 text-[#000] bg-inherit font-Poppins font-semibold"
                   >
                     Name
                   </label>
@@ -84,7 +84,7 @@ const Contact = () => {
                     name="name"
                     value={name}
                     onChange={handleChange}
-                    className="input bg-black/25 text-lg text-black/80 w-full leading-8 transition-colors duration-200 ease-in-out"
+                    className="input bg-black/25 text-lg text-black w-full leading-8 transition-colors duration-200 ease-in-out"
                   />
                 </div>
               </div>
@@ -92,7 +92,7 @@ const Contact = () => {
                 <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="email"
-                    className="leading-7 text-xl p-2 text-[#000]  bg-inherit font-Inter font-semibold"
+                    className="leading-7 text-xl p-2 text-[#000]  bg-inherit font-Poppins font-semibold"
                   >
                     Email
                   </label>
@@ -102,7 +102,7 @@ const Contact = () => {
                     name="email"
                     value={email}
                     onChange={handleChange}
-                    className="w-full input bg-black/25 text-lg text-white/80             
+                    className="w-full input bg-black/25 text-lg text-black            
                       leading-8 transition-colors duration-200 ease-in-out"
                   />
                 </div>
@@ -111,7 +111,7 @@ const Contact = () => {
                 <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="message"
-                    className="leading-7 text-xl  text-[#000]  bg-inherit font-Inter font-semibold"
+                    className="leading-7 text-xl  text-[#000]  bg-inherit font-Poppins font-semibold"
                   >
                     Message
                   </label>
@@ -120,7 +120,7 @@ const Contact = () => {
                     name="message"
                     value={message}
                     onChange={handleChange}
-                    className="textarea textarea-bordered w-full bg-black/25 h-48 leading-6 transition-colors duration-200 ease-in-out text-lg text-white/80"
+                    className="textarea textarea-bordered w-full text-black bg-black/25 h-48 leading-6 transition-colors duration-200 ease-in-out text-lg "
                   ></textarea>
                 </div>
               </div>

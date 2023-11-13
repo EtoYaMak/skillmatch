@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"; // Removed useSelector since it's not used here
 import {
   SAgetMyJobs,
@@ -37,14 +37,16 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
       }
     }
   };
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-wrap gap-2 min-[640px]:justify-center">
       {jobs.length > 0 ? (
         <>
           {jobs.map((job) => (
-            <div
+            <Link
               key={job._id}
+              to={`/jobs/${job._id}`}
               className="card card-compact max-[640px]:card-side w-full h-fit  min-[640px]:w-56 bg-transparent shadow-xl my-2"
             >
               <figure className="bg-transparent min-w-fit pointer-events-none ">
@@ -66,6 +68,7 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
                     {formatCreatedAtDate(job.createdAt)}
                   </span>
                 </p>
+
                 <div className="card-actions justify-center">
                   <ul className="menu menu-horizontal p-2 bg-white/5 rounded-box items-center">
                     <li>
@@ -92,7 +95,7 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
                   </ul>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </>
       ) : (

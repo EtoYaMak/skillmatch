@@ -48,9 +48,10 @@ function BrowseJobComponent({ job }) {
   )?.Code;
   return (
     <div
-      className="jobcomp  min-[640px]:px-4 px-3 py-3 max-[640px]:gap-2 my-4 h-fit sm:h-32 flex flex-col min-[600px]:flex-row items-center shadow-[0px_4px_8px_rgb(0,0,0,0.3)] rounded-2xl font-Poppin max-w-full"
+      className="jobcomp  min-[640px]:px-4 px-3 py-3 max-[640px]:gap-2 my-4 h-fit sm:h-32 flex flex-col min-[600px]:flex-row items-center shadow-[0px_3px_8px_rgb(0,0,0,0.3)] hover:shadow-[0px_6px_7px_rgb(0,0,0,0.5)] rounded-2xl font-Poppin max-w-full hover:bg-[#fff] text-black hover:scale-[102%] duration-200 ease-in-out"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       <div className="flex flex-row flex-1 items-center sm:max-w-lg w-full">
         <div className="flex justify-center items-center max-w-fit ">

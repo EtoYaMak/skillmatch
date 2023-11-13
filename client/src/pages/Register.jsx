@@ -176,18 +176,20 @@ function Register() {
     <>
       <div className="hero min-h-[91vh] z-1">
         <div className="hero-content flex-col lg:flex-row-reverse">
-          <div className="text-center lg:text-left font-Inter">
-            <h1 className="text-5xl font-bold text-white">Register!</h1>
-            <p className="py-6 text-xl text-white">
+          <div className="text-center lg:text-left font-Poppins">
+            <h1 className="text-5xl font-bold text-black">Register!</h1>
+            <p className="py-6 text-xl text-black">
               Unlock Your Career Opportunities or Start Building Your Team
               Today!
             </p>
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl shadow-black/60 bg-[#1c1f21]">
-            <form onSubmit={onSubmit} className="card-body">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-[0px_3px_8px_rgb(0,0,0,0.3)] bg-[#fff]">
+            <form onSubmit={onSubmit} className="card-body font-Poppins">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Name</span>
+                  <span className="label-text text-[14px] text-black">
+                    Name
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -195,13 +197,16 @@ function Register() {
                   value={name}
                   placeholder="Enter your name"
                   onChange={onChange}
-                  className="input input-bordered text-white"
+                  className="input input-bordered  text-white bg-black placeholder:text-white/80
+                  focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
                   required
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Email</span>
+                  <span className="label-text text-[14px] text-black">
+                    Email
+                  </span>
                 </label>
                 <input
                   type="email"
@@ -209,14 +214,17 @@ function Register() {
                   value={email}
                   placeholder="Enter your email"
                   onChange={onChange}
-                  className="input input-bordered text-white"
+                  className="input input-bordered  text-white bg-black placeholder:text-white/80
+                  focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
                   required
                 />
               </div>
               {/* Password */}
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Password</span>
+                  <span className="label-text text-[14px] text-black">
+                    Password
+                  </span>
                 </label>
                 <div className="flex flex-row items-center">
                   <input
@@ -225,13 +233,14 @@ function Register() {
                     value={password}
                     placeholder="Enter password"
                     onChange={onChange}
-                    className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
+                    className="input input-bordered w-full  text-white bg-black placeholder:text-white/80
+                    focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="toggle-password-button ml-2 text-white"
+                    className="toggle-password-button ml-2 text-black"
                   >
                     {showPassword ? (
                       <AiFillEyeInvisible size={24} />
@@ -244,12 +253,15 @@ function Register() {
               {/* Confirm Password */}
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Confirm Password</span>
+                  <span className="label-text text-[14px] text-black">
+                    Confirm Password
+                  </span>
                 </label>
                 <div className="flex flex-row items-center">
                   <input
                     type={showPassword2 ? "text" : "password"}
-                    className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
+                    className="input input-bordered w-full  text-white bg-black placeholder:text-white/80
+                    focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
                     name="password2"
                     value={password2}
                     placeholder="Confirm password"
@@ -260,7 +272,7 @@ function Register() {
                   <button
                     type="button"
                     onClick={() => setShowPassword2(!showPassword2)}
-                    className="toggle-password-button ml-2 text-white"
+                    className="toggle-password-button ml-2 text-black"
                   >
                     {showPassword2 ? (
                       <AiFillEyeInvisible size={24} />
@@ -272,14 +284,16 @@ function Register() {
 
                 {/* Password matching feedback */}
                 {password !== "" && password2 !== "" && !passwordsMatch && (
-                  <div className="mt-1 text-white text-xs font-Inter text-center ">
-                    <p className="ml-1 text-white">Passwords do not match</p>
+                  <div className="mt-1 text-black text-sm font-Poppins text-center ">
+                    <p className="ml-1 text-black underline decoration-[#d0333c]">
+                      Passwords do not match
+                    </p>
                   </div>
                 )}
 
                 {/* Password validation feedback */}
                 {password !== "" && isPasswordValid(password).length > 0 && (
-                  <div className="text-white text-xs font-Inter toast toast-center">
+                  <div className="text-white text-xs font-Poppins toast toast-center">
                     {isPasswordValid(password).map((message, index) => (
                       <p className="alert bg-red-700 text-white" key={index}>
                         {message}
@@ -290,7 +304,7 @@ function Register() {
                 {/* ROLE SELECTION */}
                 {/* ROLE SELECTION */}
                 <div className="flex flex-col justify-center w-full mt-4">
-                  <span className="text-center text-gray-300 text-sm">
+                  <span className="text-center text-black text-sm">
                     Select Your Role
                   </span>
 
@@ -299,8 +313,8 @@ function Register() {
                       htmlFor="poster"
                       className={`btn btn-ghost  w-36 ${
                         selectedRole === "poster"
-                          ? "bg-white/10 text-white"
-                          : "text-white/25"
+                          ? "bg-black/90 text-white border-2 shadow-[0px_3px_8px_rgb(0,0,0,0.3)] border-[#d0333c] hover:bg-black/80 hover:text-white"
+                          : "text-black/70 hover:shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
                       }`}
                     >
                       <input
@@ -318,8 +332,8 @@ function Register() {
                       htmlFor="applicant"
                       className={`btn btn-ghost w-36 ${
                         selectedRole === "applicant"
-                          ? "bg-white/10 text-white "
-                          : "text-white/25"
+                          ? "bg-black/90 text-white border-2 shadow-[0px_3px_8px_rgb(0,0,0,0.3)] border-[#d0333c] hover:bg-black/80 hover:text-white"
+                          : "text-black/70 hover:shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
                       }`}
                     >
                       <input
@@ -342,16 +356,16 @@ function Register() {
                     type="checkbox"
                     name="tc"
                     id="tc"
-                    className="mt-4 mx-1 checkbox "
+                    className="mt-4 mx-1 checkbox checkbox-error bg-black/10 "
                   />
-                  <p className="mt-4 mx-1 text-white">
+                  <p className="mt-4 mx-1 text-black">
                     I accept{" "}
                     <a
                       href="#"
-                      onClick={(e) => {
+                      /*                       onClick={(e) => {
                         e.preventDefault();
                         openTC();
-                      }}
+                      }} */
                       className="text-red-600 underline"
                     >
                       terms & conditions
@@ -364,8 +378,8 @@ function Register() {
               <div className="form-control mt-4">
                 <button
                   type="submit"
-                  className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
-                  flex text-lg font-Inter tracking-wide"
+                  className="btn btn-ghost text-[#fff] bg-[#000] hover:bg-[#d0333c] hover:text-[#fff]
+                  flex text-lg font-Poppins tracking-wide"
                 >
                   Register
                 </button>
@@ -375,8 +389,10 @@ function Register() {
                 to="/login"
                 className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
               >
-                <h1 className="text-white">Already have an account? </h1>
-                <a className="text-white">Login now</a>
+                <h1 className="text-black">Already have an account? </h1>
+                <a className="text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium">
+                  Login now
+                </a>
               </Link>
             </form>
           </div>

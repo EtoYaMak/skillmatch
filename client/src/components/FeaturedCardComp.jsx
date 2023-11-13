@@ -71,7 +71,11 @@ function FeaturedCardComp({ job }) {
   };
 
   return (
-    <div className="flex flex-row h-36 shadow-[0px_4px_8px_rgb(0,0,0,0.3)] rounded-2xl font-Poppins p-2 m-4">
+    <div
+      className="flex flex-row h-36 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] rounded-2xl font-Poppins p-2 m-4 hover:shadow-[0px_6px_7px_rgb(0,0,0,0.5)]
+    hover:scale-[102%] duration-200 ease-in-out"
+      onClick={handleClick}
+    >
       <div className="flex justify-center items-center max-w-fit ">
         <img
           src={job.logo}

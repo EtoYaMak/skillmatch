@@ -29,31 +29,31 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
   };
   return (
     <div
-      className={`mx-auto rounded-lg shadow-md p-4 mb-4 flex flex-col sm:flex-row items-stretch 
-      justify-between select-none min-w-max max-w-2xl ease-linear duration-200 h-full ${
-        isHovered ? "bg-black/60 scale-[101%]" : "bg-[#1c1f21]"
+      className={`mx-auto rounded-3xl shadow-md p-4 mb-4 flex flex-col sm:flex-row items-stretch w-full sm:w-fit
+      justify-between select-none  ease-linear duration-200 h-full ${
+        isHovered ? "bg-black/60 scale-[101%]" : "bg-black"
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* First Column */}
-      <div className="flex flex-col sm:items-start items-center justify-center space-y-4 py-2 w-full">
+      <div className="flex flex-col sm:items-start items-center justify-center space-y-4 py-2 sm:w-fit">
         <h2
-          className={`uppercase text-xl font-Inter font-bold ${
+          className={`uppercase text-lg sm:text-xl font-Poppins font-bold ${
             isHovered ? "text-white" : "text-white"
           }`}
         >
           {profile.studentName}
         </h2>
         <p
-          className={`uppercase text-lg font-Inter font-medium ${
+          className={`uppercase sm:text-lg font-Poppins font-medium ${
             isHovered ? "text-white" : "text-white"
           }`}
         >
           {profile.Degree} {profile.DegreeTitle}
         </p>
         <p
-          className={`uppercase text-md font-Inter font-normal ${
+          className={`uppercase sm:text-md font-Poppins font-normal ${
             isHovered ? "text-white" : "text-white"
           }`}
         >
@@ -61,27 +61,27 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
         </p>
       </div>
 
-      <div className="flex flex-row justify-evenly w-full">
+      <div className="flex flex-row justify-evenly sm:w-fit">
         {/* Second Column */}
-        <div className="flex flex-row sm:flex-col justify-center items-center space-y-2 w-max">
+        <div className="flex flex-row sm:flex-col justify-center items-center space-y-2 ">
           <button
-            className={`btn btn-ghost ease-in-out duration-300 rounded-md px-2 py-1 
-           hover:bg-[#fff] appearance-none  hover:text-black font-Inter
-            text-lg w-32 mb-2 ${isHovered ? "text-white" : "text-white"}`}
+            className={`btn btn-ghost ease-in-out duration-300 rounded-md 
+           hover:bg-[#fff] appearance-none  hover:text-black font-Poppins
+            sm:text-lg  ${isHovered ? "text-white" : "text-blue-400 "}`}
             onClick={handleViewCV}
           >
             View CV
           </button>
-          <div className="flex flex-col items-center space-y-2">
+          <div className="flex px-2 flex-col items-center space-y-2">
             <p
-              className={`text-center font-Inter font-bold text-lg uppercase w-32 ${
+              className={`text-center w-fit font-Poppins font-bold sm:text-lg uppercase  ${
                 isHovered ? "text-white/80" : "text-white"
               }`}
             >
               Status
             </p>
             <p
-              className={`text-center font-Inter font-bold text-lg uppercase w-32 ${getStatusClass(
+              className={`text-center w-fit font-Poppins font-bold sm:text-lg uppercase  ${getStatusClass(
                 applicant ? applicant.status : "N/A"
               )}`}
             >
@@ -91,10 +91,10 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
         </div>
 
         {/* Third Column */}
-        <div className="flex flex-row sm:flex-col justify-center items-center gap-3 py-2 px-2 w-max">
+        <div className="flex flex-row sm:flex-col justify-center items-center gap-3 py-2 px-2">
           {applicant?.status !== "Approved" && (
             <button
-              className="btn btn-ghost hover:bg-green-800 hover:text-white text-green-500 ease-in-out duration-300 rounded-md px-2 py-1 font-Inter"
+              className="btn btn-ghost hover:bg-green-800 hover:text-white text-green-500 ease-in-out duration-300 rounded-md px-2 py-1 font-Poppins"
               onClick={() => onUpdateStatus("Approved")}
             >
               Approve
@@ -102,7 +102,7 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
           )}
           {applicant?.status !== "Rejected" && (
             <button
-              className="btn btn-ghost ease-in-out duration-300 rounded-md px-2 py-1 hover:bg-red-800 hover:text-white text-red-500 font-Inter"
+              className="btn btn-ghost ease-in-out duration-300 rounded-md px-2 py-1 hover:bg-red-800 hover:text-white text-red-500 font-Poppins"
               onClick={() => onUpdateStatus("Rejected")}
             >
               Reject
@@ -172,22 +172,24 @@ function JobApplicants() {
     job?.applicants.filter((app) => app.status === "Rejected").length || 0;
 
   return jobStatus ? (
-    <div className="text-white">Loading...</div>
+    <div className="text-black text-center w-fit">Loading...</div>
   ) : jobError ? (
-    <div className="text-white">Error while fetching job</div>
+    <div className="text-black text-center w-fit">Error while fetching job</div>
   ) : !job ? (
-    <div className="text-white">No job available</div>
+    <div className="text-black text-center w-full">No job available</div>
   ) : (
-    <div className="w-5/6 min-w-fit mx-auto font-Inter bg-[#25292b] rounded-b-xl p-4 mb-8 min-h-fit h-[40vh]">
-      <div className="">
-        <h1 className="text-[#d0333c] tracking-wider text-2xl text-center font-Inter font-bold uppercase">
+    <div className="font-Poppins sm:scale-100 scale-[85%] min-h-screen w-full max-w-2xl mx-auto">
+      <div className="bg-black/10 rounded-3xl p-4">
+        <h1 className="text-[#d0333c] tracking-wider text-2xl text-center font-Poppins font-bold uppercase">
           {job.position}{" "}
           {/* This should come from the parent Component UserDashJobs.jsx */}
         </h1>
         <div className="flex justify-center space-x-4 mb-4 mt-2">
           <button
             className={`btn ${
-              selectedTab === "Pending" ? "btn-active bg-black/40" : "btn-ghost"
+              selectedTab === "Pending"
+                ? "btn-active bg-black"
+                : "btn-ghost bg-black/50"
             } text-white `}
             onClick={() => setSelectedTab("Pending")}
           >
@@ -196,8 +198,8 @@ function JobApplicants() {
           <button
             className={`btn ${
               selectedTab === "Accepted"
-                ? "btn-active bg-black/40"
-                : "btn-ghost"
+                ? "btn-active bg-black"
+                : "btn-ghost bg-black/50"
             } text-white`}
             onClick={() => setSelectedTab("Accepted")}
           >
@@ -206,8 +208,8 @@ function JobApplicants() {
           <button
             className={`btn ${
               selectedTab === "Rejected"
-                ? "btn-active bg-black/40"
-                : "btn-ghost"
+                ? "btn-active bg-black"
+                : "btn-ghost bg-black/50"
             } text-white`}
             onClick={() => setSelectedTab("Rejected")}
           >

@@ -69,7 +69,7 @@ function JobDetailPage({ job, Applied }) {
   // Apply custom CSS styles to the div
   const customStyles = {
     fontSize: "16px",
-    color: "white",
+    color: "black",
     // Add more styles as needed
   };
   // Check if the user is a student (student object exists)
@@ -113,7 +113,7 @@ function JobDetailPage({ job, Applied }) {
 
   return (
     <div className="bg-transparent pb-8">
-      <div className="mx-auto rounded-b-xl p-8   w-full max-w-[1240px]  bg-black/30 font-Inter">
+      <div className="mx-auto rounded-b-xl p-8 w-fit max-w-screen-lg  rounded-3xl font-Poppins">
         <div className="bg-transparent sm:space-y-0 space-y-4 flex flex-col min-w-min justify-between items-center">
           {/* Company and Position */}
           <div className="flex flex-col sm:flex-row items-center justify-center bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
@@ -126,13 +126,13 @@ function JobDetailPage({ job, Applied }) {
             </div>
 
             <div className=" bg-inherit  w-fit text-start  sm:pl-2">
-              <h2 className="text-4xl bg-inherit text-[#d0333c] tracking-wide">
+              <h2 className="text-4xl font-semibold bg-inherit text-[#000] tracking-wide">
                 {position}
               </h2>
-              <h3 className="text-2xl font-mono font-semibold bg-inherit text-[#d4d7d7] tracking-widest">
+              <h3 className="text-2xl  font-semibold bg-inherit text-[#000] tracking-widest">
                 {company}
               </h3>
-              <div className=" text-zinc-400 font-Inter flex flex-row justify-end ">
+              <div className=" text-black text-lg font-Poppins flex flex-row justify-end ">
                 Date Posted:
                 <div
                   className="select-none tooltip tooltip-bottom ml-1"
@@ -144,7 +144,7 @@ function JobDetailPage({ job, Applied }) {
             </div>
           </div>
           {/* Remote / Hybrid / Onsite */}
-          <div className=" bg-transparent font-Inter ">
+          <div className=" bg-transparent font-Poppins ">
             <div className="flex flex-row gap-2 justify-center bg-transparent">
               {setting &&
                 setting
@@ -152,8 +152,8 @@ function JobDetailPage({ job, Applied }) {
                   .map((jobSetting, index) => (
                     <div
                       key={index}
-                      className="bg-white/70 tracking-widest font-semibold
-                   min-w-min text-center text-lg text-black/80 px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
+                      className="bg-black/80 tracking-widest font-semibold
+                   min-w-min text-center text-lg text-white px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
                     >
                       {jobSetting.name.charAt(0).toUpperCase() +
                         jobSetting.name.slice(1)}
@@ -163,7 +163,7 @@ function JobDetailPage({ job, Applied }) {
           </div>
         </div>
         {/* Work Settings*/}
-        <div className="w-full my-2 bg-transparent select-none font-Inter">
+        <div className="w-full my-2 bg-transparent select-none font-Poppins">
           <div className="bg-inherit">
             {/* Full / Part / Intern / Contract */}
             <div className="mb-4 bg-inherit ">
@@ -179,7 +179,7 @@ function JobDetailPage({ job, Applied }) {
                     .map((jobType, index) => (
                       <div
                         key={index}
-                        className="bg-black/50 tracking-widest min-w-min
+                        className="bg-black/80 tracking-widest min-w-min
                        text-center text-lg text-white px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
                       >
                         {jobType.name.charAt(0).toUpperCase() +
@@ -192,14 +192,14 @@ function JobDetailPage({ job, Applied }) {
           {/* End Type */}
 
           {/* Location, CareerPage,  Website */}
-          <div className="mx-4 flex sm:flex-row flex-col sm:space-y-0 space-y-2 mb-4 justify-between items-center h-full bg-inherit font-Inter">
+          <div className="mx-4 flex sm:flex-row flex-col sm:space-y-0 space-y-2 mb-4 justify-between items-center h-full bg-inherit font-Poppins">
             {/* Location */}
             <div className="bg-inherit">
-              <p className=" bg-inherit text-[#d0333c]  flex sm:flex-row flex-col items-center sm:items-baseline space-x-2 duration-300 ease-in-out">
+              <p className=" bg-inherit text-[#000]  flex sm:flex-row flex-col items-center sm:items-baseline space-x-2 duration-300 ease-in-out">
                 <span className="bg-transparent text-xl">
                   <FaLocationDot
                     size={24}
-                    className="bg-transparent text-[#d4d7d7]"
+                    className="bg-transparent text-[#d0333c]"
                   />
                 </span>
                 <span className="bg-transparent flex space-x-2 justify-center items-center">
@@ -215,29 +215,29 @@ function JobDetailPage({ job, Applied }) {
             {/* Career page */}
             <div className="bg-transparent flex flex-col justify-between items-start sm:justify-start sm:space-x-6">
               <div className="bg-inherit sm:space-y-0 space-x-2 flex">
-                <p className="text-xl bg-inherit text-[#d0333c] flex items-center justify-center space-x-2">
-                  <span className="bg-inherit text-[#d4d7d7]">
+                <p className="text-xl bg-inherit text-[#000] flex items-center justify-center space-x-2">
+                  <span className="bg-inherit text-[#d0333c]">
                     <FaLink className="bg-transparent" size={24} />
                   </span>
                   <a
                     href={careerPage}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#d0333c] text-xl  font-bold hover:text-green-400/90 duration-300 ease-in-out "
+                    className="text-[#000] text-xl  font-bold  duration-300 ease-in-out "
                   >
                     Career Page
                   </a>
                 </p>
                 {/* Website */}
-                <p className="text-xl bg-inherit text-[#d0333c] flex items-center justify-center space-x-2">
-                  <span className="bg-inherit text-[#d4d7d7]">
+                <p className="text-xl bg-inherit text-[#000] flex items-center justify-center space-x-2">
+                  <span className="bg-inherit text-[#d0333c]">
                     <FaLink className="bg-transparent" size={24} />
                   </span>
                   <a
                     href={website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#d0333c] text-xl  font-bold hover:text-green-400/90 duration-300 ease-in-out "
+                    className="text-[#000] text-xl  font-bold  duration-300 ease-in-out "
                   >
                     Company Site
                   </a>
@@ -247,8 +247,8 @@ function JobDetailPage({ job, Applied }) {
           </div>
         </div>
         {/* Skills  */}
-        <div className="my-2 bg-transparent border-t border-t-[#d0333c] font-Inter">
-          <div className="font-bold text-2xl uppercase bg-transparent text-center text-[#d4d7d7] tracking-[0.40em] mt-4">
+        <div className="my-2 bg-transparent border-t border-t-[#d0333c] font-Poppins">
+          <div className="font-bold text-2xl uppercase bg-transparent text-center text-[#000] tracking-[0.40em] mt-4">
             Skills
           </div>
           <div className="flex flex-wrap justify-center items-center bg-inherit gap-2 mt-2">
@@ -256,7 +256,7 @@ function JobDetailPage({ job, Applied }) {
               <span
                 key={index}
                 className="bg-[#d0333c] tracking-widest font-normal flex  items-center justify-center
-                 min-w-fit text-center  text-sm text-white px-2 py-1 rounded-md hover:text-[#d0333c] hover:bg-black/50 duration-300 ease-in-out"
+                 min-w-fit text-center  text-sm text-white px-2 py-1 rounded-md hover:text-[#fff] hover:bg-black duration-300 ease-in-out"
               >
                 {skill}
               </span>
@@ -267,10 +267,10 @@ function JobDetailPage({ job, Applied }) {
         {/* Skills End */}
 
         {/* About the Job */}
-        <div className="w-full px-2 bg-transparent mt-4 font-Inter">
+        <div className="w-full p-4 bg-white rounded-xl mt-4 font-Poppins">
           <h4
             className="text-2xl md:text-3xl font-bold mb-4 text-center bg-transparent
-            text-[#d4d7d7] tracking-[0.25em]"
+            text-[#000] tracking-[0.25em]"
           >
             About the Job
           </h4>

@@ -1,8 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const StudentApplicationsCard = ({ job, status }) => {
+  const jobId = job._id;
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/jobs/${jobId}`);
+  };
   return (
-    <div className=" bg-white shadow-[0px_4px_8px_rgb(0,0,0,0.3)] rounded-3xl  items-center  p-3 font-Poppins">
+    <div
+      className=" bg-white shadow-[0px_3px_8px_rgb(0,0,0,0.3)] rounded-3xl  items-center  p-3 font-Poppins hover:shadow-[0px_6px_7px_rgb(0,0,0,0.5)]
+      hover:scale-[102%] duration-200 ease-in-out"
+      onClick={handleClick}
+    >
       <div className="flex w-full bg-transparent">
         <div className="flex justify-center items-center max-w-fit ">
           <img

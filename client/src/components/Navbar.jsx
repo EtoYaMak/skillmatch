@@ -92,7 +92,7 @@ const Navbar = () => {
       <h1 className="w-max text-[#000] bg-transparent">
         <Link
           to="/"
-          className="font-Poppins leading-6 tracking-tighter text-4xl font-extrabold hover:text-[#d0333c] ease-in-out duration-500 "
+          className="bg-transparent font-Poppins leading-6 tracking-tighter text-4xl font-extrabold hover:text-[#d0333c] ease-in-out duration-500 "
         >
           SKILL
           <br />

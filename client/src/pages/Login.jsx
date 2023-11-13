@@ -107,21 +107,23 @@ function Login() {
   }
 
   return (
-    <div className="loginPageMain w-2/3 mx-auto h-[75vh] my-5 font-Inter">
+    <div className="loginPageMain w-2/3 mx-auto h-[75vh] my-5 font-Poppins">
       <div className="hero  rounded-lg h-full px-4">
         <div className="hero-content flex-col lg:flex-row-reverse ">
-          <div className="sm:px-12 text-center lg:text-left text-white">
+          <div className="sm:px-12 text-center lg:text-left text-black">
             <h1 className="text-5xl font-bold">Login</h1>
             <p className="py-6">
               Unlock Your Career Opportunities or Start Building Your Team
               Today!
             </p>
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-[#1c1f21]">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-[0px_3px_8px_rgb(0,0,0,0.3)]  bg-[#fff]">
             <form onSubmit={onSubmit} className="card-body">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Email</span>
+                  <span className="label-text text-[14px] text-black">
+                    Email
+                  </span>
                 </label>
                 <input
                   type="email"
@@ -129,13 +131,16 @@ function Login() {
                   value={email}
                   placeholder="Enter your email"
                   onChange={onChange}
-                  className="input input-bordered text-white"
+                  className="input input-bordered text-white bg-black placeholder:text-white/80
+                  focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
                   required
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Password</span>
+                  <span className="label-text text-[14px] text-black">
+                    Password
+                  </span>
                 </label>
                 <div className="flex flex-row items-center">
                   <input
@@ -144,13 +149,14 @@ function Login() {
                     value={password}
                     placeholder="Enter password"
                     onChange={onChange}
-                    className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
+                    className="input input-bordered text-white bg-black placeholder:text-white/80
+                    focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)] w-full"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="toggle-password-button ml-2 text-white"
+                    className="toggle-password-button ml-2 text-black"
                   >
                     {showPassword ? (
                       <AiFillEyeInvisible size={24} />
@@ -162,7 +168,7 @@ function Login() {
                 <label className="ForgotPassword">
                   <Link
                     to="/password-reset"
-                    className="text-xs font-medium text-[#d0333c]/80 hover:text-[#d0333c] hover:underline "
+                    className="ml-1 text-sm font-medium text-[#d0333c]/80 hover:text-[#d0333c] hover:underline "
                   >
                     Forgot password?
                   </Link>
@@ -171,7 +177,7 @@ function Login() {
 
               {/* ROLE SELECTION */}
               <div className="flex flex-col justify-center w-full mt-4">
-                <span className="text-center text-gray-300 text-sm">
+                <span className="text-center text-black text-sm">
                   Select Your Role
                 </span>
 
@@ -180,8 +186,8 @@ function Login() {
                     htmlFor="poster"
                     className={`btn btn-ghost  w-36 ${
                       selectedRole === "poster"
-                        ? "bg-white/10 text-white"
-                        : "text-white/25"
+                        ? "bg-black/90 text-white border-2 shadow-[0px_3px_8px_rgb(0,0,0,0.3)] border-[#d0333c] hover:bg-black/80 hover:text-white"
+                        : "text-black/70 hover:shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
                     }`}
                   >
                     <input
@@ -199,8 +205,8 @@ function Login() {
                     htmlFor="applicant"
                     className={`btn btn-ghost w-36 ${
                       selectedRole === "applicant"
-                        ? "bg-white/10 text-white "
-                        : "text-white/25"
+                        ? "bg-black/90 text-white border-2 shadow-[0px_3px_8px_rgb(0,0,0,0.3)] border-[#d0333c] hover:bg-black/80 hover:text-white"
+                        : "text-black/70 hover:shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
                     }`}
                   >
                     <input
@@ -218,8 +224,8 @@ function Login() {
               </div>
               <div className="form-control mt-6">
                 <button
-                  className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
-                  flex text-lg font-Inter tracking-wide"
+                  className="btn btn-ghost text-[#fff] bg-[#000] hover:bg-[#d0333c] hover:text-[#fff]
+                  flex text-lg font-Poppins tracking-wide"
                 >
                   Login
                 </button>
@@ -229,8 +235,10 @@ function Login() {
                 to="/register"
                 className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
               >
-                <h1 className="text-white">Not registered? </h1>
-                <a className="text-white">Register now</a>
+                <h1 className="text-black">Not registered? </h1>
+                <a className="text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium">
+                  Register now
+                </a>
               </Link>
             </form>
           </div>

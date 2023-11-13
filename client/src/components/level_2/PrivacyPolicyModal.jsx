@@ -3,40 +3,14 @@
 import React from "react";
 
 const PrivacyPolicyModal = ({ isOpen, onClose }) => {
-  const modalStyles = {
-    display: isOpen ? "block" : "none",
-    position: "fixed",
-    zIndex: 9999, // Ensure it's above everything else
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    backgroundColor: "white",
-    padding: "20px",
-    borderRadius: "4px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
-  };
-
-  const overlayStyles = {
-    display: isOpen ? "block" : "none",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.7)", // Darkened background
-    zIndex: 9998, // Below the modal
-  };
   return (
     <div
-      className={`inset-0 fixed flex items-center justify-end bg-white w-full h-fit font-Inter ${
+      className={`inset-0 fixed bg-white w-fit h-screen  font-Poppins z-99 ${
         isOpen ? "block" : "hidden"
       }`}
     >
-      <div className="modal-container" style={overlayStyles}>
-        <div
-          className="modal-content h-1/2 overflow-y-scroll overflow-x-clip py-4 border-4 border-red-600 "
-          style={modalStyles}
-        >
+      <div className="modal-container ">
+        <div className="modal-content h-fit min-w-fit overflow-y-scroll overflow-x-clip py-4 ">
           <h2 className="font-bold text-xl">Privacy Policy</h2>
           <p className="mt-1 font-semibold">Last Updated: 7 Oct 2023</p>
           <p className="mt-1">
