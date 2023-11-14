@@ -44,24 +44,25 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
       {jobs.length > 0 ? (
         <>
           {jobs.map((job) => (
-            <Link
+            <div
               key={job._id}
-              to={`/jobs/${job._id}`}
-              className="card card-compact max-[640px]:card-side w-full h-fit  min-[640px]:w-56 bg-transparent shadow-xl my-2"
+              className="card card-compact max-[640px]:card-side w-full h-fit  min-[640px]:w-56 bg-transparent shadow-xl my-2 hover:text-black"
             >
-              <figure className="bg-transparent min-w-fit pointer-events-none ">
+              <figure className="bg-transparent min-w-fit">
                 <img
                   src={job.logo}
                   alt={job.position}
                   className="w-full h-full "
                 />
-                {/* w-56 h-52 */}
               </figure>
 
               <div className="p-[3px] w-full max-[640px]:flex max-[640px]:flex-col items-center justify-evenly sm:card-body bg-white max-[640px]:rounded-r-box sm:rounded-b-box">
-                <h2 className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2">
+                <a
+                  href={`/jobs/${job._id}`}
+                  className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2"
+                >
                   {job.position}
-                </h2>
+                </a>
                 <p className="text-center text-lg select-none flex flex-col">
                   {job.company}
                   <span className="text-xs text-zinc-500">
@@ -95,7 +96,7 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
                   </ul>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </>
       ) : (

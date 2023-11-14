@@ -36,8 +36,8 @@ import ActivationModal from "./components/ActivationModal";
 import JobDetailComponent from "./components/JobDetailComponent";
 import JobUpdatePage from "./components/JobUpdatePage";
 
-import { useSelector, useDispatch } from "react-redux";
-import PaymentForm from "./components/PaymentForm";
+import { useSelector } from "react-redux";
+
 import StripeContainer from "./components/StripeContainer";
 
 import Footer from "./components/Footer";
@@ -48,21 +48,6 @@ function App() {
   const user = useSelector((state) => state.auth.user);
   const student = useSelector((state) => state.students.student);
 
-  /*   useEffect(() => {
-    fetch("http://18.169.159.127")
-      // fetch("http://localhost:4000") 
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error("Network response was not ok.");
-        }
-      })
-      .then((data) => setMessage(data.message))
-      .catch((error) => {
-        setMessage("Error: " + error.message);
-      });
-  }, []); */
   // State to control the modal
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState(null);

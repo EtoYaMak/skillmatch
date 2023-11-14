@@ -44,7 +44,13 @@ const Contact = () => {
       dispatch(resetFormState());
     };
   }, [dispatch]);
-
+  if (loading) {
+    return (
+      <div className="w-full flex-1 flex justify-center items-start h-screen">
+        <span className="loading loading-spinner text-error w-14 mt-[10%]"></span>
+      </div>
+    );
+  }
   return (
     <div className="max-w-6xl mx-auto  bg-[#000]/10 rounded-3xl h-full  flex flex-col justify-center items-center">
       <section className="text-gray-400 body-font font-Poppins mb-8">

@@ -335,7 +335,7 @@ function StudeProfile() {
   };
 
   return (
-    <div className="Container flex flex-col items-center  w-full mx-auto p-4 rounded-3xl h-full">
+    <div className="Container flex flex-col items-center  w-full max-w-2xl mx-auto p-4 rounded-3xl h-full">
       <div className="Buttons flex flex-col w-full md:flex-row gap-4 justify-center py-10">
         <button
           className="btn max-w-sm md:btn-wide h-fit py-2 text-white text-lg bg-black hover:bg-[#d0333c] border-none"

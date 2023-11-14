@@ -5,8 +5,11 @@ import UserDashJobs from "../components/UserDashJobs";
 
 function UserDash() {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
-  const { SAuser } = useSelector((state) => state.SAuser);
+  const { user, isLoading: userLoading } = useSelector((state) => state.auth);
+  const { SAuser, isLoading: adminLoadiing } = useSelector(
+    (state) => state.SAuser
+  );
+  const { isLoading: jobsLoading } = useSelector((state) => state.jobs);
   const jobs = useSelector((state) => state.jobs.jobs);
   const [activeTab, setActiveTab] = useState("profile");
 

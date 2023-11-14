@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import JobForm from "../components/JobForm";
 const Post = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (!user) {
@@ -14,7 +14,13 @@ const Post = () => {
       /* toast.error("Job Posting is for Employers only"); */
     }
   }, [user, navigate]);
-
+  if (isLoading) {
+    return (
+      <div className="w-full flex-1 flex justify-center items-start h-screen">
+        <span className="loading loading-spinner text-error w-14 mt-[10%]"></span>
+      </div>
+    );
+  }
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 font-Poppin ">
       <div className="pb-1 select-none pt-10">

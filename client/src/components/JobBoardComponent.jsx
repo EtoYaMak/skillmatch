@@ -1,43 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { RiExpandRightFill } from "react-icons/ri";
 import countriesData from "../assets/countries-data.json";
+import { useSelector, useDispatch } from "react-redux";
+import ApplyJobButton from "./level_2/ApplyJobButton";
 
 function JobBoardComponent({ job }) {
   const jobId = job._id;
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { SAuser } = useSelector((state) => state.SAuser);
+  const { student } = useSelector((state) => state.students);
+  const showRegisterButton = !student && !user && !SAuser;
 
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const [selectedSkillIndex, setSelectedSkillIndex] = useState(-1);
-  const dropdownRef = useRef(null);
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
   const handleClick = () => {
     navigate(`/jobs/${jobId}`);
-  };
-  const handleSkill = () => {
-    setShowDropdown(!showDropdown);
   };
 
   const skills = job.skills ? [...job.skills] : [];
@@ -50,11 +30,11 @@ function JobBoardComponent({ job }) {
     <div
       className="jobcomp  min-[640px]:px-4 px-3 py-3 max-[640px]:gap-2 my-4 h-fit sm:h-32 flex flex-col min-[600px]:flex-row items-center shadow-[0px_3px_8px_rgb(0,0,0,0.3)] rounded-2xl font-Poppin max-w-full hover:shadow-[0px_6px_7px_rgb(0,0,0,0.5)]
       hover:scale-[102%] duration-200 ease-in-out"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
     >
-      <div className="flex flex-row flex-1 items-center sm:max-w-lg w-full">
+      <div
+        className="flex flex-row flex-1 items-center sm:max-w-lg w-full"
+        onClick={handleClick}
+      >
         <div className="flex justify-center items-center max-w-fit ">
           <img
             src={job.logo}
@@ -88,55 +68,27 @@ function JobBoardComponent({ job }) {
                     className={`font-Poppins text-xs sm:text-sm px-2 py-1 bg-[#3D4EE5] rounded-3xl ${
                       isHovered ? " " : " "
                     }`}
-                    //onClick={handleSkill}
                   >
                     {skill}
                   </span>
                 ))}
-              {/*               {!showDropdown && skills.length > 2 && (
-                <span
-                  className={`font-Poppins text-xs sm:text-sm px-2 py-1 bg-[#7C7C7C] rounded-full flex items-center justify-center ${
-                    isHovered ? "" : ""
-                  }`}
-                  //onClick={handleSkill}
-                >
-                  <span
-                    className={`
-              ${isHovered ? "" : ""}`}
-                  >
-                    +{skills.length - 2}
-                  </span>
-                </span>
-              )} */}
-
-              {/*           {showDropdown && (
-            <div ref={dropdownRef} className="bg-red-400 text-md ">
-              {skills.slice(0, 5).map((skill, index) => (
-                <span
-                  key={index}
-                  className={`px-2 py-1 mr-1 rounded-3xl font-Poppins ${
-                    selectedSkillIndex === index
-                      ? "bg-[#4c4c4c] font-bold "
-                      : "bg-[#7C7C7C]  "
-                  } ${isHovered ? "" : ""}`}
-                  onClick={() =>
-                    setTimeout(() => setSelectedSkillIndex(index), 1000)
-                  }
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          )} */}
             </div>
           </div>
         </div>
-
-        <div className=" text-white flex justify-center select-none px-2 hidden">
-          <h1 className="my-auto p-2 px-4 bg-[#3D4EE5] w-fit rounded-3xl uppercase font-Poppins font-semibold">
+        {/* Apply button */}
+        {student && (
+          <div className="text-white flex justify-end w-full sm:w-auto select-none px-2">
+            <ApplyJobButton jobId={job._id} />
+          </div>
+        )}
+        {showRegisterButton && (
+          <Link
+            to={"/register"}
+            className="flex justify-center items-center w-fit ease-in-out duration-200 bg-black  uppercase font-Poppins  px-3 rounded-3xl py-2 text-white hover:text-white hover:scale-105 font-bold "
+          >
             Apply
-          </h1>
-        </div>
+          </Link>
+        )}
       </div>
     </div>
   );

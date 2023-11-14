@@ -7,12 +7,19 @@ import { FaLink } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 
 import { applyToJob } from "../features/jobs/jobSlice";
-
-function JobDetailPage({ job, Applied }) {
+import { fetchStudentData } from "../features/students/studentSlice";
+import { Link } from "react-router-dom";
+import ApplyJobButton from "./level_2/ApplyJobButton";
+function JobDetailPage({ job }) {
+  const jobId = job._id;
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { SAuser } = useSelector((state) => state.SAuser);
-  const { student } = useSelector((state) => state.students);
+  const { student, studentData } = useSelector((state) => state.students);
+
+  // Check if the user is a student (student object exists)
+  const isStudent = !!student;
+  const showRegisterButton = !student && !user && !SAuser;
 
   const {
     company,
@@ -72,74 +79,51 @@ function JobDetailPage({ job, Applied }) {
     color: "black",
     // Add more styles as needed
   };
-  // Check if the user is a student (student object exists)
-  const isStudent = !!student;
-  const showRegisterButton = !isStudent && !user && !SAuser;
-
-  // Determine whether to show the Apply button based on user role
-  const showApplyButton = isStudent && !user && !SAuser;
-
-  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
-  const [isApplied, setIsApplied] = useState(false);
-
-  // Check if the student has applied when the component mounts and on changes to job.applicants
-
-  useEffect(() => {
-    if (isStudent) {
-      const hasApplied = job.applicants.some(
-        (applicant) => applicant.student?._id === student?._id
-      );
-      setIsApplied(hasApplied);
-    } else {
-      console.error("useEffect Error");
-    }
-  }, [isStudent, job.applicants, student?._id]);
-
-  const handleApply = async () => {
-    try {
-      // Call the applyToJob function here
-      await dispatch(applyToJob({ jobId: job._id, studentId: student._id }));
-
-      // Update isApplied to true immediately when the application is successful
-      setIsApplied(true);
-      // Set the applicationSubmitted state to true after a successful application
-      setApplicationSubmitted(true);
-      // Refresh the window after a successful application
-      window.location.reload();
-    } catch (error) {
-      console.error("Error submitting application:", error);
-    }
-  };
 
   return (
     <div className="bg-transparent pb-8">
       <div className="mx-auto rounded-b-xl p-8 w-fit max-w-screen-lg  rounded-3xl font-Poppins">
         <div className="bg-transparent sm:space-y-0 space-y-4 flex flex-col min-w-min justify-between items-center">
           {/* Company and Position */}
-          <div className="flex flex-col sm:flex-row items-center justify-center bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
-            <div className="bg-transparent  flex justify-center items-center">
-              <img
-                src={logo}
-                alt={company}
-                className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover bg-black"
-              />
+          <div className="flex flex-col sm:flex-row items-center justify-between bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
+            <div className="bg-transparent flex-1 gap-4 flex flex-col sm:flex-row justify-start items-center">
+              <div className="flex justify-center items-center max-w-fit ">
+                <img
+                  src={job.logo}
+                  alt={job.company}
+                  className=" rounded-full w-[120px] sm:w-[140px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
+                />
+              </div>
+              <div className=" bg-inherit flex-1  w-fit text-start  sm:pl-2">
+                <h2 className="text-2xl sm:text-4xl font-semibold bg-inherit text-[#000] tracking-wide">
+                  {position}
+                </h2>
+                <h3 className="text-xl sm:text-2xl  bg-inherit text-[#000] tracking-widest">
+                  {company}
+                </h3>
+              </div>
             </div>
-
-            <div className=" bg-inherit  w-fit text-start  sm:pl-2">
-              <h2 className="text-4xl font-semibold bg-inherit text-[#000] tracking-wide">
-                {position}
-              </h2>
-              <h3 className="text-2xl  font-semibold bg-inherit text-[#000] tracking-widest">
-                {company}
-              </h3>
-              <div className=" text-black text-lg font-Poppins flex flex-row justify-end ">
-                Date Posted:
-                <div
-                  className="select-none tooltip tooltip-bottom ml-1"
-                  data-tip="DD/MM/YYYY"
-                >
-                  <button>{formattedCreatedAt}</button>
+            <div className=" text-black text-lg font-Poppins flex flex-col justify-center items-center gap-2 ">
+              {/* Apply button */}
+              {student && (
+                <div className="text-white flex justify-end select-none px-2 ">
+                  <ApplyJobButton jobId={job._id} />
                 </div>
+              )}
+              {/* Register button for unregistered users */}
+              {showRegisterButton && (
+                <Link
+                  to={"/register"}
+                  className="flex justify-center items-center w-fit ease-in-out duration-200 bg-black  uppercase font-Poppins  px-3 rounded-3xl py-2 text-white hover:text-white hover:scale-105 font-bold "
+                >
+                  Register to Apply
+                </Link>
+              )}
+              <div
+                className="select-none tooltip tooltip-bottom ml-1 my-auto"
+                data-tip="DD/MM/YYYY"
+              >
+                Posted: <button>{formattedCreatedAt}</button>
               </div>
             </div>
           </div>
@@ -153,7 +137,7 @@ function JobDetailPage({ job, Applied }) {
                     <div
                       key={index}
                       className="bg-black/80 tracking-widest font-semibold
-                   min-w-min text-center text-lg text-white px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
+                   min-w-min text-center text-lg text-white px-2 py-1 rounded-md shadow-[0px_3px_4px_rgb(0,0,0,0.3)] hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
                     >
                       {jobSetting.name.charAt(0).toUpperCase() +
                         jobSetting.name.slice(1)}
@@ -179,8 +163,8 @@ function JobDetailPage({ job, Applied }) {
                     .map((jobType, index) => (
                       <div
                         key={index}
-                        className="bg-black/80 tracking-widest min-w-min
-                       text-center text-lg text-white px-2 py-1 rounded-md hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
+                        className="bg-black/80 tracking-widest font-semibold
+                        min-w-min text-center text-lg text-white px-2 py-1 rounded-md shadow-[0px_3px_4px_rgb(0,0,0,0.3)] hover:shadow-[2px_4px_1px_0px_#d0333c] duration-300 ease-in-out"
                       >
                         {jobType.name.charAt(0).toUpperCase() +
                           jobType.name.slice(1)}
@@ -263,11 +247,10 @@ function JobDetailPage({ job, Applied }) {
             ))}
           </div>
         </div>
-
         {/* Skills End */}
 
         {/* About the Job */}
-        <div className="w-full p-4 bg-white rounded-xl mt-4 font-Poppins">
+        <div className="w-full p-4 bg-white  mt-4 font-Poppins border-b border-b-[#d0333c]">
           <h4
             className="text-2xl md:text-3xl font-bold mb-4 text-center bg-transparent
             text-[#000] tracking-[0.25em]"
@@ -281,31 +264,6 @@ function JobDetailPage({ job, Applied }) {
             style={customStyles} //
           ></div>
         </div>
-        {/* Apply button */}
-        {student && (
-          <div className="flex justify-center mt-8 bg-transparent">
-            <button
-              onClick={handleApply}
-              className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover-bg-[#d0333c] hover-text-[#d4d7d7] border-[#d0333c] hover-border-[#d4d7d7] transition-colors duration-200 ease-in-out"
-              disabled={isApplied || applicationSubmitted}
-            >
-              {isApplied || applicationSubmitted ? "Applied" : "Apply Now"}
-            </button>
-          </div>
-        )}
-
-        {/* Register button for unregistered users */}
-        {showRegisterButton && (
-          <div className="flex justify-center mt-8 bg-transparent">
-            <a
-              href="/register"
-              className="btn btn-lg text-xl border bg-transparent text-[#d0333c] hover:bg-[#d0333c] hover:text-[#d4d7d7]
-      border-[#d0333c] hover:border-[#d4d7d7] transition-colors duration-200 ease-in-out"
-            >
-              Register to Start Applying
-            </a>
-          </div>
-        )}
       </div>
     </div>
   );

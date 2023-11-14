@@ -12,7 +12,9 @@ import { getAllJobs, reset } from "../features/jobs/jobSlice";
 function Browse() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { jobs, isError, message } = useSelector((state) => state.jobs);
+  const { jobs, isError, message, isLoading } = useSelector(
+    (state) => state.jobs
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,7 +70,13 @@ function Browse() {
   const sortedJobs = [...jobs].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
-
+  if (isLoading) {
+    return (
+      <div className="w-full flex-1 flex justify-center items-start h-screen">
+        <span className="loading loading-spinner text-error w-14 mt-[10%]"></span>
+      </div>
+    );
+  }
   return (
     <div className="main mx-auto max-w-[1240px] px-4 md:px-6 ">
       <div className="h-fit pb-2">

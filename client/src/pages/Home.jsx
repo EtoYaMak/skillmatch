@@ -18,10 +18,13 @@ import settings from "../components/level_2/slider_settings";
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { jobs, isError, message } = useSelector((state) => state.jobs);
-
+  const { jobs, isError, message, isLoading } = useSelector(
+    (state) => state.jobs
+  );
+  const { student } = useSelector((state) => state.students);
   useEffect(() => {
     dispatch(getAllJobs());
+
     return () => {
       dispatch(reset());
     };
@@ -57,6 +60,13 @@ function Home() {
     ...jobs.map((job) => calculateCardHeight(job))
   );
 
+  if (isLoading) {
+    return (
+      <div className="w-full flex-1 flex justify-center items-start h-screen">
+        <span className="loading loading-spinner text-error w-14 mt-[10%]"></span>
+      </div>
+    );
+  }
   return (
     <div className="justify-between items-center max-w-[1240px]  px-4  mx-auto  bg-inherit">
       {/* Conditionally render the message */}
@@ -93,7 +103,7 @@ function Home() {
             ))}
 
             {/* Show More and Show Less buttons */}
-            <div className="flex flex-row justify-center items-center gap-10  ">
+            <div className="flex flex-row justify-center items-center gap-10 animate-bounce py-4">
               {sortedJobs.length > visibleJobs && (
                 <button
                   onClick={showMoreJobs}

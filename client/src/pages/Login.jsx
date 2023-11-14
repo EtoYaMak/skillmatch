@@ -103,7 +103,11 @@ function Login() {
   };
 
   if (authIsLoading || studentsIsLoading) {
-    return <Spinner />;
+    return (
+      <div className="w-full flex-1 flex justify-center items-start h-screen">
+        <span className="loading loading-spinner text-error w-14 mt-[10%]"></span>
+      </div>
+    );
   }
 
   return (

@@ -5,7 +5,8 @@ import StudentProfile from "../components/studentProfile";
 import StudentApplications from "../components/StudentApplications";
 
 function StudentDash() {
-  const student = useSelector((state) => state.students.student);
+  const { student, isLoading } = useSelector((state) => state.students);
+
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("applications");
@@ -18,7 +19,13 @@ function StudentDash() {
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
-
+  if (isLoading) {
+    return (
+      <div className="w-full flex-1 flex justify-center items-start h-screen">
+        <span className="loading loading-spinner text-error w-14 mt-[10%]"></span>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen  bg-transparent">
       <div className="bg-transparent p-4 text-center border-b-2 border-b-[#d0333c] w-2/4 mx-auto mt-12">
@@ -44,7 +51,7 @@ function StudentDash() {
           Profile
         </button>
       </div>
-      <div className="p-4">
+      <div className="p-4 max-w-5xl mx-auto">
         {/* Display the selected component based on the activeTab state */}
         {activeTab === "profile" && <StudentProfile />}
         {activeTab === "applications" && <StudentApplications />}
