@@ -52,7 +52,7 @@ const Contact = () => {
     );
   }
   return (
-    <div className="max-w-6xl mx-auto  bg-[#000]/10 rounded-3xl h-full  flex flex-col justify-center items-center">
+    <div className="max-w-6xl mx-auto  bg-white rounded-3xl h-full  flex flex-col justify-center items-center">
       <section className="text-gray-400 body-font font-Poppins mb-8">
         <div className="container px-5 py-5 mx-auto bg-transparent rounded-b-xl">
           <div className="flex flex-col text-center w-full mb-4 bg-inherit mt-10 ">
@@ -89,8 +89,9 @@ const Contact = () => {
                     id="name"
                     name="name"
                     value={name}
+                    placeholder="Name"
                     onChange={handleChange}
-                    className="input bg-black/25 text-lg text-black w-full leading-8 transition-colors duration-200 ease-in-out"
+                    className="input bg-black/5 text-lg text-black w-full leading-8 transition-colors duration-200 ease-in-out placeholder:text-black/40 "
                   />
                 </div>
               </div>
@@ -106,10 +107,11 @@ const Contact = () => {
                     type="email"
                     id="email"
                     name="email"
+                    placeholder="my-email-address@xyz.com"
                     value={email}
                     onChange={handleChange}
-                    className="w-full input bg-black/25 text-lg text-black            
-                      leading-8 transition-colors duration-200 ease-in-out"
+                    className="w-full input bg-black/5 text-lg text-black            
+                      leading-8 transition-colors duration-200 ease-in-out placeholder:text-black/40"
                   />
                 </div>
               </div>
@@ -117,7 +119,7 @@ const Contact = () => {
                 <div className="relative bg-inherit space-y-1">
                   <label
                     htmlFor="message"
-                    className="leading-7 text-xl  text-[#000]  bg-inherit font-Poppins font-semibold"
+                    className="leading-7 text-xl p-2 text-[#000]  bg-inherit font-Poppins font-semibold"
                   >
                     Message
                   </label>
@@ -125,15 +127,16 @@ const Contact = () => {
                     id="message"
                     name="message"
                     value={message}
+                    placeholder="Your Message"
                     onChange={handleChange}
-                    className="textarea textarea-bordered w-full text-black bg-black/25 h-48 leading-6 transition-colors duration-200 ease-in-out text-lg "
+                    className="textarea textarea-bordered w-full text-black bg-black/5 h-48 leading-6 transition-colors duration-200 ease-in-out text-lg placeholder:text-black/40 "
                   ></textarea>
                 </div>
               </div>
               <div className="p-2 w-full bg-inherit text-center">
                 <button
                   type="submit"
-                  className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
+                  className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white min-w-fit max-w-xs w-full h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
                   disabled={loading}
                 >
                   {loading ? "Sending..." : "Send"}
@@ -141,7 +144,8 @@ const Contact = () => {
               </div>
             </form>
 
-            <div className="p-2 w-full pt-8 mt-8 mb-2 border-t border-[#d0333c] text-center bg-inherit">
+            <div className="p-2 w-full pt-8 mt-8 mb-2 border-t border-[#d0333c] text-black/70 font-medium text-center bg-inherit flex flex-col">
+              Contact us:
               <Link className="text-[#000] hover:text-[#d0333c] text-xl bg-transparent border-0 tracking-widest">
                 skillmintofficial@gmail.com
               </Link>

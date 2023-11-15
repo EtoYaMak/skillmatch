@@ -31,8 +31,8 @@
 }
 .ql-editor {
   box-sizing: border-box;
-  border-radius: 5px; /* Inside Div */
-  background-color: #1c1f21;
+  border-radius: 6px; /* Inside Div */
+  background-color: #ffffff;
   line-height: 1.42;
   height: 100%;
   outline: none;
@@ -64,7 +64,8 @@
 .ql-editor h4,
 .ql-editor h5,
 .ql-editor h6 {
-  background-color: #1c1f21;
+  background-color: #fff;
+  color: #000;
   margin: 0;
   padding: 0;
   counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
@@ -72,12 +73,12 @@
 .ql-editor ol,
 .ql-editor ul {
   padding-left: 1.5em;
-  background-color: #1c1f21;
+  background-color: #fff;
 }
 .ql-editor ol > li,
 .ql-editor ul > li {
   list-style-type: none;
-  background-color: #1c1f21;
+  background-color: #fff;
 }
 .ql-editor ul > li::before {
   content: "\2022";
@@ -350,10 +351,10 @@
   background-color: #93f;
 }
 .ql-editor .ql-color-white {
-  color: #fff;
+  color: #000;
 }
 .ql-editor .ql-color-red {
-  color: #e60000;
+  color: #000;
 }
 .ql-editor .ql-color-orange {
   color: #f90;
@@ -399,7 +400,7 @@
   text-align: right;
 }
 .ql-editor.ql-blank::before {
-  color: #ffffffa7; /* PlaceHolder Color */
+  color: #000000a7; /* PlaceHolder Color */
 
   content: attr(data-placeholder);
   font-style: italic;
@@ -452,7 +453,7 @@
 .ql-snow .ql-toolbar .ql-picker-item:hover,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-  color: #d0333c;
+  color: #000;
 }
 .ql-snow.ql-toolbar button:hover .ql-fill,
 .ql-snow .ql-toolbar button:hover .ql-fill,
@@ -482,7 +483,8 @@
 .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
-  fill: #d0333c;
+  fill: #000;
+  background-color: 000;
 }
 .ql-snow.ql-toolbar button:hover .ql-stroke,
 .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -512,7 +514,7 @@
 .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
-  stroke: #d0333c;
+  stroke: #000;
 }
 @media (pointer: coarse) {
   .ql-snow.ql-toolbar button:hover:not(.ql-active),
@@ -523,7 +525,7 @@
   .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
   .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
   .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
-    fill: #1c1f21;
+    fill: #000;
   }
   .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
   .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
@@ -567,7 +569,7 @@
 }
 .ql-snow .ql-stroke {
   fill: none;
-  stroke: #eee;
+  stroke: #000;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
@@ -580,7 +582,7 @@
 }
 .ql-snow .ql-fill,
 .ql-snow .ql-stroke.ql-fill {
-  fill: #eee; /* List pixel on 1 */
+  fill: #000; /* List pixel on 1 */
 }
 .ql-snow .ql-empty {
   fill: none;
@@ -624,7 +626,7 @@
 }
 .ql-snow .ql-editor a {
   text-decoration: underline;
-  background-color: #1c1f21;
+  background-color: transparent;
 }
 .ql-snow .ql-editor blockquote {
   border-left: 4px solid #ccc;
@@ -634,8 +636,8 @@
 }
 .ql-snow .ql-editor code,
 .ql-snow .ql-editor pre {
-  background-color: #f0f0f0;
-  border-radius: 3px;
+  background-color: #000;
+  border-radius: 15px;
 }
 .ql-snow .ql-editor pre {
   white-space: pre-wrap;
@@ -650,20 +652,20 @@
 .ql-editor strong,
 em,
 u {
-  background-color: #1c1f21;
+  background-color: #fff;
 }
 .ql-snow .ql-editor pre.ql-syntax {
-  background-color: #1c1f21;
-  color: #f8f8f2;
+  background-color: #fff;
+  color: #000;
   overflow: visible;
 }
 .ql-snow .ql-editor img {
   max-width: 100%;
 }
 .ql-snow .ql-picker {
-  color: #ffffff;
+  color: #000;
   display: inline-block;
-  float: left;
+
   font-size: 14px;
   font-weight: 500;
   height: 24px;
@@ -698,14 +700,14 @@ u {
   padding-top: 5px;
 }
 .ql-snow .ql-picker.ql-expanded .ql-picker-label {
-  color: #eee;
+  color: #000;
   z-index: 2;
 }
 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill {
-  fill: #ccc;
+  fill: #fff;
 }
 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke {
-  stroke: #ccc;
+  stroke: #fff;
 }
 .ql-snow .ql-picker.ql-expanded .ql-picker-options {
   display: block;
@@ -733,6 +735,7 @@ u {
   width: 24px;
   padding: 2px 4px;
 }
+
 .ql-snow .ql-color-picker .ql-picker-options {
   padding: 3px 5px;
   width: 152px;
@@ -748,9 +751,13 @@ u {
 .ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
   position: absolute;
   margin-top: -9px;
+
   right: 0;
   top: 50%;
   width: 18px;
+}
+.ql-snow .ql-picker.ql-header {
+  background-color: transparent;
 }
 .ql-snow
   .ql-picker.ql-header
@@ -775,6 +782,10 @@ u {
 .ql-snow .ql-picker.ql-header {
   width: 98px;
 }
+.ql-snow .ql-picker.ql-header .ql-picker-label {
+  background-color: transparent;
+}
+
 .ql-snow .ql-picker.ql-header .ql-picker-label::before,
 .ql-snow .ql-picker.ql-header .ql-picker-item::before {
   content: "Normal";
@@ -821,6 +832,7 @@ u {
 .ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
   font-size: 0.67em;
 }
+
 .ql-snow .ql-picker.ql-font {
   width: 108px;
 }
@@ -877,8 +889,8 @@ u {
   background-color: #000;
 }
 .ql-toolbar.ql-snow {
-  border: 1px solid #aba6a6;
-  border-radius: 5px;
+  border: 1px solid #fff;
+  border-radius: 15px;
   box-sizing: border-box;
   font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   padding: 8px;
@@ -892,11 +904,12 @@ u {
 }
 .ql-toolbar.ql-snow .ql-picker-options {
   border: 1px solid transparent;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
+  border-radius: 4px;
+  background-color: white;
 }
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
-  border-color: gray; /* Heading */
-  border-radius: 5px;
+  border-color: black; /* Heading */
+  border-radius: 8px;
 }
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
   margin-top: 2px;
@@ -907,9 +920,10 @@ u {
   border-color: #000;
 }
 .ql-toolbar.ql-snow + .ql-container.ql-snow {
+  background-color: #000;
 }
 .ql-snow .ql-tooltip {
-  background-color: #fff;
+  background-color: #000;
   border: 1px solid #ccc;
   box-shadow: 0px 0px 5px #ddd;
   color: #444;
@@ -972,9 +986,19 @@ u {
   content: "Enter video:";
 }
 .ql-snow a {
-  color: #06c;
+  color: red;
+}
+.ql-snow p:has(a) + * {
+  color: black;
 }
 .ql-container.ql-snow {
-  border: 1px solid #aba6a6;
-  border-radius: 5px;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+}
+
+.ql-editor[data-placeholder^="As a Network Engineer"]::before {
+  font-style: normal;
+  color: #cecece;
+  font-family: Poppins;
+  font-size: 14px;
 }

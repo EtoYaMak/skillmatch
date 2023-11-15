@@ -61,10 +61,10 @@ const ApplyJobButton = ({ jobId }) => {
     <button
       onClick={handleApply}
       disabled={isApplied || isLoading}
-      className={`flex justify-center items-center w-24 ease-in-out duration-200  uppercase font-Poppins shadow-md px-3 rounded-3xl py-2  ${
+      className={`flex justify-center items-center w-24 ease-in-out duration-200  uppercase font-Poppins px-3 rounded-3xl py-2  ${
         isApplied
-          ? "cursor-not-allowed pointer-events-none text-black font-bold  "
-          : "cursor-pointer bg-[#000] hover:scale-105 hover:font-semibold "
+          ? "text-black font-bold shadow-[0px_3px_8px_rgb(0,0,0,0.3)] cursor-not-allowed hover:animate-pulse  "
+          : "cursor-pointer bg-[#000] hover:scale-105 hover:font-semibold shadow-[0px_3px_8px_rgb(0,0,0,0.3)]  "
       }`}
     >
       {isLoading ? (

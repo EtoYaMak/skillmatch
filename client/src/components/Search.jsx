@@ -24,7 +24,7 @@ export default function SearchComponent({ onSearch }) {
           className="input input-ghost h-12 sm:w-full w-2/3 px-4 py-4
           placeholder:tracking-wide tracking-wider text-xl font-Poppins
           placeholder:opacity-70 placeholder:underline underline-offset-2 rounded-3xl placeholder:text-[#aba6a6]
-           text-[#000]   focus:text-black focus:border-2
+           text-[#000] bg-black/5   focus:text-black focus:border-2
             focus:border-white/5 focus:outline-none bg-[#fff] focus:bg-[#333]/5"
           placeholder="Search a job title...  "
           value={searchQuery}

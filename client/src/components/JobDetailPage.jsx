@@ -106,7 +106,7 @@ function JobDetailPage({ job }) {
             <div className=" text-black text-lg font-Poppins flex flex-col justify-center items-center gap-2 ">
               {/* Apply button */}
               {student && (
-                <div className="text-white flex justify-end select-none px-2 ">
+                <div className="text-white flex justify-end select-none px-2 scale-110 ">
                   <ApplyJobButton jobId={job._id} />
                 </div>
               )}
@@ -263,6 +263,23 @@ function JobDetailPage({ job }) {
             dangerouslySetInnerHTML={{ __html: modifiedHTML }}
             style={customStyles} //
           ></div>
+        </div>
+        <div className="w-full p-4 font-Poppins flex flex-col justify-center items-center">
+          {/* Apply button */}
+          {student && (
+            <div className="text-white flex justify-end select-none px-2 scale-150 ">
+              <ApplyJobButton jobId={job._id} />
+            </div>
+          )}
+          {/* Register button for unregistered users */}
+          {showRegisterButton && (
+            <Link
+              to={"/register"}
+              className="flex scale-110 justify-center items-center w-fit ease-in-out duration-500 bg-black  uppercase font-Poppins  px-3 rounded-3xl py-2 text-white hover:text-white hover:scale-125 font-bold "
+            >
+              Register to Apply
+            </Link>
+          )}
         </div>
       </div>
     </div>

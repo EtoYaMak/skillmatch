@@ -80,19 +80,19 @@ function FeaturedCardComp({ job }) {
         <img
           src={job.logo}
           alt={job.company}
-          className=" rounded-full w-[70px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
+          className=" rounded-full w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.1)]"
         />
       </div>
-      <div className="flex-1 min-[768px]:pl-4 pl-2 select-none flex flex-col justify-center items-start ">
+      <div className="flex-1 min-[768px]:pl-4 pl-2 select-none flex flex-col justify-evenly items-start">
         <h1
           ref={textRef}
           className="font-Poppins font-bold w-full text-[16px] sm:text-[18px] pb-1 md:pb-0"
         >
           {truncateJobPosition(job.position, truncationWidth)}
         </h1>
-        <h1 className="font-Poppins text-base font-medium flex flex-col gap-1">
+        <h1 className="font-Poppins text-lg font-medium flex flex-col gap-1">
           {job.company}
-          {!showDropdown &&
+          {/*           {!showDropdown &&
             skills.slice(0, 1).map((skill, index) => (
               <span
                 key={index}
@@ -103,7 +103,7 @@ function FeaturedCardComp({ job }) {
               >
                 {skill}
               </span>
-            ))}
+            ))} */}
         </h1>
       </div>
     </div>

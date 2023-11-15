@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
-
+import SlateEditor from "./components/level_2/SlateEditor";
 import "./App.css";
 import Navbar from "./components/Navbar";
 
@@ -77,6 +77,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+
           <Route path="/browse" element={<Browse />} />
           <Route path="/post" element={<Post />} />
           <Route path="/contact" element={<Contact />} />

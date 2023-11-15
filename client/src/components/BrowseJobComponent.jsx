@@ -103,7 +103,7 @@ function BrowseJobComponent({ job }) {
         </div>
         {/* Apply button */}
         {student && (
-          <div className="text-white flex justify-end w-full sm:w-auto select-none px-2">
+          <div className="text-white flex justify-center pt-1 sm:pt-0 sm:justify-end w-full sm:w-auto select-none px-2">
             <ApplyJobButton jobId={job._id} />
           </div>
         )}
