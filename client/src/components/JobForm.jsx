@@ -590,10 +590,10 @@ function JobForm() {
           )}
 
           {/* SUBMIT */}
-          <div className="form-group flex justify-end items-center bg-transparent py-10 ">
+          <div className="form-group flex justify-center items-center bg-transparent py-10 w-full ">
             {paymentSuccess ? (
               <button
-                className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold minw-fit max-w-xs w-full hover:text-white h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
+                className="btn btn-lg flex bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold minw-fit max-w-xs w-full hover:text-white h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
                 type="submit"
               >
                 Post Job
