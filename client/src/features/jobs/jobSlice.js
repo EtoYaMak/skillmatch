@@ -3,6 +3,7 @@ import jobService from "./jobService";
 
 const initialState = {
   jobs: [],
+  alljobs: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -86,6 +87,23 @@ export const getJobId = createAsyncThunk(
   }
 );
 
+// Get all jobs (Public access for viewing all jobs and Private access for user dashboard)
+export const getAllJobsTwo = createAsyncThunk(
+  "jobs/getAllJobsTwo",
+  async (_, thunkAPI) => {
+    try {
+      return await jobService.getAllJobs(); // For public access (all jobs)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 // Get all jobs (Public access for viewing all jobs and Private access for user dashboard)
 export const getAllJobs = createAsyncThunk(
   "jobs/getAllJobs",
@@ -339,6 +357,19 @@ export const jobSlice = createSlice({
         state.jobs = state.jobs.filter((job) => job._id !== action.payload.id);
       })
       .addCase(SAdeleteJob.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getAllJobsTwo.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllJobsTwo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.alljobs = action.payload;
+      })
+      .addCase(getAllJobsTwo.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

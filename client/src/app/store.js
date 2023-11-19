@@ -5,6 +5,7 @@ import jobReducer from "../features/jobs/jobSlice";
 import studentReducer from "../features/students/studentSlice";
 import profileReducer from "../features/profiles/profileSlice";
 import contactReducer from "../features/contact/contactSlice";
+import accountReducer from "../features/accounts/accountSlice";
 
 export default configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export default configureStore({
     students: studentReducer,
     profiles: profileReducer,
     contact: contactReducer,
+    accounts: accountReducer,
   },
 });

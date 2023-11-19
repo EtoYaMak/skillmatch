@@ -105,6 +105,25 @@ export const SAlogout = createAsyncThunk("SAuser/SAlogout", async () => {
 });
 //
 
+/* // Get all students
+export const getAllStudents = createAsyncThunk(
+  "SAuser/getAllStudents",
+  async (_, thunkAPI) => {
+    try {
+      const response = await adminService.getAllStudents();
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+ */
 export const adminSlice = createSlice({
   name: "SAuser",
   initialState,

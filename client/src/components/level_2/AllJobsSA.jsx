@@ -1,55 +1,30 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux"; // Removed useSelector since it's not used here
-import {
-  SAgetMyJobs,
-  deleteJob,
-  SAdeleteJob,
-  getMyJobs,
-  reset,
-} from "../features/jobs/jobSlice";
+import React from "react";
+import { SAdeleteJob } from "../../features/jobs/jobSlice";
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-function UserDashJobs({ createdAt, user, SAuser, jobs }) {
+function AllJobsSA({ alljobs, SAuser }) {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        await new Promise((resolve) => setTimeout(resolve, 200)); // Adjust the delay time as needed
-        dispatch(getMyJobs());
-      } else if (SAuser) {
-        await new Promise((resolve) => setTimeout(resolve, 200)); // Adjust the delay time as needed
-        dispatch(SAgetMyJobs());
-      } else {
-        console.error("Unidentified user");
-      }
-    };
-
-    fetchData();
-  }, [user, SAuser, dispatch]);
-
   const handleDeleteJob = (jobId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this job?"
     );
     if (confirmDelete) {
       console.log("Job Delete: ", jobId);
-      if (user) {
-        dispatch(deleteJob(jobId));
-      } else if (SAuser) {
+      if (SAuser) {
         dispatch(SAdeleteJob(jobId));
       } else {
         console.error("Unable to Delete Job");
       }
     }
   };
-
   return (
-    <div className="flex flex-wrap gap-2 min-[640px]:justify-center bg-transparent">
-      {jobs.length > 0 ? (
-        <>
-          {jobs.map((job) => (
+    <div className=" bg-transparent font-Poppins">
+      <h1 className="text-center text-xl font-Poppins">All Posted Jobs</h1>
+      <div className="flex flex-wrap gap-2 min-[640px]:justify-center bg-transparent font-Poppins">
+        {Array.isArray(alljobs) ? (
+          alljobs.map((job) => (
             <div
               key={job._id}
               className="card card-compact max-[640px]:card-side w-full min-[640px]:w-56 bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] my-2 hover:text-black"
@@ -69,11 +44,8 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
                 >
                   {job.position}
                 </a>
-                <p className="text-center text-lg select-none flex flex-col">
+                <p className="text-center text-lg select-none flex flex-col ">
                   {job.company}
-                  <span className="text-xs text-zinc-500">
-                    {formatCreatedAtDate(job.createdAt)}
-                  </span>
                 </p>
 
                 <div className="card-actions justify-center">
@@ -103,22 +75,13 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
                 </div>
               </div>
             </div>
-          ))}
-        </>
-      ) : (
-        <>
-          <span className="loading loading-spinner"></span>
-        </>
-      )}
+          ))
+        ) : (
+          <p>Loading students...</p>
+        )}
+      </div>
     </div>
   );
 }
-// Define a function to format the date
-const formatCreatedAtDate = (createdAt) => {
-  const createdAtDate = new Date(createdAt);
-  const day = createdAtDate.getDate();
-  const month = createdAtDate.getMonth() + 1; // Months are zero-indexed
-  const year = createdAtDate.getFullYear();
-  return `${day}/${month}/${year}`;
-};
-export default UserDashJobs;
+
+export default AllJobsSA;

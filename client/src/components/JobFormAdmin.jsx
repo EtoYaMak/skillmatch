@@ -1,30 +1,30 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SAcreateJob } from "../features/jobs/jobSlice";
 import DOMPurify from "dompurify";
 import ReactQuill from "react-quill";
 import "../assets/quill.snow.css"; // Import the CSS for the editor
 import { MdClose } from "react-icons/md";
 import countriesList from "../assets/countries-data.json";
-import { useNavigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
+let jobPlaceholder =
+  "As a Network Engineer, you will play a crucial role in designing, implementing, and maintaining our organization's network infrastructure. Your responsibilities will include analyzing network requirements, configuring routers and switches, ensuring network security, and troubleshooting connectivity issues. Collaborating with cross-functional teams, you will contribute to the planning and execution of network projects, while staying abreast of industry trends and emerging technologies. The ideal candidate possesses strong problem-solving skills, in-depth knowledge of networking protocols, and a passion for optimizing network performance to support the organization's seamless operations.";
 
 function JobFormAdmin() {
   const [position, setPosition] = useState("");
-  const [location, setLocation] = useState("");
   const [careerPage, setCareerPage] = useState("");
   const [company, setCompany] = useState("");
   const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
   const [skills, setSkills] = useState([]);
-  const [countries, setCountries] = useState(countriesList);
+  const [countries] = useState(countriesList);
   const [city, setCity] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
 
   //File
   const [fileName, setFileName] = useState("");
-
+  const [previewUrl, setPreviewUrl] = useState("");
   //CheckBoxes
   const [remote, setRemote] = useState(false);
   const [contract, setContract] = useState(false);
@@ -38,17 +38,49 @@ function JobFormAdmin() {
   //Form Error
   const [formError, setFormError] = useState("");
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { SAuser } = useSelector((state) => state.SAuser);
+  const modules = {
+    toolbar: {
+      container: [
+        ["bold", "italic", "underline", "strike"], // Other toolbar options
+        [{ header: [1, 2, 3, 4, 5, 6] }],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["clean"],
+      ],
+    },
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      // Check if the file size is within the limit
+      const maxFileSizeMB = 2.5; // Maximum allowed file size in megabytes
+
+      if (selectedFile.size <= maxFileSizeMB * 1024 * 1024) {
+        setFileName(e.target.files[0]);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewUrl(reader.result);
+        };
+        reader.readAsDataURL(selectedFile);
+      } else {
+        // File size exceeds the limit
+        alert(`File size must be less than ${maxFileSizeMB} MB`);
+        // Clear the input field
+        e.target.value = null;
+      }
+    }
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     const location = `${city}, ${selectedCountry}`;
     // Input validation
-    const requiredFields = [
+    /*     const requiredFields = [
       { name: "Job Title", value: position },
       { name: "City", value: city },
       { name: "Country", value: selectedCountry },
@@ -69,7 +101,7 @@ function JobFormAdmin() {
       setShowFormError(true);
       showToastError();
       return;
-    }
+    } */
 
     // Sanitization
     const sanitizedPosition = sanitizeInput(position);
@@ -107,18 +139,17 @@ function JobFormAdmin() {
     sanitizedSkills.forEach((skill) => {
       formData.append("skills[]", skill);
     });
-
+    console.log(fileName, "File onSubmit");
     dispatch(SAcreateJob(formData));
 
     setPosition("");
-    setLocation("");
     setCity("");
     setSelectedCountry("");
     setCareerPage("");
     setCompany("");
     setWebsite("");
     setRemote(false);
-    setFileName("");
+    setFileName();
     setDescription("");
     setFulltime(false);
     setParttime(false);
@@ -240,20 +271,20 @@ function JobFormAdmin() {
               </button>
             </div>
           )}
-          <div className="flex flex-col">
+          <div className="flex flex-col  font-Poppins">
             {/* Job Title */}
-            <div className="w-full ">
+            <div className="w-full">
               <div>
-                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-4 text-black">
                   Job Title
                 </label>
                 <input
                   type="text"
                   name="position"
                   id="position"
-                  className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
-                  placeholder="Example: Front-End Developer "
+                  className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold rounded-3xl
+                  text-black placeholder:text-black/30 placeholder:font-medium text-xl"
+                  placeholder="Network Engineer "
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
                   onKeyDown={falseFlagsubmit}
@@ -263,13 +294,15 @@ function JobFormAdmin() {
             {/* Location */}
             <div className="w-full ">
               <div>
-                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                   Location
                 </label>
                 <span className="flex flex-row w-full justify-between space-x-4">
                   <input
                     type="text"
-                    className="input input-bordered text-xl bg-black/25 w-full text-white/90"
+                    className="input input-bordered text-xl bg-white w-full font-semibold
+                          text-black rounded-3xl placeholder:font-medium placeholder:text-black/30 "
+                    placeholder="City"
                     id="city"
                     name="city"
                     value={city}
@@ -280,11 +313,11 @@ function JobFormAdmin() {
                     name="dropdown"
                     value={selectedCountry}
                     onChange={handleCountryChange}
-                    className="select select-bordered bg-black/90 backdrop-blur-md text-white/90 w-full font-Inter flex flex-wrap text-xl"
+                    className=" select select-bordered rounded-3xl bg-white backdrop-blur-md text-black w-full font-Poppins flex flex-wrap text-xl"
                   >
                     <option
                       defaultValue={" "}
-                      className="text-xl text-center text-white/70"
+                      className="text-xl text-center text-black "
                       id="defaultCountry"
                     >
                       Select A Country
@@ -303,7 +336,7 @@ function JobFormAdmin() {
               </div>
             </div>
           </div>
-          <div className="typeWork  sm:grid sm:grid-cols-2  text-white/75 font-Inter my-2 p-2">
+          <div className="typeWork  sm:grid sm:grid-cols-2  text-black/75 font-Poppins my-2 p-2">
             {/* Type */}
             <div className="grid grid-cols-2 gap-2">
               {/* Full-Time */}
@@ -389,19 +422,20 @@ function JobFormAdmin() {
             </div>
           </div>
           {/* Description */}
-          <div className="mt-4 text-white tracking-wider text-lg">
+          <div className="mt-4 text-black tracking-wider text-lg rounded-3xl overflow-hidden">
             <ReactQuill
-              placeholder="Job Description"
-              className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/25 
+              placeholder={jobPlaceholder}
+              className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/5 
             text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest"
               onChange={handleDescriptionChange}
               value={description}
+              modules={modules}
             />
           </div>
           {/* Skills */}
           <div className="w-full bg-transparent">
             <div className="bg-transparent">
-              <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+              <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                 Skills
               </label>
               {/* SKILLS.MAP */}
@@ -409,7 +443,7 @@ function JobFormAdmin() {
                 {skills.map((skill, index) => (
                   <div
                     key={index}
-                    className="bg-[#d0333c]/80 text-[#d4d7d7] px-3 py-1 text-lg font-bold tracking-wide rounded-md m-1  "
+                    className="bg-[#000]/80 text-white font-Poppins px-3 py-1 text-lg font-semibold tracking-wide rounded-3xl m-1  "
                   >
                     {skill}
                     <button
@@ -427,8 +461,8 @@ function JobFormAdmin() {
                 type="text"
                 name="skills"
                 id="skills"
-                className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-              text-white/80 placeholder:text-white/40 text-xl placeholder:tracking-wide"
+                className="w-full rounded-3xl input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold
+                text-black  placeholder:text-black/30 placeholder:font-medium text-xl placeholder:tracking-wide"
                 placeholder="<spacebar> or <comma> to split Skills."
                 onKeyUp={handleSkillChange}
                 onKeyDown={falseFlagsubmit}
@@ -439,15 +473,15 @@ function JobFormAdmin() {
             {/* Company Name */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="bg-transparent">
-                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                   Company Name
                 </label>
                 <input
                   type="text"
                   name="company"
                   id="company"
-                  className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
+                  className="w-full rounded-3xl input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold
+                  text-black placeholder:text-black/30 placeholder:font-medium text-xl "
                   placeholder="ABC Co."
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
@@ -458,16 +492,16 @@ function JobFormAdmin() {
             {/* Career Page URL */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="bg-transparent">
-                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                   Career Page URL
                 </label>
                 <input
                   type="text"
                   name="careerPage"
                   id="careerPage"
-                  className="w-full input input-bordered  transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
-                  placeholder="https://www.careers.example.com/jobID?JobName"
+                  className="w-full rounded-3xl input input-bordered  transition-colors duration-300 ease-in-out bg-white font-semibold
+                        text-black placeholder:text-black/30 placeholder:font-medium text-xl "
+                  placeholder="www.careers.abc.com/job"
                   value={careerPage}
                   onChange={(e) => setCareerPage(e.target.value)}
                   onKeyDown={falseFlagsubmit}
@@ -480,32 +514,53 @@ function JobFormAdmin() {
             {/* Logo */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="form-group bg-transparent">
-                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
-                  Logo
+                <label className=" text-2xl font-semibold px-2 mb-2 mt-6 text-black flex flex-row justify-between">
+                  <p className="h-8">
+                    Logo <span className="text-[10px]">MAX 2MB</span>{" "}
+                  </p>
+                  {fileName && <p>Preview</p>}
                 </label>
-                <input
-                  type="file"
-                  name="logo"
-                  accept="image/*"
-                  className="form-control-file file-input w-full bg-black/25 text-white/40 text-lg"
-                  onChange={(e) => setFileName(e.target.files[0])}
-                  //onChange={(e) => setFileName(e.target.files[0]?.name || "")}
-                />
+
+                <div className="flex flex-row justify-between items-start">
+                  <input
+                    type="file"
+                    name="logo"
+                    accept="image/*"
+                    className="rounded-3xl form-control-file file-input w-fit max-w-sm bg-white text-black/60 text-lg mr-2"
+                    onChange={handleFileChange}
+                    /* onChange={(e) => setFileName(e.target.files[0])} */
+                  />
+
+                  {fileName && (
+                    <div className="flex flex-col justify-center items-center min-w-[90px] w-[90px] h-[90px] ">
+                      <img
+                        src={previewUrl}
+                        alt="Preview"
+                        className=" object-cover rounded-full shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
+                        style={{
+                          width: 160,
+                          height: 160,
+                          position: "center",
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             {/* Company URL */}
             <div className="w-full sm:w-1/2 bg-transparent">
               <div className="bg-transparent">
-                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-white">
+                <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
                   Company URL
                 </label>
                 <input
                   type="text"
                   name="website"
                   id="website"
-                  className="w-full input input-bordered transition-colors duration-300 ease-in-out bg-black/25 
-                text-white/80 placeholder:text-white/40 text-xl "
-                  placeholder="https://www.companyname.com"
+                  className="rounded-3xl w-full input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold
+                  text-black placeholder:text-black/30 text-xl  placeholder:font-medium"
+                  placeholder="www.abc.com"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
                   onKeyDown={falseFlagsubmit}
@@ -516,12 +571,12 @@ function JobFormAdmin() {
         </div>
 
         {/* SUBMIT */}
-        <div className="form-group flex justify-center items-center bg-transparent py-2 ">
+        <div className="form-group flex justify-center items-center bg-transparent py-10 w-full ">
           <button
-            className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-lg uppercase transition-colors duration-300 ease-in-out"
+            className="btn btn-lg flex bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold minw-fit max-w-xs w-full hover:text-white h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
             type="submit"
           >
-            Submit
+            Post Job
           </button>
         </div>
       </form>

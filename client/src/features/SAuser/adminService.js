@@ -49,6 +49,7 @@ const resetPassword = async (type, token, password) => {
 const SAlogout = () => {
   localStorage.removeItem("SAuser");
 };
+
 const authService = {
   SAregister,
   SAlogin,

@@ -43,6 +43,15 @@ const getJobById = async (jobId) => {
 };
 
 // Fetch ALL JOBS #PUBLIC
+const getAllJobsTwo = async () => {
+  try {
+    const response = await axios.get(ALL_API_URL);
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
+// Fetch ALL JOBS #PUBLIC
 const getAllJobs = async () => {
   try {
     const response = await axios.get(ALL_API_URL);
@@ -172,6 +181,7 @@ const jobService = {
   SAdeleteJob,
   applyToJob,
   updateApplicationStatus,
+  getAllJobsTwo,
 };
 
 export default jobService;

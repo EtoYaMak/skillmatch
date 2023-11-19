@@ -14,19 +14,20 @@ let jobPlaceholder =
 
 function JobForm() {
   const [position, setPosition] = useState("");
-  const [location, setLocation] = useState("");
+
   const [careerPage, setCareerPage] = useState("");
   const [company, setCompany] = useState("");
   const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
-  const [placeholder, setPlaceholder] = useState(jobPlaceholder);
+
   const [skills, setSkills] = useState([]);
-  const [countries, setCountries] = useState(countriesList);
+  const [countries] = useState(countriesList);
   const [city, setCity] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
 
   //File
   const [fileName, setFileName] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
 
   //CheckBoxes
   const [remote, setRemote] = useState(false);
@@ -60,6 +61,30 @@ function JobForm() {
         ["clean"],
       ],
     },
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      // Check if the file size is within the limit
+      const maxFileSizeMB = 2.5; // Maximum allowed file size in megabytes
+
+      if (selectedFile.size <= maxFileSizeMB * 1024 * 1024) {
+        setFileName(e.target.files[0]);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewUrl(reader.result);
+        };
+        reader.readAsDataURL(selectedFile);
+      } else {
+        // File size exceeds the limit
+        alert(`File size must be less than ${maxFileSizeMB} MB`);
+        // Clear the input field
+        e.target.value = null;
+      }
+    }
   };
 
   useEffect(() => {
@@ -145,7 +170,7 @@ function JobForm() {
     // Clear the successful payment signal from sessionStorage
     sessionStorage.removeItem("paymentSuccess");
     setPosition("");
-    setLocation("");
+
     setCity("");
     setSelectedCountry("");
     setCareerPage("");
@@ -464,9 +489,11 @@ function JobForm() {
                 <div className="mt-4 text-black tracking-wider text-lg rounded-3xl overflow-hidden">
                   <ReactQuill
                     placeholder={jobPlaceholder}
-                    modules={modules}
+                    className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/5 
+            text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest"
                     onChange={handleDescriptionChange}
                     value={description}
+                    modules={modules}
                   />
                 </div>
 
@@ -550,19 +577,40 @@ function JobForm() {
 
                 <div className="sm:flex sm:space-x-8 bg-transparent">
                   {/* Logo */}
-                  <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
+                  <div className="w-full sm:w-1/2 bg-transparent">
                     <div className="form-group bg-transparent">
-                      <label className="block text-2xl font-semibold px-2 mb-2 mt-6 text-black">
-                        Logo
+                      <label className=" text-2xl font-semibold px-2 mb-2 mt-6 text-black flex flex-row justify-between">
+                        <p className="h-8">
+                          Logo <span className="text-[10px]">MAX 2MB</span>{" "}
+                        </p>
+                        {fileName && <p>Preview</p>}
                       </label>
-                      <input
-                        type="file"
-                        name="logo"
-                        accept="image/*"
-                        className="rounded-3xl form-control-file file-input w-full bg-white text-black/60 text-lg"
-                        onChange={(e) => setFileName(e.target.files[0])}
-                        //onChange={(e) => setFileName(e.target.files[0]?.name || "")}
-                      />
+
+                      <div className="flex flex-row justify-between items-start">
+                        <input
+                          type="file"
+                          name="logo"
+                          accept="image/*"
+                          className="rounded-3xl form-control-file file-input w-fit max-w-sm bg-white text-black/60 text-lg mr-2"
+                          onChange={handleFileChange}
+                          /* onChange={(e) => setFileName(e.target.files[0])} */
+                        />
+
+                        {fileName && (
+                          <div className="flex flex-col justify-center items-center min-w-[90px] w-[90px] h-[90px] ">
+                            <img
+                              src={previewUrl}
+                              alt="Preview"
+                              className=" object-cover rounded-full shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
+                              style={{
+                                width: 160,
+                                height: 160,
+                                position: "center",
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   {/* Company URL */}
