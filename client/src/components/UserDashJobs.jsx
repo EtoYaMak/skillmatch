@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux"; // Removed useSelector since it's not used here
+import { useDispatch, useSelector } from "react-redux"; // Removed useSelector since it's not used here
 import {
   SAgetMyJobs,
   deleteJob,
@@ -9,7 +9,14 @@ import {
 } from "../features/jobs/jobSlice";
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+// Function to count "Pending" applicants for a specific job_id
+const countPendingApplicants = (job_id, jobs) => {
+  const job = jobs.find((job) => job._id === job_id);
+  return job
+    ? job.applicants.filter((applicant) => applicant.status === "Pending")
+        .length
+    : 0;
+};
 function UserDashJobs({ createdAt, user, SAuser, jobs }) {
   const dispatch = useDispatch();
 
@@ -78,7 +85,10 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
 
                 <div className="card-actions justify-center">
                   <ul className="menu menu-horizontal p-2 bg-white/5 rounded-box items-center">
-                    <li>
+                    <li className="indicator ">
+                      <span className="pointer-events-none indicator-center -mt-2 indicator-item badge badge-accent border-0  bg-red-700 flex justify-center items-center mask mask-circle text-white font-Poppins font-bold w-8 h-8  text-[14px]">
+                        +{countPendingApplicants(job._id, jobs)}
+                      </span>
                       <Link
                         to={`/jobapplicants/${job._id}`}
                         className="hover:bg-black hover:text-white"

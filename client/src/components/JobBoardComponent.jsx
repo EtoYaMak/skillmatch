@@ -35,11 +35,11 @@ function JobBoardComponent({ job }) {
         className="flex flex-row flex-1 items-center sm:max-w-lg w-full"
         onClick={handleClick}
       >
-        <div className="flex justify-center items-center max-w-fit ">
+        <div className="flex justify-center items-center w-max-full ">
           <img
             src={job.logo}
             alt={job.company}
-            className=" rounded-full w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
+            className="mask mask-circle w-[100px] h-full"
           />
         </div>
         <div className="flex-1 min-[768px]:pl-6 pl-4 select-none ">

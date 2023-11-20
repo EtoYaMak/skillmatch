@@ -91,7 +91,7 @@ function JobDetailPage({ job }) {
                 <img
                   src={job.logo}
                   alt={job.company}
-                  className=" rounded-full w-[120px] sm:w-[140px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
+                  className=" mask mask-circle w-[120px] sm:w-[140px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
                 />
               </div>
               <div className=" bg-inherit flex-1  w-fit text-start  sm:pl-2">

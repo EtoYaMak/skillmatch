@@ -601,7 +601,7 @@ function JobForm() {
                             <img
                               src={previewUrl}
                               alt="Preview"
-                              className=" object-cover rounded-full shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
+                              className="mask mask-circle shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
                               style={{
                                 width: 160,
                                 height: 160,

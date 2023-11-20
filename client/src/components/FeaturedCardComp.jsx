@@ -80,7 +80,7 @@ function FeaturedCardComp({ job }) {
         <img
           src={job.logo}
           alt={job.company}
-          className=" rounded-full w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.1)]"
+          className="mask mask-circle w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.1)]"
         />
       </div>
       <div className="flex-1 min-[768px]:pl-4 pl-2 select-none flex flex-col justify-evenly items-start">

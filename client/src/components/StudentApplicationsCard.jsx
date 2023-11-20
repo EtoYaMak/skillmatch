@@ -19,7 +19,7 @@ const StudentApplicationsCard = ({ job, status }) => {
           <img
             src={job.logo}
             alt={job.company}
-            className=" rounded-full w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
+            className=" rounded-full mask mask-circle w-[90px] shadow-[0_1px_5px_rgb(0,0,0,0.3)]"
           />
         </div>
         <div className="text-black w-full">

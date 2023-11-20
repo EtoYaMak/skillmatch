@@ -216,7 +216,34 @@ function JobApplicants() {
             Rejected {rejectedCount}
           </button>
         </div>
-        {profiles.map((profile) => {
+        {Array.isArray(profiles) &&
+          profiles.map((profile) => {
+            const applicant = job.applicants.find(
+              (app) => app.student === profile.student
+            );
+
+            // Filter applications based on the selected tab
+            if (
+              (selectedTab === "Pending" && applicant?.status === "Pending") ||
+              (selectedTab === "Accepted" &&
+                applicant?.status === "Approved") ||
+              (selectedTab === "Rejected" && applicant?.status === "Rejected")
+            ) {
+              return (
+                <ProfileCard
+                  key={profile._id}
+                  profile={profile}
+                  job={job}
+                  onUpdateStatus={(newStatus) =>
+                    handleUpdateStatus(job._id, profile.student, newStatus)
+                  }
+                />
+              );
+            }
+            return null;
+          })}
+
+        {/*         {profiles.map((profile) => {
           const applicant = job.applicants.find(
             (app) => app.student === profile.student
           );
@@ -239,7 +266,7 @@ function JobApplicants() {
             );
           }
           return null;
-        })}
+        })} */}
       </div>
     </div>
   );
