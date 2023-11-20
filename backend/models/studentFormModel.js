@@ -13,6 +13,7 @@ const sFormSchema = mongoose.Schema(
     },
     University: {
       type: String,
+      unique: false,
     },
 
     Degree: {

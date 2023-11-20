@@ -13,6 +13,11 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASSWORD,
   },
 });
+
+const getAllStudents = asyncHandler(async (req, res) => {
+  const students = await Student.find().select("-password");
+  res.status(200).json(students);
+});
 //@desc Register new Student
 //@route POST /api/students
 //@access Public
@@ -193,6 +198,7 @@ const loginStudent = asyncHandler(async (req, res) => {
       name: student.name,
       email: student.email,
       isActive: student.isActive,
+      appliedJobs: student.appliedJobs,
       token: generateToken(student._id),
     });
   } else {
@@ -228,4 +234,5 @@ module.exports = {
   activateStudentS,
   forgotPasswordS,
   resetPasswordS,
+  getAllStudents,
 };

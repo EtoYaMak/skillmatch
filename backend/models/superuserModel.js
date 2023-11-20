@@ -20,8 +20,12 @@ const superuserSchema = mongoose.Schema(
       default: false, // Set default to false, user must activate account
     },
     type: {
-      type: Number, // 1, 2, etc. based on what each type represents
+      type: Number, // 99 for Superuser/SAuser/Admin
       required: true,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     activationToken: String,
     activationTokenExpires: Date,

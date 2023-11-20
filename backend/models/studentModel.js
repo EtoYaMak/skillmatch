@@ -36,7 +36,7 @@ const studentSchema = mongoose.Schema(
       default: false, // Set default to false, user must activate account
     },
     type: {
-      type: Number, // 1, 2, etc. based on what each type represents
+      type: Number, // 2 for Student/Applicant
       required: true,
     },
     activationToken: String,

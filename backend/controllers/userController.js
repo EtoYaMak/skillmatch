@@ -21,7 +21,10 @@ const transporter = nodemailer.createTransport({
 const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
-
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password");
+  res.status(200).json(users);
+});
 //@desc Register new User
 //@route POST /api/users
 //@access PUBLIC
@@ -233,4 +236,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   getMe,
+  getAllUsers,
 };

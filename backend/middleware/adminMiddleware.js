@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel");
+
 const Superuser = require("../models/superuserModel");
 
-const protect = asyncHandler(async (req, res, next) => {
+const protectAD = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
@@ -16,16 +16,8 @@ const protect = asyncHandler(async (req, res, next) => {
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Attempt to find a user in the User model or Superuser model
-      let user = await User.findById(decoded.id).select("-password");
-      if (!user) {
-        user = await Superuser.findById(decoded.id).select("-password");
-        if (!user || !user.isAdmin) {
-          res.status(403);
-          throw new Error("Not authorized as admin");
-        }
-      }
+      // Attempt to find a user Superuser model
+      let user = await Superuser.findById(decoded.id).select("-password");
 
       if (user && !user.isActive) {
         res.status(403);
@@ -41,6 +33,7 @@ const protect = asyncHandler(async (req, res, next) => {
       req.user = user;
       next();
     } catch (error) {
+      console.error("Error in protect middleware:", error); // Log the error
       res.status(401);
       throw new Error("Not authorized");
     }
@@ -48,10 +41,10 @@ const protect = asyncHandler(async (req, res, next) => {
 
   if (!token) {
     res.status(401);
-    throw new Error("Not Authorized, No Token Found via Middleware");
+    throw new Error("Not Authorized, No Token Found");
   }
 });
 
 module.exports = {
-  protect,
+  protectAD,
 };

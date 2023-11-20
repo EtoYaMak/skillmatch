@@ -28,12 +28,12 @@ app.use(cors(corsOptions));
 connectDB();
 
 // API routes
-app.use("/api/jobs", require("./routes/jobRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/students", require("./routes/studentRoutes"));
-app.use("/api/profiles", require("./routes/studentFormroutes"));
-app.use("/api/contact", require("./routes/contactRoutes"));
-app.use("/api/superusers", require("./routes/superusers"));
+app.use("/api/jobs", require("./routes/jobRoutes")); //job listings
+app.use("/api/users", require("./routes/userRoutes")); //user collection
+app.use("/api/students", require("./routes/studentRoutes")); // student collection
+app.use("/api/profiles", require("./routes/studentFormroutes")); // student profiles
+app.use("/api/contact", require("./routes/contactRoutes")); // contact form
+app.use("/api/superusers", require("./routes/superusers")); // admin collection
 // Payment
 app.post("/payment", cors(), async (req, res) => {
   let { amount, id, description, return_url, allow_redirects } = req.body; // Include return_url in the request body

@@ -1,6 +1,8 @@
+// /routes/jobRoutes
 const express = require("express");
 const router = express.Router();
 const { uploadMiddleware } = require("../config/multerConfig");
+const s3upload = require("../config/s3multerConfig");
 
 const {
   getJobs,
@@ -15,7 +17,10 @@ const {
 
 const { protect } = require("../middleware/authMiddleware");
 
-router.route("/").get(protect, getJobs).post(protect, uploadMiddleware, setJob);
+router
+  .route("/")
+  .get(protect, getJobs)
+  .post(protect, s3upload.single("logo"), setJob);
 
 //Get all jobs PUBLIC
 router.route("/all").get(getAllJobs);

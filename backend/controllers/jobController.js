@@ -1,10 +1,9 @@
+// /controllers/jobControllers
 const asyncHandler = require("express-async-handler");
 const Job = require("../models/jobModel");
 const User = require("../models/userModel");
 const Superuser = require("../models/superuserModel");
 const Student = require("../models/studentModel");
-const upload = require("../config/multerConfig"); // Import multer instance
-const multer = require("multer");
 const sharp = require("sharp");
 const fs = require("fs");
 
@@ -43,11 +42,6 @@ const getAllJobs = asyncHandler(async (req, res) => {
 
   // Send the list of jobs back to the client
   res.status(200).json(jobs);
-  /*   res.status(200).json({
-    success: true,
-    count: jobs.length,
-    data: jobs,
-  }); */
 });
 
 // @desc Get Jobs
@@ -67,11 +61,91 @@ const getJobs = asyncHandler(async (req, res) => {
     res.status(200).json(jobs);
   }
 });
+// @desc Set Jobs S3 Implementation Test
+// @route POST /api/jobs
+// @access Private
+const setJob = async (req, res) => {
+  try {
+    /*     const resizedImage = await sharp(req.file.path)
+      .resize({ width: 160, height: 160, fit: "cover", position: "center" })
+      .toBuffer();
+
+    // Generate a new file name for the resized image
+    const resizedFileName = `job_${req.file.filename}`;
+
+    // Upload the resized image to S3
+    const params = {
+      Bucket: "skillmint-job-images",
+      Key: `job-images/${resizedFileName}`, // Adjust the key as needed
+      Body: resizedImage,
+    };
+    console.log("Upload the resized image to S3: ", params.Bucket);
+    await s3.send(new PutObjectCommand(params));
+
+    // Remove the local file after uploading to S3
+    fs.unlinkSync(req.file.path); */
+
+    const user = req.user.id;
+    const postedBy = req.user.name;
+
+    const type = [
+      { name: "Full-time", value: req.body.fulltime },
+      { name: "Part-time", value: req.body.parttime },
+      { name: "Internship", value: req.body.internship },
+      { name: "Contract", value: req.body.contract },
+    ];
+    const setting = [
+      { name: "Remote", value: req.body.remote },
+      { name: "Hybrid", value: req.body.hybrid },
+      { name: "On-site", value: req.body.onsite },
+    ];
+    req.body.type = type;
+    req.body.setting = setting;
+
+    const {
+      position,
+      city,
+      country,
+      location,
+      careerPage,
+      company,
+      website,
+      description,
+      skills,
+    } = req.body;
+
+    const logo = req.file.location;
+
+    console.log("logo URL: ", logo);
+    console.log("logo address: ", logo);
+    const newJob = await Job.create({
+      user,
+      postedBy,
+      position,
+      city,
+      country,
+      location,
+      careerPage,
+      company,
+      website,
+      logo,
+      type,
+      setting,
+      description,
+      skills,
+      applicants: [],
+    });
+
+    res.status(200).json(newJob);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // @desc Set Jobs
 // @route POST /api/jobs
 // @access Private
-const setJob = async (req, res) => {
+/* const setJob = async (req, res) => {
   try {
     const resizedImage = await sharp(req.file.path)
       .resize({ width: 160, height: 160, fit: "cover", position: "center" })
@@ -88,8 +162,9 @@ const setJob = async (req, res) => {
     fs.unlinkSync(req.file.path); // Requires the 'fs' module
 
     const user = req.user.id;
-
+    console.log(user);
     const postedBy = req.user.name;
+    console.log(postedBy);
 
     const type = [
       { name: "Full-time", value: req.body.fulltime },
@@ -140,7 +215,7 @@ const setJob = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}; */
 // @desc Update Jobs
 // @route PUT /api/jobs/:id
 // @access Private

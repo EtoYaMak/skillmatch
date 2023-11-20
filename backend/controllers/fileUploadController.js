@@ -8,6 +8,7 @@ const studentFormModel = require("../models/studentFormModel");
 const multer = require("multer");
 const path = require("path");
 const DIR = path.join(__dirname, "../../client/public/submissions/");
+
 /* const DIR = "../../client/public/submissions/"; */
 
 const getProfile = asyncHandler(async (req, res) => {
@@ -44,6 +45,37 @@ const getStudentProfileForJobPoster = asyncHandler(async (req, res) => {
 //
 
 const setSForm = asyncHandler(async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No File was selected!" });
+    }
+
+    const { University, Degree, DegreeTitle } = req.body;
+    if (!University || !Degree || !DegreeTitle) {
+      return res.status(400).json({ message: "Missing required form fields" });
+    }
+
+    const student = req.student.id;
+    const studentName = req.student.name;
+    const cv = req.file.location; // Use 'key' instead of 'filename' for S3
+    console.log("CV file: ", cv);
+    console.log("REQ file: ", req.file);
+    const sProfile = await studentForm.create({
+      student,
+      studentName,
+      University,
+      Degree,
+      DegreeTitle,
+      cv,
+    });
+
+    res.status(200).json(sProfile);
+  } catch (error) {
+    console.error(`An error occurred: ${error}`);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+/* const setSForm = asyncHandler(async (req, res) => {
   try {
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
@@ -103,7 +135,7 @@ const setSForm = asyncHandler(async (req, res) => {
 
       const student = req.student.id;
       const studentName = req.student.name;
-      const cv = "/submissions/" + req.file.filename;
+      const cv = req.file.filename;
 
       const sProfile = await studentForm.create({
         student,
@@ -120,7 +152,7 @@ const setSForm = asyncHandler(async (req, res) => {
     console.error(`An error occurred: ${error}`);
     res.status(500).json({ message: "Internal server error" });
   }
-});
+}); */
 
 const updateSForm = asyncHandler(async (req, res) => {
   const formId = req.params.id;
@@ -196,9 +228,9 @@ const deleteProfile = asyncHandler(async (req, res) => {
         .json({ message: "Not authorized to update this student form" });
       return;
     }
-
+    /* 
     const cvFilePath = path.join(DIR, existingProfile.cv.substr(13));
-    await unlinkAsync(cvFilePath); // Promisified fs.unlink
+    await unlinkAsync(cvFilePath); // Promisified fs.unlink */
 
     await studentFormModel.findByIdAndDelete(req.params.id);
     res.status(200).json({ id: req.params.id });

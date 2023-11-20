@@ -7,11 +7,11 @@ const {
   getStudentProfileForJobPoster,
   deleteProfile,
 } = require("../controllers/fileUploadController");
-
+const s3uploadDocs = require("../config/s3DocsmulterConfig");
 const { protectS } = require("../middleware/authSMiddleware");
 const { protect } = require("../middleware/authMiddleware");
 
-router.route("/").post(protectS, setSForm);
+router.route("/").post(protectS, s3uploadDocs.single("cv"), setSForm);
 router.route("/:id").put(protectS, updateSForm);
 router.route("/").get(protectS, getProfile);
 

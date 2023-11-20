@@ -6,7 +6,6 @@ import {
   updateProfile,
   deleteProfile,
 } from "../features/profiles/profileSlice";
-import { useNavigate } from "react-router-dom";
 
 // Separate component for the profile form
 function ProfileForm({ handleView, handleDownload, profile }) {
@@ -64,18 +63,20 @@ function ProfileForm({ handleView, handleDownload, profile }) {
       </div>
       <div className="flex flex-row space-x-4 w-full justify-center font-Poppins  text-xl">
         {/* If you prefer a button instead of a link */}
-        <button
-          onClick={handleView}
+        <a
+          href={profile.cv}
+          target="_blank"
           className="btn btn-outline bg-black/80 text-white  rounded-3xl hover:bg-white"
         >
           View CV
-        </button>
-        <button
-          onClick={handleDownload}
+        </a>
+        {/*         <a
+          href={profile.cv}
+          download="CV_Muhammad_Abdul_Karim.pdf"
           className="btn btn-outline bg-black/80 text-white  rounded-3xl hover:bg-white"
         >
           Download CV
-        </button>
+        </a> */}
       </div>
     </form>
   );
@@ -113,7 +114,7 @@ function CreateNewProfileForm({
           <select
             id="Degree"
             name="Degree"
-            className="select select-bordered  border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl w-full "
+            className="select select-bordered  border-none outline-none focus:border-none focus:ring-2 focus:ring-red-500 focus:outline-none placeholder:text-white bg-black/80  text-white/90 text-xl w-full font-Poppins"
             value={formData.Degree}
             onChange={(e) =>
               setFormData({ ...formData, Degree: e.target.value })
@@ -125,7 +126,7 @@ function CreateNewProfileForm({
             <option value="Other">Other</option>
           </select>
         </div>
-        <div className="space-y-1 flex flex-col">
+        <div className="space-y-1 flex flex-col font-Poppins">
           <label className="text-xl text-black ml-1">Degree Title</label>
           <input
             type="text"
@@ -139,11 +140,15 @@ function CreateNewProfileForm({
         </div>
       </div>
       <div className="space-y-1 flex flex-col">
-        <label htmlFor="cv" className="block text-xl text-black ml-1">
+        <label
+          htmlFor="cv"
+          className="block text-xl text-black ml-1 font-Poppins"
+        >
           CV
         </label>
         <input
           type="file"
+          accept=".pdf"
           id="cv"
           name="cv"
           onChange={handleFileChange}
@@ -154,9 +159,9 @@ function CreateNewProfileForm({
       <div className="flex justify-center">
         <button
           onClick={handleSubmitNew}
-          className="btn btn-block bg-black/40 text-white text-lg hover:bg-[#d0333c] border-none"
+          className="btn btn-outline bg-black text-white  rounded-3xl hover:bg-white font-Poppins"
         >
-          Submit
+          SUBMIT
         </button>
       </div>
     </form>
@@ -164,7 +169,6 @@ function CreateNewProfileForm({
 }
 //
 function StudeProfile() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   // Get the profile data from the Redux store
   const profile = useSelector((state) => state.profiles.profiles);
@@ -294,7 +298,7 @@ function StudeProfile() {
 
   // Function to handle file download
   const handleDownload = () => {
-    const fileURL = process.env.PUBLIC_URL + formData.cv;
+    const fileURL = formData.cv;
     const link = document.createElement("a");
     link.href = fileURL;
     link.setAttribute("download", "MY_CV_SKILLMINT_DOWNLOAD.pdf");
@@ -336,26 +340,38 @@ function StudeProfile() {
 
   return (
     <div className="Container flex flex-col items-center  w-full max-w-2xl mx-auto p-4 rounded-3xl h-full">
-      <div className="Buttons flex flex-col w-full md:flex-row gap-4 justify-center py-10">
+      <div className="Buttons flex flex-col w-full md:flex-row gap-4 justify-center py-10 font-Poppins">
         <button
-          className="btn max-w-sm md:btn-wide h-fit py-2 text-white text-lg bg-black hover:bg-[#d0333c] border-none"
+          className={`btn btn-ghost ${
+            activeForm === "profile"
+              ? "font-bold btn-active text-black scale-105"
+              : "text-black"
+          } `}
           onClick={switchToProfileForm}
         >
-          Profile
+          Active
         </button>
         {profile && Object.keys(profile).length > 0 && (
           <>
             <button
-              className="btn max-w-sm md:btn-wide h-fit py-2 text-white text-lg bg-black hover:bg-[#d0333c] border-none "
+              className={`btn btn-ghost ${
+                activeForm === "updateProfile"
+                  ? "font-bold btn-active text-black scale-105"
+                  : "text-black"
+              } `}
               onClick={switchToUpdateForm}
             >
-              Update Profile
+              Update
             </button>
             <button
-              className="btn  max-w-sm md:btn-wide h-fit py-2 text-white text-lg bg-black hover:bg-[#d0333c] border-none"
+              className={`btn btn-ghost ${
+                activeForm === "deleteProfile"
+                  ? "font-bold btn-active text-black scale-105"
+                  : "text-black"
+              } `}
               onClick={switchToDeleteForm}
             >
-              Delete Profile
+              Delete
             </button>
           </>
         )}
@@ -434,7 +450,7 @@ function StudeProfile() {
             <div className="flex justify-center font-Poppins">
               <button
                 type="submit"
-                className="btn btn-block bg-black text-white text-lg hover:bg-[#d0333c] border-none"
+                className="btn btn-outline bg-black text-white  rounded-3xl hover:bg-white"
               >
                 Update Profile
               </button>
@@ -456,15 +472,15 @@ function StudeProfile() {
                   checked={isChecked}
                   onChange={handleCheckboxChange}
                 />
-                <p className="text-red-600 font-bold text-lg">
-                  I agree and understand this action!
+                <p className="text-black font-bold text-lg">
+                  Yes, I would like to delete my profile!
                 </p>
               </span>
 
               <button
                 className={`btn  ${
                   isChecked
-                    ? " bg-black/80 hover:bg-[#d0333c] text-white"
+                    ? "btn btn-outline bg-black text-white  rounded-3xl hover:bg-white"
                     : " text-black"
                 } text-lg btn-wide border-none`}
                 onClick={handleDeleteProfile}

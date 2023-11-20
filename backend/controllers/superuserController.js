@@ -51,6 +51,7 @@ const registerSuperuser = asyncHandler(async (req, res) => {
     password: hashedPassword,
     isActive: false,
     type: 99,
+    isAdmin: true,
   });
 
   // Generate activation token
