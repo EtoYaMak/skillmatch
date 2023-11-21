@@ -7,7 +7,7 @@ const {
   getStudentProfileForJobPoster,
   deleteProfile,
 } = require("../controllers/fileUploadController");
-const s3uploadDocs = require("../config/s3DocsmulterConfig");
+const { s3uploadDocs } = require("../config/s3DocsmulterConfig");
 const { protectS } = require("../middleware/authSMiddleware");
 const { protect } = require("../middleware/authMiddleware");
 

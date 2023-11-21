@@ -1,5 +1,5 @@
-// /config/s3multerConfig.js
-const { S3Client } = require("@aws-sdk/client-s3");
+// /config/s3DocsmulterConfig.js
+const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const path = require("path");
@@ -44,5 +44,16 @@ const s3uploadDocs = multer({
     fileSize: 1024 * 1024 * 5,
   },
 });
-
-module.exports = s3uploadDocs;
+// Function to delete an object from S3
+const deleteObjectFromS3 = async (key) => {
+  try {
+    await s3.send(
+      new DeleteObjectCommand({ Bucket: "skillmint-job-images", Key: key })
+    );
+    console.log(`Object deleted from S3: ${key}`);
+  } catch (error) {
+    console.error("Error deleting object from S3:", error);
+    throw error;
+  }
+};
+module.exports = { s3uploadDocs, deleteObjectFromS3 };

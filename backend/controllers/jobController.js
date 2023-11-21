@@ -4,12 +4,16 @@ const Job = require("../models/jobModel");
 const User = require("../models/userModel");
 const Superuser = require("../models/superuserModel");
 const Student = require("../models/studentModel");
-const sharp = require("sharp");
-const fs = require("fs");
+// /S3multer
+const { deleteObjectFromS3 } = require("../config/s3multerConfig");
 
+const sharp = require("sharp");
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const path = require("path");
+// Load environment variables
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
 //
-const DIR = path.join(__dirname, "../../client/public/uploads/");
+//const DIR = path.join(__dirname, "../../client/public/uploads/");
 /* const DIR = "../../client/public/uploads"; */
 
 /////////////////////////////////////////////////////
@@ -66,25 +70,33 @@ const getJobs = asyncHandler(async (req, res) => {
 // @access Private
 const setJob = async (req, res) => {
   try {
-    /*     const resizedImage = await sharp(req.file.path)
-      .resize({ width: 160, height: 160, fit: "cover", position: "center" })
-      .toBuffer();
+    // Resize image and upload to S3 if file is present
+    if (req.file) {
+      const resizedImage = await sharp(req.file.buffer)
+        .resize(360, 360, { fit: "cover", position: "center" })
+        .toBuffer();
 
-    // Generate a new file name for the resized image
-    const resizedFileName = `job_${req.file.filename}`;
+      const s3Client = new S3Client({
+        region: AWS_REGION,
+        credentials: {
+          accessKeyId: AWS_ACCESS_KEY_ID,
+          secretAccessKey: AWS_SECRET_ACCESS_KEY,
+        },
+      });
 
-    // Upload the resized image to S3
-    const params = {
-      Bucket: "skillmint-job-images",
-      Key: `job-images/${resizedFileName}`, // Adjust the key as needed
-      Body: resizedImage,
-    };
-    console.log("Upload the resized image to S3: ", params.Bucket);
-    await s3.send(new PutObjectCommand(params));
+      const uploadParams = {
+        Bucket: "skillmint-job-images",
+        Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
+        Body: resizedImage,
+        ACL: "public-read",
+        ContentType: req.file.mimetype, // Dynamically set based on the file's MIME type
+      };
 
-    // Remove the local file after uploading to S3
-    fs.unlinkSync(req.file.path); */
+      await s3Client.send(new PutObjectCommand(uploadParams));
 
+      // Update the logo URL for the new job
+      req.body.logo = `https://${uploadParams.Bucket}.s3.amazonaws.com/${uploadParams.Key}`;
+    }
     const user = req.user.id;
     const postedBy = req.user.name;
 
@@ -113,11 +125,10 @@ const setJob = async (req, res) => {
       description,
       skills,
     } = req.body;
+    console.log(position);
+    const logo = req.body.logo;
+    console.log("req.body.logo: ", req.body.logo);
 
-    const logo = req.file.location;
-
-    console.log("logo URL: ", logo);
-    console.log("logo address: ", logo);
     const newJob = await Job.create({
       user,
       postedBy,
@@ -135,7 +146,7 @@ const setJob = async (req, res) => {
       skills,
       applicants: [],
     });
-
+    console.log("newJob created: ", newJob);
     res.status(200).json(newJob);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -285,14 +296,13 @@ const deleteJob = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("User not Authorized");
   }
-  // Delete the image file associated with the job
-  const imagePath = path.join(DIR, djob.logo.substr(9)); // Use the correct directory path (DIR)
-  fs.unlink(imagePath, (err) => {
-    if (err) {
-      console.error("Error deleting image file:", err);
-    }
-  });
+  // Delete the document from the S3 bucket
+  const urlParts = djob.logo.split("/");
+  const key = `job-images/${urlParts[urlParts.length - 1]}`;
 
+  await deleteObjectFromS3(key);
+
+  // Delete the job from MongoDB
   await Job.findByIdAndDelete(req.params.id);
 
   res.status(200).json({ id: req.params.id });

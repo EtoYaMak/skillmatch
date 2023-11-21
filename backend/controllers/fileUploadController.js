@@ -8,7 +8,7 @@ const studentFormModel = require("../models/studentFormModel");
 const multer = require("multer");
 const path = require("path");
 const DIR = path.join(__dirname, "../../client/public/submissions/");
-
+const { deleteObjectFromS3 } = require("../config/s3DocsmulterConfig");
 /* const DIR = "../../client/public/submissions/"; */
 
 const getProfile = asyncHandler(async (req, res) => {
@@ -228,10 +228,14 @@ const deleteProfile = asyncHandler(async (req, res) => {
         .json({ message: "Not authorized to update this student form" });
       return;
     }
-    /* 
-    const cvFilePath = path.join(DIR, existingProfile.cv.substr(13));
-    await unlinkAsync(cvFilePath); // Promisified fs.unlink */
 
+    // Delete the document from the S3 bucket
+    const urlParts = existingProfile.cv.split("/");
+    const encodedFilename = urlParts[urlParts.length - 1];
+    const decodedFilename = decodeURIComponent(encodedFilename);
+    const key = `student-documents/${decodedFilename}`;
+    console.log("Document Key:", key);
+    await deleteObjectFromS3(key);
     await studentFormModel.findByIdAndDelete(req.params.id);
     res.status(200).json({ id: req.params.id });
   } catch (error) {

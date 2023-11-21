@@ -1,8 +1,9 @@
 // /routes/jobRoutes
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
 const { uploadMiddleware } = require("../config/multerConfig");
-const s3upload = require("../config/s3multerConfig");
+const { s3upload, memoryStorage } = require("../config/s3multerConfig");
 
 const {
   getJobs,
@@ -16,11 +17,14 @@ const {
 } = require("../controllers/jobController");
 
 const { protect } = require("../middleware/authMiddleware");
+const upload = multer({ storage: memoryStorage });
 
 router
   .route("/")
   .get(protect, getJobs)
-  .post(protect, s3upload.single("logo"), setJob);
+  .post(protect, upload.single("logo"), setJob);
+
+//.post(protect, s3upload.single("logo"), setJob);
 
 //Get all jobs PUBLIC
 router.route("/all").get(getAllJobs);
