@@ -9,17 +9,9 @@ import {
 } from "../features/jobs/jobSlice";
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-// Function to count "Pending" applicants for a specific job_id
-const countPendingApplicants = (job_id, jobs) => {
-  const job = jobs.find((job) => job._id === job_id);
-  return job
-    ? job.applicants.filter((applicant) => applicant.status === "Pending")
-        .length
-    : 0;
-};
+
 function UserDashJobs({ createdAt, user, SAuser, jobs }) {
   const dispatch = useDispatch();
-
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -61,11 +53,11 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
               key={job._id}
               className="card card-compact max-[640px]:card-side w-full min-[640px]:w-56 bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] my-2 hover:text-black"
             >
-              <figure className="bg-transparent min-w-fit">
+              <figure className="bg-transparent ">
                 <img
                   src={job.logo}
                   alt={job.position}
-                  className="w-full h-full"
+                  className="object-cover sm:object-fill sm:w-full sm:h-full" //max-h-[160px] object-cover object-center
                 />
               </figure>
 
@@ -86,8 +78,8 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
                 <div className="card-actions justify-center">
                   <ul className="menu menu-horizontal p-2 bg-white/5 rounded-box items-center">
                     <li className="indicator ">
-                      <span className="pointer-events-none indicator-center -mt-2 indicator-item badge badge-accent border-0  bg-red-700 flex justify-center items-center mask mask-circle text-white font-Poppins font-bold w-8 h-8  text-[14px]">
-                        +{countPendingApplicants(job._id, jobs)}
+                      <span className="pointer-events-none indicator-center -mt-2 indicator-item badge badge-accent border-0  bg-red-700 flex  justify-center items-center mask mask-circle text-white font-Poppins font-bold w-8 h-8  text-[14px]">
+                        {countPendingApplicants(job._id, jobs)}
                       </span>
                       <Link
                         to={`/jobapplicants/${job._id}`}
@@ -96,8 +88,11 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
                         <FaUsers size={16} />
                       </Link>
                     </li>
-                    <li className="pointer-events-none text-gray-400">
-                      <Link className="hover:bg-black hover:text-white">
+                    <li className="">
+                      <Link
+                        className="hover:bg-black hover:text-white"
+                        to={`/jobs/${job._id}/update`}
+                      >
                         <FaEdit size={16} />
                       </Link>
                     </li>
@@ -130,5 +125,16 @@ const formatCreatedAtDate = (createdAt) => {
   const month = createdAtDate.getMonth() + 1; // Months are zero-indexed
   const year = createdAtDate.getFullYear();
   return `${day}/${month}/${year}`;
+};
+
+// Function to count "Pending" applicants for a specific job_id
+const countPendingApplicants = (job_id, jobs) => {
+  const job = jobs && jobs.find((job) => job._id === job_id);
+  const count = job
+    ? job.applicants.filter((applicant) => applicant.status === "Pending")
+        .length
+    : 0;
+
+  return count > 0 ? `+${count}` : "0";
 };
 export default UserDashJobs;

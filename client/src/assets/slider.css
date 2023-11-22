@@ -10,3 +10,15 @@
   background-image: none;
   opacity: 1;
 }
+
+.slick-dots li button:before,
+.slick-dots li button:after {
+  color: hsl(0, 0%, 40%);
+}
+.slick-dots li.slick-active button:before {
+  color: hsl(0, 0%, 10%);
+}
+
+.slick-dots li button {
+  scale: 101%;
+}

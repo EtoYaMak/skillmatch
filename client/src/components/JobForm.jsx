@@ -187,7 +187,9 @@ function JobForm() {
     setRemote(false);
     setOnsite(false);
     setSkills([]);
-    navigate("/dash");
+    setTimeout(() => {
+      navigate("/dash");
+    }, 2000);
   };
 
   const startPayment = () => {
@@ -347,7 +349,7 @@ function JobForm() {
                         name="position"
                         id="position"
                         className="form-control w-full input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold rounded-3xl
-                        text-black placeholder:text-black/30 placeholder:font-medium text-xl "
+                        text-black placeholder:text-black/30 placeholder:font-medium text-xl shadow-[0px_2px_8px_rgb(0,0,0,0.3)]  "
                         placeholder="Network Engineer "
                         value={position}
                         onChange={(e) => setPosition(e.target.value)}
@@ -365,7 +367,7 @@ function JobForm() {
                         <input
                           type="text"
                           className="input input-bordered text-xl bg-white w-full font-semibold
-                          text-black rounded-3xl placeholder:font-medium placeholder:text-black/30"
+                          text-black rounded-3xl placeholder:font-medium placeholder:text-black/30 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                           placeholder="City"
                           id="city"
                           name="city"
@@ -377,7 +379,7 @@ function JobForm() {
                           name="dropdown"
                           value={selectedCountry}
                           onChange={handleCountryChange}
-                          className=" select select-bordered rounded-3xl bg-white backdrop-blur-md text-black w-full font-Poppins flex flex-wrap text-xl"
+                          className=" select select-bordered rounded-3xl bg-white backdrop-blur-md text-black w-full font-Poppins flex flex-wrap text-xl shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                         >
                           <option
                             defaultValue={" "}
@@ -410,7 +412,7 @@ function JobForm() {
                         value="Full-Time"
                         checked={fulltime}
                         onChange={(e) => setFulltime(e.target.checked)}
-                        className="checkbox checkbox-bordered focus:ring-0 "
+                        className="checkbox checkbox-bordered focus:ring-0 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       />
                       <span className=" text-xl">Full-Time</span>
                     </div>
@@ -421,7 +423,7 @@ function JobForm() {
                         value="Part-Time"
                         checked={parttime}
                         onChange={(e) => setParttime(e.target.checked)}
-                        className="checkbox checkbox-bordered focus:ring-0"
+                        className="checkbox checkbox-bordered focus:ring-0 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       />
                       <span className=" h-full text-xl">Part-Time</span>
                     </div>
@@ -432,7 +434,7 @@ function JobForm() {
                         value="Internship"
                         checked={internship}
                         onChange={(e) => setInternship(e.target.checked)}
-                        className="checkbox checkbox-bordered focus:ring-0"
+                        className="checkbox checkbox-bordered focus:ring-0 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       />
                       <span className=" text-xl">Internship</span>
                     </div>
@@ -443,7 +445,7 @@ function JobForm() {
                         value="Contract"
                         checked={contract}
                         onChange={(e) => setContract(e.target.checked)}
-                        className="checkbox checkbox-bordered focus:ring-0"
+                        className="checkbox checkbox-bordered focus:ring-0 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       />
                       <span className=" text-xl">Contract</span>
                     </div>
@@ -457,7 +459,7 @@ function JobForm() {
                         value="Remote"
                         checked={remote}
                         onChange={(e) => setRemote(e.target.checked)}
-                        className="checkbox checkbox-bordered focus:ring-0"
+                        className="checkbox checkbox-bordered focus:ring-0 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       />
                       <span className="text-xl">Remote</span>
                     </div>
@@ -468,7 +470,7 @@ function JobForm() {
                         value="Hybrid"
                         checked={hybrid}
                         onChange={(e) => setHybrid(e.target.checked)}
-                        className="checkbox checkbox-bordered focus:ring-0"
+                        className="checkbox checkbox-bordered focus:ring-0 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       />
                       <span className=" text-xl">Hybrid</span>
                     </div>
@@ -479,18 +481,18 @@ function JobForm() {
                         value="On-site"
                         checked={onsite}
                         onChange={(e) => setOnsite(e.target.checked)}
-                        className="checkbox checkbox-bordered"
+                        className="checkbox checkbox-bordered focus:ring-0 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       />
                       <span className=" text-xl">On-Site</span>
                     </div>
                   </div>
                 </div>
                 {/* Description */}
-                <div className="mt-4 text-black tracking-wider text-lg rounded-3xl overflow-hidden">
+                <div className="mt-4 text-black tracking-wider text-lg rounded-3xl overflow-hidden shadow-[0px_2px_8px_rgb(0,0,0,0.3)] ">
                   <ReactQuill
                     placeholder={jobPlaceholder}
                     className="textarea textarea-bordered textarea-lg w-full max-w-full transition-colors duration-300 ease-in-out bg-black/5 
-            text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest"
+            text-white/80 placeholder:text-white/60 text-xl placeholder:text-2xl placeholder:tracking-widest "
                     onChange={handleDescriptionChange}
                     value={description}
                     modules={modules}
@@ -527,7 +529,7 @@ function JobForm() {
                       name="skills"
                       id="skills"
                       className="w-full rounded-3xl input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold
-                      text-black  placeholder:text-black/30 placeholder:font-medium text-xl placeholder:tracking-wide"
+                      text-black  placeholder:text-black/30 placeholder:font-medium text-xl placeholder:tracking-wide shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                       placeholder="<spacebar> or <comma> to split Skills."
                       onKeyUp={handleSkillChange}
                       onKeyDown={falseFlagsubmit}
@@ -546,7 +548,7 @@ function JobForm() {
                         name="company"
                         id="company"
                         className="w-full rounded-3xl input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold
-                        text-black placeholder:text-black/30 placeholder:font-medium text-xl "
+                        text-black placeholder:text-black/30 placeholder:font-medium text-xl shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                         placeholder="ABC Co."
                         value={company}
                         onChange={(e) => setCompany(e.target.value)}
@@ -565,7 +567,7 @@ function JobForm() {
                         name="careerPage"
                         id="careerPage"
                         className="w-full rounded-3xl input input-bordered  transition-colors duration-300 ease-in-out bg-white font-semibold
-                        text-black placeholder:text-black/30 placeholder:font-medium text-xl "
+                        text-black placeholder:text-black/30 placeholder:font-medium text-xl shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                         placeholder="www.careers.abc.com/job"
                         value={careerPage}
                         onChange={(e) => setCareerPage(e.target.value)}
@@ -591,7 +593,7 @@ function JobForm() {
                           type="file"
                           name="logo"
                           accept="image/*"
-                          className="rounded-3xl form-control-file file-input w-fit max-w-sm bg-white text-black/60 text-lg mr-2"
+                          className="rounded-3xl form-control-file file-input w-fit max-w-sm bg-white text-black/60 text-lg mr-2 shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                           onChange={handleFileChange}
                           /* onChange={(e) => setFileName(e.target.files[0])} */
                         />
@@ -624,7 +626,7 @@ function JobForm() {
                         name="website"
                         id="website"
                         className="rounded-3xl w-full input input-bordered transition-colors duration-300 ease-in-out bg-white font-semibold
-                text-black placeholder:text-black/30 text-xl  placeholder:font-medium"
+                text-black placeholder:text-black/30 text-xl  placeholder:font-medium shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                         placeholder="www.abc.com"
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}
@@ -641,7 +643,7 @@ function JobForm() {
           <div className="form-group flex justify-center items-center bg-transparent py-10 w-full ">
             {paymentSuccess ? (
               <button
-                className="btn btn-lg flex bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold minw-fit max-w-xs w-full hover:text-white h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
+                className="btn btn-lg flex bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold minw-fit max-w-xs w-full hover:text-white h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                 type="submit"
               >
                 Post Job
@@ -653,7 +655,7 @@ function JobForm() {
                     startPayment();
                   }
                 }}
-                className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out"
+                className="btn btn-lg bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold hover:text-white w-fit h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
                 type="button"
               >
                 Pay Now

@@ -50,17 +50,40 @@ function JobDetailPage({ job }) {
   const sanitizedHTML = DOMPurify.sanitize(description, {
     USE_PROFILES: { html: true },
   });
-
+  /* .ql-snow .ql-editor h1 {
+  font-size: 2em;
+}
+.ql-snow .ql-editor h2 {
+  font-size: 1.5em;
+}
+.ql-snow .ql-editor h3 {
+  font-size: 1.17em;
+}
+.ql-snow .ql-editor h4 {
+  font-size: 1em;
+}
+.ql-snow .ql-editor h5 {
+  font-size: 0.83em;
+}
+.ql-snow .ql-editor h6 {
+  font-size: 0.67em;
+} */
   // Modify the HTML content to add the inline style
   const modifiedHTML = sanitizedHTML
     .replace(/<div/g, '<div style="background-color:transparent;"')
+    .replace(/<h1/g, '<h1 style="font-size:2em;"')
+    .replace(/<h2/g, '<h2 style="font-size:1.5em;"')
+    .replace(/<h3/g, '<h3 style="font-size:1.17em;"')
+    .replace(/<h4/g, '<h4 style="font-size:1em;"')
+    .replace(/<h5/g, '<h5 style="font-size:0.83em;"')
+    .replace(/<h6/g, '<h6 style="font-size:0.67em;"')
     .replace(
       /<p/g,
-      '<p style="background-color:transparent;  margin-top:15px;"'
+      '<p style="background-color:transparent;  margin-top:0px; font-size:1em;"'
     )
     .replace(
       /<strong/g,
-      '<strong style="background-color:transparent;font-size:18px;"'
+      '<strong style="background-color:transparent;font: bold;"'
     )
 
     .replace(
@@ -82,7 +105,7 @@ function JobDetailPage({ job }) {
 
   return (
     <div className="bg-transparent pb-8">
-      <div className="mx-auto rounded-b-xl p-8 w-fit max-w-screen-lg  rounded-3xl font-Poppins">
+      <div className="mx-auto rounded-b-xl p-8 w-full max-w-screen-lg  rounded-3xl font-Poppins">
         <div className="bg-transparent sm:space-y-0 space-y-4 flex flex-col min-w-min justify-between items-center">
           {/* Company and Position */}
           <div className="flex flex-col sm:flex-row items-center justify-between bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
@@ -261,7 +284,8 @@ function JobDetailPage({ job }) {
             className="select-text bg-transparent"
             id="jobDesc"
             dangerouslySetInnerHTML={{ __html: modifiedHTML }}
-            style={customStyles} //
+            style={customStyles}
+            //
           ></div>
         </div>
         <div className="w-full p-4 font-Poppins flex flex-col justify-center items-center">

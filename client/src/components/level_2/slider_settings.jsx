@@ -9,7 +9,7 @@ const settings = {
   slidesToScroll: 1,
   arrows: false,
   autoplay: true,
-  autoplaySpeed: 3600,
+  autoplaySpeed: 4200,
   centerMode: true,
   centerPadding: "0px",
   responsive: [

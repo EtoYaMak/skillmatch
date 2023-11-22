@@ -86,40 +86,20 @@ const SAgetMyJobs = async (token) => {
   return response.data;
 };
 
-// Update job #PRIVATE
-const updateJob = async (jobId, formData, token) => {
+// Update job
+export const updateJob = async (jobId, UpdatedFormData, token) => {
   const config = {
     headers: {
+      "Content-Type": "multipart/form-data", // if you're sending form data
       Authorization: `Bearer ${token}`,
-      // Do not set Content-Type for multipart/form-data; it will be automatically set
     },
   };
 
-  // Create a new FormData object and append each form field to it
-  const formDataObj = new FormData();
-  formDataObj.append("position", formData.position);
-  formDataObj.append("city", formData.city);
-  formDataObj.append("country", formData.country);
-  formDataObj.append("location", formData.location);
-  formDataObj.append("careerPage", formData.careerPage);
-  formDataObj.append("company", formData.company);
-  formDataObj.append("website", formData.website);
-  formDataObj.append("description", formData.description);
-  formDataObj.append("skills", formData.skills.join(",")); // If skills is an array, join them with commas
-  formDataObj.append("fulltime", formData.fulltime);
-  formDataObj.append("parttime", formData.parttime);
-  formDataObj.append("internship", formData.internship);
-  formDataObj.append("contract", formData.contract);
-  formDataObj.append("remote", formData.remote);
-  formDataObj.append("hybrid", formData.hybrid);
-  formDataObj.append("onsite", formData.onsite);
-
-  // Append the logo file if available
-  if (formData.logo) {
-    formDataObj.append("logo", formData.logo);
-  }
-
-  const response = await axios.put(`${API_URL}${jobId}`, formDataObj, config);
+  const response = await axios.put(
+    `${API_URL}${jobId}`,
+    UpdatedFormData,
+    config
+  );
   return response.data;
 };
 

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import jobService from "./jobService";
-
+import { updateJob as updateJobService } from "./jobService";
+import { selectAuthToken } from "../tokenSelector/tokenSelector";
 const initialState = {
   jobs: [],
   alljobs: [],
@@ -171,10 +172,15 @@ export const SAgetMyJobs = createAsyncThunk(
 // USED @JobForm
 export const updateJob = createAsyncThunk(
   "jobs/updateJob",
-  async ({ jobId, formData }, thunkAPI) => {
+  async ({ jobId, UpdatedFormData }, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await jobService.updateJob(jobId, formData, token);
+      const token = selectAuthToken(thunkAPI.getState());
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+      const response = await updateJobService(jobId, UpdatedFormData, token);
+      console.log(UpdatedFormData);
+      return response;
     } catch (error) {
       const message =
         (error.response &&
@@ -402,27 +408,17 @@ export const jobSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Add the updateJob case
       .addCase(updateJob.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateJob.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-
-        // Assuming the backend returns the updated job object in the payload
-        // Find the index of the job in the state.jobs array and update it
-        const updatedJob = action.payload;
-        const jobIndex = state.jobs.findIndex(
-          (job) => job._id === updatedJob._id
+        const index = state.jobs.findIndex(
+          (job) => job._id === action.payload._id
         );
-        if (jobIndex !== -1) {
-          // Update the job in the jobs array
-          state.jobs[jobIndex] = updatedJob;
-          // Also, update the job field (used for individual job display) if the job ID matches
-          if (state.job?._id === updatedJob._id) {
-            state.job = updatedJob;
-          }
+        if (index !== -1) {
+          state.jobs[index] = action.payload;
         }
       })
       .addCase(updateJob.rejected, (state, action) => {
