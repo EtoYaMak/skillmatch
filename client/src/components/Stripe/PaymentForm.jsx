@@ -61,7 +61,7 @@ export default function PaymentForm() {
       try {
         // Confirm the PaymentIntent with the return_url
         const { id } = paymentMethod;
-        const response = await axios.post("http://localhost:3000/payment", {
+        const response = await axios.post("/payment", {
           amount: amount,
           id,
           description: user.name,
