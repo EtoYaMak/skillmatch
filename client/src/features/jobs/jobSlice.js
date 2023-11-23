@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import jobService from "./jobService";
 import { updateJob as updateJobService } from "./jobService";
-import { selectAuthToken } from "../tokenSelector/tokenSelector";
+import {
+  selectAuthToken,
+  selectAuthToken2,
+} from "../tokenSelector/tokenSelector";
 const initialState = {
   jobs: [],
   alljobs: [],
@@ -174,10 +177,28 @@ export const updateJob = createAsyncThunk(
   "jobs/updateJob",
   async ({ jobId, UpdatedFormData }, thunkAPI) => {
     try {
-      const token = selectAuthToken(thunkAPI.getState());
+      //const token = selectAuthToken(thunkAPI.getState());
+      const state = thunkAPI.getState();
+      const token = selectAuthToken(state);
+
       if (!token) {
         throw new Error("No authentication token found");
       }
+
+      const job = state.jobs.jobs.find((j) => j._id === jobId);
+
+      if (!job) {
+        throw new Error("Job not found");
+      }
+
+      const userId = state.auth.user?._id;
+      const isAdmin = state.SAuser.SAuser?.isAdmin;
+
+      // Authorization check
+      if (!isAdmin && job.user !== userId) {
+        throw new Error("Unauthorized access");
+      }
+
       const response = await updateJobService(jobId, UpdatedFormData, token);
       console.log(UpdatedFormData);
       return response;

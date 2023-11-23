@@ -20,7 +20,7 @@ function AllJobsSA({ alljobs, SAuser }) {
     }
   };
   return (
-    <div className=" bg-transparent font-Poppins">
+    <div className=" bg-transparent font-Poppins max-w-[960px] mx-auto">
       <h1 className="text-center text-xl font-Poppins">All Posted Jobs</h1>
       <div className="flex flex-wrap gap-2 min-[640px]:justify-center bg-transparent font-Poppins">
         {Array.isArray(alljobs) ? (
@@ -58,8 +58,11 @@ function AllJobsSA({ alljobs, SAuser }) {
                         <FaUsers size={16} />
                       </Link>
                     </li>
-                    <li className="pointer-events-none text-gray-400">
-                      <Link className="hover:bg-black hover:text-white">
+                    <li className="">
+                      <Link
+                        className="hover:bg-black hover:text-white"
+                        to={`/jobs/${job._id}/update`}
+                      >
                         <FaEdit size={16} />
                       </Link>
                     </li>

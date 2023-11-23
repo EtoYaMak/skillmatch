@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"; // Removed useSelector since it's not used here
 import {
   SAgetMyJobs,
@@ -10,8 +10,9 @@ import {
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-function UserDashJobs({ createdAt, user, SAuser, jobs }) {
+function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
   const dispatch = useDispatch();
+  const loading = true;
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -112,7 +113,19 @@ function UserDashJobs({ createdAt, user, SAuser, jobs }) {
         </>
       ) : (
         <>
-          <span className="loading loading-spinner"></span>
+          {jobsLoading ? (
+            <div className="w-full flex justify-center items-start h-screen  ">
+              <span className="loading loading-dots text-error w-20 mt-[20vh]"></span>
+            </div>
+          ) : (
+            <div className="w-full flex justify-center items-start h-screen ">
+              {!jobsLoading && jobs.length === 0 ? (
+                <span className="text-error text-3xl font-Poppins mt-[20vh]">
+                  You have not posted any Job
+                </span>
+              ) : null}
+            </div>
+          )}
         </>
       )}
     </div>

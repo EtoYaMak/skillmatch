@@ -152,7 +152,8 @@ const loginSuperuser = asyncHandler(async (req, res) => {
       _id: Suser.id,
       name: Suser.name,
       email: Suser.email,
-      isActive: Suser.isActive,
+      isAdmin: Suser.isAdmin,
+      //isActive: Suser.isActive,
       token: generateToken(Suser._id),
     });
   } else {

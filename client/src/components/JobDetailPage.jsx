@@ -16,7 +16,6 @@ function JobDetailPage({ job }) {
   const { user } = useSelector((state) => state.auth);
   const { SAuser } = useSelector((state) => state.SAuser);
   const { student, studentData } = useSelector((state) => state.students);
-
   // Check if the user is a student (student object exists)
   const isStudent = !!student;
   const showRegisterButton = !student && !user && !SAuser;
@@ -50,24 +49,6 @@ function JobDetailPage({ job }) {
   const sanitizedHTML = DOMPurify.sanitize(description, {
     USE_PROFILES: { html: true },
   });
-  /* .ql-snow .ql-editor h1 {
-  font-size: 2em;
-}
-.ql-snow .ql-editor h2 {
-  font-size: 1.5em;
-}
-.ql-snow .ql-editor h3 {
-  font-size: 1.17em;
-}
-.ql-snow .ql-editor h4 {
-  font-size: 1em;
-}
-.ql-snow .ql-editor h5 {
-  font-size: 0.83em;
-}
-.ql-snow .ql-editor h6 {
-  font-size: 0.67em;
-} */
   // Modify the HTML content to add the inline style
   const modifiedHTML = sanitizedHTML
     .replace(/<div/g, '<div style="background-color:transparent;"')
@@ -124,6 +105,7 @@ function JobDetailPage({ job }) {
                 <h3 className="text-xl sm:text-2xl  bg-inherit text-[#000] tracking-widest">
                   {company}
                 </h3>
+                {SAuser ? <span>by: {job.postedBy}</span> : null}
               </div>
             </div>
             <div className=" text-black text-lg font-Poppins flex flex-col justify-center items-center gap-2 ">

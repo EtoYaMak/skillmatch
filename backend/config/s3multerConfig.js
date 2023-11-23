@@ -32,24 +32,6 @@ const s3upload = multer({
     },
   }),
 });
-/* const s3upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: "skillmint-job-images",
-    acl: "public-read",
-    contentDisposition: "inline",
-    contentType: multer.AUTO_CONTENT_TYPE,
-    key: function (req, file, cb) {
-      const uniqueKey = `job-images/${Date.now().toString()}-${
-        file.originalname
-      }`;
-      cb(null, uniqueKey);
-    },
-    metadata: function (req, file, cb) {
-      cb(null, {}); //Add important/needed metadata you consider a must.
-    },
-  }),
-}); */
 // Function to delete an object from S3
 const deleteObjectFromS3 = async (key) => {
   try {

@@ -12,6 +12,7 @@ const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const path = require("path");
 // Load environment variables
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
+
 //
 //const DIR = path.join(__dirname, "../../client/public/uploads/");
 /* const DIR = "../../client/public/uploads"; */
@@ -73,7 +74,7 @@ const setJob = async (req, res) => {
     // Resize image and upload to S3 if file is present
     if (req.file) {
       const resizedImage = await sharp(req.file.buffer)
-        .resize(360, 360, { fit: "cover", position: "center" })
+        .resize(250, 250, { fit: "cover", position: "center" })
         .toBuffer();
 
       const s3Client = new S3Client({
@@ -153,43 +154,48 @@ const setJob = async (req, res) => {
   }
 };
 
-// @desc Set Jobs
-// @route POST /api/jobs
+// @desc Update Jobs
+// @route PUT /api/jobs/:id
 // @access Private
-/* const setJob = async (req, res) => {
+// @desc Update Existing Job
+// @route PUT /api/jobs/:jobId
+// @access Private
+const updateJob = async (req, res) => {
   try {
-    const resizedImage = await sharp(req.file.path)
-      .resize({ width: 160, height: 160, fit: "cover", position: "center" })
-      .toBuffer();
-    // Generate a new file name for the resized image
-    const resizedFileName = `job_${req.file.filename}`;
+    const jobId = req.params.id;
+    const ujob = await Job.findById(jobId);
+    console.log(ujob.logo);
+    if (req.file) {
+      // Delete the old image from S3 if it exists
+      if (ujob.logo) {
+        const urlParts = ujob.logo.split("/");
+        const key = `job-images/${urlParts[urlParts.length - 1]}`;
+        await deleteObjectFromS3(key);
+      }
+      const resizedImage = await sharp(req.file.buffer)
+        .resize(250, 250, { fit: "cover", position: "center" })
+        .toBuffer();
 
-    // Define the path for the resized image
-    const resizedImagePath = path.join(DIR, resizedFileName);
+      const s3Client = new S3Client({
+        region: AWS_REGION,
+        credentials: {
+          accessKeyId: AWS_ACCESS_KEY_ID,
+          secretAccessKey: AWS_SECRET_ACCESS_KEY,
+        },
+      });
 
-    // Save the resized image to the specified path
-    await sharp(resizedImage).toFile(resizedImagePath);
-    // Remove the original image
-    fs.unlinkSync(req.file.path); // Requires the 'fs' module
+      const uploadParams = {
+        Bucket: "skillmint-job-images",
+        Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
+        Body: resizedImage,
+        ACL: "public-read",
+        ContentType: req.file.mimetype,
+      };
 
-    const user = req.user.id;
-    console.log(user);
-    const postedBy = req.user.name;
-    console.log(postedBy);
+      await s3Client.send(new PutObjectCommand(uploadParams));
 
-    const type = [
-      { name: "Full-time", value: req.body.fulltime },
-      { name: "Part-time", value: req.body.parttime },
-      { name: "Internship", value: req.body.internship },
-      { name: "Contract", value: req.body.contract },
-    ];
-    const setting = [
-      { name: "Remote", value: req.body.remote },
-      { name: "Hybrid", value: req.body.hybrid },
-      { name: "On-site", value: req.body.onsite },
-    ];
-    req.body.type = type;
-    req.body.setting = setting;
+      req.body.logo = `https://${uploadParams.Bucket}.s3.amazonaws.com/${uploadParams.Key}`;
+    }
 
     const {
       position,
@@ -202,76 +208,110 @@ const setJob = async (req, res) => {
       description,
       skills,
     } = req.body;
-    //const logo = "/uploads/" + req.file.filename;
-    const logo = "/uploads/" + resizedFileName; // Use the new file name
 
-    const newJob = await Job.create({
-      user,
-      postedBy,
-      position,
-      city,
-      country,
-      location,
-      careerPage,
-      company,
-      website,
-      logo,
-      type,
-      setting,
-      description,
-      skills,
-      applicants: [],
-    });
-    res.status(200).json(newJob);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}; */
-// @desc Update Jobs
-// @route PUT /api/jobs/:id
-// @access Private
-const updateJob = async (req, res) => {
-  try {
-    const jobId = req.params.id; // Assuming you pass the job ID in the URL
-    const job = await Job.findById(jobId);
+    const type = [
+      { name: "Full-time", value: req.body.fulltime },
+      { name: "Part-time", value: req.body.parttime },
+      { name: "Internship", value: req.body.internship },
+      { name: "Contract", value: req.body.contract },
+    ];
+    const setting = [
+      { name: "Remote", value: req.body.remote },
+      { name: "Hybrid", value: req.body.hybrid },
+      { name: "On-site", value: req.body.onsite },
+    ];
 
-    if (!job) {
-      return res.status(404).json({ error: "Job not found" });
-    }
+    const logo = req.body.logo;
 
-    // Check if the user is authorized to update the job (you can add your own authorization logic)
+    const updatedJob = await Job.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        position,
+        city,
+        country,
+        location,
+        careerPage,
+        company,
+        website,
+        logo,
+        type,
+        setting,
+        description,
+        skills,
+      },
+      { new: true }
+    );
 
-    // Check if a new logo file is uploaded
-    if (req.file) {
-      // Resize and save the new logo
-      const resizedImage = await sharp(req.file.path)
-        .resize({ width: 160, height: 160, fit: "cover", position: "center" })
-        .toBuffer();
-
-      await sharp(resizedImage).toFile(req.file.path);
-
-      job.logo = "/uploads/" + req.file.filename;
-    }
-
-    // Update other job properties
-    job.position = req.body.position || job.position;
-    job.city = req.body.city || job.city;
-    job.country = req.body.country || job.country;
-    job.location = req.body.location || job.location;
-    job.careerPage = req.body.careerPage || job.careerPage;
-    job.company = req.body.company || job.company;
-    job.website = req.body.website || job.website;
-    job.description = req.body.description || job.description;
-    job.skills = req.body.skills || job.skills;
-
-    // Save the updated job
-    const updatedJob = await job.save();
     res.status(200).json(updatedJob);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+/* const updateJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const ujob = await Job.findById(jobId);
+
+    if (!ujob) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Check if a new image is provided and process it
+    if (req.file) {
+      // Delete the old image from S3 if it exists
+      if (ujob.logo) {
+        const urlParts = ujob.logo.split("/");
+        const key = `job-images/${urlParts[urlParts.length - 1]}`;
+        await deleteObjectFromS3(key);
+      }
+
+      // Resize and upload the new image
+      const resizedImage = await sharp(req.file.buffer)
+        .resize(360, 360, { fit: "cover", position: "center" })
+        .toBuffer();
+
+      const s3Client = new S3Client({
+        region: AWS_REGION,
+        credentials: {
+          accessKeyId: AWS_ACCESS_KEY_ID,
+          secretAccessKey: AWS_SECRET_ACCESS_KEY,
+        },
+      });
+
+      const uploadParams = {
+        Bucket: "skillmint-job-images",
+        Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
+        Body: resizedImage,
+        ACL: "public-read",
+        ContentType: req.file.mimetype,
+      };
+
+      await s3Client.send(new PutObjectCommand(uploadParams));
+
+      req.body.logo = `https://${uploadParams.Bucket}.s3.amazonaws.com/${uploadParams.Key}`;
+    }
+
+    // Update other properties in req.body as needed
+
+    const updatedData = {
+      ...req.body,
+    };
+
+    // Update the job in the database
+    const updatedJob = await Job.findByIdAndUpdate(jobId, updatedData, {
+      new: true,
+    });
+
+    // Debugging: Check the updated job returned from MongoDB
+    console.log("Updated Job from DB:", updatedJob);
+
+    res.status(200).json(updatedJob);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+ */
 // @desc Delete Jobs
 // @route DELETE /api/jobs/:id
 // @access Private

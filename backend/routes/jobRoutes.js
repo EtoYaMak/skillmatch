@@ -24,8 +24,6 @@ router
   .get(protect, getJobs)
   .post(protect, upload.single("logo"), setJob);
 
-//.post(protect, s3upload.single("logo"), setJob);
-
 //Get all jobs PUBLIC
 router.route("/all").get(getAllJobs);
 
@@ -33,7 +31,7 @@ router
   .route("/:id")
   .get(getJobID)
   .delete(protect, deleteJob)
-  .put(protect, uploadMiddleware, updateJob);
+  .put(protect, upload.single("logo"), updateJob);
 
 // Apply to a job
 router.post("/apply", applyToJob);

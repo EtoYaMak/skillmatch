@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJobId, updateJob } from "../features/jobs/jobSlice";
 import ReactQuill from "react-quill";
@@ -9,9 +9,35 @@ import countriesList from "../assets/countries-data.json";
 function JobUpdatePage() {
   const { jobId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const adminID = useSelector((state) => state.SAuser.SAuser?._id);
+  const userID = useSelector((state) => state.auth.user?._id);
+  const { SAuser } = useSelector((state) => state.SAuser);
+  const { user } = useSelector((state) => state.auth);
   const job = useSelector((state) =>
     state.jobs.jobs.find((j) => j._id === jobId)
   );
+
+  useEffect(() => {
+    const isUserAuthorized = () => {
+      if (SAuser || adminID) {
+        return true; // Admins are authorized
+      } else if (user && job && user._id === job.user) {
+        return true; // Regular user is authorized if they own the job
+      } else {
+        return false; // Not authorized
+      }
+    };
+
+    if (!isUserAuthorized()) {
+      navigate("/"); // Redirect to home page if not authorized
+    }
+  }, [SAuser, adminID, user, job, navigate]);
+
+  console.log("job OWNER USER: ", job?.user);
+  console.log("USER:", userID);
+  console.log("ADMIN:", adminID);
   const [countries] = useState(countriesList);
   const modules = {
     toolbar: {
@@ -47,30 +73,6 @@ function JobUpdatePage() {
       onsite: false,
     },
   });
-
-  /*   useEffect(() => {
-    if (jobId) {
-      dispatch(getJobId(jobId));
-    }
-    if (job && !isInitialized) {
-      const transformedType = job.type.reduce((acc, cur) => {
-        acc[cur.name.toLowerCase().replace("-", "")] = cur.value;
-        return acc;
-      }, {});
-
-      const transformedSetting = job.setting.reduce((acc, cur) => {
-        acc[cur.name.toLowerCase().replace("-", "")] = cur.value;
-        return acc;
-      }, {});
-
-      setFormData({
-        ...job,
-        ...transformedType,
-        ...transformedSetting,
-      });
-      setIsInitialized(true);
-    }
-  }, [dispatch, jobId, job, isInitialized]); */
 
   // Effect for fetching job data
   useEffect(() => {
@@ -187,6 +189,11 @@ function JobUpdatePage() {
 
     dispatch(updateJob({ jobId: job._id, UpdatedFormData }));
     console.log("dispatch Successful");
+    if (SAuser) {
+      navigate("/adminDash");
+    } else if (user) {
+      navigate("/Dash");
+    }
   };
   const removeSkill = (index) => {
     setFormData((prevFormData) => ({
