@@ -20,35 +20,37 @@ function AllJobsSA({ alljobs, SAuser }) {
     }
   };
   return (
-    <div className=" bg-transparent font-Poppins max-w-[960px] mx-auto">
-      <h1 className="text-center text-xl font-Poppins">All Posted Jobs</h1>
-      <div className="flex flex-wrap gap-2 min-[640px]:justify-center bg-transparent font-Poppins">
+    <div className=" bg-transparent font-Poppins max-w-[1240px] mx-auto scale-125 mt-[12vh] min-h-screen">
+      <h1 className="text-center text-xl font-Poppins">All Jobs</h1>
+      <div className="flex flex-col w-full">
         {Array.isArray(alljobs) ? (
           alljobs.map((job) => (
             <div
               key={job._id}
-              className="card card-compact max-[640px]:card-side w-full min-[640px]:w-56 bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] my-2 hover:text-black"
+              className="flex flex-row bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] my-2 hover:text-black rounded-xl gap-4"
             >
-              <figure className="bg-transparent min-w-fit">
+              <figure className="bg-transparent min-w-fit h-20 rounded-3xl my-auto mx-2">
                 <img
                   src={job.logo}
                   alt={job.position}
-                  className="w-full h-full"
+                  className="w-full h-full mask mask-circle"
                 />
               </figure>
 
-              <div className="p-[3px] w-full max-[640px]:flex max-[640px]:flex-col items-center justify-evenly sm:card-body bg-white max-[640px]:rounded-r-box sm:rounded-b-box">
-                <a
-                  href={`/jobs/${job._id}`}
-                  className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2"
-                >
-                  {job.position}
-                </a>
-                <p className="text-center text-lg select-none flex flex-col ">
-                  {job.company}
-                </p>
+              <div className="flex flex-row justify-between w-full items-center">
+                <div>
+                  <a
+                    href={`/jobs/${job._id}`}
+                    className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2"
+                  >
+                    {job.position}
+                  </a>
+                  <p className="text-start text-lg select-none flex flex-col ">
+                    {job.company}
+                  </p>
+                </div>
 
-                <div className="card-actions justify-center">
+                <div className=" justify-center">
                   <ul className="menu menu-horizontal p-2 bg-white/5 rounded-box items-center">
                     <li>
                       <Link

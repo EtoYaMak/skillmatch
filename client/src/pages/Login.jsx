@@ -121,7 +121,7 @@ function Login() {
               Today!
             </p>
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-[0px_3px_8px_rgb(0,0,0,0.3)]  bg-[#fff]">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-[#fff]">
             <form onSubmit={onSubmit} className="card-body">
               <div className="form-control">
                 <label className="label">

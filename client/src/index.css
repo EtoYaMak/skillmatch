@@ -8,6 +8,9 @@
   height: auto;
   width: auto;
 }
+.adminNav button {
+  width: 160px;
+}
 
 .FormGroupPF {
   margin: 0 15px 20px;

@@ -70,18 +70,19 @@ function LoginAdmin() {
   }
 
   return (
-    <div className="loginPageMain w-2/3 mx-auto h-[75vh] my-5 font-Inter">
+    <div className="loginPageMain w-2/3 mx-auto h-[75vh] my-5 font-Poppins">
       <div className="hero  rounded-lg h-full px-4">
         <div className="hero-content flex-col lg:flex-row-reverse ">
-          <div className="sm:px-12 text-center lg:text-left text-white">
-            <h1 className="text-5xl font-bold">Admin Login</h1>
-            <p className="py-6">Welcome back</p>
+          <div className="sm:px-12 text-center lg:text-left text-black py-4">
+            <h1 className="text-5xl font-bold">ADMIN</h1>
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-[#1c1f21]">
+          <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-[#fff]">
             <form onSubmit={onSubmit} className="card-body">
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Email</span>
+                  <span className="label-text text-[14px] text-black">
+                    Email
+                  </span>
                 </label>
                 <input
                   type="email"
@@ -89,13 +90,16 @@ function LoginAdmin() {
                   value={email}
                   placeholder="Enter your email"
                   onChange={onChange}
-                  className="input input-bordered text-white"
+                  className="input input-bordered text-white bg-black placeholder:text-white/80
+                focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
                   required
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Password</span>
+                  <span className="label-text text-[14px] text-black">
+                    Password
+                  </span>
                 </label>
                 <div className="flex flex-row items-center">
                   <input
@@ -104,13 +108,14 @@ function LoginAdmin() {
                     value={password}
                     placeholder="Enter password"
                     onChange={onChange}
-                    className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
+                    className="input input-bordered text-white bg-black placeholder:text-white/80
+                  focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)] w-full"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="toggle-password-button ml-2 text-white"
+                    className="toggle-password-button ml-2 text-black"
                   >
                     {showPassword ? (
                       <AiFillEyeInvisible size={24} />
@@ -122,7 +127,7 @@ function LoginAdmin() {
                 <label className="ForgotPassword">
                   <Link
                     to="/password-reset"
-                    className="text-xs font-medium text-[#d0333c]/80 hover:text-[#d0333c] hover:underline "
+                    className="ml-1 text-sm font-medium text-[#d0333c]/80 hover:text-[#d0333c] hover:underline "
                   >
                     Forgot password?
                   </Link>
@@ -131,20 +136,13 @@ function LoginAdmin() {
 
               <div className="form-control mt-6">
                 <button
-                  className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
-                  flex text-lg font-Inter tracking-wide"
+                  className="btn btn-ghost text-[#fff] bg-[#000] hover:bg-[#d0333c] hover:text-[#fff]
+                flex text-lg font-Poppins tracking-wide"
                 >
                   Login
                 </button>
               </div>
               {/* LOGIN REDIRECT */}
-              <Link
-                to="/registerAdmin"
-                className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
-              >
-                <h1 className="text-white">Not registered? </h1>
-                <a className="text-white">Register now</a>
-              </Link>
             </form>
           </div>
         </div>

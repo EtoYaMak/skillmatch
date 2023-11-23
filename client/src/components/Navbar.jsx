@@ -98,7 +98,7 @@ const Navbar = () => {
           <br />
           MINT
         </Link>
-        {SAuser ? <span>ADMIN</span> : <span> {user ? user.name : null} </span>}
+        {SAuser ? <span>ADMIN</span> : null}
       </h1>
 
       <ul className="uppercase gap-0 hidden md:flex bg-transparent justify-center items-center select-none">

@@ -12,7 +12,12 @@ import { Link } from "react-router-dom";
 
 function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
   const dispatch = useDispatch();
-  const loading = true;
+  const [viewType, setViewType] = useState("grid");
+  //Implement THIS
+  const handleToggleView = () => {
+    setViewType((prevType) => (prevType === "grid" ? "list" : "grid"));
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (user) {
@@ -46,38 +51,90 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 min-[640px]:justify-center bg-transparent">
+    <div
+      className={`flex scale-105 mt-[5vh]   ${
+        viewType === "list"
+          ? "flex-col font-Poppins max-w-[1240px] mx-auto "
+          : "flex-wrap gap-2 max-w-[1240px] mx-auto min-[640px]:justify-center bg-transparent"
+      } `}
+    >
+      <div className="w-full mb-4 text-center">
+        <button className="btn btn-md btn-primary" onClick={handleToggleView}>
+          {viewType === "grid" ? "Switch to List View" : "Switch to Grid View"}
+        </button>
+      </div>
       {jobs.length > 0 ? (
         <>
           {jobs.map((job) => (
             <div
               key={job._id}
-              className="card card-compact max-[640px]:card-side w-full min-[640px]:w-56 bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] my-2 hover:text-black"
+              className={` ${
+                viewType === "list"
+                  ? "flex flex-row items-start justify-center bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)]  hover:text-black rounded-xl gap-4 h-24 my-2"
+                  : "card card-compact max-[640px]:card-side w-full min-[640px]:w-56 bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] hover:text-black  min-h-full"
+              }`}
             >
-              <figure className="bg-transparent ">
+              <figure
+                className={`${
+                  viewType === "list"
+                    ? "bg-transparent min-w-fit h-20 rounded-3xl my-auto mx-2"
+                    : ""
+                }`}
+              >
                 <img
                   src={job.logo}
                   alt={job.position}
-                  className="object-cover sm:object-fill sm:w-full sm:h-full" //max-h-[160px] object-cover object-center
+                  className={` ${
+                    viewType === "list"
+                      ? "w-full h-full mask mask-circle"
+                      : "object-cover sm:object-fill sm:w-full sm:h-full"
+                  }`}
                 />
               </figure>
 
-              <div className="p-[3px] w-full max-[640px]:flex max-[640px]:flex-col items-center justify-evenly sm:card-body bg-white max-[640px]:rounded-r-box sm:rounded-b-box">
-                <a
-                  href={`/jobs/${job._id}`}
-                  className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2"
+              <div
+                className={`w-full ${
+                  viewType === "list"
+                    ? "flex flex-row justify-center items-center h-full"
+                    : "p-[3px] w-full max-[640px]:flex max-[640px]:flex-col items-center justify-evenly sm:card-body bg-white max-[640px]:rounded-r-box sm:rounded-b-box"
+                }`}
+              >
+                <div
+                  className={`flex flex-col w-full ${
+                    viewType === "list"
+                      ? "flex flex-row justify-between w-full items-start"
+                      : "justify-center items-center"
+                  }`}
                 >
-                  {job.position}
-                </a>
-                <p className="text-center text-lg select-none flex flex-col">
-                  {job.company}
-                  <span className="text-xs text-zinc-500">
-                    {formatCreatedAtDate(job.createdAt)}
-                  </span>
-                </p>
+                  <a
+                    href={`/jobs/${job._id}`}
+                    className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2"
+                  >
+                    {job.position}
+                  </a>
 
-                <div className="card-actions justify-center">
-                  <ul className="menu menu-horizontal p-2 bg-white/5 rounded-box items-center">
+                  <p className="text-center text-lg select-none flex flex-col">
+                    {job.company}
+                    <span className="text-xs text-start text-zinc-500">
+                      {formatCreatedAtDate(job.createdAt)}
+                    </span>
+                  </p>
+                </div>
+
+                <div
+                  className={`mx-auto ${
+                    viewType === "list"
+                      ? "card-actions flex justify-center items-center min-w-fit"
+                      : "card-actions flex justify-center items-center w-full"
+                  }`}
+                >
+                  <ul
+                    className={`mx-auto ${
+                      viewType === "list"
+                        ? "menu menu-horizontal p-2 bg-white/5 rounded-box items-center"
+                        : "menu menu-horizontal p-2 bg-white/5 rounded-box items-center"
+                    }`}
+                  >
                     <li className="indicator ">
                       <span className="pointer-events-none indicator-center -mt-2 indicator-item badge badge-accent border-0  bg-red-700 flex  justify-center items-center mask mask-circle text-white font-Poppins font-bold w-8 h-8  text-[14px]">
                         {countPendingApplicants(job._id, jobs)}

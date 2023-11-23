@@ -30,63 +30,62 @@ function AdminDash() {
   };
 
   return (
-    <div className="h-full font-Poppins">
-      <div className="max-w-[960px] mx-auto">
-        <div className="border-b border-b-[#000] text-center p-4 space-x-4">
-          {/* Render tabs to switch between profile and applications */}
-          <button
-            className={` px-4 py-2 rounded-3xl ease-in-out duration-200 ${
-              active === "alljobs"
-                ? "font-bold  text-[#fff] bg-black scale-105"
-                : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
-            }`}
-            onClick={() => handleTabClick("alljobs")}
-          >
-            All Jobs
-          </button>
-          <button
-            className={` px-4 py-2 rounded-3xl ease-in-out duration-200 ${
-              active === "jobs"
-                ? "font-bold  text-[#fff] bg-black scale-105"
-                : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
-            }`}
-            onClick={() => handleTabClick("jobs")}
-          >
-            My Jobs
-          </button>
-          <button
-            className={` px-4 py-2 rounded-3xl  ease-in-out duration-200 ${
-              active === "post"
-                ? "font-bold  text-[#fff] bg-black scale-105"
-                : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
-            }`}
-            onClick={() => handleTabClick("post")}
-          >
-            Post Job
-          </button>
-          <button
-            className={` px-4 py-2 rounded-3xl  ease-in-out duration-200 ${
-              active === "users"
-                ? "font-bold  text-[#fff] bg-black scale-105"
-                : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
-            }`}
-            onClick={() => handleTabClick("users")}
-          >
-            Users
-          </button>
-          <button
-            className={` px-4 py-2 rounded-3xl  ease-in-out duration-200 ${
-              active === "students"
-                ? "font-bold  text-[#fff] bg-black scale-105"
-                : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
-            }`}
-            onClick={() => handleTabClick("students")}
-          >
-            Students
-          </button>
-        </div>
+    <div className="h-full font-Poppins flex flex-row ">
+      <div className="adminNav gap-10 py-10 border-b  text-center  flex  flex-col items-center justify-start  w-max text-2xl">
+        {/* Render tabs to switch between profile and applications */}
+        <button
+          className={` px-4 py-2  ease-in-out duration-200 text-end ${
+            active === "alljobs"
+              ? "font-bold  text-[#fff] bg-black scale-105"
+              : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
+          }`}
+          onClick={() => handleTabClick("alljobs")}
+        >
+          All Jobs
+        </button>
+        <button
+          className={` px-4 py-2  ease-in-out duration-200 text-end  ${
+            active === "jobs"
+              ? "font-bold  text-[#fff] bg-black scale-105"
+              : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
+          }`}
+          onClick={() => handleTabClick("jobs")}
+        >
+          My Jobs
+        </button>
+        <button
+          className={` px-4 py-2  ease-in-out duration-200 text-end  ${
+            active === "post"
+              ? "font-bold  text-[#fff] bg-black scale-105"
+              : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
+          }`}
+          onClick={() => handleTabClick("post")}
+        >
+          Post Job
+        </button>
+        <button
+          className={` px-4 py-2   ease-in-out duration-200 text-end  ${
+            active === "users"
+              ? "font-bold  text-[#fff] bg-black scale-105"
+              : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
+          }`}
+          onClick={() => handleTabClick("users")}
+        >
+          Users
+        </button>
+        <button
+          className={` px-4 py-2   ease-in-out duration-200 text-end  ${
+            active === "students"
+              ? "font-bold  text-[#fff] bg-black scale-105"
+              : "text-black/40 bg-transparent hover:bg-black/70 hover:text-white"
+          }`}
+          onClick={() => handleTabClick("students")}
+        >
+          Students
+        </button>
       </div>
-      <div className="bg-transparent w-full p-4 mx-auto">
+
+      <div className="bg-transparent w-full min-h-screen p-4 mx-auto">
         {active === "users" && <AllUsers users={users} />}
         {active === "students" && (
           <AllStudents students={students} alljobs={alljobs} />
