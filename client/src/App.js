@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
-import SlateEditor from "./components/level_2/SlateEditor";
 import "./App.css";
 import Navbar from "./components/Navbar";
 
@@ -14,33 +13,37 @@ import Post from "./pages/Post";
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import PasswordResetUser from "./components/PasswordResetUser";
-import PasswordResetUserForm from "./components/PasswordResetUserForm";
+import PasswordResetUser from "./components/Account/PasswordResetUser";
+import PasswordResetUserForm from "./components/Account/PasswordResetUserForm";
 
-import RegisterAdmin from "./components/RegisterAdmin";
-import LoginAdmin from "./components/LoginAdmin";
-import PasswordResetAdmin from "./components/PasswordResetAdmin";
-import PasswordResetAdminForm from "./components/PasswordResetAdminForm";
-import AdminDash from "./components/AdminDash";
+import RegisterAdmin from "./components/Admin/RegisterAdmin";
+import LoginAdmin from "./components/Admin/LoginAdmin";
+import PasswordResetAdmin from "./components/Account/PasswordResetAdmin";
+import PasswordResetAdminForm from "./components/Account/PasswordResetAdminForm";
+import AdminDash from "./components/Dashboard/Admin/AdminDash";
 
-import UserDash from "./pages/UserDash";
-import JobApplicants from "./components/JobApplicants";
-import UserDashJobs from "./components/UserDashJobs";
+import UserDash from "./components/Dashboard/Employer/UserDash";
+import JobApplicants from "./components/Job/Components/JobApplicants";
+import UserDashJobs from "./components/Dashboard/UserDashJobs";
 
-import StudentDash from "./pages/StudentDash";
-import StudentApplications from "./components/StudentApplications";
+import StudentDash from "./components/Dashboard/Applicant/StudentDash";
+import StudentApplications from "./components/Dashboard/Applicant/StudentApplications";
 
-import ActivateAccount from "./components/ActivateAccount";
-import ActivationModal from "./components/ActivationModal";
+import ActivateAccount from "./components/Account/ActivateAccount";
+import ActivationModal from "./components/Account/ActivationModal";
 
-import JobDetailComponent from "./components/JobDetailComponent";
-import JobUpdatePage from "./components/JobUpdatePage";
+import JobDetailComponent from "./components/Job/Components/JobDetailComponent";
+import JobUpdatePage from "./components/Job/Components/JobUpdatePage";
 
 import { useSelector } from "react-redux";
 
-import StripeContainer from "./components/StripeContainer";
+import StripeContainer from "./components/Stripe/StripeContainer";
 
 import Footer from "./components/Footer";
+import AllJobsSA from "./components/Dashboard/Admin/AllJobsSA";
+import JobFormAdmin from "./components/Job/Post/JobFormAdmin";
+import AllUsers from "./components/Dashboard/Admin/AllStudents";
+import AllStudents from "./components/Dashboard/Admin/AllStudents";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -100,7 +103,14 @@ function App() {
             path="/reset/:type/:token"
             element={<PasswordResetAdminForm />}
           />
-          <Route path="/adminDash" element={<AdminDash />} />
+          <Route path="/adminDash/*" element={<AdminDash />} />
+          {/* Nested routes for AdminDash */}
+
+          <Route path="users" element={<AllUsers />} />
+          <Route path="students" element={<AllStudents />} />
+          <Route path="post" element={<JobFormAdmin />} />
+          <Route path="jobs" element={<UserDashJobs />} />
+          <Route path="alljobs" element={<AllJobsSA />} />
 
           {/* Admin End */}
           <Route path="/activate/:type/:token" element={<ActivateAccount />} />

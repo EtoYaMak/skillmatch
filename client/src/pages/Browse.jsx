@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import SearchComponent from "../components/Search";
-import BrowseJobComponent from "../components/BrowseJobComponent";
+import SearchComponent from "../components/Misc/Search";
+import BrowseJobComponent from "../components/Job/Components/BrowseJobComponent";
 import {
   MdOutlineArrowForwardIos,
   MdOutlineArrowBackIos,
@@ -37,11 +37,18 @@ function Browse() {
   }, [searchQuery]);
 
   const filteredJobs = searchQuery
-    ? jobs.filter(
-        (job) =>
-          job.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          job.company.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+    ? jobs.filter((job) => {
+        const lowerCaseQuery = searchQuery.toLowerCase();
+
+        return (
+          job.position.toLowerCase().includes(lowerCaseQuery) ||
+          job.company.toLowerCase().includes(lowerCaseQuery) ||
+          job.city.toLowerCase().includes(lowerCaseQuery) ||
+          job.skills.some((skill) =>
+            skill.toLowerCase().includes(lowerCaseQuery)
+          )
+        );
+      })
     : jobs;
 
   /*   const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob); */
@@ -102,7 +109,7 @@ function Browse() {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-center items-center mb-2">
+        {/*         <div className="flex justify-center items-center mb-2">
           <button
             className={`rounded-full text-white p-1 mx-2 ${
               currentPage === 1
@@ -140,6 +147,35 @@ function Browse() {
               currentPage === Math.ceil(filteredJobs.length / jobsPerPage)
             }
           />
+        </div> */}
+        <div className="join bg-white text-black w-fit mx-auto flex  ">
+          <button
+            className="join-item btn btn-ghost disabled:text-black/50 disabled:bg-zinc-300"
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            «
+          </button>
+          {Array.from({
+            length: Math.ceil(filteredJobs.length / jobsPerPage),
+          }).map((page, index) => (
+            <button
+              key={index + 1}
+              className="join-item btn btn-ghost"
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            className="join-item btn btn-ghost disabled:text-black/50 disabled:bg-zinc-300"
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={
+              currentPage === Math.ceil(filteredJobs.length / jobsPerPage)
+            }
+          >
+            »
+          </button>
         </div>
       </div>
     </div>

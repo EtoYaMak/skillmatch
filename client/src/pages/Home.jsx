@@ -5,15 +5,15 @@ import { getAllJobs, reset } from "../features/jobs/jobSlice";
 import Slider from "react-slick";
 import "../assets/slick-carousel/slick/slick.css";
 import "../assets/slick-carousel/slick/slick-theme.css";
-import FeaturedCardComp from "../components/FeaturedCardComp";
-import JobBoardComponent from "../components/JobBoardComponent";
+import FeaturedCardComp from "../components/Job/Components/FeaturedCardComp";
+import JobBoardComponent from "../components/Job/Components/JobBoardComponent";
 import {
   HiOutlineChevronDoubleDown,
   HiOutlineChevronDoubleUp,
 } from "react-icons/hi";
 import "semantic-ui-css/semantic.min.css";
 import "../assets/slider.css";
-import settings from "../components/level_2/slider_settings";
+import settings from "../components/Misc/slider_settings";
 
 function Home() {
   const dispatch = useDispatch();
@@ -68,12 +68,12 @@ function Home() {
     );
   }
   return (
-    <div className="justify-between items-center max-w-[1240px]  px-4  mx-auto  bg-inherit">
+    <div className="justify-between items-center  px-4  mx-auto  bg-inherit">
       {/* Conditionally render the message */}
       <h1 className="text-center font-medium py-4 text-2xl text-[#333] select-none font-Poppins tracking-wide">
         REMOTE
       </h1>
-      <div className="Carousel Slider cursor-pointer">
+      <div className="Carousel Slider cursor-pointer rounded-[3rem]">
         <Slider {...settings}>
           {remoteJobs.length === 0 ? (
             <p className="text-2xl font-Inter">No Jobs Found</p>
@@ -93,7 +93,7 @@ function Home() {
       <h1 className="text-center font-medium mt-10 text-2xl text-[#333] select-none font-Poppins tracking-wide">
         RECENT
       </h1>
-      <div className="recent pb-10 ">
+      <div className="recent pb-10 max-w-[1240px] mx-auto">
         {sortedJobs.length === 0 ? (
           <p className="text-2xl text-white text-center">No jobs found</p>
         ) : (

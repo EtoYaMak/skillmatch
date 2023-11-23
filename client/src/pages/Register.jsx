@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { register, reset } from "../features/auth/authSlice";
 import { Sregister, Sreset } from "../features/students/studentSlice";
 
-import Spinner from "../components/Spinner";
-import PrivacyPolicyModal from "../components/level_2/PrivacyPolicyModal";
+import Spinner from "../components/Misc/Spinner";
+import PrivacyPolicyModal from "../components/Misc/PrivacyPolicyModal";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 function Register() {

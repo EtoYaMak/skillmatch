@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login, reset } from "../features/auth/authSlice";
 import { Slogin, Sreset } from "../features/students/studentSlice";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/Misc/Spinner";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 function Login() {
