@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { RiExpandRightFill } from "react-icons/ri";
 import countriesData from "../../../assets/countries-data.json";
 import { useSelector } from "react-redux";
 import ApplyJobButton from "../../Misc/ApplyJobButton";
@@ -8,46 +7,18 @@ import ApplyJobButton from "../../Misc/ApplyJobButton";
 function BrowseJobComponent({ job }) {
   const jobId = job._id;
   const navigate = useNavigate();
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+
   const { user } = useSelector((state) => state.auth);
   const { SAuser } = useSelector((state) => state.SAuser);
   const { student } = useSelector((state) => state.students);
   const showRegisterButton = !student && !user && !SAuser;
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const [selectedSkillIndex, setSelectedSkillIndex] = useState(-1);
-  const dropdownRef = useRef(null);
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
   const handleClick = () => {
     navigate(`/jobs/${jobId}`);
   };
-  const handleSkill = () => {
-    setShowDropdown(!showDropdown);
-  };
+
   const skills = job.skills ? [...job.skills] : [];
 
-  /*   const typeNames = job.type
-    .map((type) => type.name.charAt(0).toUpperCase() + type.name.slice(1))
-    .join(" · "); */
   // Find the country code based on a partial match of the country name
   const countryCode = countriesData.find(
     (country) => country.Name === job.country
@@ -87,17 +58,14 @@ function BrowseJobComponent({ job }) {
           {/* Skills */}
           <div className="skills flex-1 pointer-events-none select-none ">
             <div className="bg-transparent flex flex-wrap items-center justify-center min-w-max gap-1 text-sm text-white">
-              {!showDropdown &&
-                skills.slice(0, 2).map((skill, index) => (
-                  <span
-                    key={index}
-                    className={`font-Poppins text-xs sm:text-sm px-2 py-1 bg-[#3D4EE5] rounded-3xl ${
-                      isHovered ? " " : " "
-                    }`}
-                  >
-                    {skill}
-                  </span>
-                ))}
+              {skills.slice(0, 2).map((skill, index) => (
+                <span
+                  key={index}
+                  className="font-Poppins text-xs sm:text-sm px-2 py-1 bg-[#3D4EE5] rounded-3xl "
+                >
+                  {skill}
+                </span>
+              ))}
             </div>
           </div>
         </div>
@@ -107,6 +75,7 @@ function BrowseJobComponent({ job }) {
             <ApplyJobButton jobId={job._id} />
           </div>
         )}
+        {/* Register button FOR new users*/}
         {showRegisterButton && (
           <Link
             to={"/register"}

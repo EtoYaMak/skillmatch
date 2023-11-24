@@ -31,11 +31,11 @@ export default function SearchComponent({ onSearch }) {
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
         />
-        <button className=" btn btn-ghost text-xl rounded-full">
+        {/*         <button className=" btn btn-ghost text-xl rounded-full">
           <span className="bg-transparent flex gap-2 justify-evenly items-center text-[#333]">
             <BsSearch size={24} className="bg-transparent" />
           </span>
-        </button>
+        </button> */}
       </div>
     </div>
   );
