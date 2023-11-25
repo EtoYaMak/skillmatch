@@ -8,6 +8,27 @@
   height: auto;
   width: auto;
 }
+
+/* width */
+.rolesfilter::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.rolesfilter::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.rolesfilter::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.rolesfilter::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 .adminNav button {
   width: 160px;
 }

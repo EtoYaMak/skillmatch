@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 
@@ -47,6 +47,7 @@ import AllStudents from "./components/Dashboard/Admin/AllStudents";
 
 function App() {
   const [message, setMessage] = useState("");
+  const location = useLocation();
 
   const user = useSelector((state) => state.auth.user);
   const student = useSelector((state) => state.students.student);
@@ -71,13 +72,12 @@ function App() {
   return (
     <>
       <div className="App bg-[#fff] min-h-screen h-fit">
-        <Navbar />
         <ActivationModal
           isOpen={isModalOpen}
           onClose={() => setModalOpen(false)}
           type={modalType}
         />
-
+        {location.pathname !== "/login" && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
 
