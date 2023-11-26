@@ -97,101 +97,98 @@ function PasswordResetUserForm() {
 
   return (
     <>
-      <div className="w-2/3 mx-auto h-[75vh] my-5 font-Inter">
-        <div className="hero h-fit px-4">
-          <div className="hero-content flex-col  ">
-            <div className="sm:px-12 text-center lg:text-left text-white">
-              <h1 className="text-5xl font-bold">Password Reset</h1>
-              <p className="py-6 text-center">Enter a new password</p>
+      <div className=" w-full font-Poppins h-screen">
+        <div className=" translate-y-24 w-fit mx-auto">
+          <form
+            onSubmit={onSubmit}
+            className="w-[540px] h-[560px] bg-black/5 rounded-[6px] p-8 pt-12"
+          >
+            <h1 className="select-none bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
+              Skill
+              <br />
+              Mint
+            </h1>
+            <h1 className="w-fit text-[2.1em] font-Poppins mx-auto my-12 select-none">
+              New Password
+            </h1>
+            {/* Password */}
+            <div className="form-control  max-w-[340px] mx-auto mt-3">
+              <label className="text-[15px] mb-1 select-none">Password*</label>
+              <div className="relative inline-block">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={password}
+                  placeholder="Enter password"
+                  onChange={onChange}
+                  className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
+                  required
+                />
+                {/* <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password-button absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent"
+              >
+                {showPassword ? (
+                  <AiFillEyeInvisible size={24} />
+                ) : (
+                  <AiFillEye size={24} />
+                )}
+              </button> */}
+              </div>
             </div>
-            <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-base-300">
-              <form onSubmit={onSubmit} className="card-body">
-                {/* Password */}
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">New Password</span>
-                  </label>
-                  <div className="flex flex-row items-center">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      value={password}
-                      placeholder="Enter password"
-                      onChange={onChange}
-                      className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="toggle-password-button ml-2 text-white"
-                    >
-                      {showPassword ? (
-                        <AiFillEyeInvisible size={24} />
-                      ) : (
-                        <AiFillEye size={24} />
-                      )}
-                    </button>
-                  </div>
-                </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Confirm Password</span>
-                  </label>
-                  <div className="flex flex-row items-center mb-4">
-                    <input
-                      type={showPassword2 ? "text" : "password"}
-                      className="input input-bordered text-white w-full focus:outline-none focus:shadow-outline focus:border-none focus:ring-[#d0333c]"
-                      name="password2"
-                      value={password2}
-                      placeholder="Confirm password"
-                      onChange={onChange}
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword2(!showPassword2)}
-                      className="toggle-password-button ml-2 text-white"
-                    >
-                      {showPassword2 ? (
-                        <AiFillEyeInvisible size={24} />
-                      ) : (
-                        <AiFillEye size={24} />
-                      )}
-                    </button>
-                  </div>
-                  {/* Password matching feedback */}
-                  {password !== "" && password2 !== "" && !passwordsMatch && (
-                    <div className="text-sm font-Inter text-center ">
-                      <p className="ml-1 text-red-500">
-                        Passwords do not match
-                      </p>
-                    </div>
-                  )}
+            <div className="form-control  max-w-[340px] mx-auto mt-3">
+              <label className="text-[15px] mb-1 select-none">
+                Confirm Password*
+              </label>
+              <div className="relative inline-block">
+                <input
+                  type={showPassword2 ? "text" : "password"}
+                  name="password2"
+                  value={password2}
+                  placeholder="Enter password"
+                  onChange={onChange}
+                  className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
+                  required
+                />
+                {/* <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password-button absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent"
+              >
+                {showPassword ? (
+                  <AiFillEyeInvisible size={24} />
+                ) : (
+                  <AiFillEye size={24} />
+                )}
+              </button> */}
+              </div>
 
-                  {/* Password validation feedback */}
-                  {password !== "" && isPasswordValid(password).length > 0 && (
-                    <div className="text-white text-xs font-Inter toast toast-center">
-                      {isPasswordValid(password).map((message, index) => (
-                        <p className="alert bg-red-700 text-white" key={index}>
-                          {message}
-                        </p>
-                      ))}
-                    </div>
-                  )}
+              {/* Password matching feedback */}
+              {password !== "" && password2 !== "" && !passwordsMatch && (
+                <div className=" text-black text-[9px]  max-w-[340px] font-Poppins font-medium">
+                  <p className=" text-black ">Passwords do not match</p>
                 </div>
+              )}
 
-                <div className="form-control mt-4">
-                  <button
-                    className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
-                  flex text-lg font-Inter tracking-wide"
-                  >
-                    Update Password
-                  </button>
+              {/* Password validation feedback */}
+              {password !== "" && isPasswordValid(password).length > 0 && (
+                <div className="relative  font-Poppins max-w-[340px] font-medium">
+                  {isPasswordValid(password).map((message, index) => (
+                    <p className="text-black text-[9px]" key={index}>
+                      {message}
+                    </p>
+                  ))}
                 </div>
-              </form>
+              )}
             </div>
-          </div>
+
+            <div className="form-control  max-w-[340px] mx-auto my-12">
+              <button className="text-lg font-Poppins tracking-wide bg-black text-white py-3 rounded-[3px]">
+                Update Password
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>

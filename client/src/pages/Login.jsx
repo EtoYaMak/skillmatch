@@ -196,13 +196,16 @@ function Login() {
             </Link>
             {/* ROLE SELECTION */}
             <div className="absolute right-3 top-3 font-Poppins">
-              <div className="flex flex-row gap-2">
+              <div className="flex flex-row items-center gap-2">
+                <p className="h-8 rounded-md w-fit px-2 py-1 text-center font-bold text-black/75 select-none">
+                  Role
+                </p>
                 <label
                   htmlFor="poster"
-                  className={` h-8 rounded-md w-fit px-2 py-1 text-center ${
+                  className={` h-8 rounded-md w-fit px-2 py-1 text-center cursor-pointer  ${
                     selectedRole === "poster"
-                      ? "font-bold underline underline-offset-2"
-                      : ""
+                      ? "font-medium underline underline-offset-2"
+                      : "opacity-70"
                   }`}
                 >
                   <input
@@ -210,7 +213,7 @@ function Login() {
                     id="poster"
                     name="role"
                     value="poster"
-                    className=" radio radio-mark"
+                    className=" radio radio-mark "
                     onChange={handleRoleChange}
                     checked={selectedRole === "poster"}
                   />
@@ -218,10 +221,10 @@ function Login() {
                 </label>
                 <label
                   htmlFor="applicant"
-                  className={`h-8 rounded-md w-fit px-2 py-1 ${
+                  className={`h-8 rounded-md w-fit px-2 py-1 cursor-pointer ${
                     selectedRole === "applicant"
-                      ? "font-bold underline underline-offset-2"
-                      : ""
+                      ? "font-medium underline underline-offset-2 "
+                      : "opacity-70"
                   }`}
                 >
                   <input

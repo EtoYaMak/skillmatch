@@ -77,7 +77,12 @@ function App() {
           onClose={() => setModalOpen(false)}
           type={modalType}
         />
-        {location.pathname !== "/login" && <Navbar />}
+        {location.pathname !== "/login" &&
+          location.pathname !== "/register" &&
+          location.pathname !== "/password-reset" &&
+          location.pathname !== "/reset/:type/:token" &&
+          location.pathname !== "/password-reset-admin" &&
+          location.pathname !== "/reset/:type/:token" && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
 

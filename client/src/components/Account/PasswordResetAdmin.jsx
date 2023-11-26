@@ -20,45 +20,43 @@ function PasswordResetAdmin() {
     navigate("/login");
   };
   return (
-    <div className="w-2/3 mx-auto h-[75vh] my-5 font-Inter">
-      <div className="hero  rounded-lg h-full px-4">
-        <div className="hero-content flex-col lg:flex-row-reverse ">
-          <div className="sm:px-12 text-center lg:text-left text-white">
-            <h1 className="text-5xl font-bold">Request password reset</h1>
-            <p className="py-6">
-              Enter your email to request a password reset link
-            </p>
-          </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-xl shadow-black/60 bg-base-300">
-            <form onSubmit={onSubmit} className="card-body">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  placeholder="Enter your email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="input input-bordered text-white"
-                  required
-                />
-              </div>
-
-              <div className="form-control mt-6">
-                <button
-                  className="btn btn-ghost text-[#fff] bg-[#d0333c]/70 hover:bg-[#d0333c] hover:text-[#fff]
-                  flex text-lg font-Inter tracking-wide"
-                >
-                  Reset
-                </button>
-              </div>
-            </form>
-          </div>
+    <>
+      {" "}
+      <div className="flex-shrink-0 h-screen ">
+        <div className=" translate-y-36 w-fit mx-auto">
+          <form
+            onSubmit={onSubmit}
+            className="w-[480px] h-[420px] mx-auto bg-black/5 rounded-[6px] text-black p-12"
+          >
+            <h1 className="bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
+              Skill
+              <br />
+              Mint
+            </h1>
+            <h1 className="w-fit text-[2.1em] font-Poppins mx-auto my-6">
+              Request Reset Email
+            </h1>
+            <div className="form-control  max-w-[340px] mx-auto">
+              <label className="text-[15px] mb-1 ">Email Address*</label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                placeholder="Enter your email"
+                onChange={(e) => setEmail(e.target.value)}
+                className="max-w-[340px] text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
+                required
+              />
+            </div>
+            <div className="form-control  max-w-[340px] mx-auto my-12">
+              <button className="text-lg font-Poppins tracking-wide bg-black text-white py-3 rounded-[3px]">
+                Reset
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

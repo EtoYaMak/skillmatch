@@ -176,232 +176,184 @@ function Register() {
   }
   return (
     <>
-      <div className="hero min-h-[91vh] z-1">
-        <div className="hero-content flex-col lg:flex-row-reverse">
-          <div className="text-center lg:text-left font-Poppins">
-            <h1 className="text-5xl font-bold text-black">Register!</h1>
-            <p className="py-6 text-xl text-black">
-              Unlock Your Career Opportunities or Start Building Your Team
-              Today!
-            </p>
-          </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-[0px_3px_8px_rgb(0,0,0,0.3)] bg-[#fff]">
-            <form onSubmit={onSubmit} className="card-body font-Poppins">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-[14px] text-black">
-                    Name
-                  </span>
-                </label>
+      <div className=" w-full font-Poppins h-screen">
+        <div className=" translate-y-24 w-fit mx-auto">
+          <form
+            onSubmit={onSubmit}
+            className="w-[780px] h-[760px] bg-black/5 rounded-[6px] p-8 pt-12"
+          >
+            <h1 className="select-none bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
+              Skill
+              <br />
+              Mint
+            </h1>
+            <h1 className="w-fit text-[2.1em] font-Poppins mx-auto my-12 select-none">
+              {selectedRole === "poster" ? "Employer" : " Applicant"} Register
+            </h1>
+            <div className="form-control  max-w-[340px] mx-auto">
+              <label className="text-[15px] mb-1 select-none">Full Name*</label>
+              <input
+                type="text"
+                name="name"
+                value={name}
+                placeholder="Enter your name"
+                onChange={onChange}
+                className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 pl-[12px] border border-black/40 rounded-[3px]"
+                required
+              />
+            </div>
+            <div className="form-control  max-w-[340px] mx-auto mt-3">
+              <label className="text-[15px] mb-1 select-none">
+                Email Address*
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                placeholder="Enter your email"
+                onChange={onChange}
+                className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
+                required
+              />
+            </div>
+            <div className="form-control  max-w-[340px] mx-auto mt-3">
+              <label className="text-[15px] mb-1 select-none">Password*</label>
+              <div className="relative inline-block">
                 <input
-                  type="text"
-                  name="name"
-                  value={name}
-                  placeholder="Enter your name"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={password}
+                  placeholder="Enter password"
                   onChange={onChange}
-                  className="input input-bordered  text-white bg-black placeholder:text-white/80
-                  focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
+                  className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
                   required
                 />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-[14px] text-black">
-                    Email
-                  </span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  placeholder="Enter your email"
-                  onChange={onChange}
-                  className="input input-bordered  text-white bg-black placeholder:text-white/80
-                  focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
-                  required
-                />
-              </div>
-              {/* Password */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-[14px] text-black">
-                    Password
-                  </span>
-                </label>
-                <div className="flex flex-row items-center">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={password}
-                    placeholder="Enter password"
-                    onChange={onChange}
-                    className="input input-bordered w-full  text-white bg-black placeholder:text-white/80
-                    focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="toggle-password-button ml-2 text-black"
-                  >
-                    {showPassword ? (
-                      <AiFillEyeInvisible size={24} />
-                    ) : (
-                      <AiFillEye size={24} />
-                    )}
-                  </button>
-                </div>
-              </div>
-              {/* Confirm Password */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-[14px] text-black">
-                    Confirm Password
-                  </span>
-                </label>
-                <div className="flex flex-row items-center">
-                  <input
-                    type={showPassword2 ? "text" : "password"}
-                    className="input input-bordered w-full  text-white bg-black placeholder:text-white/80
-                    focus:outline-none focus:ring-0 focus:border-0 selection:text-white focus:shadow-[2px_2px_5px_rgb(0,0,0,0.7)]"
-                    name="password2"
-                    value={password2}
-                    placeholder="Confirm password"
-                    onChange={onChange}
-                    //className="input input-bordered text-white w-full "
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword2(!showPassword2)}
-                    className="toggle-password-button ml-2 text-black"
-                  >
-                    {showPassword2 ? (
-                      <AiFillEyeInvisible size={24} />
-                    ) : (
-                      <AiFillEye size={24} />
-                    )}
-                  </button>
-                </div>
-
-                {/* Password matching feedback */}
-                {password !== "" && password2 !== "" && !passwordsMatch && (
-                  <div className="mt-1 text-black text-sm font-Poppins text-center ">
-                    <p className="ml-1 text-black underline decoration-[#d0333c]">
-                      Passwords do not match
-                    </p>
-                  </div>
-                )}
-
-                {/* Password validation feedback */}
-                {password !== "" && isPasswordValid(password).length > 0 && (
-                  <div className="text-white text-xs font-Poppins toast toast-center">
-                    {isPasswordValid(password).map((message, index) => (
-                      <p className="alert bg-red-700 text-white" key={index}>
-                        {message}
-                      </p>
-                    ))}
-                  </div>
-                )}
-                {/* ROLE SELECTION */}
-                {/* ROLE SELECTION */}
-                <div className="flex flex-col justify-center w-full mt-4">
-                  <span className="text-center text-black text-sm">
-                    Select Your Role
-                  </span>
-
-                  <div className="flex flex-row justify-around mt-2">
-                    <label
-                      htmlFor="poster"
-                      className={`btn btn-ghost  w-36 ${
-                        selectedRole === "poster"
-                          ? "bg-black/90 text-white border-2 shadow-[0px_3px_8px_rgb(0,0,0,0.3)] border-[#d0333c] hover:bg-black/80 hover:text-white"
-                          : "text-black/70 hover:shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        id="poster"
-                        name="role"
-                        value="poster"
-                        className=" radio radio-mark"
-                        onChange={handleRoleChange}
-                        checked={selectedRole === "poster"}
-                      />
-                      Poster
-                    </label>
-                    <label
-                      htmlFor="applicant"
-                      className={`btn btn-ghost w-36 ${
-                        selectedRole === "applicant"
-                          ? "bg-black/90 text-white border-2 shadow-[0px_3px_8px_rgb(0,0,0,0.3)] border-[#d0333c] hover:bg-black/80 hover:text-white"
-                          : "text-black/70 hover:shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        id="applicant"
-                        name="role"
-                        value="applicant"
-                        className="radio radio-mark"
-                        onChange={handleRoleChange}
-                        checked={selectedRole === "applicant"}
-                      />
-                      Applicant
-                    </label>
-                  </div>
-                </div>
-
-                {/* TERMS & CONDITIONS */}
-                <div className="flex items-end">
-                  <input
-                    type="checkbox"
-                    name="tc"
-                    id="tc"
-                    className="mt-4 mx-1 checkbox checkbox-error bg-black/10 "
-                  />
-                  <p className="mt-4 mx-1 text-black">
-                    I accept{" "}
-                    <a
-                      href="#"
-                      /*                       onClick={(e) => {
-                        e.preventDefault();
-                        openTC();
-                      }} */
-                      className="text-red-600 underline"
-                    >
-                      terms & conditions
-                    </a>
-                    .
-                  </p>
-                </div>
-              </div>
-              {/* REGISTER BUTTON */}
-              <div className="form-control mt-4">
-                <button
-                  type="submit"
-                  className="btn btn-ghost text-[#fff] bg-[#000] hover:bg-[#d0333c] hover:text-[#fff]
-                  flex text-lg font-Poppins tracking-wide"
-                >
-                  Register
-                </button>
-              </div>
-              {/* LOGIN REDIRECT */}
-              <Link
-                to="/login"
-                className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
+                {/* <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password-button absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent"
               >
-                <h1 className="text-black">Already have an account? </h1>
-                <a className="text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium">
-                  Login now
-                </a>
+                {showPassword ? (
+                  <AiFillEyeInvisible size={24} />
+                ) : (
+                  <AiFillEye size={24} />
+                )}
+              </button> */}
+              </div>
+            </div>
+            <div className="form-control  max-w-[340px] mx-auto mt-3">
+              <label className="text-[15px] mb-1 select-none">
+                Confirm Password*
+              </label>
+              <div className="relative inline-block">
+                <input
+                  type={showPassword2 ? "text" : "password"}
+                  name="password2"
+                  value={password2}
+                  placeholder="Enter password"
+                  onChange={onChange}
+                  className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
+                  required
+                />
+                {/* <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="toggle-password-button absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent"
+              >
+                {showPassword ? (
+                  <AiFillEyeInvisible size={24} />
+                ) : (
+                  <AiFillEye size={24} />
+                )}
+              </button> */}
+              </div>
+            </div>
+            {/* Password matching feedback */}
+            {password !== "" && password2 !== "" && !passwordsMatch && (
+              <div className=" text-black text-[9px] mx-auto max-w-[340px] font-Poppins font-medium">
+                <p className=" text-black ">Passwords do not match</p>
+              </div>
+            )}
+
+            {/* Password validation feedback */}
+            {password !== "" && isPasswordValid(password).length > 0 && (
+              <div className="relative mx-auto font-Poppins max-w-[340px] font-medium">
+                {isPasswordValid(password).map((message, index) => (
+                  <p className="text-black text-[9px]" key={index}>
+                    {message}
+                  </p>
+                ))}
+              </div>
+            )}
+            <div className="form-control  max-w-[340px] mx-auto my-6">
+              <button className="text-lg font-Poppins tracking-wide bg-black text-white py-3 rounded-[3px] select-none">
+                Register
+              </button>
+            </div>
+            <div className=" max-w-[340px] text-center mx-auto my-14">
+              <Link to="/login" className="text-[17px]">
+                Already have an Account ?
               </Link>
-            </form>
-          </div>
+              {/* ROLE SELECTION */}
+              <div className="absolute right-3 top-3 font-Poppins">
+                <div className="flex flex-row items-center gap-2">
+                  <p className="h-8 rounded-md w-fit px-2 py-1 text-center font-bold text-black/75 select-none">
+                    Role
+                  </p>
+                  <label
+                    htmlFor="poster"
+                    className={` h-8 rounded-md w-fit px-2 py-1 text-center cursor-pointer  ${
+                      selectedRole === "poster"
+                        ? "font-medium underline underline-offset-2"
+                        : "opacity-70"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="poster"
+                      name="role"
+                      value="poster"
+                      className=" radio radio-mark "
+                      onChange={handleRoleChange}
+                      checked={selectedRole === "poster"}
+                    />
+                    Poster
+                  </label>
+                  <label
+                    htmlFor="applicant"
+                    className={`h-8 rounded-md w-fit px-2 py-1 cursor-pointer ${
+                      selectedRole === "applicant"
+                        ? "font-medium underline underline-offset-2 "
+                        : "opacity-70"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      id="applicant"
+                      name="role"
+                      value="applicant"
+                      className="radio radio-mark"
+                      onChange={handleRoleChange}
+                      checked={selectedRole === "applicant"}
+                    />
+                    Applicant
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            {/* LOGIN REDIRECT */}
+          </form>
+          {/*           <Link
+            to="/register"
+            className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
+          >
+            <h1 className="text-black">Not registered? </h1>
+            <a className="text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium">
+              Register now
+            </a>
+          </Link> */}
         </div>
-      </div>
-      <div className="h-full z-99">
-        <PrivacyPolicyModal isOpen={isTCOpen} onClose={closeTC} />
       </div>
     </>
   );
