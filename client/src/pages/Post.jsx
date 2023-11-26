@@ -22,33 +22,31 @@ const Post = () => {
     );
   }
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 font-Poppin ">
-      <div className="pb-1 select-none pt-10">
-        {user ? (
-          user.isActive ? (
-            <>
-              <JobForm />
-            </>
-          ) : (
-            <div className="text-center min-h-fit flex justify-center items-center">
-              <p className="text-2xl text-white font-Poppins ">
-                Your account is not activated. Please activate your account to
-                post a job.
-              </p>
-            </div>
-          )
+    <div className="select-none">
+      {user ? (
+        user.isActive ? (
+          <>
+            <JobForm />
+          </>
         ) : (
-          <div className="text-center flex justify-center items-center ">
+          <div className="text-center min-h-fit flex justify-center items-center">
             <p className="text-2xl text-white font-Poppins ">
-              Want to post a job?{" "}
-              <Link to="/register" className="text-[#333]/70 hover:text-[#000]">
-                Click here to register as a job poster
-              </Link>
-              .
+              Your account is not activated. Please activate your account to
+              post a job.
             </p>
           </div>
-        )}
-      </div>
+        )
+      ) : (
+        <div className="text-center flex justify-center items-center ">
+          <p className="text-2xl text-white font-Poppins ">
+            Want to post a job?{" "}
+            <Link to="/register" className="text-[#333]/70 hover:text-[#000]">
+              Click here to register as a job poster
+            </Link>
+            .
+          </p>
+        </div>
+      )}
     </div>
   );
 };
