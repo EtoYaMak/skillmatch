@@ -6,6 +6,7 @@ import ReactQuill from "react-quill";
 import "../../../assets/quill.snow.css"; // Import the CSS for the editor
 import { MdClose } from "react-icons/md";
 import countriesList from "../../../assets/countries-data.json";
+import departmentData from "../../../assets/Departments.json";
 import { useNavigate, useLocation } from "react-router-dom";
 import PaymentForm from "../../Stripe/PaymentForm";
 import { toast } from "react-toastify";
@@ -21,10 +22,19 @@ function JobForm() {
   const [description, setDescription] = useState("");
 
   const [skills, setSkills] = useState([]);
-  const [countries] = useState(countriesList);
+  //location
   const [city, setCity] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
-
+  //
+  const [selectedCountry, setSelectedCountry] = useState(""); //Chosen
+  const [searchCountry, setSearchCountry] = useState(""); //Input Search
+  const [countries] = useState(countriesList); //Data
+  //category
+  const [category, setCategory] = useState(""); //Chosen
+  const [customCategory, setCustomCategory] = useState(""); //Other
+  const [searchTerm, setSearchTerm] = useState(""); //Input Search
+  const categories = departmentData; //Data
+  //Salary
+  const [salary, setSalary] = useState(""); //Chosen
   //File
   const [fileName, setFileName] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
@@ -33,7 +43,6 @@ function JobForm() {
   const [remote, setRemote] = useState(false);
   const [contract, setContract] = useState(false);
   const [fulltime, setFulltime] = useState(false);
-  const [parttime, setParttime] = useState(false);
   const [internship, setInternship] = useState(false);
   const [hybrid, setHybrid] = useState(false);
   const [onsite, setOnsite] = useState(false);
@@ -96,27 +105,29 @@ function JobForm() {
       setPaymentSuccess(true);
       setIsHidden(false);
     } else {
-      console.error("Payment Not Successful");
+      //console.error("No Payment Yet");
     }
   }, [locationState]);
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(salary);
     // Clear the successful payment signal from sessionStorage
     // sessionStorage.removeItem("paymentSuccess");
-    const location = `${city}, ${selectedCountry}`;
+
     // Input validation
     const requiredFields = [
       { name: "Job Title", value: position },
       { name: "City", value: city },
       { name: "Country", value: selectedCountry },
-      { name: "Location", value: location },
+      { name: "Skills", value: skills.length > 0 },
+      { name: "Deparment", value: category },
+      { name: "Salary", value: salary },
       { name: "Company Name", value: company },
       { name: "Company Website", value: website },
       { name: "Job link", value: careerPage },
       { name: "Description", value: description },
       { name: "Logo", value: fileName },
-      { name: "Skills", value: skills.length > 0 },
     ];
 
     const missingFields = requiredFields
@@ -128,65 +139,60 @@ function JobForm() {
       showToastError();
       return;
     }
-
     // Sanitization
-    const sanitizedPosition = sanitizeInput(position);
-    const sanitizedCity = sanitizeInput(city);
-    const sanitizedCountry = sanitizeInput(selectedCountry);
-    const sanitizedLocation = sanitizeInput(location);
-    const sanitizedCareerPage = sanitizeInput(careerPage);
-    const sanitizedCompany = sanitizeInput(company);
-    const sanitizedWebsite = sanitizeInput(website);
-    /*     const sanitizedDescription = sanitizeInput(description); */
-    const sanitizedSkills = skills.map((skill) => sanitizeInput(skill));
+    const sanitizedPosition = sanitizeInput(position); //jobtitle
+    const sanitizedCity = sanitizeInput(city); //jobcity
+    const sanitizedCountry = sanitizeInput(selectedCountry); //jobcountry
+    const sanitizedDepartment = sanitizeInput(category); //jobdepartment
+    const sanitizedSalary = sanitizeInput(salary); //jobsalary
+    const sanitizedCareerPage = sanitizeInput(careerPage); //jobcareerpage careerpageLink
+    const sanitizedCompany = sanitizeInput(company); //jobcompany
+    const sanitizedWebsite = sanitizeInput(website); //jobwebsite companywebsite
+    const sanitizedDescription = sanitizeInput(description); //jobdescription
+    const sanitizedSkills = skills.map((skill) => sanitizeInput(skill)); //jobskillsarray
 
     const formData = new FormData();
 
-    formData.append("position", sanitizedPosition);
-    formData.append("location", sanitizedLocation);
-    formData.append("city", sanitizedCity);
-    formData.append("country", sanitizedCountry);
-    formData.append("careerPage", sanitizedCareerPage);
-    formData.append("company", sanitizedCompany);
-    formData.append("website", sanitizedWebsite);
-    formData.append("logo", fileName);
-    // type
-    formData.append("fulltime", fulltime);
-    formData.append("parttime", parttime);
-    formData.append("internship", internship);
-    formData.append("contract", contract);
-    // setting
-    formData.append("remote", remote);
-    formData.append("hybrid", hybrid);
-    formData.append("onsite", onsite);
-    // desc
-    formData.append("description", description);
-    // skills
+    formData.append("position", sanitizedPosition); //jobtitle
+    formData.append("city", sanitizedCity); //jobcity
+    formData.append("country", sanitizedCountry); //jobcountry
+    formData.append("department", sanitizedDepartment); //jobdepartment
+    formData.append("salary", sanitizedSalary); //jobsalary
+    formData.append("careerPage", sanitizedCareerPage); //jobcareerpage careerpageLink
+    formData.append("company", sanitizedCompany); //jobcompany
+    formData.append("website", sanitizedWebsite); //jobwebsite companywebsite
+    formData.append("logo", fileName); //joblogo
+    formData.append("fulltime", fulltime); //jobfulltime
+    formData.append("internship", internship); //jobinternship
+    formData.append("contract", contract); //jobcontract
+    formData.append("remote", remote); //jobremote
+    formData.append("hybrid", hybrid); //jobhybrid
+    formData.append("onsite", onsite); //jobonsite
+    formData.append("description", sanitizedDescription); //jobdescription
     sanitizedSkills.forEach((skill) => {
       formData.append("skills[]", skill);
-    });
+    }); //jobskillsarray
 
     dispatch(createJob(formData));
-    // Clear the successful payment signal from sessionStorage
+    //Clear the successful payment signal from sessionStorage
     sessionStorage.removeItem("paymentSuccess");
-    setPosition("");
-
-    setCity("");
-    setSelectedCountry("");
-    setCareerPage("");
-    setCompany("");
-    setWebsite("");
-    setRemote(false);
-    setFileName("");
-    setDescription("");
-    setFulltime(false);
-    setParttime(false);
-    setInternship(false);
-    setContract(false);
-    setHybrid(false);
-    setRemote(false);
-    setOnsite(false);
-    setSkills([]);
+    setPosition(""); //jobtitle
+    setCity(""); //jobcity
+    setSelectedCountry(""); //jobcountry
+    setCategory(""); //jobdepartment
+    setSalary(""); //jobsalary
+    setCareerPage(""); //jobcareerpage careerpageLink
+    setCompany(""); //jobcompany
+    setWebsite(""); //jobwebsite companywebsite
+    setFileName(""); //joblogo
+    setDescription(""); //jobdescription
+    setFulltime(false); //jobfulltime
+    setInternship(false); //jobinternship
+    setContract(false); //jobcontract
+    setRemote(false); //jobremote
+    setHybrid(false); //jobhybrid
+    setOnsite(false); //jobonsite
+    setSkills([]); //jobskillsarray
     setTimeout(() => {
       navigate("/dash");
     }, 2000);
@@ -205,8 +211,10 @@ function JobForm() {
     setCity(e.target.value);
   };
 
-  const handleCountryChange = (e) => {
-    setSelectedCountry(e.target.value);
+  const handleCountryChange = (event) => {
+    const selectCountry = event.target.value;
+    setSelectedCountry(selectCountry);
+    setSearchCountry("");
   };
 
   const falseFlagsubmit = (e) => {
@@ -275,8 +283,27 @@ function JobForm() {
     return sanitizedInput;
   };
 
+  const filteredCategories = Object.keys(categories).filter((key) =>
+    categories[key].toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleCategoryChange = (event) => {
+    const selectedCategory = event.target.value;
+    setCategory(selectedCategory);
+    setSearchTerm("");
+
+    // If "Other" is selected, clear customCategory
+    if (selectedCategory !== "other") {
+      setCustomCategory("");
+    }
+  };
+
+  const handleCustomCategoryChange = (event) => {
+    setCustomCategory(event.target.value);
+    setCategory("other"); // Set category to 'other' when user starts typing a custom category
+  };
   return (
-    <section className="py-14">
+    <section className="pb-14 py-4">
       {paymentStarted ? (
         <PaymentForm />
       ) : (
@@ -313,12 +340,13 @@ function JobForm() {
                       />
                     </div>
                   </div>
-                  {/* Location */}
-                  <div className="w-full font-Poppins">
-                    <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
-                      Location
-                    </label>
-                    <span className="flex flex-row w-full justify-between space-x-8">
+                  <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
+                    {/* Location */}
+                    <div className="w-full font-Poppins">
+                      <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                        Location
+                      </label>
+
                       <input
                         type="text"
                         className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:font-light"
@@ -328,21 +356,20 @@ function JobForm() {
                         value={city}
                         onChange={handleCityChange}
                       />
+                    </div>
+                    {/* Country */}
+                    <div className="Country flex flex-col justify-start w-full">
+                      <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                        Country
+                      </label>
                       <select
-                        id="dropdown"
                         name="dropdown"
                         value={selectedCountry}
-                        defaultValue={"placeholder"}
                         onChange={handleCountryChange}
-                        className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] text-black/40 font-medium focus:ring-0 focus:border-black/40"
+                        className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
                       >
-                        <option
-                          selected
-                          hidden
-                          className="text-[15px] bg-white "
-                          id="defaultCountry"
-                        >
-                          Select A Country
+                        <option value="" className="" disabled hidden>
+                          Select a Country
                         </option>
                         {countries.map((country) => (
                           <option
@@ -354,107 +381,10 @@ function JobForm() {
                           </option>
                         ))}
                       </select>
-                    </span>
-                  </div>
-
-                  <div className="typeWork  sm:grid sm:grid-cols-2  text-black/75 font-Poppins my-2 p-2">
-                    {/* Type */}
-                    <div className="grid grid-cols-2 gap-2">
-                      {/* Full-Time */}
-                      <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
-                        <input
-                          type="checkbox"
-                          value="Full-Time"
-                          checked={fulltime}
-                          onChange={(e) => setFulltime(e.target.checked)}
-                          className="checkbox checkbox-bordered focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
-                        />
-                        <span className=" text-xl">Full-Time</span>
-                      </div>
-                      {/* Part-Time */}
-                      <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch ">
-                        <input
-                          type="checkbox"
-                          value="Part-Time"
-                          checked={parttime}
-                          onChange={(e) => setParttime(e.target.checked)}
-                          className="checkbox checkbox-bordered focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
-                        />
-                        <span className=" h-full text-xl">Part-Time</span>
-                      </div>
-                      {/* Internship */}
-                      <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
-                        <input
-                          type="checkbox"
-                          value="Internship"
-                          checked={internship}
-                          onChange={(e) => setInternship(e.target.checked)}
-                          className="checkbox checkbox-bordered focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)]"
-                        />
-                        <span className=" text-xl">Internship</span>
-                      </div>
-                      {/* Contract */}
-                      <div className="type space-x-3 flex items-center sm:justify-normal justify-stretch">
-                        <input
-                          type="checkbox"
-                          value="Contract"
-                          checked={contract}
-                          onChange={(e) => setContract(e.target.checked)}
-                          className="checkbox checkbox-bordered focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
-                        />
-                        <span className=" text-xl">Contract</span>
-                      </div>
-                    </div>
-                    {/* Job Setting */}
-                    <div className="flex flex-wrap sm:justify-between justify-between   sm:mt-0 mt-2">
-                      {/* Remote */}
-                      <div className="remoteWork space-x-2 sm:space-x-3 flex items-center text-start">
-                        <input
-                          type="checkbox"
-                          value="Remote"
-                          checked={remote}
-                          onChange={(e) => setRemote(e.target.checked)}
-                          className="checkbox checkbox-bordered focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
-                        />
-                        <span className="text-xl">Remote</span>
-                      </div>
-                      {/* Hybrid */}
-                      <div className="hybridWork space-x-2 sm:space-x-3 flex items-center justify-center ">
-                        <input
-                          type="checkbox"
-                          value="Hybrid"
-                          checked={hybrid}
-                          onChange={(e) => setHybrid(e.target.checked)}
-                          className="checkbox checkbox-bordered focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
-                        />
-                        <span className=" text-xl">Hybrid</span>
-                      </div>
-                      {/* On-site */}
-                      <div className="onsite  space-x-2 sm:space-x-3 flex items-center justify-end">
-                        <input
-                          type="checkbox"
-                          value="On-site"
-                          checked={onsite}
-                          onChange={(e) => setOnsite(e.target.checked)}
-                          className="checkbox checkbox-bordered focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
-                        />
-                        <span className=" text-xl">On-Site</span>
-                      </div>
                     </div>
                   </div>
-                  {/* Description */}
-                  <div className="mt-4 text-black overflow-hidden ">
-                    <ReactQuill
-                      placeholder={jobPlaceholder}
-                      className="border-none"
-                      onChange={handleDescriptionChange}
-                      value={description}
-                      modules={modules}
-                    />
-                  </div>
-
                   {/* Skills */}
-                  <div className="w-full flex flex-row justify-between bg-transparent font-Poppins gap-8">
+                  <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
                     <div className="bg-transparent w-full">
                       <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
                         Skills
@@ -494,17 +424,160 @@ function JobForm() {
                       <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
                         Category
                       </label>
-                      <input
-                        type="text"
-                        name="skills"
-                        id="skills"
-                        className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40"
-                        placeholder="Category"
-                        onKeyUp={handleSkillChange}
-                        onKeyDown={falseFlagsubmit}
-                      />
+                      <select
+                        value={category}
+                        onChange={handleCategoryChange}
+                        className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                      >
+                        <option value="" disabled hidden>
+                          Select a category
+                        </option>
+                        {filteredCategories.map((key) => (
+                          <option key={key} value={key}>
+                            {categories[key]}
+                          </option>
+                        ))}
+                      </select>
+                      {category === "other" && (
+                        <input
+                          type="text"
+                          value={customCategory}
+                          onChange={handleCustomCategoryChange}
+                          className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 mt-2"
+                          placeholder="Enter custom category"
+                        />
+                      )}
                     </div>
                   </div>
+                  <div className="sm:flex sm:space-x-8 bg-transparent font-Poppins w-full ">
+                    {/* WORK SETTINGS */}
+                    <div className="flex flex-col sm:w-1/2 justify-center items-start font-Poppins gap-1 ">
+                      <label className="block text-2xl font-semibold  mt-4 text-black">
+                        Work Setting
+                      </label>
+                      {/* Type */}
+                      <div className="flex flex-row w-full justify-between">
+                        {/* Full-Time */}
+                        <div className="fulltime w-1/3 flex items-center justify-start gap-1">
+                          <input
+                            type="checkbox"
+                            value="Full-Time"
+                            checked={fulltime}
+                            onChange={(e) => setFulltime(e.target.checked)}
+                            className="mb-1 checkbox checkbox-warning border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                          />
+                          <span className=" text-lg">Full-Time</span>
+                        </div>
+                        {/* Internship */}
+                        <div className="Internship  w-1/3 flex items-center justify-start gap-1">
+                          <input
+                            type="checkbox"
+                            value="Internship"
+                            checked={internship}
+                            onChange={(e) => setInternship(e.target.checked)}
+                            className="mb-1 checkbox checkbox-warning
+border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)]"
+                          />
+                          <span className=" text-lg">Internship</span>
+                        </div>
+                        {/* Contract */}
+                        <div className="Contract  w-1/3 flex items-center justify-start gap-1">
+                          <input
+                            type="checkbox"
+                            value="Contract"
+                            checked={contract}
+                            onChange={(e) => setContract(e.target.checked)}
+                            className="mb-1 checkbox checkbox-warning
+border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                          />
+                          <span className=" text-lg">Contract</span>
+                        </div>
+                      </div>
+                      {/* Job Setting */}
+                      <div className="flex flex-row w-full justify-between">
+                        {/* Remote */}
+                        <div className="remoteWork  w-1/3 flex items-center justify-start gap-1">
+                          <input
+                            type="checkbox"
+                            value="Remote"
+                            checked={remote}
+                            onChange={(e) => setRemote(e.target.checked)}
+                            className="mb-1 checkbox checkbox-success
+border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                          />
+                          <span className="text-lg">Remote</span>
+                        </div>
+                        {/* Hybrid */}
+                        <div className="hybridWork  w-1/3 flex items-center justify-start gap-1">
+                          <input
+                            type="checkbox"
+                            value="Hybrid"
+                            checked={hybrid}
+                            onChange={(e) => setHybrid(e.target.checked)}
+                            className="mb-1 checkbox checkbox-success
+border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                          />
+                          <span className=" text-lg">Hybrid</span>
+                        </div>
+                        {/* On-site */}
+                        <div className="onsite w-1/3 flex items-center justify-start gap-1">
+                          <input
+                            type="checkbox"
+                            value="On-site"
+                            checked={onsite}
+                            onChange={(e) => setOnsite(e.target.checked)}
+                            className="mb-1 checkbox checkbox-success ring-[1px] ring-[#777] border-none hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                          />
+                          <span className=" text-lg">On-Site</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="sm:w-1/2">
+                      <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                        Salary
+                      </label>
+                      <select
+                        name="dropdown"
+                        value={salary}
+                        onChange={(e) => setSalary(e.target.value)}
+                        className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                      >
+                        <option value="" disabled hidden>
+                          Salary Range
+                        </option>
+                        <option value="£10,000 - £15,000">
+                          £10,000 - £15,000 GBP
+                        </option>
+                        <option value="£15,000 - £25,000">
+                          £15,000 - £25,000 GBP
+                        </option>
+                        <option value="£25,000 - £35,000">
+                          £25,000 - £35,000 GBP
+                        </option>
+                        <option value="£35,000 - £45,000">
+                          £35,000 - £45,000 GBP
+                        </option>
+                        <option value="£45,000 - £60,000">
+                          £45,000 - £60,000 GBP
+                        </option>
+                        <option value="£60,000 - £80,000">
+                          £60,000 - £80,000 GBP
+                        </option>
+                        <option value="80plus">£80,000+ GBP</option>
+                      </select>
+                    </div>
+                  </div>
+                  {/* Description */}
+                  <div className="mt-4 text-black overflow-hidden ">
+                    <ReactQuill
+                      placeholder={jobPlaceholder}
+                      className="border-none"
+                      onChange={handleDescriptionChange}
+                      value={description}
+                      modules={modules}
+                    />
+                  </div>
+
                   <div className="sm:flex sm:space-x-8 bg-transparent font-Poppins">
                     {/* Company Name */}
                     <div className="w-full sm:w-1/2 bg-transparent font-Poppins">

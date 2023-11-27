@@ -1,25 +1,32 @@
-import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  CardCvcElement,
+  CardElement,
+  CardExpiryElement,
+  CardNumberElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaAngleLeft } from "react-icons/fa";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
   style: {
     base: {
-      iconColor: "#fff",
-      color: "#fff",
+      iconColor: "#000",
+      color: "#000",
       fontWeight: 500,
-      fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-      fontSize: "16px",
+      fontFamily: "Poppins, Roboto, Open Sans, Segoe UI, sans-serif",
+      fontSize: "22px",
       fontSmoothing: "antialiased",
-      ":-webkit-autofill": { color: "#fce883" },
-      "::placeholder": { color: "#fff" },
+      "::placeholder": { iconColor: "#000", color: "#a9a9a9", fontWeight: 300 },
     },
     invalid: {
-      iconColor: "#fffff00",
-      color: "#fffff00",
+      iconColor: "#000",
+      color: "#ff0000",
     },
   },
 };
@@ -48,6 +55,7 @@ export default function PaymentForm() {
     if (!stripe || !elements) {
       // Stripe.js hasn't loaded yet, or Elements isn't ready.
       // You may want to show an error message to the user.
+      console.log("Stripe.js or Elements not loaded yet");
       return;
     }
 
@@ -61,7 +69,7 @@ export default function PaymentForm() {
       try {
         // Confirm the PaymentIntent with the return_url
         const { id } = paymentMethod;
-        const response = await axios.post("/payment", {
+        const response = await axios.post("http://localhost:3000/payment", {
           amount: amount,
           id,
           description: user.name,
@@ -81,24 +89,88 @@ export default function PaymentForm() {
   };
 
   return (
-    <div className="mx-auto flex justify-center items-center">
+    <>
       {!success ? (
-        <form onSubmit={handleSubmit} className="sm:w-1/2 m-auto p-4 w-full">
-          <h1 className="font-Inter font-bold text-black text-center text-xl sm:text-5xl p-4">
-            Stripe Checkout
-          </h1>
-          <h1 className="text-center p-4 text-black/70 font-Inter  font-medium text-md">
-            Skillmint Job Listing Payment
-          </h1>
-          <h1 className="text-center p-4 text-black/70 font-Inter  font-medium text-md">
-            Amount: ${amount / 100}
-          </h1>
-          <fieldset className="FormGroupPF">
-            <div className="FormRowPF">
-              <CardElement options={CARD_OPTIONS} />
+        <form onSubmit={handleSubmit} className="h-screen">
+          <div className="h-screen w-full  sm:p-4 bg-transparent flex sm:flex-row flex-col sm:max-w-screen-xl mx-auto ">
+            <div className="Left flex flex-col h-1/4  sm:h-full sm:w-1/3  text-black sm:rounded-tl-xl sm:rounded-bl-xl ">
+              <div className="w-full h-full sm:h-5/6 flex flex-col justify-center items-center gap-5 sm:backdrop-blur-[2px] bg-white/50 rounded-tl-xl">
+                <h1 className="text-xl  font-Poppins ml-2 font-light bg-white/50 p-2 rounded-xl">
+                  To Pay
+                </h1>
+                <p className=" font-Poppins text-4xl font-medium sm:text-5xl bg-white/50 p-2 rounded-xl">
+                  £{amount / 100}
+                </p>
+              </div>
+              <div className="bg-black h-4/6 sm:h-1/6 w-full flex justify-center items-center sm:rounded-bl-xl px-4 ">
+                <h1 className="text-[1.4em] sm:text-[1.7rem] text-white font-Poppins flex gap-2 items-center justify-center">
+                  <FaAngleLeft className="text-5xl" />
+                  Cancel your payment
+                </h1>
+              </div>
             </div>
-          </fieldset>
-          <button className="btnPF">Pay</button>
+            <div className="Right sm:w-2/3  p-2 sm:p-10 w-full ">
+              <div className="flex flex-col mt-4 sm:mt-0 gap-8">
+                <h1 className="text-4xl sm:text-5xl font-Poppins font-semibold">
+                  Payment
+                </h1>
+                <div className="flex flex-row justify-between items-center gap-1 sm:gap-0 py-4">
+                  <h1 className="text-xl sm:text-3xl font-Poppins w-fit font-light">
+                    Pay with Card
+                  </h1>
+                  <img
+                    src="../../assets/stripe.png"
+                    alt=""
+                    className="sm:w-44 w-24"
+                  />
+                </div>
+              </div>
+              {/* <CardElement options={CARD_OPTIONS} /> */}
+              <div className="flex flex-col gap-4 sm:gap-10 relative sm:top-20 h-1/2 ">
+                <span className="w-full flex flex-col">
+                  <h1 className="font-Poppins text-2xl mb-2 text-[#444]">
+                    Card Number
+                  </h1>
+                  <fieldset className="FormGroupPF sm:w-full">
+                    <div className="FormRowPF">
+                      <CardNumberElement options={CARD_OPTIONS} />
+                    </div>
+                  </fieldset>{" "}
+                </span>
+                <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-12">
+                  <span className="w-full flex flex-col">
+                    <h1 className="font-Poppins text-2xl mb-2 text-[#444]">
+                      Expiration
+                    </h1>
+                    <fieldset className="FormGroupPF sm:w-full">
+                      <div className="FormRowPF">
+                        <CardExpiryElement options={CARD_OPTIONS} />
+                      </div>
+                    </fieldset>
+                  </span>
+                  <span className="w-full flex flex-col">
+                    <h1 className="font-Poppins text-2xl mb-2 text-[#444]">
+                      CVC/CVV
+                    </h1>
+                    <fieldset className="FormGroupPF sm:w-full">
+                      <div className="FormRowPF">
+                        <CardCvcElement options={CARD_OPTIONS} />
+                        {/* Display validation status */}
+                      </div>
+                    </fieldset>
+                  </span>
+                </div>
+                <div className="w-full  flex justify-center h-1/3 items-end">
+                  <button
+                    className="bg-black rounded-[4px] py-4 
+                   text-white font-Poppins  w-[350px] text-xl h-fit"
+                  >
+                    Pay
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
       ) : (
         <div className="flex flex-col justify-center items-center">
@@ -113,6 +185,6 @@ export default function PaymentForm() {
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 }

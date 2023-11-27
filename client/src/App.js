@@ -44,6 +44,7 @@ import AllJobsSA from "./components/Dashboard/Admin/AllJobsSA";
 import JobFormAdmin from "./components/Job/Post/JobFormAdmin";
 import AllUsers from "./components/Dashboard/Admin/AllStudents";
 import AllStudents from "./components/Dashboard/Admin/AllStudents";
+import JobForm from "./components/Job/Post/JobForm";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -82,12 +83,15 @@ function App() {
           location.pathname !== "/password-reset" &&
           location.pathname !== "/reset/:type/:token" &&
           location.pathname !== "/password-reset-admin" &&
+          location.pathname !== "/payment" &&
           location.pathname !== "/reset/:type/:token" && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
 
           <Route path="/browse" element={<Browse />} />
-          <Route path="/post" element={<Post />} />
+          {/*  <Route path="/post" element={<Post />} /> */}
+
+          <Route path="/post" element={<JobForm />} />
           <Route path="/contact" element={<Contact />} />
           {/* Normal */}
           <Route path="/login" element={<Login />} />

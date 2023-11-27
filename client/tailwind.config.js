@@ -10,6 +10,9 @@ module.exports = {
         Oswald: ["Oswald", "sans-serif"],
         Handlee: ["Handlee", "cursive"],
       },
+      backgroundImage: {
+        paymentBG: "url('./assets/ten_payment.svg')",
+      },
     },
   },
 

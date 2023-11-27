@@ -1,0 +1,18 @@
+{
+  "engineering": "Engineering and Development",
+  "executive": "Executive and Management",
+  "finance_accounting": "Finance and Accounting",
+  "it_systems": "IT and Systems",
+  "marketing_sales": "Marketing and Sales",
+  "healthcare_medical": "Healthcare and Medical",
+  "design_creative": "Design and Creative",
+  "education_teaching": "Education and Teaching",
+  "hr_admin": "Human Resources and Administration",
+  "data_analytics": "Data and Analytics",
+  "legal_compliance": "Legal and Compliance",
+  "ecommerce_sales": "E-commerce and Sales",
+  "tech_innovation": "Technology and Innovation",
+  "customer_support": "Customer Support and Service",
+  "remote_freelance": "Remote and Freelance",
+  "other": "Other"
+}
