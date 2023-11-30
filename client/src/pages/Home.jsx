@@ -8,10 +8,7 @@ import "../assets/slick-carousel/slick/slick-theme.css";
 import FeaturedCardComp from "../components/Job/Components/FeaturedCardComp";
 import JobBoardComponent from "../components/Job/Components/JobBoardComponent";
 import SearchComponent from "../components/Misc/Search";
-import {
-  HiOutlineChevronDoubleDown,
-  HiOutlineChevronDoubleUp,
-} from "react-icons/hi";
+
 import "semantic-ui-css/semantic.min.css";
 import "../assets/slider.css";
 import settings from "../components/Misc/slider_settings";
@@ -27,6 +24,7 @@ function Home() {
     (state) => state.jobs
   );
   const { student } = useSelector((state) => state.students);
+
   useEffect(() => {
     dispatch(getAllJobs());
 
@@ -34,36 +32,73 @@ function Home() {
       dispatch(reset());
     };
   }, [navigate, isError, message, dispatch]);
+  const [FfilteredJobs, setFFilteredJobs] = useState([]);
+  const [sortBy, setSortBy] = useState("LATEST");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+  const [salaryFilter, setSalaryFilter] = useState("");
 
-  const remoteJobs = jobs.filter((job) =>
-    job.setting.find((item) => item.name === "Remote" && item.value === true)
-  );
-  const [visibleJobs, setVisibleJobs] = useState(10);
-  const itemsPerPage = 10; // Adjust this to the number of jobs to display per page
-  const sortedJobs = [...jobs].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 8;
+
+  const handleSortChange = (selectedValue) => {
+    // Handle the sorting change here, for example, update the sortBy state
+    setSortBy(selectedValue);
+  };
+  useEffect(() => {
+    // Apply filters
+    let filtered = [...jobs];
+
+    // Category
+    if (categoryFilter !== "") {
+      filtered = filtered.filter((job) => job.department === categoryFilter);
+    }
+
+    // Location
+    if (locationFilter !== "") {
+      filtered = filtered.filter((job) => job.country === locationFilter);
+    }
+
+    // Salary
+    if (salaryFilter !== "") {
+      filtered = filtered.filter((job) => job.salary === salaryFilter);
+    }
+
+    // Sort
+    if (sortBy === "ASCENDING") {
+      filtered.sort((a, b) =>
+        a.position
+          .trim()
+          .toLowerCase()
+          .localeCompare(b.position.trim().toLowerCase())
+      );
+    } else if (sortBy === "DESCENDING") {
+      filtered.sort((a, b) =>
+        b.position
+          .trim()
+          .toLowerCase()
+          .localeCompare(a.position.trim().toLowerCase())
+      );
+    } else {
+      // Default to sorting by latest
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    // Apply pagination
+    const indexOfLastJob = currentPage * jobsPerPage;
+    const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+    const currentJobs = filtered;
+
+    setFFilteredJobs(currentJobs);
+  }, [jobs, categoryFilter, locationFilter, salaryFilter, sortBy, currentPage]);
+
+  const itemsPerPage = 10;
+  const [visibleJobs, setVisibleJobs] = useState(itemsPerPage);
 
   const showMoreJobs = () => {
     setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 5);
   };
 
-  const showLessJobs = () => {
-    setVisibleJobs((prevVisibleJobs) => prevVisibleJobs - 5);
-  };
-  // Function to calculate the height of each card based on its content
-  const calculateCardHeight = (job) => {
-    // Add your logic to calculate the height based on job content
-    // For example, you can use the number of lines in the job description
-    const numberOfLines = job.description.split("\n").length;
-    const baseHeight = 100; // Adjust this based on your design
-    const lineHeight = 20; // Adjust this based on your design
-    return baseHeight + numberOfLines * lineHeight;
-  };
-  // Assuming jobs is an array of job objects
-  const maxCardHeight = Math.max(
-    ...jobs.map((job) => calculateCardHeight(job))
-  );
   const [searchQuery, setSearchQuery] = useState("");
   const [banner, setBanner] = useState(true);
 
@@ -71,24 +106,6 @@ function Home() {
     setBanner(false);
   };
 
-  const filteredJobs = searchQuery
-    ? jobs.filter((job) => {
-        const lowerCaseQuery = searchQuery.toLowerCase();
-
-        return (
-          job.position.toLowerCase().includes(lowerCaseQuery) ||
-          job.company.toLowerCase().includes(lowerCaseQuery) ||
-          job.city.toLowerCase().includes(lowerCaseQuery) ||
-          job.skills.some((skill) =>
-            skill.toLowerCase().includes(lowerCaseQuery)
-          )
-        );
-      })
-    : jobs;
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
   if (isLoading) {
     return (
       <div className="w-full flex-1 flex justify-center items-start h-screen">
@@ -104,7 +121,7 @@ function Home() {
       {/* Search component */}
       <div className="flex w-full justify-center items-center min-h-max max-w-md mx-auto my-6 mb-14">
         <div className="flex justify-end flex-1 scale-125">
-          <SearchComponent onSearch={handleSearch} className="h-24" />
+          <SearchComponent className="h-24" />
         </div>
       </div>
       {/* BANNER */}
@@ -156,76 +173,42 @@ function Home() {
           />
         </span>
       </div>
-      <div className=" w-full flex justify-between">
-        <div className="space-x-4 ">
-          <SearchCat />
-          <Location />
-          <PayRange />
+      <div className="w-full flex justify-between flex-col sm:flex-row gap-2 sm:gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Location setLocationFilter={setLocationFilter} />
+          <SearchCat setCategoryFilter={setCategoryFilter} />
         </div>
-
-        <SortingFilter />
+        <div className="flex flex-col sm:flex-row gap-4">
+          <PayRange setSalaryFilter={setSalaryFilter} />
+          <SortingFilter handleSortChange={handleSortChange} />
+        </div>
       </div>
 
-      {/* Conditionally render the message */}
-      {/* <h1 className="text-center font-medium py-4 text-2xl text-[#333] select-none font-Poppins tracking-wide">
-        REMOTE
-      </h1>
-      <div className="Carousel Slider cursor-pointer rounded-[3rem]">
-        <Slider {...settings}>
-          {remoteJobs.length === 0 ? (
-            <p className="text-2xl font-Inter">No Jobs Found</p>
-          ) : (
-            remoteJobs.map((job) => (
-              <div
-                key={job._id}
-                className=""
-                style={{ minHeight: `${maxCardHeight}px` }}
-              >
-                <FeaturedCardComp job={job} />
-              </div>
-            ))
-          )}
-        </Slider>
-      </div> */}
-
       <div className="recent pb-10  mx-auto">
-        {filteredJobs.length === 0 ? (
-          <p className="text-2xl text-white text-center">No jobs found</p>
-        ) : (
-          <>
-            {filteredJobs.slice(0, visibleJobs).map((job) => (
-              <JobBoardComponent job={job} key={job._id} />
-            ))}
-
-            {/* Show More and Show Less buttons */}
-            <div className="flex flex-row justify-center items-center gap-10  py-4">
-              {filteredJobs.length > visibleJobs && (
-                <button
-                  onClick={showMoreJobs}
-                  className="flex justify-center items-center w-[159px] h-[43px] ease-in-out duration-200 bg-[#C83055]  uppercase font-Poppins  px-3 rounded-xl py-2 text-white hover:text-white hover:scale-105 font-bold z-40 
+        <>
+          {Array.isArray(FfilteredJobs) ? (
+            FfilteredJobs.slice(0, visibleJobs).map((job) => (
+              <>
+                <JobBoardComponent job={job} key={job._id} />
+              </>
+            ))
+          ) : (
+            <p>Loading All Jobs...</p>
+          )}
+          {/* Show More and Show Less buttons */}
+          <div className="flex flex-row justify-center items-center gap-10  py-4">
+            {FfilteredJobs.length > visibleJobs && (
+              <button
+                onClick={showMoreJobs}
+                className="flex justify-center items-center w-[159px] h-[43px] ease-in-out duration-200 bg-[#C83055]  uppercase font-Poppins  px-3 rounded-xl py-2 text-white hover:text-white hover:scale-105 font-bold z-40 
                     "
-                >
-                  Load more
-                </button>
-              )}
-              {visibleJobs > itemsPerPage && (
-                <>
-                  {/*                   
-                  <button
-                    onClick={showLessJobs}
-                    className="primary-btn duration-200 ease-in-out shadow-[0px_4px_7px_rgb(0,0,0,0.4)]
-                   flex items-center justify-center
-                   bg-[#1c1f21] hover:bg-[#d0333c] 
-                   text-[#d4d7d7] hover:text-[#d4d7d7]
-                     w-12 h-12  rounded-full"
-                  >
-                    Load less
-                  </button> */}
-                </>
-              )}
-            </div>
-          </>
-        )}
+              >
+                Load more
+              </button>
+            )}
+            {visibleJobs > itemsPerPage && <></>}
+          </div>
+        </>
       </div>
     </div>
   );

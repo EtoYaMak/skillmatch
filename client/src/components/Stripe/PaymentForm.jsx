@@ -62,7 +62,7 @@ export default function PaymentForm() {
     // Create a PaymentMethod using the CardElement.
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
-      card: elements.getElement(CardElement),
+      card: elements.getElement(CardNumberElement),
     });
 
     if (!error) {

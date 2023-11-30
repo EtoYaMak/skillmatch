@@ -29,8 +29,16 @@
 .rolesfilter::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/* Default style for larger screens */
 .adminNav button {
   width: 160px;
+}
+
+/* Media query for screens 425px and below */
+@media (max-width: 640px) {
+  .adminNav button {
+    width: auto;
+  }
 }
 
 .FormGroupPF {

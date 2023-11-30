@@ -1,60 +1,54 @@
-import React, { useState, useRef } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import React, { useState } from "react";
+import { MdOutlineCancel } from "react-icons/md";
+function PayRange({ setSalaryFilter }) {
+  const [selectedRange, setSelectedRange] = useState("");
 
-function PayRange() {
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const [sliderValue, setSliderValue] = useState(40);
-  const dropdownRef = useRef(null);
-
-  const handleInputFocus = () => {
-    setIsDropdownVisible(true);
+  const handleRangeSelect = (value) => {
+    setSelectedRange(value);
+    setSalaryFilter(value);
   };
-
-  const handleInputBlur = () => {
-    setIsDropdownVisible(false);
+  const handleResetInput = () => {
+    setSelectedRange("");
+    setSalaryFilter("");
   };
-
-  const handleSliderChange = (event) => {
-    setSliderValue(parseInt(event.target.value, 10));
-  };
-
-  const handleDropdownClick = (event) => {
-    // Prevent closing the dropdown when clicking inside it
-    event.stopPropagation();
-  };
+  const salaryRanges = [
+    { value: "£10,000 - £15,000", label: "£10k - £15k GBP" },
+    { value: "£15,000 - £25,000", label: "£15k - £25k GBP" },
+    { value: "£25,000 - £35,000", label: "£25k - £35k GBP" },
+    { value: "£35,000 - £45,000", label: "£35k - £45k GBP" },
+    { value: "£45,000 - £60,000", label: "£45k - £60k GBP" },
+    { value: "£60,000 - £80,000", label: "£60k - £80k GBP" },
+    { value: "80plus", label: "£80k+ GBP" },
+  ];
 
   return (
-    <>
-      <div className="relative inline-block w-[150px] h-[40px]">
-        <input
-          type="text"
-          placeholder="Location"
-          className="w-full font-Poppins rounded-[2em] border-[1px] h-12 px-4 text-[16px] font-medium hover:bg-[#e1e1e1]"
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-        />
-        <FaChevronDown className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-transparent" />
-        <div
-          className={`w-[250px] h-[80px] absolute border border-black bg-white z-[99] overflow-hidden text-[16px] p-5 rounded-l-3xl space-y-2 ${
-            isDropdownVisible ? "" : "hidden"
-          }`}
-          onClick={handleDropdownClick}
-          ref={dropdownRef}
+    <div className="relative inline-block w-full  max-[365px]:max-w-fit h-[40px] ">
+      {selectedRange && (
+        <button
+          onClick={handleResetInput}
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent"
         >
-          <span className="flex justify-between">
-            <h1>Minimum</h1> <h1>{sliderValue}k/year</h1>
-          </span>
-          <input
-            type="range"
-            min={0}
-            max={200}
-            value={sliderValue}
-            onChange={handleSliderChange}
-            className="range hover:cursor-cell"
-          />
-        </div>
-      </div>
-    </>
+          <MdOutlineCancel size={22} className="text-black/60" />
+        </button>
+      )}
+      <select
+        id="salaryRange"
+        value={selectedRange}
+        onChange={(e) => handleRangeSelect(e.target.value)}
+        className={` ${
+          selectedRange ? "pl-8 w-full sm:w-[200px]" : " w-full sm:w-[155px]"
+        } font-Poppins rounded-[2em] border-[1px] h-12 px-4 text-[16px] font-medium hover:bg-[#e1e1e1]/20`}
+      >
+        <option value="" hidden disabled className="">
+          Salary Range
+        </option>
+        {salaryRanges.map((range) => (
+          <option key={range.value} value={range.value} className="">
+            {range.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 

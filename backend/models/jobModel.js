@@ -22,7 +22,11 @@ const jobSchema = mongoose.Schema(
       type: String,
       /* required: [true, "Please enter the job location"], */
     },
-    location: {
+    department: {
+      type: String,
+      /* required: [true, "Please enter the job location"], */
+    },
+    salary: {
       type: String,
       /* required: [true, "Please enter the job location"], */
     },
@@ -37,6 +41,9 @@ const jobSchema = mongoose.Schema(
     website: {
       type: String,
       /* required: [true, "Please enter the company website"], */
+    },
+    logo: {
+      type: String,
     },
     type: [
       {
@@ -60,9 +67,6 @@ const jobSchema = mongoose.Schema(
         _id: false,
       },
     ],
-    logo: {
-      type: String,
-    },
     description: {
       type: String,
     },

@@ -15,7 +15,6 @@ let jobPlaceholder =
 
 function JobForm() {
   const [position, setPosition] = useState("");
-
   const [careerPage, setCareerPage] = useState("");
   const [company, setCompany] = useState("");
   const [website, setWebsite] = useState("");

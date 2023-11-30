@@ -13,10 +13,6 @@ const path = require("path");
 // Load environment variables
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
 
-//
-//const DIR = path.join(__dirname, "../../client/public/uploads/");
-/* const DIR = "../../client/public/uploads"; */
-
 /////////////////////////////////////////////////////
 // @desc Get job by ID
 // @route GET /api/jobs/:id
@@ -103,7 +99,6 @@ const setJob = async (req, res) => {
 
     const type = [
       { name: "Full-time", value: req.body.fulltime },
-      { name: "Part-time", value: req.body.parttime },
       { name: "Internship", value: req.body.internship },
       { name: "Contract", value: req.body.contract },
     ];
@@ -119,7 +114,8 @@ const setJob = async (req, res) => {
       position,
       city,
       country,
-      location,
+      department,
+      salary,
       careerPage,
       company,
       website,
@@ -136,7 +132,8 @@ const setJob = async (req, res) => {
       position,
       city,
       country,
-      location,
+      department,
+      salary,
       careerPage,
       company,
       website,
@@ -201,7 +198,8 @@ const updateJob = async (req, res) => {
       position,
       city,
       country,
-      location,
+      department,
+      salary,
       careerPage,
       company,
       website,
@@ -211,7 +209,6 @@ const updateJob = async (req, res) => {
 
     const type = [
       { name: "Full-time", value: req.body.fulltime },
-      { name: "Part-time", value: req.body.parttime },
       { name: "Internship", value: req.body.internship },
       { name: "Contract", value: req.body.contract },
     ];
@@ -229,7 +226,8 @@ const updateJob = async (req, res) => {
         position,
         city,
         country,
-        location,
+        department,
+        salary,
         careerPage,
         company,
         website,
@@ -248,70 +246,6 @@ const updateJob = async (req, res) => {
   }
 };
 
-/* const updateJob = async (req, res) => {
-  try {
-    const jobId = req.params.id;
-    const ujob = await Job.findById(jobId);
-
-    if (!ujob) {
-      return res.status(404).json({ message: "Job not found" });
-    }
-
-    // Check if a new image is provided and process it
-    if (req.file) {
-      // Delete the old image from S3 if it exists
-      if (ujob.logo) {
-        const urlParts = ujob.logo.split("/");
-        const key = `job-images/${urlParts[urlParts.length - 1]}`;
-        await deleteObjectFromS3(key);
-      }
-
-      // Resize and upload the new image
-      const resizedImage = await sharp(req.file.buffer)
-        .resize(360, 360, { fit: "cover", position: "center" })
-        .toBuffer();
-
-      const s3Client = new S3Client({
-        region: AWS_REGION,
-        credentials: {
-          accessKeyId: AWS_ACCESS_KEY_ID,
-          secretAccessKey: AWS_SECRET_ACCESS_KEY,
-        },
-      });
-
-      const uploadParams = {
-        Bucket: "skillmint-job-images",
-        Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
-        Body: resizedImage,
-        ACL: "public-read",
-        ContentType: req.file.mimetype,
-      };
-
-      await s3Client.send(new PutObjectCommand(uploadParams));
-
-      req.body.logo = `https://${uploadParams.Bucket}.s3.amazonaws.com/${uploadParams.Key}`;
-    }
-
-    // Update other properties in req.body as needed
-
-    const updatedData = {
-      ...req.body,
-    };
-
-    // Update the job in the database
-    const updatedJob = await Job.findByIdAndUpdate(jobId, updatedData, {
-      new: true,
-    });
-
-    // Debugging: Check the updated job returned from MongoDB
-    console.log("Updated Job from DB:", updatedJob);
-
-    res.status(200).json(updatedJob);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
- */
 // @desc Delete Jobs
 // @route DELETE /api/jobs/:id
 // @access Private
