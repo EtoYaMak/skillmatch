@@ -46,12 +46,20 @@ function SearchCat({ setCategoryFilter }) {
     const value = event.target.value;
     setSearchTerm(value);
     setInputValue(value);
-    const filteredDepartments = Object.values(departmentsList).filter(
-      (department) => department.toLowerCase().startsWith(value.toLowerCase())
-    );
-    setDepartments(filteredDepartments);
-  };
 
+    if (value.trim() === "") {
+      // Handle the case when the input value becomes empty
+      setInputValue("");
+      setCategoryFilter("");
+      setDepartments(Object.values(departmentsList)); // Reset the departments list
+    } else {
+      // Update the departments list based on the input value
+      const filteredDepartments = Object.values(departmentsList).filter(
+        (department) => department.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setDepartments(filteredDepartments);
+    }
+  };
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {

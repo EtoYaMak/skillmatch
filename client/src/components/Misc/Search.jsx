@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-
+// SearchComponent.jsx
 import { FaSearch } from "react-icons/fa";
+import { useState } from "react";
 
 export default function SearchComponent({ onSearch }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +29,6 @@ export default function SearchComponent({ onSearch }) {
           onKeyPress={handleKeyPress}
         />
         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-transparent flex gap-2 justify-evenly items-center text-[#333]">
-          {/* <BsSearch size={24} className="bg-transparent" /> */}
           <FaSearch size={24} className="bg-transparent" />
         </span>
       </div>

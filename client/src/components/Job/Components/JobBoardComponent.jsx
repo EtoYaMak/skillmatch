@@ -6,7 +6,7 @@ import ApplyJobButton from "../../Misc/ApplyJobButton";
 
 function JobBoardComponent({ job }) {
   const jobId = job._id;
-  const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.auth);
   const { SAuser } = useSelector((state) => state.SAuser);
   const { student } = useSelector((state) => state.students);
@@ -21,16 +21,17 @@ function JobBoardComponent({ job }) {
   };
 
   const skills = job.skills ? [...job.skills] : [];
-  // Find the country code based on a partial match of the country name
-  const countryCode = countriesData.find(
-    (country) => country.Name === job.country
-  )?.Code;
-  //2px solid #fff1a7
+
   return (
     <>
       <div
-        className="jobcomp max-[640px]:gap-2 my-4 h-[105px] flex flex-col bg-[#ffd50033] min-[600px]:flex-row items-center border-[2px] border-solid border-[#fff1a7]  rounded-2xl font-Poppin w-full
-       duration-200 ease-in-out cursor-pointer z-0"
+        className={`jobcomp max-[640px]:gap-2 my-4 h-[105px] flex flex-col min-[600px]:flex-row items-center border-[2px] border-solid rounded-2xl font-Poppin w-full duration-200 ease-in-out cursor-pointer z-0 ${
+          job.setting.find(
+            (setting) => setting.name === "Remote" && setting.value
+          )
+            ? "bg-[#ffd50033] border-[#fff1a7]"
+            : "" // Add additional styles for non-remote jobs if needed
+        }`}
         onClick={handleClick}
       >
         <div className="w-3/6">
@@ -48,9 +49,9 @@ function JobBoardComponent({ job }) {
                   {job.company}
                 </h3>
                 <div className="text-white min-w-max max-w-fit w-full flex items-center justify-start select-none gap-2">
-                  <h1 className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.60rem] py-[0.28rem] ">
-                    {job.country}
-                  </h1>
+                  {/*                   <h1 className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.60rem] py-[0.28rem] ">
+                    {job.city}
+                  </h1> */}
                   <h1 className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.60rem] py-[0.28rem] ">
                     {job.country}
                   </h1>
@@ -60,7 +61,10 @@ function JobBoardComponent({ job }) {
                       .filter((jobSetting) => jobSetting.value) // Only keep settings with value true
                       .slice(0, 1)
                       .map((jobSetting, index) => (
-                        <h1 className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.50rem] py-[0.25rem] ">
+                        <h1
+                          key={index} //This was missing
+                          className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.50rem] py-[0.25rem] "
+                        >
                           {jobSetting.name.charAt(0).toUpperCase() +
                             jobSetting.name.slice(1)}
                         </h1>
@@ -72,13 +76,18 @@ function JobBoardComponent({ job }) {
         </div>
 
         <div className="bg-transparent flex flex-wrap items-center justify-start gap-1 text-sm text-white h-full w-2/6 ">
-          <h1 className="font-Poppins text-[12px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[5px] ">
-            Featured
-          </h1>
+          {job.setting.find(
+            (setting) => setting.name === "Remote" && setting.value
+          ) ? (
+            <h1 className="font-Poppins text-[12px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[5px] ">
+              Featured
+            </h1>
+          ) : null}
+
           {!showDropdown &&
             skills.slice(0, 2).map((skill, index) => (
               <span
-                key={index}
+                key={index} // Use the index as the key
                 className={`font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] rounded-[9px] ${
                   isHovered ? " " : " "
                 }`}
@@ -89,7 +98,7 @@ function JobBoardComponent({ job }) {
         </div>
         <div className="w-1/6 flex justify-center ">
           {student && (
-            <div className="text-white flex justify-center pt-1 sm:pt-0 sm:justify-end w-full sm:w-auto select-none px-2 z-40 ">
+            <div className=" flex justify-center pt-1 sm:pt-0 sm:justify-end w-full sm:w-auto select-none px-2 z-40 ">
               <ApplyJobButton jobId={job._id} />
             </div>
           )}

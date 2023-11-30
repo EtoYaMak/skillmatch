@@ -40,11 +40,19 @@ function Location({ setLocationFilter }) {
   const handleInputChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
-    setInputValue(value); // Update input value when the user types
-    const filteredCountries = countriesList.filter((country) =>
-      country.Name.toLowerCase().startsWith(value.toLowerCase())
-    );
-    setCountries(filteredCountries);
+    setInputValue(value);
+
+    if (value.trim() === "") {
+      // Handle the case when the input value becomes empty
+      setSelectedCountry(""); // Reset the selected country
+      setLocationFilter(""); // Reset the location filter
+    } else {
+      // Update the countries list based on the input value
+      const filteredCountries = countriesList.filter((country) =>
+        country.Name.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setCountries(filteredCountries);
+    }
   };
 
   useEffect(() => {

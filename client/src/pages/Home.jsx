@@ -37,7 +37,7 @@ function Home() {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [salaryFilter, setSalaryFilter] = useState("");
-
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 8;
 
@@ -45,10 +45,20 @@ function Home() {
     // Handle the sorting change here, for example, update the sortBy state
     setSortBy(selectedValue);
   };
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
   useEffect(() => {
     // Apply filters
     let filtered = [...jobs];
-
+    // Search
+    if (searchQuery !== "") {
+      filtered = filtered.filter(
+        (job) =>
+          job.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.company.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
     // Category
     if (categoryFilter !== "") {
       filtered = filtered.filter((job) => job.department === categoryFilter);
@@ -90,16 +100,77 @@ function Home() {
     const currentJobs = filtered;
 
     setFFilteredJobs(currentJobs);
-  }, [jobs, categoryFilter, locationFilter, salaryFilter, sortBy, currentPage]);
+  }, [
+    jobs,
+    categoryFilter,
+    locationFilter,
+    salaryFilter,
+    sortBy,
+    currentPage,
+    searchQuery,
+  ]);
+  /*   const handleSearch = (query) => {
+    // Set the search query state
+    setSearchQuery(query);
 
-  const itemsPerPage = 10;
+    // Apply filters and search
+    let filtered = [...jobs];
+
+    // Search
+    if (query !== "") {
+      filtered = filtered.filter(
+        (job) =>
+          job.position.toLowerCase().includes(query.toLowerCase()) ||
+          job.company.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+
+    // Category
+    if (categoryFilter !== "") {
+      filtered = filtered.filter((job) => job.department === categoryFilter);
+    }
+
+    // Location
+    if (locationFilter !== "") {
+      filtered = filtered.filter((job) => job.country === locationFilter);
+    }
+
+    // Salary
+    if (salaryFilter !== "") {
+      filtered = filtered.filter((job) => job.salary === salaryFilter);
+    }
+
+    // Sort
+    if (sortBy === "ASCENDING") {
+      filtered.sort((a, b) =>
+        a.position
+          .trim()
+          .toLowerCase()
+          .localeCompare(b.position.trim().toLowerCase())
+      );
+    } else if (sortBy === "DESCENDING") {
+      filtered.sort((a, b) =>
+        b.position
+          .trim()
+          .toLowerCase()
+          .localeCompare(a.position.trim().toLowerCase())
+      );
+    } else {
+      // Default to sorting by latest
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    const currentJobs = filtered;
+
+    setFFilteredJobs(currentJobs.slice(0, visibleJobs));
+  }; */
+  const itemsPerPage = 5;
   const [visibleJobs, setVisibleJobs] = useState(itemsPerPage);
 
   const showMoreJobs = () => {
     setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 5);
   };
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [banner, setBanner] = useState(true);
 
   const hideBanner = () => {
@@ -121,7 +192,7 @@ function Home() {
       {/* Search component */}
       <div className="flex w-full justify-center items-center min-h-max max-w-md mx-auto my-6 mb-14">
         <div className="flex justify-end flex-1 scale-125">
-          <SearchComponent className="h-24" />
+          <SearchComponent onSearch={handleSearch} className="h-24" />
         </div>
       </div>
       {/* BANNER */}
@@ -148,28 +219,24 @@ function Home() {
         </div>
       )}
       {/* TRUSTED BY */}
-      <div className="flex font-Poppins gap-1 py-6 mb-12">
-        <p className="text-[11px] min-w-fit">Trusted by </p>
+      <div className="flex font-Poppins gap-1 py-6 mb-12 mx-8">
+        <p className="text-[14px] min-w-fit">Trusted by </p>
         <span className="flex flex-row overflow-x-clip justify-between w-full ">
           <img
             src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 grayscale hover:grayscale-0"
+            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
           />
           <img
             src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 grayscale hover:grayscale-0"
+            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
           />
           <img
             src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 grayscale hover:grayscale-0"
+            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
           />
           <img
             src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 grayscale hover:grayscale-0"
-          />
-          <img
-            src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 grayscale hover:grayscale-0"
+            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
           />
         </span>
       </div>
@@ -184,13 +251,13 @@ function Home() {
         </div>
       </div>
 
-      <div className="recent pb-10  mx-auto">
+      <div className="recent pb-10 px-2  mx-auto">
         <>
           {Array.isArray(FfilteredJobs) ? (
             FfilteredJobs.slice(0, visibleJobs).map((job) => (
-              <>
-                <JobBoardComponent job={job} key={job._id} />
-              </>
+              <React.Fragment key={job._id}>
+                <JobBoardComponent job={job} />
+              </React.Fragment>
             ))
           ) : (
             <p>Loading All Jobs...</p>
@@ -200,13 +267,11 @@ function Home() {
             {FfilteredJobs.length > visibleJobs && (
               <button
                 onClick={showMoreJobs}
-                className="flex justify-center items-center w-[159px] h-[43px] ease-in-out duration-200 bg-[#C83055]  uppercase font-Poppins  px-3 rounded-xl py-2 text-white hover:text-white hover:scale-105 font-bold z-40 
-                    "
+                className="flex justify-center items-center w-[159px] h-[43px] ease-in-out duration-200 bg-[#C83055]  uppercase font-Poppins  px-3 rounded-xl py-2 text-white hover:text-white hover:scale-105 font-bold z-40"
               >
                 Load more
               </button>
             )}
-            {visibleJobs > itemsPerPage && <></>}
           </div>
         </>
       </div>
