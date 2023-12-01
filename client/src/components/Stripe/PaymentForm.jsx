@@ -103,10 +103,13 @@ export default function PaymentForm() {
                 </p>
               </div>
               <div className="bg-black h-4/6 sm:h-1/6 w-full flex justify-center items-center sm:rounded-bl-xl px-4 ">
-                <h1 className="text-[1.4em] sm:text-[1.7rem] text-white font-Poppins flex gap-2 items-center justify-center">
+                <a
+                  href="/"
+                  className="text-[1.4em] sm:text-[1.7rem] text-white font-Poppins flex gap-2 items-center justify-center hover:text-white hover:bg-[#fff]/10 rounded-xl p-2 pr-5"
+                >
                   <FaAngleLeft className="text-5xl" />
-                  Cancel your payment
-                </h1>
+                  Cancel
+                </a>
               </div>
             </div>
             <div className="Right sm:w-2/3  p-2 sm:p-10 w-full ">

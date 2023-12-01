@@ -11,7 +11,7 @@ import {
 function ProfileForm({ handleView, handleDownload, profile }) {
   return (
     <form
-      className="space-y-4 px-4 w-full select-none mx-auto font-Poppins"
+      className="space-y-4 px-4 w-full select-none mx-auto font-Poppins h-fit"
       encType="multipart/form-data"
     >
       {/* Profile form content */}
@@ -92,7 +92,7 @@ function CreateNewProfileForm({
 }) {
   return (
     <form
-      className="space-y-4 px-4 sm:px-0 w-full select-none mx-auto font-Poppins"
+      className="space-y-4 px-4 sm:px-0 w-full select-none mx-auto font-Poppins h-fit"
       encType="multipart/form-data"
     >
       {/* Create new profile form content */}
@@ -340,7 +340,7 @@ function StudeProfile() {
   };
 
   return (
-    <div className="Container flex flex-col items-center  w-full max-w-2xl mx-auto p-4 rounded-3xl h-full">
+    <div className="Container flex flex-col items-center  w-full max-w-2xl mx-auto p-4 rounded-3xl h-screen">
       <div className="Buttons flex flex-col w-full md:flex-row gap-4 justify-center py-10 font-Poppins">
         <button
           className={`btn btn-ghost ${

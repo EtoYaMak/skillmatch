@@ -109,61 +109,7 @@ function Home() {
     currentPage,
     searchQuery,
   ]);
-  /*   const handleSearch = (query) => {
-    // Set the search query state
-    setSearchQuery(query);
 
-    // Apply filters and search
-    let filtered = [...jobs];
-
-    // Search
-    if (query !== "") {
-      filtered = filtered.filter(
-        (job) =>
-          job.position.toLowerCase().includes(query.toLowerCase()) ||
-          job.company.toLowerCase().includes(query.toLowerCase())
-      );
-    }
-
-    // Category
-    if (categoryFilter !== "") {
-      filtered = filtered.filter((job) => job.department === categoryFilter);
-    }
-
-    // Location
-    if (locationFilter !== "") {
-      filtered = filtered.filter((job) => job.country === locationFilter);
-    }
-
-    // Salary
-    if (salaryFilter !== "") {
-      filtered = filtered.filter((job) => job.salary === salaryFilter);
-    }
-
-    // Sort
-    if (sortBy === "ASCENDING") {
-      filtered.sort((a, b) =>
-        a.position
-          .trim()
-          .toLowerCase()
-          .localeCompare(b.position.trim().toLowerCase())
-      );
-    } else if (sortBy === "DESCENDING") {
-      filtered.sort((a, b) =>
-        b.position
-          .trim()
-          .toLowerCase()
-          .localeCompare(a.position.trim().toLowerCase())
-      );
-    } else {
-      // Default to sorting by latest
-      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    }
-
-    const currentJobs = filtered;
-
-    setFFilteredJobs(currentJobs.slice(0, visibleJobs));
-  }; */
   const itemsPerPage = 5;
   const [visibleJobs, setVisibleJobs] = useState(itemsPerPage);
 
@@ -185,73 +131,68 @@ function Home() {
     );
   }
   return (
-    <div className="justify-between items-center    mx-auto  bg-inherit max-w-[1100px]">
-      <h1 className="text-center py-4 text-4xl text-[#333] select-none font-Poppins tracking-wide max-w-xs mx-auto font-bold">
+    <div className="mx-auto  bg-inherit max-w-[1240px]">
+      <h1 className="text-center py-4 sm:text-4xl text-[#333] select-none font-Poppins tracking-wide max-w-xs mx-auto font-bold ">
         Find a Job Find a Job Find a Job
       </h1>
       {/* Search component */}
-      <div className="flex w-full justify-center items-center min-h-max max-w-md mx-auto my-6 mb-14">
-        <div className="flex justify-end flex-1 scale-125">
+      <div className="flex sm:w-full justify-center items-center min-h-max max-w-md mx-auto min-[425px]:my-6 my-2 sm:mb-14">
+        <div className="flex justify-end flex-1 sm:scale-125">
           <SearchComponent onSearch={handleSearch} className="h-24" />
         </div>
       </div>
       {/* BANNER */}
       {banner && (
-        <div className="flex w-full px-[8rem] py-[2rem] rounded-3xl mx-auto justify-center items-center bg-transparent border text-black gap-4 font-Poppins text-lg">
-          <p className="w-full max-w-fit">
-            👉Currently Hiring? Reach out to our{" "}
-            <a href="#" className="underline underline-offset-4">
-              Members
-            </a>{" "}
-            on the 🏆best job portal
-          </p>
-          <span className="flex gap-4 w-full max-w-fit">
-            <button className="bg-white text-black px-5 py-3 rounded-lg border border-black/20 hover:border-black/40  ">
-              Post A Job
-            </button>
-            <button
-              className="bg-white text-black px-5 py-3 rounded-lg border border-black/20 hover:border-black/40  "
-              onClick={hideBanner}
-            >
-              Hide This
-            </button>
-          </span>
-        </div>
+        <>
+          <div className=" hidden sm:flex sm:flex-row flex-col w-full px-2 sm:px-[4rem] py-[2rem] rounded-3xl mx-auto justify-between items-center bg-[#1f1f1f] border text-white  gap-4 font-Poppins text-lg max-w-[800px]">
+            <p className="w-full max-w-fit">
+              👉Currently Hiring? Reach out to our{" "}
+              <a href="#" className="underline underline-offset-4">
+                Members
+              </a>{" "}
+              on the 🏆best job portal
+            </p>
+            <span className="flex gap-4 w-full justify-center items-center">
+              <button
+                className="bg-orange-500 text-white px-5 py-3 rounded-lg border border-black/20 hover:border-black/40"
+                onClick={() => navigate("/post")}
+              >
+                Post A Job
+              </button>
+              <button
+                className="bg-orange-500 text-white px-5 py-3 rounded-lg border border-black/20 hover:border-black/40  "
+                onClick={hideBanner}
+              >
+                Hide This
+              </button>
+            </span>
+          </div>
+          {/* TRUSTED BY */}
+          <div className="flex justify-center items-center font-Poppins gap-1 py-1 my-4 sm:mb-12 mx-8 ">
+            <p className="text-[14px] min-w-fit">Trusted by </p>
+            <span className="flex flex-row overflow-x-clip justify-between ">
+              <img
+                src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
+                alt="hi"
+                className="w-24 sm:w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
+              />
+            </span>
+          </div>{" "}
+        </>
       )}
-      {/* TRUSTED BY */}
-      <div className="flex font-Poppins gap-1 py-6 mb-12 mx-8">
-        <p className="text-[14px] min-w-fit">Trusted by </p>
-        <span className="flex flex-row overflow-x-clip justify-between w-full ">
-          <img
-            src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
-          />
-          <img
-            src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
-          />
-          <img
-            src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
-          />
-          <img
-            src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
-            className="w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
-          />
-        </span>
-      </div>
-      <div className="w-full flex justify-between flex-col sm:flex-row gap-2 sm:gap-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Location setLocationFilter={setLocationFilter} />
+
+      <div className="flex flex-col min-[850px]:flex-row sm:justify-between  gap-2 sm:gap-4 max-w-[960px] sm:mx-auto mx-2">
+        <div className="flex flex-col  min-[425px]:flex-row min-[425px]:gap-4 gap-2">
           <SearchCat setCategoryFilter={setCategoryFilter} />
+          <Location setLocationFilter={setLocationFilter} />
         </div>
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-row min-[425px]:gap-4 gap-2">
           <PayRange setSalaryFilter={setSalaryFilter} />
           <SortingFilter handleSortChange={handleSortChange} />
         </div>
       </div>
 
-      <div className="recent pb-10 px-2  mx-auto">
+      <div className="recent pb-10 sm:px-2  mx-auto pt-3">
         <>
           {Array.isArray(FfilteredJobs) ? (
             FfilteredJobs.slice(0, visibleJobs).map((job) => (
@@ -263,7 +204,7 @@ function Home() {
             <p>Loading All Jobs...</p>
           )}
           {/* Show More and Show Less buttons */}
-          <div className="flex flex-row justify-center items-center gap-10  py-4">
+          <div className="flex flex-row justify-center items-center gap-10  py-4 w-fit mx-auto">
             {FfilteredJobs.length > visibleJobs && (
               <button
                 onClick={showMoreJobs}

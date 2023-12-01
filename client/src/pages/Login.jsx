@@ -134,11 +134,11 @@ function Login() {
   }
 
   return (
-    <div className=" w-full font-Poppins">
-      <div className=" translate-y-36 w-fit mx-auto">
+    <div className=" w-full h-screen font-Poppins">
+      <div className=" translate-y-1/4 sm:translate-y-36 w-full min-[780px]:w-fit mx-auto">
         <form
           onSubmit={onSubmit}
-          className="w-[780px] h-[540px] bg-black/5 rounded-[6px] p-8 pt-12"
+          className="max-[780px]:w-full min-[780px]:w-[780px] h-[540px] bg-black/5 rounded-[6px] max-[780px]:p-8 pt-12"
         >
           <h1 className="bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
             Skill
@@ -196,7 +196,7 @@ function Login() {
             </Link>
             {/* ROLE SELECTION */}
             <div className="absolute right-3 top-3 font-Poppins">
-              <div className="flex flex-row items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-center gap-2">
                 <p className="h-8 rounded-md w-fit px-2 py-1 text-center font-bold text-black/75 select-none">
                   Role
                 </p>
@@ -246,10 +246,12 @@ function Login() {
         </form>
         <Link
           to="/register"
-          className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
+          className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline "
         >
-          <h1 className="text-black">Not registered? </h1>
-          <a className="text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium">
+          <h1 className="text-black font-Poppins text-[15px]">
+            Not registered?{" "}
+          </h1>
+          <a className="text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium font-Poppins text-[17px]">
             Register now
           </a>
         </Link>

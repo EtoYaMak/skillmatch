@@ -176,11 +176,11 @@ function Register() {
   }
   return (
     <>
-      <div className=" w-full font-Poppins h-screen">
-        <div className=" translate-y-24 w-fit mx-auto">
+      <div className=" w-full font-Poppins h-full">
+        <div className="translate-y-12 sm:translate-y-24 max-[780px]:w-full min-[780px]:w-fit mx-auto">
           <form
             onSubmit={onSubmit}
-            className="w-[780px] h-[760px] bg-black/5 rounded-[6px] p-8 pt-12"
+            className="max-[780px]:w-full min-[780px]:w-[780px] h-full sm:h-[760px] bg-black/5 rounded-[6px] p-8 pt-12"
           >
             <h1 className="select-none bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
               Skill
@@ -296,7 +296,7 @@ function Register() {
               </Link>
               {/* ROLE SELECTION */}
               <div className="absolute right-3 top-3 font-Poppins">
-                <div className="flex flex-row items-center gap-2">
+                <div className="flex flex-col sm:flex-row items-center gap-2">
                   <p className="h-8 rounded-md w-fit px-2 py-1 text-center font-bold text-black/75 select-none">
                     Role
                   </p>

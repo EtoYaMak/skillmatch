@@ -22,13 +22,13 @@ function PayRange({ setSalaryFilter }) {
   ];
 
   return (
-    <div className="relative inline-block w-full  max-[365px]:max-w-fit h-[40px] ">
+    <div className="relative inline-block w-full  ">
       {selectedRange && (
         <button
           onClick={handleResetInput}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent"
+          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent "
         >
-          <MdOutlineCancel size={22} className="text-black/60" />
+          <MdOutlineCancel size={22} className="text-black" />
         </button>
       )}
       <select
@@ -36,14 +36,20 @@ function PayRange({ setSalaryFilter }) {
         value={selectedRange}
         onChange={(e) => handleRangeSelect(e.target.value)}
         className={` ${
-          selectedRange ? "pl-8 w-full sm:w-[200px]" : " w-full sm:w-[155px]"
-        } font-Poppins rounded-[2em] border-[1px] h-12 px-4 text-[16px] font-medium hover:bg-[#e1e1e1]/20`}
+          selectedRange
+            ? "pl-10 w-full min-[850px]:w-[200px]"
+            : " w-full min-[850px]:w-[155px]"
+        } font-Poppins rounded-[2em] border-[1px] border-black/40 h-10 sm:h-12 px-4 text-[14px] sm:text-[16px] font-medium hover:bg-[#e1e1e1]/20 text-black/70 `}
       >
         <option value="" hidden disabled className="">
           Salary Range
         </option>
         {salaryRanges.map((range) => (
-          <option key={range.value} value={range.value} className="">
+          <option
+            key={range.value}
+            value={range.value}
+            className="text-[14px] w-full text-black"
+          >
             {range.label}
           </option>
         ))}

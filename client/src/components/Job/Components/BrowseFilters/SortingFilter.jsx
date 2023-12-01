@@ -10,10 +10,10 @@ function SortingFilter({ handleSortChange }) {
 
   return (
     <>
-      <div className="relative inline-block w-full max-[365px]:w-[150px] h-[40px]">
+      <div className="relative inline-block w-full">
         <select
           id="sort"
-          className="w-full min-[365px]:w-[150px] font-Poppins rounded-[2em] border-[1px] h-12 px-4 text-[16px] font-medium "
+          className="font-Poppins rounded-[2em] border-[1px] border-black/40 h-10 sm:h-12 px-4 w-full min-[850px]:w-[155px] text-[14px] sm:text-[16px] font-medium hover:bg-[#e1e1e1]/20 "
           onChange={handleChange}
         >
           <option value="" disabled hidden>
@@ -21,8 +21,8 @@ function SortingFilter({ handleSortChange }) {
           </option>
           <option value="LATEST">Latest Jobs</option>
           {/*           <option value="popular">Popular</option> */}
-          <option value="ASCENDING">Ascending</option>
-          <option value="DESCENDING">Descending</option>
+          <option value="ASCENDING">A-Z</option>
+          <option value="DESCENDING">Z-A</option>
           {/*           <option value="payhigh">Highest Paid</option>
           <option value="mostviewed">Most Viewed</option>
           <option value="mostapplied">Most Applied</option> */}

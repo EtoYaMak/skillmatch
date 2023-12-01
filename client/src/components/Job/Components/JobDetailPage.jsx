@@ -86,7 +86,7 @@ function JobDetailPage({ job }) {
 
   return (
     <div className="bg-transparent pb-8">
-      <div className="mx-auto rounded-b-xl p-8 w-full max-w-screen-lg  rounded-3xl font-Poppins">
+      <div className="mx-auto rounded-b-xl sm:p-8 px-2 py-8 w-full max-w-screen-lg  rounded-3xl font-Poppins">
         <div className="bg-transparent sm:space-y-0 space-y-4 flex flex-col min-w-min justify-between items-center">
           {/* Company and Position */}
           <div className="flex flex-col sm:flex-row items-center justify-between bg-transparent w-full  sm:space-x-4 space-y-3 sm:space-y-0 mb-4">
@@ -111,7 +111,7 @@ function JobDetailPage({ job }) {
             <div className=" text-black text-lg font-Poppins flex flex-col justify-center items-center gap-2 ">
               {/* Apply button */}
               {student && (
-                <div className="text-white flex justify-end select-none px-2 scale-110 ">
+                <div className="text-white flex justify-end select-none px-2 scale-110 w-28 h-10 sm:w-30 sm:h-8 ">
                   <ApplyJobButton jobId={job._id} />
                 </div>
               )}
@@ -255,7 +255,7 @@ function JobDetailPage({ job }) {
         {/* Skills End */}
 
         {/* About the Job */}
-        <div className="w-full p-4 bg-white  mt-4 font-Poppins border-b border-b-[#d0333c]">
+        <div className="w-full sm:p-4 bg-white  mt-4 font-Poppins border-b border-b-[#d0333c]">
           <h4
             className="text-2xl md:text-3xl font-bold mb-4 text-center bg-transparent
             text-[#000] tracking-[0.25em]"
@@ -273,7 +273,7 @@ function JobDetailPage({ job }) {
         <div className="w-full p-4 font-Poppins flex flex-col justify-center items-center">
           {/* Apply button */}
           {student && (
-            <div className="text-white flex justify-end select-none px-2 scale-150 ">
+            <div className="text-white flex justify-end select-none px-2 scale-150 w-28 h-10 sm:w-30 sm:h-8">
               <ApplyJobButton jobId={job._id} />
             </div>
           )}

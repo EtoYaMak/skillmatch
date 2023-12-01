@@ -110,7 +110,7 @@ const Navbar = () => {
             Home
           </Link>
         </li>
-        <li className="text-[#000] font-Poppins  font-medium tracking-widest text-xl text-center  bg-inherit">
+        <li className="text-[#000] font-Poppins  font-medium tracking-widest text-xl text-center  bg-inherit hidden">
           <Link
             to="/browse"
             className="py-9 px-4  hover:text-[#d0333c] ease-in-out duration-300"
@@ -247,7 +247,7 @@ const Navbar = () => {
             </div>
           </li>
           <li className="backdrop-blur-sm bg-[#fff]/70">
-            <div className="nav-link flex items-center  bg-[#fff]/80 hover:bg-[#000]/70 ease-in-out duration-300">
+            <div className="nav-link flex items-center  bg-[#fff]/80 hover:bg-[#000]/70 ease-in-out duration-300 hidden">
               <Link
                 to="/browse"
                 onClick={() => setToggle(false)}
@@ -257,7 +257,7 @@ const Navbar = () => {
               </Link>
             </div>
           </li>
-          {!SAuser ? (
+          {!student && SAuser && user ? (
             <li className=" backdrop-blur-sm bg-[#fff]/70">
               <div className="nav-link flex items-center  bg-[#fff]/80 hover:bg-[#000]/70 ease-in-out duration-300">
                 <Link

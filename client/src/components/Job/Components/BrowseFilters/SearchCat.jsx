@@ -9,7 +9,6 @@ function SearchCat({ setCategoryFilter }) {
     Object.values(departmentsList)
   );
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [inputValue, setInputValue] = useState(""); // Separate state for input value
   const inputRef = useRef(null);
 
@@ -76,17 +75,19 @@ function SearchCat({ setCategoryFilter }) {
           value={inputValue}
           onChange={handleInputChange}
           className={`w-full ${
-            inputValue ? "pl-8 sm:w-[220px]" : "sm:w-[130px]"
-          } font-Poppins rounded-[2em] border-[1px] h-12 px-4 text-[16px] font-medium hover:bg-[#e1e1e1]`}
+            inputValue
+              ? "pl-10 w-full min-[850px]:w-[220px]"
+              : "w-full min-[850px]:w-[130px]"
+          } font-Poppins rounded-[2em] border-[1px] border-black/40 h-10 sm:h-12 px-4 text-[14px] sm:text-[16px] font-medium hover:bg-[#e1e1e1] `}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
         />
         {inputValue && (
           <button
             onClick={handleResetInput}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent max-[640px]:top-[18px] "
           >
-            <MdOutlineCancel size={22} className="text-black/60" />
+            <MdOutlineCancel size={22} className="text-black" />
           </button>
         )}
         {/*         {inputValue ? (
@@ -98,14 +99,14 @@ function SearchCat({ setCategoryFilter }) {
         )} */}
 
         <div
-          className={`rolesfilter min-w-[300px] w-fit border border-black absolute bg-white z-[99] overflow-y-scroll overflow-hidden max-h-[200px] h-fit text-[16px] px-3 rounded-l-3xl ${
+          className={`rolesfilter min-w-[300px] w-fit border border-black absolute bg-white z-[99] overflow-y-scroll overflow-hidden max-h-[200px] h-fit text-[14px] sm:text-[16px] px-3 sm:rounded-l-3xl ${
             isDropdownVisible ? "" : "hidden"
           }`}
         >
           {departments.map((department, key) => (
             <div
               key={key}
-              className="font-medium font-Poppins hover:bg-[#e1e1e1] px-1 py-3 rounded-xl cursor-pointer"
+              className="font-medium font-Poppins hover:bg-[#e1e1e1] px-2 py-2 sm:py-3 rounded-xl cursor-pointer"
               onClick={() => handleCategorySelect(department, key)}
             >
               {department}

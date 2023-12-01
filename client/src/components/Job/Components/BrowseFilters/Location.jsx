@@ -64,13 +64,13 @@ function Location({ setLocationFilter }) {
 
   return (
     <>
-      <div className="relative inline-block h-[40px] w-full " ref={inputRef}>
+      <div className="relative inline-block  w-full " ref={inputRef}>
         {inputValue && (
           <button
             onClick={handleResetInput}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-transparent max-[640px]:top-[18px]"
           >
-            <MdOutlineCancel size={22} className="text-black/60" />
+            <MdOutlineCancel size={22} className="text-black" />
           </button>
         )}
         <input
@@ -79,8 +79,10 @@ function Location({ setLocationFilter }) {
           value={inputValue}
           onChange={handleInputChange}
           className={` ${
-            inputValue ? "pl-8 w-full  sm:w-[200px] " : "w-full  sm:w-[100px]"
-          } font-Poppins rounded-[2em] border-[1px] h-12 px-4 text-[16px] font-medium hover:bg-[#e1e1e1]`}
+            inputValue
+              ? "pl-10 w-full  min-[850px]:w-[200px] "
+              : "w-full  min-[850px]:w-[100px]"
+          } font-Poppins rounded-[2em] border-[1px] border-black/40 h-10 sm:h-12 px-4 text-[14px] sm:text-[16px] font-medium hover:bg-[#e1e1e1]`}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
         />
@@ -92,14 +94,14 @@ function Location({ setLocationFilter }) {
           />
         )} */}
         <div
-          className={`rolesfilter w-full sm:w-[300px]  border border-black absolute bg-white z-[99] overflow-y-scroll overflow-hidden max-h-[25vh]  text-[16px] p-5 rounded-l-3xl  space-y-2  ${
+          className={`rolesfilter min-w-[300px] w-fit border border-black absolute bg-white z-[99] overflow-y-scroll overflow-hidden max-h-[200px] h-fit text-[14px] sm:text-[16px] px-3 sm:rounded-l-3xl    ${
             isDropdownVisible ? "" : "hidden"
           }`}
         >
           {countries.map((country) => (
             <div
               key={country.Code}
-              className="font-medium font-Poppins hover:bg-[#e1e1e1] p-2 rounded-md cursor-pointer"
+              className="font-medium font-Poppins hover:bg-[#e1e1e1] px-2 py-2 sm:py-3 rounded-xl cursor-pointer"
               onClick={() => handleLocationSelect(country.Name)}
             >
               {country.Name}

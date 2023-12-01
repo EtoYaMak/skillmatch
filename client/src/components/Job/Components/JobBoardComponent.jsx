@@ -21,39 +21,50 @@ function JobBoardComponent({ job }) {
   };
 
   const skills = job.skills ? [...job.skills] : [];
+  /* FIND Country CODE */
+  const countryCode = countriesData.find(
+    (country) => country.Name === job.country
+  )?.Code;
 
   return (
     <>
       <div
-        className={`jobcomp max-[640px]:gap-2 my-4 h-[105px] flex flex-col min-[600px]:flex-row items-center border-[2px] border-solid rounded-2xl font-Poppin w-full duration-200 ease-in-out cursor-pointer z-0 ${
+        className={`jobcomp jobItemCard  max-[640px]:gap-2  my-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppin max-w-[980px]  mx-auto duration-200 ease-in-out cursor-pointer z-0 ${
           job.setting.find(
             (setting) => setting.name === "Remote" && setting.value
           )
-            ? "bg-[#ffd50033] border-[#fff1a7]"
-            : "" // Add additional styles for non-remote jobs if needed
+            ? "bg-[hsl(49,100%,77%)] border-b-[2px] border-b-[#ffD500]"
+            : "border-b-[1px]" //bg-[#ffd50033] border-[#fff1a7] Add additional styles for non-remote jobs if needed
         }`}
         onClick={handleClick}
       >
-        <div className="w-3/6">
-          <div className="flex flex-colitems-center w-full">
-            <div className="flex flex-row justify-center items-center w-max-full">
-              <div className="mx-3 mr-6 min-w-fit mask mask-circle">
-                <img src={job.logo} alt={job.company} className="w-[70px] " />
+        <div className="w-full flex flex-row justify-between items-center">
+          {/* LEFT FLEX DIR */}
+          <div className="w-full sm:w-2/3 flex flex-col ">
+            {/* LEFT BOX */}
+            <div className="flex flex-row justify-normal items-center ">
+              {/* LOGO CONTAINER */}
+              <div className="sm:mx-3 mx-[2px] mr-[4px] min-w-fit mask mask-circle">
+                <img
+                  src={job.logo}
+                  alt={job.company}
+                  className="w-[55px] sm:w-[70px] "
+                />
               </div>
-
-              <div className="flex flex-col select-none py-2 space-y-[4px] ">
-                <h1 className="font-Poppins text-[17px] font-bold ">
+              {/* JOB title, company, country, setting */}
+              {/*  <div className="flex flex-col select-none py-2 space-y-[0px] sm:space-y-[4px] w-[60vw] sm:w-auto h-full"> */}
+              <div className="flex flex-col min-h-full space-y-[0px] sm:space-y-[4px] w-full">
+                <h1 className="font-Poppins text-[14px]  sm:text-[18px] font-semibold sm:font-bold">
                   {job.position}
                 </h1>
-                <h3 className="font-Poppins font-medium text-[17px] hover:underline">
+                <h3 className="font-Poppins font-normal sm:font-medium text-[13px] sm:text-[16px] hover:underline text-[#2e2e2e]">
                   {job.company}
                 </h3>
-                <div className="text-white min-w-max max-w-fit w-full flex items-center justify-start select-none gap-2">
-                  {/*                   <h1 className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.60rem] py-[0.28rem] ">
-                    {job.city}
-                  </h1> */}
-                  <h1 className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.60rem] py-[0.28rem] ">
+                {/* country setting */}
+                <div className="  text-white select-none gap-[4px] sm:gap-2 flex flex-wrap w-full text-[10px] sm:text-[12px] py-1">
+                  <h1 className="font-Poppins cursor-cell  w-fit bg-[#C83055] rounded-sm sm:px-[0.50rem] px-[0.3rem]  sm:py-[0.25rem] py-[0.14rem] ">
                     {job.country}
+                    {/* {countryCode} */}
                   </h1>
 
                   {job.setting &&
@@ -63,7 +74,7 @@ function JobBoardComponent({ job }) {
                       .map((jobSetting, index) => (
                         <h1
                           key={index} //This was missing
-                          className="font-Poppins font-medium  text-[12px] cursor-cell  w-fit bg-[#C83055] rounded-3xl px-[0.50rem] py-[0.25rem] "
+                          className="font-Poppins cursor-cell  w-fit bg-[#C83055] rounded-sm  sm:px-[0.50rem] px-[0.25rem]  sm:py-[0.25rem] py-[0.14rem]  "
                         >
                           {jobSetting.name.charAt(0).toUpperCase() +
                             jobSetting.name.slice(1)}
@@ -73,78 +84,52 @@ function JobBoardComponent({ job }) {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-transparent flex flex-wrap items-center justify-start gap-1 text-sm text-white h-full w-2/6 ">
+          <div className="bg-transparent max-[640px]:hidden  flex flex-wrap items-start justify-center sm:justify-start gap-1 text-sm text-white h-full w-full sm:w-1/2 max-[450px]:items-center ">
+            {job.setting.find(
+              (setting) => setting.name === "Remote" && setting.value
+            ) ? (
+              <h1 className="font-Poppins text-[14px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[5px] ">
+                Featured
+              </h1>
+            ) : null}
+
+            {!showDropdown &&
+              skills.slice(0, 2).map((skill, index) => (
+                <span
+                  key={index} // Use the index as the key
+                  className={`max-[560px]:hidden font-Poppins font-semibold text-[12px]  px-3 py-1 bg-[#3D4EE5] rounded-[9px] ${
+                    isHovered ? " " : " "
+                  }`}
+                >
+                  {skill}
+                </span>
+              ))}
+          </div>
+        </div>
+        <div className="sm:w-1/6 flex flex-col mr-3 w-fit justify-center  items-center gap-1 ">
           {job.setting.find(
             (setting) => setting.name === "Remote" && setting.value
           ) ? (
-            <h1 className="font-Poppins text-[12px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[5px] ">
+            <h1 className="font-Poppins min-[640px]:hidden text-[12px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[5px] ">
               Featured
             </h1>
           ) : null}
-
-          {!showDropdown &&
-            skills.slice(0, 2).map((skill, index) => (
-              <span
-                key={index} // Use the index as the key
-                className={`font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] rounded-[9px] ${
-                  isHovered ? " " : " "
-                }`}
-              >
-                {skill}
-              </span>
-            ))}
-        </div>
-        <div className="w-1/6 flex justify-center ">
           {student && (
-            <div className=" flex justify-center pt-1 sm:pt-0 sm:justify-end w-full sm:w-auto select-none px-2 z-40 ">
+            <div className="max-[640px]:h-[24px] max-[640px]:w-[75px] w-24 h-10 ">
               <ApplyJobButton jobId={job._id} />
             </div>
           )}
           {showRegisterButton && (
             <Link
               to={"/register"}
-              className="flex justify-center items-center w-[159px] h-[43px] ease-in-out duration-200 bg-black  uppercase font-Poppins  px-3 rounded-xl py-2 text-white hover:text-white hover:scale-105 font-bold z-40 "
+              className="flex justify-center items-center  ease-in-out duration-200 bg-black  uppercase font-Poppins  px-3  py-2 text-white hover:text-white hover:scale-105 font-bold z-40 max-[640px]:h-8 max-[640px]:w-20 w-28 h-10 rounded-[2em] "
             >
               Apply
             </Link>
           )}
         </div>
       </div>
-
-      {/* Apply button */}
-      {/* Skills */}
-      {/*       <div className="skills flex-1 pointer-events-none select-none ">
-        <div className="bg-transparent flex flex-wrap items-center justify-center min-w-max gap-1 text-sm text-white">
-          {!showDropdown &&
-            skills.slice(0, 2).map((skill, index) => (
-              <span
-                key={index}
-                className={`font-Poppins text-xs sm:text-sm px-2 py-1 bg-[#3D4EE5] rounded-3xl ${
-                  isHovered ? " " : " "
-                }`}
-              >
-                {skill}
-              </span>
-            ))}
-        </div>
-        <div className="">
-          {student && (
-            <div className="text-white flex justify-center pt-1 sm:pt-0 sm:justify-end w-full sm:w-auto select-none px-2 z-40">
-              <ApplyJobButton jobId={job._id} />
-            </div>
-          )}
-          {showRegisterButton && (
-            <Link
-              to={"/register"}
-              className="flex justify-center items-center w-fit ease-in-out duration-200 bg-black  uppercase font-Poppins  px-3 rounded-3xl py-2 text-white hover:text-white hover:scale-105 font-bold z-40 "
-            >
-              Apply
-            </Link>
-          )}
-        </div>
-      </div> */}
     </>
   );
 }
