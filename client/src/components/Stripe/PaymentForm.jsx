@@ -73,18 +73,20 @@ export default function PaymentForm() {
           amount: amount,
           id,
           description: user.name,
-          return_url: "/dash", // Replace with your actual return_url
+          return_url: "http://18.169.159.127/dash", // Replace with your actual return_url
           allow_redirects: true,
         });
         if (response.data.success) {
           setSuccess(true);
           handleSuccessfulPayment(); // Signal successful payment
+          console.log("Payment Success");
         }
       } catch (error) {
         console.error("Error", error);
       }
     } else {
       console.error(error.message);
+      console.log("Error", error.message);
     }
   };
 
