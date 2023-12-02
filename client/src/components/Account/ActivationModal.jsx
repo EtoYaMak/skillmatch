@@ -12,7 +12,7 @@ function ActivationModal({ isOpen, onClose, type }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 h-full">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 h-full z-50">
       <div className="bg-white p-6 rounded-lg">
         <h2 className="text-2xl font-semibold">Account Activation Required</h2>
         <p className="mt-2 text-lg">{message()}</p>

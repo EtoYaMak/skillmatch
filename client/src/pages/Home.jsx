@@ -174,7 +174,7 @@ function Home() {
               <img
                 src="https://remoteok.com/cdn-cgi/image/height=60,quality=85/https://remoteok.com/assets/microsoft.png?1634054013"
                 alt="hi"
-                className="w-24 sm:w-56 saturate-50 hover:saturate-100 ease-in-out duration-100"
+                className="w-24 sm:w-56 saturate-50 hover:saturate-100 ease-in-out duration-100 z-0"
               />
             </span>
           </div>{" "}
