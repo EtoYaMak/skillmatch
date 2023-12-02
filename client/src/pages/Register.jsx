@@ -140,28 +140,26 @@ function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const termsConditionsCheckbox = document.getElementById("tc");
-    if (termsConditionsCheckbox.checked) {
-      // Dispatch the registration action based on the selected role
-      if (selectedRole === "poster") {
-        // Dispatch the action for poster registration
-        const userData = {
-          name,
-          email,
-          password,
-        };
+    //const termsConditionsCheckbox = document.getElementById("tc");
+    // Dispatch the registration action based on the selected role
+    if (selectedRole === "poster") {
+      // Dispatch the action for poster registration
+      const userData = {
+        name,
+        email,
+        password,
+      };
 
-        dispatch(register(userData));
-      } else if (selectedRole === "applicant") {
-        // Dispatch the action for applicant registration
-        const studentData = {
-          name,
-          email,
-          password,
-        };
+      dispatch(register(userData));
+    } else if (selectedRole === "applicant") {
+      // Dispatch the action for applicant registration
+      const studentData = {
+        name,
+        email,
+        password,
+      };
 
-        dispatch(Sregister(studentData));
-      }
+      dispatch(Sregister(studentData));
     } else {
       toast.error("Please accept the Privacy Policy before registering.");
     }
