@@ -134,128 +134,95 @@ function Login() {
   }
 
   return (
-    <div className=" w-full h-screen font-Poppins">
-      <div className=" translate-y-1/4 sm:translate-y-36 w-full min-[780px]:w-fit mx-auto">
-        <form
-          onSubmit={onSubmit}
-          className="max-[780px]:w-full min-[780px]:w-[780px] h-[540px] bg-black/5 rounded-[6px] max-[780px]:p-8 pt-12"
-        >
-          <h1 className="bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
-            Skill
-            <br />
-            Mint
-          </h1>
-          <h1 className="w-fit text-[2.1em] font-Poppins mx-auto my-12">
-            Sign In
-          </h1>
-          <div className="form-control  max-w-[340px] mx-auto">
-            <label className="text-[15px] mb-1">Email Address*</label>
+    <div className="w-full min-h-screen font-Poppins flex justify-center items-center">
+      <form
+        onSubmit={onSubmit}
+        className="mx-auto  sm:max-w-[780px] p-8 pt-12 bg-black/5 rounded-[6px] w-full"
+      >
+        <h1 className="bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
+          Skill <br /> Mint
+        </h1>
+        <h1 className="text-[2.1em] font-Poppins mx-auto my-8 text-center w-full">
+          Sign In
+        </h1>
+        {/* ROLE SELECTION */}
+        <div className="font-Poppins flex flex-col justify-center items-center mb-8 gap-2">
+          <p className="h-8 rounded-md w-fit px-2 py-1 text-center font-bold text-black/75 select-none">
+            Role
+          </p>
+          <div className="flex flex-row items-center gap-4 justify-center">
+            {["poster", "applicant"].map((role) => (
+              <label
+                key={role}
+                htmlFor={role}
+                className={`h-8 rounded-md w-fit px-2 py-1 cursor-pointer ${
+                  selectedRole === role
+                    ? "font-medium underline underline-offset-2"
+                    : "opacity-70"
+                }`}
+              >
+                <input
+                  type="radio"
+                  id={role}
+                  name="role"
+                  value={role}
+                  className="radio radio-mark"
+                  onChange={handleRoleChange}
+                  checked={selectedRole === role}
+                />
+                {role.charAt(0).toUpperCase() + role.slice(1)}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="form-control max-w-[340px] mx-auto">
+          <label className="text-[15px] mb-1">Email Address*</label>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={onChange}
+            className="max-w-[340px] text-black bg-white placeholder:text-black/40 text-[14px] py-4 border rounded-[3px]"
+            required
+          />
+        </div>
+        <div className="form-control max-w-[340px] mx-auto mt-3">
+          <label className="text-[15px] mb-1">Password*</label>
+          <div className="relative inline-block">
             <input
-              type="email"
-              name="email"
-              value={email}
-              placeholder="Enter your email"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={password}
+              placeholder="Enter password"
               onChange={onChange}
-              className="max-w-[340px] text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
+              className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border rounded-[3px]"
               required
             />
           </div>
-          <div className="form-control  max-w-[340px] mx-auto mt-3">
-            <label className="text-[15px] mb-1">Password*</label>
-            <div className="relative inline-block">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={password}
-                placeholder="Enter password"
-                onChange={onChange}
-                className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border border-black/40 rounded-[3px]"
-                required
-              />
-              {/* <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="toggle-password-button absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent"
-              >
-                {showPassword ? (
-                  <AiFillEyeInvisible size={24} />
-                ) : (
-                  <AiFillEye size={24} />
-                )}
-              </button> */}
-            </div>
-          </div>
-          <div className="form-control  max-w-[340px] mx-auto my-6">
-            <button className="text-lg font-Poppins tracking-wide bg-black text-white py-3 rounded-[3px]">
-              Login
-            </button>
-          </div>
-          <div className=" max-w-[340px] text-center mx-auto my-12">
-            <Link to="/password-reset" className="text-[17px]">
-              Forgot password?
-            </Link>
-            {/* ROLE SELECTION */}
-            <div className="absolute right-3 top-3 font-Poppins">
-              <div className="flex flex-col sm:flex-row items-center gap-2">
-                <p className="h-8 rounded-md w-fit px-2 py-1 text-center font-bold text-black/75 select-none">
-                  Role
-                </p>
-                <label
-                  htmlFor="poster"
-                  className={` h-8 rounded-md w-fit px-2 py-1 text-center cursor-pointer  ${
-                    selectedRole === "poster"
-                      ? "font-medium underline underline-offset-2"
-                      : "opacity-70"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    id="poster"
-                    name="role"
-                    value="poster"
-                    className=" radio radio-mark "
-                    onChange={handleRoleChange}
-                    checked={selectedRole === "poster"}
-                  />
-                  Poster
-                </label>
-                <label
-                  htmlFor="applicant"
-                  className={`h-8 rounded-md w-fit px-2 py-1 cursor-pointer ${
-                    selectedRole === "applicant"
-                      ? "font-medium underline underline-offset-2 "
-                      : "opacity-70"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    id="applicant"
-                    name="role"
-                    value="applicant"
-                    className="radio radio-mark"
-                    onChange={handleRoleChange}
-                    checked={selectedRole === "applicant"}
-                  />
-                  Applicant
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {/* LOGIN REDIRECT */}
-        </form>
-        <Link
-          to="/register"
-          className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline "
-        >
-          <h1 className="text-black font-Poppins text-[15px]">
-            Not registered?{" "}
-          </h1>
-          <a className="text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium font-Poppins text-[17px]">
-            Register now
-          </a>
-        </Link>
-      </div>
+        </div>
+        <div className="form-control max-w-[340px] mx-auto my-6">
+          <button className="text-lg font-Poppins tracking-wide bg-black text-white py-3 rounded-[3px]">
+            Login
+          </button>
+        </div>
+        <div className="max-w-[340px] text-center mx-auto my-12">
+          <Link to="/password-reset" className="text-[17px]">
+            Forgot password?
+          </Link>
+          <Link
+            to="/register"
+            className="form-control mt-4 justify-center flex flex-row gap-1 items-baseline"
+          >
+            <h1 className="text-[15px] text-black font-Poppins">
+              Not registered?{" "}
+            </h1>
+            <a className="text-[17px] text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium font-Poppins">
+              Register now
+            </a>
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }

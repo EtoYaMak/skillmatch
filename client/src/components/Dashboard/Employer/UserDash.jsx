@@ -28,8 +28,8 @@ function UserDash() {
     );
   }
   return (
-    <div className="h-full font-Poppins">
-      <div className="max-w-[960px] mx-auto">
+    <div className="min-h-screen font-Poppins">
+      <div className="max-w-[960px] mx-auto flex flex-col gap-4 ">
         <div className="border-b border-b-[#000] text-center p-4 space-x-4">
           {/* Render tabs to switch between profile and applications */}
           <button

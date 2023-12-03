@@ -117,7 +117,7 @@ function Home() {
     setVisibleJobs((prevVisibleJobs) => prevVisibleJobs + 5);
   };
 
-  const [banner, setBanner] = useState(true);
+  const [banner, setBanner] = useState(false);
 
   const hideBanner = () => {
     setBanner(false);
@@ -131,9 +131,9 @@ function Home() {
     );
   }
   return (
-    <div className="mx-auto  bg-inherit max-w-[1240px]">
-      <h1 className="text-center py-4 sm:text-4xl text-[#333] select-none font-Poppins tracking-wide max-w-xs mx-auto font-bold ">
-        Find a Job Find a Job Find a Job
+    <div className="mx-auto h-full  bg-inherit max-w-[1240px]">
+      <h1 className="text-center py-4 text-3xl sm:text-4xl text-[#333] select-none font-Poppins tracking-wide max-w-xs mx-auto font-bold ">
+        Find a Job
       </h1>
       {/* Search component */}
       <div className="flex sm:w-full justify-center items-center min-h-max max-w-md mx-auto min-[425px]:my-6 my-2 sm:mb-14">
@@ -192,7 +192,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="recent pb-10 sm:px-2  mx-auto pt-3">
+      <div className="h-full pb-4 sm:px-2  mx-auto pt-3">
         <>
           {Array.isArray(FfilteredJobs) ? (
             FfilteredJobs.slice(0, visibleJobs).map((job) => (
@@ -204,7 +204,7 @@ function Home() {
             <p>Loading All Jobs...</p>
           )}
           {/* Show More and Show Less buttons */}
-          <div className="flex flex-row justify-center items-center gap-10  py-4 w-fit mx-auto">
+          <div className="flex flex-row justify-center items-center gap-10  mt-4 w-fit mx-auto">
             {FfilteredJobs.length > visibleJobs && (
               <button
                 onClick={showMoreJobs}

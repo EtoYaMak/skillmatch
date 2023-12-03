@@ -94,14 +94,14 @@ function Location({ setLocationFilter }) {
           />
         )} */}
         <div
-          className={`rolesfilter min-w-[300px] w-fit border border-black absolute bg-white z-[99] overflow-y-scroll overflow-hidden max-h-[200px] h-fit text-[14px] sm:text-[16px] px-3 sm:rounded-l-3xl    ${
+          className={`rolesfilter min-w-[200px] sm:min-w-[300px] w-fit border border-black absolute bg-white z-[99] overflow-y-scroll overflow-hidden max-h-[200px] h-fit text-[14px] sm:text-[16px] px-3 sm:rounded-l-3xl    ${
             isDropdownVisible ? "" : "hidden"
           }`}
         >
           {countries.map((country) => (
             <div
               key={country.Code}
-              className="font-medium font-Poppins hover:bg-[#e1e1e1] px-2 py-2 sm:py-3 rounded-xl cursor-pointer"
+              className="font-medium font-Poppins hover:bg-[#e1e1e1] px-2 py-2 sm:py-3 rounded-xl cursor-pointer border-b"
               onClick={() => handleLocationSelect(country.Name)}
             >
               {country.Name}

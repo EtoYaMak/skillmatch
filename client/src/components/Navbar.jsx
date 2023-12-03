@@ -257,7 +257,7 @@ const Navbar = () => {
               </Link>
             </div>
           </li>
-          {!student && SAuser && user ? (
+          {!student && (SAuser || user) ? (
             <li className=" backdrop-blur-sm bg-[#fff]/70">
               <div className="nav-link flex items-center  bg-[#fff]/80 hover:bg-[#000]/70 ease-in-out duration-300">
                 <Link

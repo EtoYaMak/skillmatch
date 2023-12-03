@@ -93,18 +93,19 @@ export default function PaymentForm() {
   return (
     <>
       {!success ? (
-        <form onSubmit={handleSubmit} className="h-screen">
-          <div className="h-screen w-full  sm:p-4 bg-transparent flex sm:flex-row flex-col sm:max-w-screen-xl mx-auto ">
-            <div className="Left flex flex-col h-1/4  sm:h-full sm:w-1/3  text-black sm:rounded-tl-xl sm:rounded-bl-xl ">
-              <div className="w-full h-full sm:h-5/6 flex flex-col justify-center items-center gap-5 sm:backdrop-blur-[2px] bg-white/50 rounded-tl-xl">
-                <h1 className="text-xl  font-Poppins ml-2 font-light bg-white/50 p-2 rounded-xl">
+        <form onSubmit={handleSubmit} className="min-h-max w-full">
+          <div className="sm:flex sm:flex-row flex-col sm:max-w-screen-xl mx-auto min-h-screen pb-4 sm:p-2 ">
+            {/* CONTAINER LEFT */}
+            <div className="Left flex flex-col sm:w-1/3 text-black sm:rounded-tl-xl sm:rounded-bl-xl ">
+              <div className="sm:w-full  h-full  flex flex-col justify-center items-center gap-5 sm:backdrop-blur-[2px] bg-white/50 rounded-tl-xl">
+                <h1 className="text-xl   font-Poppins ml-2 font-light bg-white/50 p-2 rounded-xl">
                   To Pay
                 </h1>
-                <p className=" font-Poppins text-4xl font-medium sm:text-5xl bg-white/50 p-2 rounded-xl">
+                <p className="font-Poppins text-4xl font-medium sm:text-5xl bg-white/50 p-2 rounded-xl">
                   £{amount / 100}
                 </p>
               </div>
-              <div className="bg-black h-4/6 sm:h-1/6 w-full flex justify-center items-center sm:rounded-bl-xl px-4 ">
+              <div className="bg-black w-full flex justify-center items-center sm:rounded-bl-xl px-4">
                 <a
                   href="/"
                   className="text-[1.4em] sm:text-[1.7rem] text-white font-Poppins flex gap-2 items-center justify-center hover:text-white hover:bg-[#fff]/10 rounded-xl p-2 pr-5"
@@ -114,13 +115,15 @@ export default function PaymentForm() {
                 </a>
               </div>
             </div>
-            <div className="Right sm:w-2/3  p-2 sm:p-10 w-full ">
+            {/* CONTAINER RIGHT */}
+            <div className="Right sm:w-2/3 p-2 sm:p-10 w-full">
+              {/* Title */}
               <div className="flex flex-col mt-4 sm:mt-0 gap-8">
                 <h1 className="text-4xl sm:text-5xl font-Poppins font-semibold">
                   Payment
                 </h1>
                 <div className="flex flex-row justify-between items-center gap-1 sm:gap-0 py-4">
-                  <h1 className="text-xl sm:text-3xl font-Poppins w-fit font-light">
+                  <h1 className="text-3xl font-Poppins w-fit font-light">
                     Pay with Card
                   </h1>
                   <img
@@ -130,8 +133,8 @@ export default function PaymentForm() {
                   />
                 </div>
               </div>
-              {/* <CardElement options={CARD_OPTIONS} /> */}
-              <div className="flex flex-col gap-4 sm:gap-10 relative sm:top-20 h-1/2 ">
+              {/* CARD content */}
+              <div className="flex flex-col gap-4 sm:gap-10 relative">
                 <span className="w-full flex flex-col">
                   <h1 className="font-Poppins text-2xl mb-2 text-[#444]">
                     Card Number
@@ -140,9 +143,9 @@ export default function PaymentForm() {
                     <div className="FormRowPF">
                       <CardNumberElement options={CARD_OPTIONS} />
                     </div>
-                  </fieldset>{" "}
+                  </fieldset>
                 </span>
-                <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-12">
+                <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-12 ">
                   <span className="w-full flex flex-col">
                     <h1 className="font-Poppins text-2xl mb-2 text-[#444]">
                       Expiration
@@ -165,14 +168,12 @@ export default function PaymentForm() {
                     </fieldset>
                   </span>
                 </div>
-                <div className="w-full  flex justify-center h-1/3 items-end">
-                  <button
-                    className="bg-black rounded-[4px] py-4 
-                   text-white font-Poppins  w-[350px] text-xl h-fit"
-                  >
-                    Pay
-                  </button>
-                </div>
+                <button
+                  className="bg-black rounded-[4px] py-4 
+                   text-white font-Poppins  w-full text-xl h-fit"
+                >
+                  Pay
+                </button>
               </div>
             </div>
           </div>

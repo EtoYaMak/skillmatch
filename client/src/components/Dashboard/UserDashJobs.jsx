@@ -52,12 +52,13 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
 
   return (
     <div
-      className={`flex scale-105 mt-[5vh]   ${
+      className={`flex  ${
         viewType === "list"
-          ? "flex-col font-Poppins max-w-[1240px] mx-auto "
-          : "flex-wrap gap-2 max-w-[1240px] mx-auto min-[640px]:justify-center bg-transparent"
-      } `}
+          ? "flex-col "
+          : "flex-wrap gap-2 justify-center items-center "
+      } max-w-[1240px] mx-auto`}
     >
+      {/* VIEW STYLE */}
       <div className="w-full mb-4 text-center">
         <button className="btn btn-md btn-primary" onClick={handleToggleView}>
           {viewType === "grid" ? "Switch to List View" : "Switch to Grid View"}
@@ -66,14 +67,16 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
       {jobs.length > 0 ? (
         <>
           {jobs.map((job) => (
+            /* MAIN CONTAINER */
             <div
               key={job._id}
-              className={` ${
+              className={`${
                 viewType === "list"
-                  ? "flex flex-row items-start justify-center bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)]  hover:text-black rounded-xl gap-4 h-24 my-2"
-                  : "card card-compact max-[640px]:card-side w-full min-[640px]:w-56 bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] hover:text-black  min-h-full"
-              }`}
+                  ? "flex flex-row items-center justify-center  "
+                  : "card card-compact w-fit h-full"
+              } mb-2  bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] hover:text-black rounded-xl`}
             >
+              {/* LOGO */}
               <figure
                 className={`${
                   viewType === "list"
@@ -91,19 +94,20 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
                   }`}
                 />
               </figure>
-
+              {/* CARD */}
               <div
                 className={`w-full ${
                   viewType === "list"
-                    ? "flex flex-row justify-center items-center h-full"
-                    : "p-[3px] w-full max-[640px]:flex max-[640px]:flex-col items-center justify-evenly sm:card-body bg-white max-[640px]:rounded-r-box sm:rounded-b-box"
+                    ? "flex flex-row justify-between w-full items-center"
+                    : ""
                 }`}
               >
+                {/* CARD CONTENT */}
                 <div
-                  className={`flex flex-col w-full ${
+                  className={`flex flex-col ${
                     viewType === "list"
                       ? "flex flex-row justify-between w-full items-start"
-                      : "justify-center items-center"
+                      : " justify-center items-center w-full gap-2 py-3"
                   }`}
                 >
                   <a
@@ -112,7 +116,6 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
                   >
                     {job.position}
                   </a>
-
                   <p className="text-center text-lg select-none flex flex-col">
                     {job.company}
                     <span className="text-xs text-start text-zinc-500">
@@ -120,43 +123,44 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
                     </span>
                   </p>
                 </div>
-
+                {/* CARD MENU */}
                 <div
                   className={`mx-auto ${
                     viewType === "list"
-                      ? "card-actions flex justify-center items-center min-w-fit"
-                      : "card-actions flex justify-center items-center w-full"
+                      ? "card-actions min-w-fit  max-w-full"
+                      : "card-actions w-full"
                   }`}
                 >
                   <ul
-                    className={`mx-auto ${
+                    className={`mx-auto gap-2 ${
                       viewType === "list"
-                        ? "menu menu-horizontal p-2 bg-white/5 rounded-box items-center"
-                        : "menu menu-horizontal p-2 bg-white/5 rounded-box items-center"
+                        ? "menu max-[500px]:menu-vertical min-[500px]:menu-horizontal p-2 bg-white/5 rounded-box"
+                        : "menu menu-horizontal p-2 bg-white/5 rounded-box items-center mt-2"
                     }`}
                   >
-                    <li className="indicator ">
-                      <span className="pointer-events-none indicator-center -mt-2 indicator-item badge badge-accent border-0  bg-red-700 flex  justify-center items-center mask mask-circle text-white font-Poppins font-bold w-8 h-8  text-[14px]">
-                        {countPendingApplicants(job._id, jobs)}
-                      </span>
+                    <li className="">
                       <Link
                         to={`/jobapplicants/${job._id}`}
-                        className="hover:bg-black hover:text-white"
+                        className=" flex  hover:bg-black hover:text-white "
                       >
                         <FaUsers size={16} />
+                        <span className=" font-bold text-[14px] bg-transparent">
+                          {countPendingApplicants(job._id, jobs)}
+                        </span>
                       </Link>
                     </li>
                     <li className="">
                       <Link
-                        className="hover:bg-black hover:text-white"
+                        className="hover:bg-black hover:text-white w-full flex justify-center items-center"
                         to={`/jobs/${job._id}/update`}
                       >
                         <FaEdit size={16} />
                       </Link>
                     </li>
-                    <li>
+                    <li className="">
+                      {" "}
                       <button
-                        className=" hover:bg-black hover:text-white"
+                        className="hover:bg-black hover:text-white w-full flex justify-center items-center"
                         onClick={() => handleDeleteJob(job._id)}
                       >
                         <FaTrash size={16} />
@@ -171,11 +175,11 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
       ) : (
         <>
           {jobsLoading ? (
-            <div className="w-full flex justify-center items-start h-screen  ">
+            <div className="w-full flex justify-center items-start h-screen">
               <span className="loading loading-dots text-error w-20 mt-[20vh]"></span>
             </div>
           ) : (
-            <div className="w-full flex justify-center items-start h-screen ">
+            <div className="w-full flex justify-center items-start h-screen">
               {!jobsLoading && jobs.length === 0 ? (
                 <span className="text-error text-3xl font-Poppins mt-[20vh]">
                   You have not posted any Job
