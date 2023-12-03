@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const IP_ADDRESS = process.env.SERVER_ADDRESS_FRONT;
+const AWS_IP = process.env.AWS_IP_ADDRESS;
 
 // Initialize Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -84,7 +85,7 @@ const registerUser = asyncHandler(async (req, res) => {
       to: user.email,
       subject: "Activate Your Account",
       /* text: `Please click the following link to activate your account: ${activationLink}`, */
-      text: `Please click the following link to activate your account:\n\n${IP_ADDRESS}/activate/${user.type}/${activationToken}\n\n`,
+      text: `Please click the following link to activate your account:\n\n${AWS_IP}/activate/${user.type}/${activationToken}\n\n`,
     })
     .catch((error) => {
       console.error("Failed to send activation email:", error);
@@ -183,7 +184,7 @@ const forgotPassword = async (req, res) => {
     to: user.email,
     from: process.env.EMAIL_USERNAME, // Replace with your email
     subject: "Password Reset",
-    text: `You are receiving this because you (or someone else) requested a password reset. Click the link below to reset your password :\n\n${IP_ADDRESS}/reset/${user.type}/${token}\n\n`,
+    text: `You are receiving this because you (or someone else) requested a password reset. Click the link below to reset your password :\n\n${AWS_IP}/reset/${user.type}/${token}\n\n`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
