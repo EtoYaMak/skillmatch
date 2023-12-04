@@ -32,7 +32,7 @@
 }
 /* Default style for larger screens */
 .adminNav button {
-  width: 160px;
+  width: 100%;
 }
 
 /* Media query for screens 425px and below */

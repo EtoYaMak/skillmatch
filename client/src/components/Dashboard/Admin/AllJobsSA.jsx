@@ -7,6 +7,8 @@ import SortingFilter from "../../Job/Components/BrowseFilters/SortingFilter";
 import Location from "../../Job/Components/BrowseFilters/Location";
 import PayRange from "../../Job/Components/BrowseFilters/PayRange";
 import SearchCat from "../../Job/Components/BrowseFilters/SearchCat";
+import SearchComponent from "../../Misc/Search";
+
 function AllJobsSA({ alljobs, SAuser }) {
   const dispatch = useDispatch();
   const [filteredJobs, setFilteredJobs] = useState([]);
@@ -14,17 +16,30 @@ function AllJobsSA({ alljobs, SAuser }) {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [salaryFilter, setSalaryFilter] = useState("");
-
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 8;
+
   const handleSortChange = (selectedValue) => {
-    // Handle the sorting change here, for example, update the sortBy state
     setSortBy(selectedValue);
+  };
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  const handleSearch = (query) => {
+    setSearchQuery(query);
   };
   useEffect(() => {
     // Apply filters
     let filtered = [...alljobs];
-
+    if (searchQuery !== "") {
+      filtered = filtered.filter(
+        (job) =>
+          job.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          job.company.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
     // Category
     if (categoryFilter !== "") {
       filtered = filtered.filter((job) => job.department === categoryFilter);
@@ -60,12 +75,8 @@ function AllJobsSA({ alljobs, SAuser }) {
       filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
 
-    // Apply pagination
-    const indexOfLastJob = currentPage * jobsPerPage;
-    const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-    const currentJobs = filtered.slice(indexOfFirstJob, indexOfLastJob);
-
-    setFilteredJobs(currentJobs);
+    // Update filtered jobs
+    setFilteredJobs(filtered);
   }, [
     alljobs,
     categoryFilter,
@@ -73,7 +84,17 @@ function AllJobsSA({ alljobs, SAuser }) {
     salaryFilter,
     sortBy,
     currentPage,
+    searchQuery,
   ]);
+
+  const totalPageCount = Math.ceil(filteredJobs.length / jobsPerPage);
+  const pageNumbers = Array.from({ length: totalPageCount }).map(
+    (_, index) => index + 1
+  );
+
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
 
   const handleDeleteJob = (jobId) => {
     const confirmDelete = window.confirm(
@@ -88,40 +109,42 @@ function AllJobsSA({ alljobs, SAuser }) {
     }
   };
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
   return (
-    <div className=" bg-transparent font-Poppins max-w-[1240px] mx-auto  ">
-      <h1 className="text-center text-xl font-Poppins">All Jobs</h1>
-      <div className="w-full flex justify-between flex-col sm:flex-row gap-2 sm:gap-4">
-        <div className="flex flex-col sm:flex-row gap-4">
+    <div className="bg-transparent font-Poppins max-w-[1240px] mx-auto">
+      <h1 className="text-center text-2xl font-Poppins">All Posted Jobs</h1>
+      <div className="flex sm:w-full justify-center items-center min-h-max max-w-md mx-auto mb-2 ">
+        <div className="flex justify-end flex-1 ">
+          <SearchComponent onSearch={handleSearch} className="h-24" />
+        </div>
+      </div>
+      <div className="flex flex-wrap justify-between gap-2 sm:gap-1">
+        <div className="flex flex-row gap-2 min-[850px]:justify-between max-[850px]:w-full">
           <Location setLocationFilter={setLocationFilter} />
           <SearchCat setCategoryFilter={setCategoryFilter} />
         </div>
-        <div className="w-full flex  justify-center sm:justify-between flex-wrap gap-2">
+        <div className="flex flex-row justify-between gap-2 w-full min-[850px]:w-fit">
           <PayRange setSalaryFilter={setSalaryFilter} />
           <SortingFilter handleSortChange={handleSortChange} />
         </div>
       </div>
 
       <div className="flex flex-col w-full">
-        {Array.isArray(filteredJobs) ? (
-          filteredJobs.map((job) => (
+        {Array.isArray(currentJobs) ? (
+          currentJobs.map((job) => (
             <div
               key={job._id}
-              className="flex flex-row bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] my-2 hover:text-black rounded-xl gap-4"
+              className="flex flex-row bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] my-2 hover:text-black rounded-xl "
             >
-              <figure className="bg-transparent min-w-fit h-20 mx-2 flex justify-center items-center">
+              <figure className="bg-transparent mx-2 flex justify-center items-center">
                 <img
                   src={job.logo}
                   alt={job.position}
-                  className="h-16 mask mask-circle"
+                  className="h-20 mask mask-circle"
                 />
               </figure>
 
               <div className="flex flex-row justify-between w-full items-center">
-                <div>
+                <div className="">
                   <a
                     href={`/jobs/${job._id}`}
                     className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2"
@@ -134,7 +157,7 @@ function AllJobsSA({ alljobs, SAuser }) {
                 </div>
 
                 <div className=" justify-center">
-                  <ul className="menu menu-horizontal p-2 bg-white/5 rounded-box items-center">
+                  <ul className="menu menu-vertical sm:menu-horizontal p-2 bg-white/5 rounded-box items-center">
                     <li>
                       <Link
                         to={`/jobapplicants/${job._id}`}
@@ -166,17 +189,39 @@ function AllJobsSA({ alljobs, SAuser }) {
           ))
         ) : (
           <p>Loading All Jobs...</p>
+        )}{" "}
+      </div>
+      {/* Pagination outside the job listings div */}
+      <div className="pagination flex flex-wrap justify-center items-center">
+        {currentPage > 1 && (
+          <button
+            className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
+            onClick={() => handlePageClick(currentPage - 1)}
+          >
+            {"<"}
+          </button>
         )}
-        {/* Add pagination component */}
-        <div className="pagination">
-          {Array.from({ length: Math.ceil(alljobs.length / jobsPerPage) }).map(
-            (_, index) => (
-              <button key={index} onClick={() => paginate(index + 1)}>
-                {index + 1}
-              </button>
-            )
-          )}
-        </div>
+        {pageNumbers.map((pageNumber) => (
+          <button
+            key={pageNumber}
+            className={`btn btn-square btn-xs text-sm mx-[1px] ${
+              currentPage === pageNumber
+                ? "current-page bg-black text-white"
+                : "bg-black/5 text-black"
+            }`}
+            onClick={() => handlePageClick(pageNumber)}
+          >
+            {pageNumber}
+          </button>
+        ))}
+        {currentPage < totalPageCount && (
+          <button
+            className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
+            onClick={() => handlePageClick(currentPage + 1)}
+          >
+            &gt;
+          </button>
+        )}
       </div>
     </div>
   );

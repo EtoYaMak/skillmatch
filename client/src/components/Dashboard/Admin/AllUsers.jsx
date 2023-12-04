@@ -5,13 +5,92 @@ import { Link } from "react-router-dom";
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { SAdeleteJob } from "../../../features/jobs/jobSlice";
 
-function AllUsers({ users }) {
+function UserTable({ paginatedUsers, jobs, handleDeleteJob }) {
+  return (
+    <table className="border-collapse ">
+      <thead>
+        <tr className="border-b">
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+            Name
+          </th>
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+            Jobs
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {Array.isArray(paginatedUsers) ? (
+          paginatedUsers.map((user) => (
+            <tr key={user?._id} className="border-b hover:bg-gray-100 w-fit">
+              <td className="px-4 py-2 font-bold text-start">
+                <p className="text-xl">{user?.name}</p>{" "}
+                <p className="text-xs">{user?.email}</p>
+              </td>
+
+              <td className="px-4 py-2 text-start">
+                <h1>View Jobs</h1>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="3" className="px-4 py-2">
+              Loading Users...
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
+}
+
+function Pagination({
+  currentPage,
+  pageNumbers,
+  totalPageCount,
+  handlePageClick,
+}) {
+  return (
+    <div className="pagination flex flex-wrap justify-center items-center">
+      {currentPage > 1 && (
+        <button
+          className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
+          onClick={() => handlePageClick(currentPage - 1)}
+        >
+          {"<"}
+        </button>
+      )}
+      {pageNumbers.map((pageNumber) => (
+        <button
+          key={pageNumber}
+          className={`btn btn-square btn-xs text-sm mx-[1px] ${
+            currentPage === pageNumber
+              ? "current-page bg-black text-white"
+              : "bg-black/5 text-black"
+          }`}
+          onClick={() => handlePageClick(pageNumber)}
+        >
+          {pageNumber}
+        </button>
+      ))}
+      {currentPage < totalPageCount && (
+        <button
+          className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
+          onClick={() => handlePageClick(currentPage + 1)}
+        >
+          &gt;
+        </button>
+      )}
+    </div>
+  );
+}
+function AllUsers({ users, paginatedUsers }) {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const usersPerPage = 10;
+  const [currentPage, setCurrentPage] = React.useState(1);
   const SAuser = useSelector((state) => state.SAuser.SAuser);
   const jobs = useSelector((state) => state.jobs.alljobs);
+
   /*   const originalUsers = [
     { _id: "1", name: "User 1", email: "user1@example.com" },
     { _id: "2", name: "User 2", email: "user2@gmail.com" },
@@ -31,6 +110,11 @@ function AllUsers({ users }) {
 
   const users = duplicateUsers(originalUsers, 15); // Duplicate users 5 times */
 
+  const usersPerPage = 8;
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+
   useEffect(() => {
     setCurrentPage(1); // Reset the current page when search query changes
   }, [searchQuery]);
@@ -42,9 +126,12 @@ function AllUsers({ users }) {
           user.email.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : users;
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const paginatedUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPageCount = Math.ceil(filteredUsers.length / usersPerPage);
+  const pageNumbers = Array.from({ length: totalPageCount }).map(
+    (_, index) => index + 1
+  );
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
@@ -60,140 +147,28 @@ function AllUsers({ users }) {
       }
     }
   };
-
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   return (
-    <div className="text-xl text-center font-Poppins  min-h-screen flex flex-col">
-      <div className="">
-        {/* flex-grow to keep pagination AT BOTTOM OF SCREEN ALWAYS */}
-        <div className="h-24 w-full flex flex-row items-center justify-start px-2 bg-white">
-          <div className="w-full">
-            <SearchComponent onSearch={handleSearch} />
-          </div>
-        </div>
-        <h2 className="font-semibold text-xl">All Users</h2>
-        <div className="flex flex-col items-center justify-start w-full bg-white rounded-xl">
-          <div className="flex flex-row justify-between items-center px-4 font-Poppins font-bold py-2 w-full border-b border-black">
-            <h1 className="w-1/3 text-start">Name</h1>
-            <h1 className="w-1/3 text-start">Email</h1>
-            <h1 className="w-1/3 text-start">Jobs</h1>
-          </div>
-          {Array.isArray(paginatedUsers) ? (
-            paginatedUsers.map((user) => (
-              <div
-                key={user?._id}
-                className="flex items-start justify-between px-4 m-2 w-full text-star hover:scale-[100.5%] duration-200 ease-in-out "
-              >
-                <div className="collapse border border-black/10 shadow-[0px_3px_4px_rgb(0,0,0,0.1)]">
-                  <input type="checkbox" className="w-full z-50" />
-                  <div className="flex flex-row collapse-title text-xl font-medium text-black  z-10">
-                    <h3 className="font-bold w-1/3 text-start">{user?.name}</h3>
-                    <p className="text-start w-1/3">Email: {user?.email}</p>
-                    <p className="w-1/3 text-start">View Jobs</p>
-                  </div>
-                  <div className="collapse-content flex flex-col justify-start items-start bg-[#d4d7d7] overflow-hidden max-h-80 overflow-y-scroll">
-                    {Array.isArray(jobs) ? (
-                      jobs
-                        .filter((job) => job.user === user?._id)
-                        .map((filteredJob) => (
-                          <div
-                            key={filteredJob._id}
-                            className="job-item flex flex-row w-full bg-white p-2 rounded-3xl justify-between mt-1 z-0 "
-                          >
-                            {/* job information */}
-                            <div className="flex flex-row gap-4">
-                              <div>
-                                <img
-                                  src={filteredJob.logo}
-                                  alt=""
-                                  className="mask-circle mask w-14"
-                                />
-                              </div>
-                              <div className="flex flex-col items-start justify-around">
-                                <Link
-                                  to={`/jobs/${filteredJob._id}`}
-                                  className="font-bold "
-                                >
-                                  {filteredJob.position}
-                                </Link>
-                                <p className="text-sm">{filteredJob.company}</p>
-                              </div>
-                            </div>
-
-                            <ul className="menu menu-horizontal bg-white/5 rounded-box">
-                              <li className="indicator ">
-                                <Link
-                                  to={`/jobapplicants/${filteredJob._id}`}
-                                  target="_blank"
-                                  className="hover:bg-black hover:text-white"
-                                >
-                                  <FaUsers size={16} />
-                                </Link>
-                              </li>
-                              <li className="">
-                                <Link
-                                  className="hover:bg-black hover:text-white"
-                                  to={`/jobs/${filteredJob._id}/update`}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                >
-                                  <FaEdit size={16} />
-                                </Link>
-                              </li>
-                              <li className="pointer-events-none">
-                                {/* DISABLED */}
-                                <button
-                                  className=" hover:bg-black hover:text-white"
-                                  onClick={() =>
-                                    handleDeleteJob(filteredJob._id)
-                                  }
-                                >
-                                  <FaTrash size={16} />
-                                </button>
-                              </li>
-                            </ul>
-                          </div>
-                        ))
-                    ) : (
-                      <p>No jobs found for this user.</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>Loading Users...</p>
-          )}
-        </div>
+    <div className="text-xl text-center font-Poppins min-h-screen flex flex-col ">
+      <div className="h-24 w-full flex flex-row items-center justify-start px-2 bg-white">
+        <div className="w-full">{/* Your SearchComponent here */}</div>
       </div>
-      <div className="join bg-white text-black w-fit mx-auto  ">
-        <button
-          className="join-item btn btn-ghost disabled:text-black/50 disabled:bg-zinc-300"
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          «
-        </button>
-        {Array.from({
-          length: Math.ceil(filteredUsers.length / usersPerPage),
-        }).map((page, index) => (
-          <button
-            key={index + 1}
-            className="join-item btn btn-ghost"
-            onClick={() => setCurrentPage(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-        <button
-          className="join-item btn btn-ghost disabled:text-black/50 disabled:bg-zinc-300"
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={
-            currentPage === Math.ceil(filteredUsers.length / usersPerPage)
-          }
-        >
-          »
-        </button>
+      <h2 className="font-semibold text-xl">All Users</h2>
+      <div className="flex flex-col  bg-white rounded-xl">
+        <UserTable
+          paginatedUsers={currentUsers}
+          jobs={jobs}
+          handleDeleteJob={handleDeleteJob}
+        />
       </div>
+      <Pagination
+        currentPage={currentPage}
+        pageNumbers={pageNumbers}
+        totalPageCount={totalPageCount}
+        handlePageClick={handlePageClick}
+      />
     </div>
   );
 }

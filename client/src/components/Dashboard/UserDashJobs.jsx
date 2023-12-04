@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
   const dispatch = useDispatch();
-  const [viewType, setViewType] = useState("grid");
+  const [viewType, setViewType] = useState("list");
   //Implement THIS
   const handleToggleView = () => {
     setViewType((prevType) => (prevType === "grid" ? "list" : "grid"));
