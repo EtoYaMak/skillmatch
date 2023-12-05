@@ -1,99 +1,170 @@
 import React, { useEffect, useState } from "react";
 import SearchComponent from "../../Misc/Search";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
+import { SAdeleteJob } from "../../../features/jobs/jobSlice";
 
+// Define a function to format the date
+const formatCreatedAtDate = (createdAt) => {
+  const createdAtDate = new Date(createdAt);
+  const day = createdAtDate.getDate();
+  const month = createdAtDate.getMonth() + 1; // Months are zero-indexed
+  const year = createdAtDate.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+function UserTable({ paginatedStudents, jobs }) {
+  return (
+    <table className="border-collapse max-w-xl">
+      <thead>
+        <tr className="border-b">
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+            Name
+          </th>
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3 ">
+            Applications
+          </th>
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+            Account Status
+          </th>
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+            Creation Date
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {Array.isArray(paginatedStudents) ? (
+          paginatedStudents.map((student) => (
+            <tr key={student?._id} className="border-b hover:bg-gray-100 w-fit">
+              <td className="px-4 py-2 font-bold text-start">
+                <p className="text-xl">{student?.name}</p>{" "}
+                <p className="text-xs">{student?.email}</p>
+              </td>
+
+              <td className="px-4 py-2 text-start w-fit">
+                <Link
+                  to={`/student-applied-jobs/${student._id}`}
+                  className="text-lg hover:font-medium"
+                >
+                  View Applied Jobs
+                </Link>
+              </td>
+              <td className="px-4 py-2  text-start">
+                {student?.isActive === true
+                  ? "Account Activated"
+                  : "Account Not Activated"}
+              </td>
+              <td className="px-4 py-2  text-start">
+                {formatCreatedAtDate(student?.createdAt)}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="3" className="px-4 py-2">
+              Loading Users...
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
+}
+
+function Pagination({
+  currentPage,
+  pageNumbers,
+  totalPageCount,
+  handlePageClick,
+}) {
+  return (
+    <div className="pagination flex flex-wrap justify-end items-center my-8 max-w-[960px] mx-auto w-full">
+      {currentPage > 1 && (
+        <button
+          className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
+          onClick={() => handlePageClick(currentPage - 1)}
+        >
+          {"<"}
+        </button>
+      )}
+      {pageNumbers.map((pageNumber) => (
+        <button
+          key={pageNumber}
+          className={`btn btn-square btn-xs text-sm mx-[1px]  ${
+            currentPage === pageNumber
+              ? "current-page bg-black hover:bg-white text-white hover:text-black  hover:scale-105 "
+              : "bg-black/5 text-black"
+          }`}
+          onClick={() => handlePageClick(pageNumber)}
+        >
+          {pageNumber}
+        </button>
+      ))}
+      {currentPage < totalPageCount && (
+        <button
+          className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
+          onClick={() => handlePageClick(currentPage + 1)}
+        >
+          &gt;
+        </button>
+      )}
+    </div>
+  );
+}
 function AllStudents({ students, alljobs }) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-  const getJobName = (jobId) => {
-    const foundJob = alljobs.find((job) => job._id === jobId);
-    return foundJob ? foundJob.position : "Job Not Found";
-  };
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const SAuser = useSelector((state) => state.SAuser.SAuser);
+  const jobs = useSelector((state) => state.jobs.alljobs);
+
+  const usersPerPage = 8;
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+
   useEffect(() => {
     setCurrentPage(1); // Reset the current page when search query changes
   }, [searchQuery]);
 
-  const filteredUsers = searchQuery
+  const filteredStudents = searchQuery
     ? students.filter(
         (student) =>
           student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           student.email.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : students;
+  const totalPageCount = Math.ceil(filteredStudents.length / usersPerPage);
+  const pageNumbers = Array.from({ length: totalPageCount }).map(
+    (_, index) => index + 1
+  );
+  const currentStudents = filteredStudents.slice(
+    indexOfFirstUser,
+    indexOfLastUser
+  );
 
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
-
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   return (
-    <div className="text-xl  font-Poppins">
-      <div className="h-24 w-full flex flex-row items-center justify-start  bg-white">
-        <div className="w-full">
-          <SearchComponent onSearch={handleSearch} />
-        </div>
+    <div className="text-xl text-center font-Poppins min-h-screen flex flex-col ">
+      <div className="h-24 w-full flex flex-row items-center justify-start px-2 bg-white">
+        <div className="w-full">{/* Your SearchComponent here */}</div>
       </div>
-      <h2 className="font-semibold text-xl text-center">All Students</h2>
-      <div className="flex flex-row justify-between items-center font-Poppins font-bold px-4 py-2 w-full border-b border-black text-center">
-        <h1 className="w-1/3 text-start">Name</h1>
-        <h1 className="w-1/3 text-start">Email</h1>
-        {/*         <h1 className="w-1/4 text-center">Activated</h1> */}
-        <h1 className="w-1/3 text-start">Jobs</h1>
+      <h2 className="font-semibold text-xl">All Students</h2>
+      <div className="flex flex-col   bg-white rounded-xl">
+        <UserTable paginatedStudents={currentStudents} jobs={jobs} />
       </div>
-      <div className="flex flex-col items-start justify-evenly w-full bg-white ">
-        {Array.isArray(filteredUsers) ? (
-          filteredUsers.map((student) => (
-            <div
-              key={student?._id}
-              className="flex flex-wrap w-full text-center overflow-hidden p-4 my-2 "
-            >
-              <h3 className="font-bold w-1/3 text-start ">{student?.name}</h3>
-              <p className="text-start w-1/3 flex-wrap">{student?.email}</p>
-              {/*               <p className="font-bold w-1/3 ">
-                {student?.isActive ? "Yes" : "No"}
-              </p> */}
-              <div tabIndex={0} className="w-1/4">
-                <div className=" text-xl font-medium text-start">
-                  Applied Jobs {student?.appliedJobs.length}
-                </div>
-                <div className="h-24 hidden overflow-hidden hover:overflow-y-scroll  p-2 min-w-[340px]">
-                  <div className="text-start">
-                    {student?.appliedJobs?.map((job) => (
-                      <h1
-                        key={job?._id}
-                        className="flex justify-start gap-2 space-y-1 items-center font-Poppins text-[14px]"
-                      >
-                        <p
-                          style={{
-                            backgroundColor:
-                              job?.status === "Rejected"
-                                ? "red"
-                                : job?.status === "Pending"
-                                ? "black"
-                                : "blue",
-                          }}
-                          className=" w-24 text-center rounded-3xl text-sm text-white font-Poppins"
-                        >
-                          {job?.status}
-                        </p>
-                        <a
-                          href={`/jobs/${job?.job}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className=""
-                        >
-                          {getJobName(job?.job)}
-                          {/* I Want this to show the Job name from alljobs by finding the alljobs entry with ID of job?.job */}
-                        </a>
-                      </h1>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>Loading students...</p>
-        )}
-      </div>
+
+      <Pagination
+        currentPage={currentPage}
+        pageNumbers={pageNumbers}
+        totalPageCount={totalPageCount}
+        handlePageClick={handlePageClick}
+      />
     </div>
   );
 }

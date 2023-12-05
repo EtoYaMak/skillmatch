@@ -46,6 +46,7 @@ import AllUsers from "./components/Dashboard/Admin/AllStudents";
 import AllStudents from "./components/Dashboard/Admin/AllStudents";
 import JobForm from "./components/Job/Post/JobForm";
 import UserJobs from "./components/Dashboard/Admin/UserJobs";
+import ViewStudentApplications from "./components/Dashboard/Admin/ViewStudentApplications";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -118,6 +119,10 @@ function App() {
 
           <Route path="users" element={<AllUsers />} />
           <Route path="user-jobs/:userId" element={<UserJobs />} />
+          <Route
+            path="student-applied-jobs/:studentId"
+            element={<ViewStudentApplications />}
+          />
 
           <Route path="students" element={<AllStudents />} />
           <Route path="post" element={<JobFormAdmin />} />

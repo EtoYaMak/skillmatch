@@ -10,23 +10,24 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaEdit, FaTrash, FaUsers } from "react-icons/fa";
 import { MdGridView, MdCalendarViewDay } from "react-icons/md";
 
-function UserJobs() {
+function ViewStudentApplications() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userId } = useParams();
+  const { studentId } = useParams(); //StudentId from Params to use for filter
   const [viewType, setViewType] = useState("list");
   const handleToggleView = () => {
     setViewType((prevType) => (prevType === "grid" ? "list" : "grid"));
   };
 
-  // Filter jobs based on user field
-  const userJobs = useSelector((state) =>
-    state.jobs.alljobs.filter((job) => job.user === userId)
-  );
-
   const { SAuser, isLoading: adminLoading } = useSelector(
     (state) => state.SAuser
   );
+  const appliedJobs = useSelector((state) =>
+    state.jobs.alljobs.filter((job) =>
+      job.applicants.some((applicant) => applicant.student === studentId)
+    )
+  );
+
   //Fetch Alljobs
   useEffect(() => {
     dispatch(getAllJobsTwo());
@@ -66,19 +67,24 @@ function UserJobs() {
           {viewType === "grid" ? "List View" : "Grid View"}
         </button>
       </div>
-
-      {/* Render user-specific jobs */}
-      {userJobs.length > 0 ? (
-        <>
-          {userJobs.map((job) => (
-            <div key={job._id}>
-              {/* Render job details */}
+      <div
+        className={`${
+          viewType === "list"
+            ? " "
+            : "flex  flex-wrap gap-4 justify-center items-center"
+        }`}
+      >
+        {/* Render user-specific jobs */}
+        {appliedJobs.length > 0 ? (
+          <>
+            {appliedJobs.map((job) => (
+              /* MAIN CONTAINER */
               <div
                 key={job._id}
                 className={`${
                   viewType === "list"
-                    ? "flex flex-row items-center justify-center  "
-                    : "card card-compact w-fit h-full"
+                    ? "flex flex-row items-center justify-center py-2 "
+                    : "card card-compact w-fit h-full "
                 } mb-2  bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] hover:text-black rounded-xl`}
               >
                 {/* LOGO */}
@@ -117,77 +123,56 @@ function UserJobs() {
                   >
                     <a
                       href={`/jobs/${job._id}`}
-                      className="text-lg text-start font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2"
+                      className="text-lg text-start font-Poppins font-semibold select-none hover:underline decoration-slate-900/20 underline-offset-2 -mb-1"
                     >
                       {job.position}
                     </a>
-                    <p className="text-center text-lg select-none flex flex-col">
+                    <p className="text-center text-lg select-none flex flex-col font-Poppins">
                       {job.company}
-                      <span className="text-xs text-start text-zinc-500">
+                      <span className="text-xs text-center text-zinc-500">
                         {formatCreatedAtDate(job.createdAt)}
                       </span>
                     </p>
                   </div>
-                  {/* CARD MENU */}
+                  {/* STATUS */}
                   <div
-                    className={`mx-auto ${
+                    className={` ${
                       viewType === "list"
-                        ? "card-actions min-w-fit  max-w-full"
-                        : "card-actions w-full"
+                        ? "w-24 flex flex-col justify-center items-center mr-10"
+                        : " text-center pb-2"
                     }`}
                   >
-                    <ul
-                      className={`mx-auto gap-2 ${
-                        viewType === "list"
-                          ? "menu max-[500px]:menu-vertical min-[500px]:menu-horizontal p-2 bg-white/5 rounded-box"
-                          : "menu menu-horizontal p-2 bg-white/5 rounded-box items-center mt-2"
-                      }`}
-                    >
-                      <li className="">
-                        <Link
-                          to={`/jobapplicants/${job._id}`}
-                          className=" flex  hover:bg-black hover:text-white "
-                        >
-                          <FaUsers size={16} />
-                          <span className=" font-bold text-[14px] bg-transparent">
-                            {countPendingApplicants(job._id, userJobs)}
-                          </span>
-                        </Link>
-                      </li>
-                      <li className="">
-                        <Link
-                          className="hover:bg-black hover:text-white w-full flex justify-center items-center"
-                          to={`/jobs/${job._id}/update`}
-                        >
-                          <FaEdit size={16} />
-                        </Link>
-                      </li>
-                      <li className="">
-                        {" "}
-                        <button
-                          className="hover:bg-black hover:text-white w-full flex justify-center items-center"
-                          onClick={() => handleDeleteJob(job._id)}
-                        >
-                          <FaTrash size={16} />
-                        </button>
-                      </li>
-                    </ul>
+                    {/* MENU ~ Status & Date Applied */}
+                    <p className="font-Poppins text-black/70 font-medium text-[13px] sm:text-[15px]">
+                      Status
+                    </p>
+                    <div className="w-fit mx-auto text-[13px] sm:text-xl font-Poppins font-semibold ">
+                      {getApplicantStatus(job, studentId) === "Pending" && (
+                        <span className="text-gray-600">PENDING</span>
+                      )}
+                      {getApplicantStatus(job, studentId) === "Approved" && (
+                        <span className="text-green-500">APPROVED</span>
+                      )}
+                      {getApplicantStatus(job, studentId) === "Rejected" && (
+                        <span className="text-red-700">REJECTED</span>
+                      )}
+                    </div>
                   </div>
                 </div>
+                {/* Access more job details using job.property */}
               </div>
-              {/* Access more job details using job.property */}
+            ))}
+          </>
+        ) : (
+          <>
+            <div className="w-full flex justify-center items-start h-screen">
+              <span className="text-xl font-Poppins mt-[10vh]">
+                No applied Jobs
+              </span>
             </div>
-          ))}
-        </>
-      ) : (
-        <>
-          <div className="w-full flex justify-center items-start h-screen">
-            <span className="text-xl font-Poppins mt-[10vh]">
-              No jobs by user
-            </span>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -200,14 +185,11 @@ const formatCreatedAtDate = (createdAt) => {
   return `${day}/${month}/${year}`;
 };
 
-// Function to count "Pending" applicants for a specific job_id
-const countPendingApplicants = (job_id, userJobs) => {
-  const job = userJobs && userJobs.find((job) => job._id === job_id);
-  const count = job
-    ? job.applicants.filter((applicant) => applicant.status === "Pending")
-        .length
-    : 0;
-
-  return count > 0 ? `+${count}` : "0";
+// Define a function to get the status of a specific applicant in a job
+const getApplicantStatus = (job, studentId) => {
+  const applicant = job.applicants.find(
+    (applicant) => applicant.student === studentId
+  );
+  return applicant ? applicant.status : "Not Applied";
 };
-export default UserJobs;
+export default ViewStudentApplications;
