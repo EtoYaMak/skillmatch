@@ -4,8 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { SAdeleteJob } from "../../../features/jobs/jobSlice";
-
-function UserTable({ paginatedUsers, jobs, handleDeleteJob }) {
+// Define a function to format the date
+const formatCreatedAtDate = (createdAt) => {
+  const createdAtDate = new Date(createdAt);
+  const day = createdAtDate.getDate();
+  const month = createdAtDate.getMonth() + 1; // Months are zero-indexed
+  const year = createdAtDate.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+function UserTable({ paginatedUsers, jobs }) {
   return (
     <table className="border-collapse ">
       <thead>
@@ -13,8 +20,14 @@ function UserTable({ paginatedUsers, jobs, handleDeleteJob }) {
           <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
             Name
           </th>
-          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3 ">
             Jobs
+          </th>
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+            Account Status
+          </th>
+          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
+            Creation Date
           </th>
         </tr>
       </thead>
@@ -27,8 +40,21 @@ function UserTable({ paginatedUsers, jobs, handleDeleteJob }) {
                 <p className="text-xs">{user?.email}</p>
               </td>
 
-              <td className="px-4 py-2 text-start">
-                <h1>View Jobs</h1>
+              <td className="px-4 py-2 text-start w-fit">
+                <Link
+                  to={`/user-jobs/${user._id}`}
+                  className="text-lg hover:font-medium"
+                >
+                  View Jobs
+                </Link>
+              </td>
+              <td className="px-4 py-2  text-start">
+                {user?.isActive === true
+                  ? "Account Activated"
+                  : "Account Not Activated"}
+              </td>
+              <td className="px-4 py-2  text-start">
+                {formatCreatedAtDate(user?.createdAt)}
               </td>
             </tr>
           ))
@@ -51,7 +77,7 @@ function Pagination({
   handlePageClick,
 }) {
   return (
-    <div className="pagination flex flex-wrap justify-center items-center">
+    <div className="pagination flex flex-wrap justify-end items-center my-8 max-w-[960px] mx-auto w-full">
       {currentPage > 1 && (
         <button
           className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
@@ -63,9 +89,9 @@ function Pagination({
       {pageNumbers.map((pageNumber) => (
         <button
           key={pageNumber}
-          className={`btn btn-square btn-xs text-sm mx-[1px] ${
+          className={`btn btn-square btn-xs text-sm mx-[1px]  ${
             currentPage === pageNumber
-              ? "current-page bg-black text-white"
+              ? "current-page bg-black hover:bg-white text-white hover:text-black  hover:scale-105 "
               : "bg-black/5 text-black"
           }`}
           onClick={() => handlePageClick(pageNumber)}
@@ -84,31 +110,12 @@ function Pagination({
     </div>
   );
 }
-function AllUsers({ users, paginatedUsers }) {
+function AllUsers({ alljobs, users, paginatedUsers }) {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = React.useState(1);
   const SAuser = useSelector((state) => state.SAuser.SAuser);
   const jobs = useSelector((state) => state.jobs.alljobs);
-
-  /*   const originalUsers = [
-    { _id: "1", name: "User 1", email: "user1@example.com" },
-    { _id: "2", name: "User 2", email: "user2@gmail.com" },
-    { _id: "3", name: "User 3", email: "user3@example.com" },
-  ];
-
-  // Function to duplicate users
-  const duplicateUsers = (users, times) => {
-    const duplicatedUsers = [];
-    for (let i = 0; i < times; i++) {
-      duplicatedUsers.push(
-        ...users.map((user) => ({ ...user, _id: user._id + (i + 1) }))
-      );
-    }
-    return duplicatedUsers;
-  };
-
-  const users = duplicateUsers(originalUsers, 15); // Duplicate users 5 times */
 
   const usersPerPage = 8;
 
@@ -156,13 +163,14 @@ function AllUsers({ users, paginatedUsers }) {
         <div className="w-full">{/* Your SearchComponent here */}</div>
       </div>
       <h2 className="font-semibold text-xl">All Users</h2>
-      <div className="flex flex-col  bg-white rounded-xl">
+      <div className="flex flex-col   bg-white rounded-xl">
         <UserTable
           paginatedUsers={currentUsers}
           jobs={jobs}
-          handleDeleteJob={handleDeleteJob}
+          alljobs={alljobs}
         />
       </div>
+
       <Pagination
         currentPage={currentPage}
         pageNumbers={pageNumbers}

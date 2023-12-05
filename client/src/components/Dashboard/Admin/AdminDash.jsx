@@ -106,7 +106,7 @@ function AdminDash() {
         {/*
          USERS 
          */}
-        {active === "users" && <AllUsers users={users} />}
+        {active === "users" && <AllUsers users={users} alljobs={alljobs} />}
         {/* 
         STUDENTS
          */}

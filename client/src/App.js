@@ -45,6 +45,7 @@ import JobFormAdmin from "./components/Job/Post/JobFormAdmin";
 import AllUsers from "./components/Dashboard/Admin/AllStudents";
 import AllStudents from "./components/Dashboard/Admin/AllStudents";
 import JobForm from "./components/Job/Post/JobForm";
+import UserJobs from "./components/Dashboard/Admin/UserJobs";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -116,6 +117,8 @@ function App() {
           {/* Nested routes for AdminDash */}
 
           <Route path="users" element={<AllUsers />} />
+          <Route path="user-jobs/:userId" element={<UserJobs />} />
+
           <Route path="students" element={<AllStudents />} />
           <Route path="post" element={<JobFormAdmin />} />
           <Route path="jobs" element={<UserDashJobs />} />

@@ -8,12 +8,14 @@ import {
   reset,
 } from "../../features/jobs/jobSlice";
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
+import { MdGridView, MdCalendarViewDay } from "react-icons/md";
+
 import { Link } from "react-router-dom";
 
 function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
   const dispatch = useDispatch();
   const [viewType, setViewType] = useState("list");
-  //Implement THIS
+
   const handleToggleView = () => {
     setViewType((prevType) => (prevType === "grid" ? "list" : "grid"));
   };
@@ -59,9 +61,15 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
       } max-w-[1240px] mx-auto`}
     >
       {/* VIEW STYLE */}
-      <div className="w-full mb-4 text-center">
-        <button className="btn btn-md btn-primary" onClick={handleToggleView}>
-          {viewType === "grid" ? "Switch to List View" : "Switch to Grid View"}
+      <div className="w-full mb-4 flex justify-end">
+        <button
+          onClick={handleToggleView}
+          className="flex justify-center items-center gap-2 bg-black text-white font-Poppins px-3 py-2 rounded-xl"
+        >
+          <p className="text-[24px]">
+            {viewType === "grid" ? <MdCalendarViewDay /> : <MdGridView />}
+          </p>
+          {viewType === "grid" ? "List View" : "Grid View"}
         </button>
       </div>
       {jobs.length > 0 ? (
