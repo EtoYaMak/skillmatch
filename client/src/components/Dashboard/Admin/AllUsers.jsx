@@ -14,59 +14,62 @@ const formatCreatedAtDate = (createdAt) => {
 };
 function UserTable({ paginatedUsers, jobs }) {
   return (
-    <table className="border-collapse ">
-      <thead>
-        <tr className="border-b">
-          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
-            Name
-          </th>
-          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3 ">
-            Jobs
-          </th>
-          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
-            Account Status
-          </th>
-          <th className="text-start px-4 py-2 sm:w-1/3 md:w-1/4 lg:w-1/3 xl:w-1/3">
-            Creation Date
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {Array.isArray(paginatedUsers) ? (
-          paginatedUsers.map((user) => (
-            <tr key={user?._id} className="border-b hover:bg-gray-100 w-fit">
-              <td className="px-4 py-2 font-bold text-start">
-                <p className="text-xl">{user?.name}</p>{" "}
-                <p className="text-xs">{user?.email}</p>
-              </td>
-
-              <td className="px-4 py-2 text-start w-fit">
-                <Link
-                  to={`/user-jobs/${user._id}`}
-                  className="text-lg hover:font-medium"
-                >
-                  View Jobs
-                </Link>
-              </td>
-              <td className="px-4 py-2  text-start">
-                {user?.isActive === true
-                  ? "Account Activated"
-                  : "Account Not Activated"}
-              </td>
-              <td className="px-4 py-2  text-start">
-                {formatCreatedAtDate(user?.createdAt)}
+    <div className="overflow-x-auto ">
+      <table className="table ">
+        {/* head */}
+        <thead className="bg-black text-white ">
+          <tr>
+            <th className="border-x border-white">ID</th>
+            <th className="border-x border-white">Name</th>
+            <th className="border-x border-white">Posted Jobs</th>
+            <th className="border-x border-white">Email</th>
+            <th className="border-x border-white">Activation</th>
+            <th className="border-x border-white">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.isArray(paginatedUsers) ? (
+            paginatedUsers.map((user, index) => (
+              <>
+                <tr className="">
+                  <th className="bg-black/5 font-semibold">{index}</th>
+                  <td className="">
+                    <p className="">{user?.name}</p>
+                  </td>
+                  <td className="bg-black/5 font-semibold">
+                    <Link
+                      to={`/user-jobs/${user._id}`}
+                      className="hover:font-bold"
+                    >
+                      View
+                    </Link>
+                  </td>
+                  <td className="">
+                    <p>{user.email}</p>
+                  </td>
+                  <td className="bg-black/5 font-semibold">
+                    <p
+                      className={`text-${
+                        user?.isActive ? "green" : "red"
+                      }-600 font-Poppins `}
+                    >
+                      {user?.isActive ? "Yes" : "No"}
+                    </p>
+                  </td>
+                  <td className="">{formatCreatedAtDate(user?.createdAt)}</td>
+                </tr>
+              </>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" className="">
+                Loading Users...
               </td>
             </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan="3" className="px-4 py-2">
-              Loading Users...
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -159,10 +162,6 @@ function AllUsers({ alljobs, users, paginatedUsers }) {
   };
   return (
     <div className="text-xl text-center font-Poppins min-h-screen flex flex-col ">
-      <div className="h-24 w-full flex flex-row items-center justify-start px-2 bg-white">
-        <div className="w-full">{/* Your SearchComponent here */}</div>
-      </div>
-      <h2 className="font-semibold text-xl">All Users</h2>
       <div className="flex flex-col   bg-white rounded-xl">
         <UserTable
           paginatedUsers={currentUsers}

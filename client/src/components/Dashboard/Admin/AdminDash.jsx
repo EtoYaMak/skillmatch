@@ -48,7 +48,7 @@ function AdminDash() {
   };
   return (
     <div className="h-full font-Poppins flex  flex-col sm:flex-row ">
-      <div className="adminNav w-full sm:w-auto gap-2 px-4 sm:px-0 sm:gap-10 py-4 sm:py-10 border-b  text-center  flex  flex-wrap sm:flex-col sm:items-center justify-between items-start sm:justify-start  sm:text-2xl">
+      <div className="adminNav w-full sm:w-auto gap-2 px-4 sm:px-0 sm:gap-10 py-4 sm:py-10 border-b  text-center  flex  flex-wrap sm:flex-col sm:items-center justify-between items-start sm:justify-start  sm:text-xl">
         {/* Render tabs to switch between profile and applications */}
         <button
           className={` px-4 py-2  ease-in-out duration-200 text-end ${
@@ -78,7 +78,7 @@ function AdminDash() {
           }`}
           onClick={() => handleTabClick("post")}
         >
-          Post Job
+          Post A Job
         </button>
         <button
           className={` px-4 py-2   ease-in-out duration-200 text-end  ${
@@ -88,7 +88,7 @@ function AdminDash() {
           }`}
           onClick={() => handleTabClick("users")}
         >
-          Users
+          Employers
         </button>
         <button
           className={` px-4 py-2   ease-in-out duration-200 text-end  ${
@@ -98,7 +98,7 @@ function AdminDash() {
           }`}
           onClick={() => handleTabClick("students")}
         >
-          Students
+          Applicants
         </button>
       </div>
 
