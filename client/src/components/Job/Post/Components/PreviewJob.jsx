@@ -49,24 +49,25 @@ function JobCard({ formData }) {
               {/* LOGO CONTAINER */}
               <div className="w-32">
                 <img
-                  src={formData.previewUrl}
-                  alt={formData.company}
+                  src={formData?.previewUrl}
+                  alt={formData?.company}
                   className="mask mask-circle object-fill"
                 />
               </div>
               {/* JOB title, company, country, setting */}
               <div className="flex flex-col min-h-full space-y-[0px] sm:space-y-[4px] w-full">
                 <h1 className="font-Poppins text-[14px] sm:text-[18px] font-semibold sm:font-bold">
-                  {formData.position}
+                  {formData?.position}
                 </h1>
                 <h3 className="font-Poppins font-normal sm:font-medium text-[13px] sm:text-[16px] hover:underline text-[#2e2e2e]">
-                  {formData.company}
+                  {formData?.company}
                 </h3>
                 {/* country setting */}
                 <div className="text-white select-none gap-[4px] sm:gap-2 flex flex-wrap w-full text-[10px] sm:text-[12px] py-1">
                   <h1 className="font-Poppins cursor-cell w-fit bg-[#C83055] rounded-sm sm:px-[0.50rem] px-[0.3rem] sm:py-[0.25rem] py-[0.14rem]">
-                    {formData.country}
+                    {formData?.country}
                   </h1>
+
                   {/* Conditional rendering based on job settings */}
                   {formData?.remote && (
                     <h1 className="font-Poppins cursor-cell w-fit bg-[#C83055] rounded-sm sm:px-[0.50rem] px-[0.25rem] sm:py-[0.25rem] py-[0.14rem]">
@@ -86,7 +87,7 @@ function JobCard({ formData }) {
               </h1>
             )}
 
-            {formData.skills.slice(0, 2).map((skill, index) => (
+            {formData?.skills.slice(0, 2).map((skill, index) => (
               <span
                 key={index}
                 className={`max-[560px]:hidden font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] rounded-[9px]`}
@@ -165,7 +166,7 @@ function JobPage({ formData }) {
               🔥 100+ Applicants
             </h1>
             <h1 className="uppercase text-[2em] sm:text-[2.5rem] font-medium font-Poppins my-3">
-              {formData.position}
+              {formData?.position}
             </h1>
             <div className="others flex gap-3 flex-wrap">
               <span className="w-fit px-3 py-1 bg-slate-900  text-[18px] font-semibold text-white text-center  rounded-[4px]">
@@ -211,7 +212,7 @@ function JobPage({ formData }) {
               ) : null}
             </div>
             <div className="skills flex gap-3 flex-wrap ">
-              {formData.skills.map((skill, index) => (
+              {formData?.skills.map((skill, index) => (
                 <span
                   key={index}
                   className={`w-fit px-3 py-1 bg-slate-950 text-[16px] font-medium text-white text-center rounded-[5px]`}
@@ -261,16 +262,16 @@ function JobPage({ formData }) {
           {/* LOGO CONTAINER */}
           <figure className="mb-4 mask mask-circle ">
             <img
-              src={formData.previewUrl}
-              alt={formData.company}
+              src={formData?.previewUrl}
+              alt={formData?.company}
               className="object-fill w-44 "
             />
           </figure>
           <h1 className="text-[24px] font-Poppins font-semibold mb-3  w-[90%] text-center">
-            {formData.company}
+            {formData?.company}
           </h1>
           <h1 className="text-[16px] font-Poppins font-semibold mb-1 w-[90%] text-center flex items-center justify-center gap-1">
-            <RiMapPinLine size={20} /> {formData.country}
+            <RiMapPinLine size={20} /> {formData?.country}
           </h1>
           <Link className="text-[16px] font-Poppins font-semibold mb-4  w-[90%] text-center flex items-center justify-center gap-1">
             <RiGlobalLine size={20} /> Website

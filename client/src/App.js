@@ -51,6 +51,7 @@ import UserJobs from "./components/Dashboard/Admin/UserJobs";
 import ViewStudentApplications from "./components/Dashboard/Admin/ViewStudentApplications";
 import Footer from "./components/Footer";
 import CreateJobForm from "./components/Job/Post/Components/CreateJobForm";
+import PaymentJobForm from "./components/Job/Post/Components/PaymentJobForm";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -93,7 +94,8 @@ function App() {
           location.pathname !== "/reset/:type/:token" &&
           location.pathname !== "/post" &&
           location.pathname !== "/post/jobCreate" &&
-          location.pathname !== "/post/jobPreview" && <Navbar />}
+          location.pathname !== "/post/jobPreview" &&
+          location.pathname !== "/post/jobPayment" && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
 
@@ -104,6 +106,7 @@ function App() {
             <Route index element={<CreateJobForm />} />
             <Route path="jobCreate" element={<CreateJobForm />} />
             <Route path="jobPreview" element={<PreviewJob />} />
+            <Route path="jobPayment" element={<PaymentJobForm />} />
 
             {/* ... other nested routes under /post ... */}
           </Route>

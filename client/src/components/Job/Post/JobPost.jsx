@@ -45,7 +45,7 @@ function JobPost() {
       case "jobCreate":
         return "jobPreview";
       case "jobPreview":
-        return "payment";
+        return "jobPayment";
       // Add cases for other steps if necessary
       default:
         return "jobCreate";
@@ -63,27 +63,27 @@ function JobPost() {
             MINT
           </span>
         </h1>
-        <div className="head bg-gray-100 flex flex-col justify-center gap-8 items-center pt-12 pb-6">
-          <h1 className="font-Poppins text-[2.65rem] font-semibold">
+        <div className="head border-b flex flex-col justify-center gap-8 items-center p-14">
+          <h1 className="font-Poppins text-[2rem] sm:text-[2.65rem] font-semibold text-center">
             Reach the largest remote community on the web
           </h1>
-          <ul className="steps w-[80vw] ">
+          <ul className="steps w-[96vw] sm:w-[80vw] ">
             <li
               className={`step text-lg ${
                 currentStep === "jobCreate" ? "step-primary" : ""
               }`}
             >
-              <p className=" text-2xl font-semibold">Create</p>
+              <p className=" text-xl sm:text-2xl font-semibold">Create</p>
             </li>
             <li
               className={`step text-lg ${
                 currentStep === "jobPreview" ? "step-primary" : ""
               }`}
             >
-              <p className=" text-2xl font-semibold">Preview</p>
+              <p className=" text-xl sm:text-2xl font-semibold">Preview</p>
             </li>
             <li className="step text-lg">
-              <p className=" text-2xl font-semibold">Purchase</p>
+              <p className=" text-xl sm:text-2xl font-semibold">Purchase</p>
             </li>
           </ul>
         </div>
@@ -99,13 +99,19 @@ function JobPost() {
                 Modify Job
               </button>
             )}
-            {currentStep !== "payment" && (
+            {currentStep !== "jobPayment" && (
               <button
                 onClick={handleNext}
                 className="uppercase p-4 rounded-sm font-medium text-lg  outline outline-black outline-1  bg-transparent text-black hover:bg-black hover:text-white font-Poppins duration-200 ease-in-out"
               >
                 {currentStep === "jobCreate" && "Continue to Step 2"}
                 {currentStep === "jobPreview" && "Continue to Step 3"}
+                {currentStep === "jobPayment" && "Purchase Listing"}
+              </button>
+            )}
+            {currentStep === "jobPayment" && (
+              <button className="uppercase p-4 rounded-sm font-medium text-lg  outline outline-black outline-1  bg-transparent text-black hover:bg-black hover:text-white font-Poppins duration-200 ease-in-out">
+                {currentStep === "jobPayment" && "Purchase Listing"}
               </button>
             )}
           </div>
