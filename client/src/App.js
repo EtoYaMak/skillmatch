@@ -10,6 +10,9 @@ import Home from "./pages/Home";
 import Browse from "./pages/Browse";
 import Contact from "./pages/Contact";
 import Post from "./pages/Post";
+/* Job Posting Components */
+import JobPost from "./components/Job/Post/JobPost";
+import PreviewJob from "./components/Job/Post/Components/PreviewJob";
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -39,14 +42,15 @@ import { useSelector } from "react-redux";
 
 import StripeContainer from "./components/Stripe/StripeContainer";
 
-import Footer from "./components/Footer";
-import AllJobsSA from "./components/Dashboard/Admin/AllJobsSA";
+import JobForm from "./components/Job/Post/JobForm";
 import JobFormAdmin from "./components/Job/Post/JobFormAdmin";
+import AllJobsSA from "./components/Dashboard/Admin/AllJobsSA";
 import AllUsers from "./components/Dashboard/Admin/AllStudents";
 import AllStudents from "./components/Dashboard/Admin/AllStudents";
-import JobForm from "./components/Job/Post/JobForm";
 import UserJobs from "./components/Dashboard/Admin/UserJobs";
 import ViewStudentApplications from "./components/Dashboard/Admin/ViewStudentApplications";
+import Footer from "./components/Footer";
+import CreateJobForm from "./components/Job/Post/Components/CreateJobForm";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -86,14 +90,24 @@ function App() {
           location.pathname !== "/reset/:type/:token" &&
           location.pathname !== "/password-reset-admin" &&
           location.pathname !== "/payment" &&
-          location.pathname !== "/reset/:type/:token" && <Navbar />}
+          location.pathname !== "/reset/:type/:token" &&
+          location.pathname !== "/post" &&
+          location.pathname !== "/post/jobCreate" &&
+          location.pathname !== "/post/jobPreview" && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
 
           <Route path="/browse" element={<Browse />} />
           {/*  <Route path="/post" element={<Post />} /> */}
 
-          <Route path="/post" element={<JobForm />} />
+          <Route path="/post/*" element={<JobPost />}>
+            <Route index element={<CreateJobForm />} />
+            <Route path="jobCreate" element={<CreateJobForm />} />
+            <Route path="jobPreview" element={<PreviewJob />} />
+
+            {/* ... other nested routes under /post ... */}
+          </Route>
+          {/*  */}
           <Route path="/contact" element={<Contact />} />
           {/* Normal */}
           <Route path="/login" element={<Login />} />
