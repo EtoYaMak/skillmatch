@@ -85,10 +85,10 @@
   display: flex;
   -ms-flex-align: center;
   align-items: center;
-  padding-left: 15px;
+  padding-left: 0px;
 }
 .__PrivateStripeElement iframe {
-  height: 2em !important;
+  height: 1.65em !important;
 }
 
 .StripeElement--webkit-autofill {
@@ -97,7 +97,7 @@
 
 .StripeElement {
   width: 100%;
-  padding: 11px 15px 11px 0;
+  padding: 10px 10px 10px 10px;
 }
 
 .btnPF {

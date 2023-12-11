@@ -82,7 +82,11 @@ function JobPost() {
             >
               <p className=" text-xl sm:text-2xl font-semibold">Preview</p>
             </li>
-            <li className="step text-lg">
+            <li
+              className={`step text-lg ${
+                currentStep === "jobPayment" ? "step-primary" : ""
+              }`}
+            >
               <p className=" text-xl sm:text-2xl font-semibold">Purchase</p>
             </li>
           </ul>
@@ -90,7 +94,13 @@ function JobPost() {
         <div className="body-components  mx-auto px-2">
           <Outlet />
           {/* Render buttons based on the current step */}
-          <div className="stepbutton w-full max-w-[1100px] mx-auto flex flex-wrap justify-end p-2 py-8 gap-5">
+          <div
+            className={`stepbutton w-full max-w-[1100px] ${
+              currentStep === "jobPayment" ? "max-w-[850px]" : "max-w-[1100px]"
+            } mx-auto flex flex-wrap ${
+              currentStep !== "jobCreate" ? "justify-between" : "justify-end"
+            }  p-2 py-8 gap-5`}
+          >
             {currentStep !== "jobCreate" && (
               <button
                 onClick={handleEdit}
@@ -110,7 +120,7 @@ function JobPost() {
               </button>
             )}
             {currentStep === "jobPayment" && (
-              <button className="uppercase p-4 rounded-sm font-medium text-lg  outline outline-black outline-1  bg-transparent text-black hover:bg-black hover:text-white font-Poppins duration-200 ease-in-out">
+              <button className="uppercase p-4 rounded-sm font-medium text-lg  bg-red-500 text-white hover:bg-black hover:text-white font-Poppins duration-200 ease-in-out">
                 {currentStep === "jobPayment" && "Purchase Listing"}
               </button>
             )}

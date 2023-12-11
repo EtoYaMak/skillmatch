@@ -9,6 +9,7 @@ import {
   RiExternalLinkLine,
 } from "react-icons/ri";
 import DOMPurify from "dompurify";
+import Departments from "../../../../assets/Departments.json";
 
 export default function PreviewJob() {
   const { formData } = useContext(JobFormContext);
@@ -116,6 +117,10 @@ function JobCard({ formData }) {
 }
 
 function JobPage({ formData }) {
+  // Find the label for the category
+  const categoryLabel = Object.entries(Departments).find(
+    ([key, value]) => key === formData?.category
+  )?.[1];
   const sanitizedHTML = DOMPurify.sanitize(formData?.description, {
     USE_PROFILES: { html: true },
   });
@@ -170,13 +175,13 @@ function JobPage({ formData }) {
             </h1>
             <div className="others flex gap-3 flex-wrap">
               <span className="w-fit px-3 py-1 bg-slate-900  text-[18px] font-semibold text-white text-center  rounded-[4px]">
-                {formData.city}
+                {formData?.city}
               </span>
               <span className="w-fit px-3 py-1 bg-slate-900  text-[18px] font-semibold text-white text-center  rounded-[4px]">
-                {formData.category}
+                {categoryLabel}
               </span>
               <span className="w-fit px-3 py-1 bg-slate-900  text-[18px] font-semibold text-white text-center rounded-[4px] ">
-                {formData.salary}
+                {formData?.salary}
               </span>
             </div>
             <div className="worksetting flex gap-3 my-2 items-center justify-start flex-wrap">
@@ -258,13 +263,13 @@ function JobPage({ formData }) {
           </div>
         </div>
         {/* Company Card RIGHT */}
-        <div className="companydetails bg-slate-200 w-[30%] min-w-fit h-[30vh] mx-2 mt-[8vh] p-8 hidden min-[760px]:flex flex-col justify-center items-center top-0 sticky">
+        <div className="companydetails bg-slate-200 w-[30%] min-w-fit h-[340px] mx-2 mt-[8vh] px-8 hidden min-[760px]:flex flex-col justify-center items-center top-0 sticky">
           {/* LOGO CONTAINER */}
-          <figure className="mb-4 mask mask-circle ">
+          <figure className="mb-4 mask mask-circle">
             <img
               src={formData?.previewUrl}
               alt={formData?.company}
-              className="object-fill w-44 "
+              className="object-fill w-44 max-w-44 "
             />
           </figure>
           <h1 className="text-[24px] font-Poppins font-semibold mb-3  w-[90%] text-center">
