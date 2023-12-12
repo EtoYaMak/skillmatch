@@ -13,7 +13,7 @@ node_modules
 build
 slick-dump
 assets
-/backend
+backend
 # misc
 .DS_Store
 .env.local
