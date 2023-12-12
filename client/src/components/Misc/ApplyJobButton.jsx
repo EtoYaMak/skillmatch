@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { applyToJob } from "../../features/jobs/jobSlice";
 import { fetchStudentData } from "../../features/students/studentSlice";
 
-const ApplyJobButton = ({ jobId }) => {
+const ApplyJobButton = ({ jobId, applytext, appliedtext, style }) => {
   const dispatch = useDispatch();
   const { student, studentData } = useSelector((state) => state.students);
   const [isApplied, setIsApplied] = useState(undefined);
@@ -61,7 +61,7 @@ const ApplyJobButton = ({ jobId }) => {
     <button
       onClick={handleApply}
       disabled={isApplied || isLoading}
-      className={`flex justify-center items-center w-full h-full  ease-in-out duration-200 rounded-lg  uppercase font-Poppins  ${
+      className={`flex justify-center items-center ${style} ease-in-out duration-200 uppercase font-Poppins  ${
         isApplied
           ? "bg-transparent text-black/60 font-bold"
           : " bg-black text-white " /* w-[120px] h-[43px] sm:px-3   sm:py-2  font-bold sm:text-[16px] text-[14px] py-1 px-3*/
@@ -70,9 +70,9 @@ const ApplyJobButton = ({ jobId }) => {
       {isLoading ? (
         <span className="loading loading-dots loading-sm"></span>
       ) : isApplied ? (
-        "Applied"
+        `${appliedtext}`
       ) : (
-        "Apply"
+        `${applytext}`
       )}
     </button>
   );

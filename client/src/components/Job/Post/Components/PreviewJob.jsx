@@ -37,9 +37,7 @@ function JobCard({ formData }) {
     <>
       <div
         className={`jobcomp jobItemCard max-[640px]:gap-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppins max-w-[980px] mx-auto duration-200 ease-in-out cursor-pointer z-0 ${
-          formData?.remote
-            ? "bg-[hsl(49,100%,77%)] border-b-[2px] border-b-[#ffD500]"
-            : "border-b-[1px]"
+          formData?.remote ? "" : "shadow-[0_3px_10px_rgb(0,0,0,0.35)]"
         }`}
       >
         <div className="w-full flex flex-row justify-between items-center">

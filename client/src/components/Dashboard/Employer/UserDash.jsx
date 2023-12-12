@@ -42,7 +42,7 @@ function UserDash() {
           >
             My Jobs
           </button>
-          <button
+          {/*           <button
             className={` px-4 py-2 rounded-3xl ease-in-out duration-200 ${
               activeTab === "blank"
                 ? "font-bold  text-[#fff] bg-black scale-105"
@@ -51,7 +51,7 @@ function UserDash() {
             onClick={() => handleTabClick("blank")}
           >
             Blank
-          </button>
+          </button> */}
         </div>
         <div className="w-fit mx-auto">
           {/* Pass the user and jobs props to UserDashJobs */}

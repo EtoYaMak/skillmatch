@@ -36,7 +36,11 @@ function JobDetailComponent(props) {
   }
 
   // Display the job details
-  return <JobDetailPage job={job} />;
+  return (
+    <div className="w-full mx-auto pt-10 pb-20">
+      <JobDetailPage job={job} />
+    </div>
+  );
 }
 
 export default JobDetailComponent;

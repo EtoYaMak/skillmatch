@@ -269,8 +269,6 @@ function CreateJobForm() {
   };
   // Whenever any piece of state changes, update the context's formData.
   useEffect(() => {
-    console.log("Checkbox state: ", fulltime);
-    console.log("Form Data inside CreateJob: ", formData.fulltime);
     updateFormData({
       position,
       careerPage,
@@ -288,7 +286,7 @@ function CreateJobForm() {
       internship,
       hybrid,
       onsite,
-      fileName,
+      fileName: fileName,
       previewUrl,
     });
   }, [

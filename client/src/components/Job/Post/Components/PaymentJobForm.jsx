@@ -1,21 +1,90 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { JobFormContext } from "../JobPost";
+import axios from "axios";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { createJob } from "../../../../features/jobs/jobSlice";
+import { useCallback } from "react";
+
 import {
   CardCvcElement,
-  CardElement,
   CardExpiryElement,
   CardNumberElement,
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-const PUBLIC_KEY = "your_public_key";
-const stripePromise = loadStripe(PUBLIC_KEY);
+
+//
+//
+//
 function PaymentJobForm() {
+  const { formData, setSubmitPayment } = useContext(JobFormContext);
+
   const bestPackagePrice = 99;
   const [selectedPackage, setSelectedPackage] = useState("free");
 
+  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = useCallback(
+    async (e) => {
+      if (e) e.preventDefault();
+
+      if (!stripe || !elements) return;
+
+      const cardElement = elements.getElement(CardNumberElement);
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+      });
+
+      if (error) {
+        console.error("Error:", error);
+        return;
+      }
+
+      try {
+        const response = await axios.post("http://localhost:3000/payment", {
+          amount: 9900, // Amount in cents
+          id: paymentMethod.id,
+          description: user.name,
+          return_url: "http://localhost:3000/payment-success",
+        });
+
+        if (response.data.success) {
+          console.log("Payment success");
+          const isFeatured = selectedPackage === "best";
+
+          // Extract previewUrl and fileName, and spread the rest of formData
+          const { previewUrl, fileName, category, ...restFormData } = formData;
+
+          // Prepare the data to dispatch, renaming fileName to logo
+          const submitData = {
+            ...restFormData,
+            logo: fileName,
+            featured: isFeatured,
+            department: category,
+          };
+
+          console.log("Data to dispatch: ", submitData);
+          dispatch(createJob(submitData));
+          navigate("/payment-success");
+        }
+      } catch (error) {
+        console.error("Payment failed:", error);
+      }
+    },
+    [stripe, elements, user.name, selectedPackage, formData]
+  );
+  useEffect(() => {
+    // Set the submit function in the context
+    setSubmitPayment(() => handleSubmit);
+  }, [handleSubmit, setSubmitPayment]);
   return (
     <>
       <div className="main  mt-14 max-w-[1024px] mx-auto">
@@ -48,9 +117,11 @@ function PaymentJobForm() {
         </div>
         {/* Pay Form */}
 
-        <Elements stripe={stripePromise}>
-          <PayForm amount={bestPackagePrice} isSelected={selectedPackage} />
-        </Elements>
+        <PayForm
+          amount={bestPackagePrice}
+          isSelected={selectedPackage}
+          handleSubmit={handleSubmit}
+        />
       </div>
     </>
   );
@@ -172,84 +243,106 @@ const CARD_OPTIONS = {
     },
   },
 };
-function PayForm({ amount, isSelected }) {
+const CARD_OPTIONS2 = {
+  style: {
+    base: {
+      iconColor: "#000",
+      color: "#000",
+      fontWeight: 500,
+      fontFamily: "Poppins, Roboto, Open Sans, Segoe UI, sans-serif",
+      fontSize: "19px",
+      fontSmoothing: "antialiased",
+      "::placeholder": { iconColor: "#000", color: "#a9a9a9", fontWeight: 300 },
+    },
+    invalid: {
+      iconColor: "#000",
+      color: "#ff0000",
+    },
+  },
+};
+function PayForm({ amount, isSelected, handleSubmit }) {
   return (
-    <div className="flex flex-col sm:flex-row max-w-[850px] justify-center items-center mx-auto bg-white shadow-[0_5px_10px_rgb(0,0,0,0.12)] mt-10">
-      <div className="flex flex-col w-full max-w-[450px]  p-14 ">
-        {/* Title */}
-        <div className="flex flex-col max-w-lg ">
-          <h1 className="text-[2.4rem] font-Poppins">Payment</h1>
-          <div className="flex justify-between items-center">
-            <h1 className="text-[1.3rem] font-Poppins">Pay with Card</h1>
-            <img
-              src="../../assets/stripe.png"
-              alt=""
-              className="sm:w-44 w-24"
-            />
+    <>
+      <form
+        onSubmit={handleSubmit}
+        className="payment-form flex flex-col sm:flex-row max-w-[850px] justify-center items-center mx-auto bg-white shadow-[0_5px_10px_rgb(0,0,0,0.12)] mt-10 "
+      >
+        <div className="flex flex-col w-full max-w-[450px]  p-14 ">
+          {/* Title */}
+          <div className="flex flex-col max-w-lg ">
+            <h1 className="text-[2.4rem] font-Poppins">Payment</h1>
+            <div className="flex justify-between items-center">
+              <h1 className="text-[1.3rem] font-Poppins">Pay with Card</h1>
+              <img
+                src="../../assets/stripe.png"
+                alt=""
+                className="sm:w-44 w-24"
+              />
+            </div>
           </div>
-        </div>
-        {/* CARD content */}
-        <div className="max-w-lg">
-          <span className="w-full ">
-            <h1 className="font-Poppins font-medium pb-1 text-[15px]">
-              Card Number
-            </h1>
-            <fieldset className="FormGroupPF ">
-              <div className="FormRowPF ">
-                <CardNumberElement options={CARD_OPTIONS} />
-              </div>
-            </fieldset>
-          </span>
-          <div className="flex w-full  gap-12 py-8">
-            <span className="w-1/3 flex flex-col justify-between">
-              <h1 className="font-Poppins font-medium pb-1 text-[15px] ">
-                Expiration Date
-              </h1>
-              <fieldset className="FormGroupPF">
-                <div className="FormRowPF">
-                  <CardExpiryElement options={CARD_OPTIONS} />
-                </div>
-              </fieldset>
-            </span>
-            <span className="w-1/3 flex flex-col justify-between">
+          {/* CARD content */}
+          <div className="max-w-lg">
+            <span className="w-full ">
               <h1 className="font-Poppins font-medium pb-1 text-[15px]">
-                CVC/CVV
+                Card Number
               </h1>
-              <fieldset className="FormGroupPF">
-                <div className="FormRowPF">
-                  <CardCvcElement options={CARD_OPTIONS} />
-                  {/* Display validation status */}
+              <fieldset className="FormGroupPF ">
+                <div className="FormRowPF ">
+                  <CardNumberElement options={CARD_OPTIONS} />
                 </div>
               </fieldset>
             </span>
+            <div className="flex w-full  gap-12 py-8">
+              <span className="w-1/3 flex flex-col justify-between">
+                <h1 className="font-Poppins font-medium pb-1 text-[15px] ">
+                  Expiration Date
+                </h1>
+                <fieldset className="FormGroupPF">
+                  <div className="FormRowPF">
+                    <CardExpiryElement options={CARD_OPTIONS2} />
+                  </div>
+                </fieldset>
+              </span>
+              <span className="w-1/3 flex flex-col justify-between">
+                <h1 className="font-Poppins font-medium pb-1 text-[15px]">
+                  CVC/CVV
+                </h1>
+                <fieldset className="FormGroupPF">
+                  <div className="FormRowPF">
+                    <CardCvcElement options={CARD_OPTIONS2} />
+                    {/* Display validation status */}
+                  </div>
+                </fieldset>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="sm:w-[400px] min-w-fit w-[95%] sm:min-w-[220px]  py-6 min-[320px]:px-7 sm:py-0 sm:px-10 h-full">
-        <div className=" bg-red-600 text-white w-full p-4 rounded-md">
-          <h1 className="text-[1.22rem] font-Poppins">Order Summary</h1>
-          <span className="flex justify-between mt-4">
-            <h2 className="font-Poppins text-[13px]">Job Posting</h2>
-            <p className="pr-6 font-Poppins text-[13px]">0.00</p>
-          </span>
-          <span className="flex justify-between ">
-            <h2 className="font-Poppins text-[13px]">Package</h2>
-            <p className="pr-6 font-Poppins text-[13px]">
-              {isSelected === "best" ? `$ ${amount}.00` : "FREE"}
-            </p>
-          </span>
-          <span className="flex justify-between mt-10">
-            <h2 className="font-Poppins text-[13px]">TAX</h2>
-            <p className="pr-6 font-Poppins text-[13px]">0.00</p>
-          </span>
-          <span className="flex justify-between border-t-2 border-white/40 mt-1 pt-1">
-            <h2 className="font-Poppins text-[13px] font-medium">TOTAL</h2>
-            <p className="pr-6 font-Poppins text-[13px] font-medium">
-              {isSelected === "best" ? `$ ${amount}.00` : "FREE"}
-            </p>
-          </span>
+        <div className="sm:w-[400px] min-w-fit w-[95%] sm:min-w-[220px]  py-6 min-[320px]:px-7 sm:py-0 sm:px-10 h-full">
+          <div className=" bg-black/90 text-white w-full p-4 rounded-md">
+            <h1 className="text-[1.22rem] font-Poppins">Order Summary</h1>
+            <span className="flex justify-between mt-4">
+              <h2 className="font-Poppins text-[13px]">Job Posting</h2>
+              <p className="pr-6 font-Poppins text-[13px]">0.00</p>
+            </span>
+            <span className="flex justify-between ">
+              <h2 className="font-Poppins text-[13px]">Package</h2>
+              <p className="pr-6 font-Poppins text-[13px]">
+                {isSelected === "best" ? `$ ${amount}.00` : "FREE"}
+              </p>
+            </span>
+            <span className="flex justify-between mt-10">
+              <h2 className="font-Poppins text-[13px]">TAX</h2>
+              <p className="pr-6 font-Poppins text-[13px]">0.00</p>
+            </span>
+            <span className="flex justify-between border-t-2 border-white/40 mt-1 pt-1">
+              <h2 className="font-Poppins text-[13px] font-medium">TOTAL</h2>
+              <p className="pr-6 font-Poppins text-[13px] font-medium">
+                {isSelected === "best" ? `$ ${amount}.00` : "FREE"}
+              </p>
+            </span>
+          </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </>
   );
 }

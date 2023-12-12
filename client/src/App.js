@@ -52,12 +52,14 @@ import ViewStudentApplications from "./components/Dashboard/Admin/ViewStudentApp
 import Footer from "./components/Footer";
 import CreateJobForm from "./components/Job/Post/Components/CreateJobForm";
 import PaymentJobForm from "./components/Job/Post/Components/PaymentJobForm";
+import PaymentSuccess from "./components/Job/Post/Components/PaymentSuccess";
 
 function App() {
   const [message, setMessage] = useState("");
   const location = useLocation();
 
   const user = useSelector((state) => state.auth.user);
+  const SAuser = useSelector((state) => state.SAuser);
   const student = useSelector((state) => state.students.student);
 
   // State to control the modal
@@ -99,7 +101,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
 
-          <Route path="/browse" element={<Browse />} />
+          {/*         <Route path="/browse" element={<Browse />} /> */}
           {/*  <Route path="/post" element={<Post />} /> */}
 
           <Route path="/post/*" element={<JobPost />}>
@@ -110,6 +112,8 @@ function App() {
 
             {/* ... other nested routes under /post ... */}
           </Route>
+          {/*       <Route path="/payment" element={<StripeContainer />} /> */}
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           {/*  */}
           <Route path="/contact" element={<Contact />} />
           {/* Normal */}
@@ -122,7 +126,7 @@ function App() {
           />
           {/* Super */}
           <Route path="/loginAdmin" element={<LoginAdmin />} />
-          <Route path="/registerAdmin" element={<RegisterAdmin />} />
+          {/* <Route path="/registerAdmin" element={<RegisterAdmin />} /> */}
           <Route
             path="/password-reset-admin"
             element={<PasswordResetAdmin />}
@@ -158,7 +162,6 @@ function App() {
 
           <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
           <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
-          <Route path="/payment" element={<StripeContainer />} />
         </Routes>
         <ToastContainer />
       </div>

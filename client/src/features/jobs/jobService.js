@@ -5,14 +5,14 @@ const API_ID = "/api/jobs";
 const ALL_API_URL = "/api/jobs/all";
 
 // Create new job
-const createJob = async (formData, token) => {
+const createJob = async (submitData, token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
     },
   };
-  const response = await axios.post(API_URL, formData, config);
+  const response = await axios.post(API_URL, submitData, config);
 
   return response.data;
 };

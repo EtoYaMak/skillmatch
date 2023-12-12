@@ -7,7 +7,7 @@ import studentReducer from "../features/students/studentSlice";
 import profileReducer from "../features/profiles/profileSlice";
 import contactReducer from "../features/contact/contactSlice";
 import accountReducer from "../features/accounts/accountSlice";
-
+import expiredJobsReducer from "../features/expiredjobs/expiredJobsSlice";
 const isDevelopment = process.env.REACT_APP_NODE_ENV === "development";
 
 export default configureStore({
@@ -15,6 +15,7 @@ export default configureStore({
     auth: authReducer,
     SAuser: SAuserReducer,
     jobs: jobReducer,
+    expiredJobs: expiredJobsReducer,
     students: studentReducer,
     profiles: profileReducer,
     contact: contactReducer,

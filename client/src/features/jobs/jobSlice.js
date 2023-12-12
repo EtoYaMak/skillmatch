@@ -30,11 +30,11 @@ const initialState = {
 //USED @JobForm
 export const createJob = createAsyncThunk(
   "jobs/create",
-  async (formData, thunkAPI) => {
+  async (submitData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
 
-      return await jobService.createJob(formData, token);
+      return await jobService.createJob(submitData, token);
     } catch (error) {
       const message =
         (error.response &&

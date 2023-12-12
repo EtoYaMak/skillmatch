@@ -30,9 +30,7 @@ function JobBoardComponent({ job }) {
     <>
       <div
         className={`jobcomp jobItemCard  max-[640px]:gap-2  my-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppin max-w-[980px]  mx-auto duration-200 ease-in-out cursor-pointer z-0 ${
-          job.setting.find(
-            (setting) => setting.name === "Remote" && setting.value
-          )
+          job?.featured === true
             ? "bg-[hsl(49,100%,77%)] border-b-[2px] border-b-[#ffD500]"
             : "border-b-[1px]" //bg-[#ffd50033] border-[#fff1a7] Add additional styles for non-remote jobs if needed
         }`}
@@ -62,7 +60,7 @@ function JobBoardComponent({ job }) {
                 </h3>
                 {/* country setting */}
                 <div className="  text-white select-none gap-[4px] sm:gap-2 flex flex-wrap w-full text-[10px] sm:text-[12px] py-1">
-                  <h1 className="font-Poppins cursor-cell  w-fit bg-[#C83055] rounded-sm sm:px-[0.50rem] px-[0.3rem]  sm:py-[0.25rem] py-[0.14rem] ">
+                  <h1 className="font-Poppins cursor-cell  w-fit bg-[#C83055]  sm:px-[0.50rem] px-[0.3rem]  sm:py-[0.25rem] py-[0.14rem] rounded-[4px]">
                     {job.country}
                     {/* {countryCode} */}
                   </h1>
@@ -74,7 +72,7 @@ function JobBoardComponent({ job }) {
                       .map((jobSetting, index) => (
                         <h1
                           key={index} //This was missing
-                          className="font-Poppins cursor-cell  w-fit bg-[#C83055] rounded-sm  sm:px-[0.50rem] px-[0.25rem]  sm:py-[0.25rem] py-[0.14rem]  "
+                          className="font-Poppins cursor-cell  w-fit bg-[#C83055] rounded-[4px]  sm:px-[0.50rem] px-[0.25rem]  sm:py-[0.25rem] py-[0.14rem]  "
                         >
                           {jobSetting.name.charAt(0).toUpperCase() +
                             jobSetting.name.slice(1)}
@@ -86,10 +84,8 @@ function JobBoardComponent({ job }) {
           </div>
 
           <div className="bg-transparent max-[640px]:hidden  flex flex-wrap items-start justify-center sm:justify-start gap-1 text-sm text-white h-full w-full sm:w-1/2 max-[450px]:items-center ">
-            {job.setting.find(
-              (setting) => setting.name === "Remote" && setting.value
-            ) ? (
-              <h1 className="font-Poppins text-[14px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[5px] ">
+            {job?.featured === true ? (
+              <h1 className="font-Poppins text-[14px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[4px] ">
                 Featured
               </h1>
             ) : null}
@@ -98,7 +94,7 @@ function JobBoardComponent({ job }) {
               skills.slice(0, 2).map((skill, index) => (
                 <span
                   key={index} // Use the index as the key
-                  className={`max-[560px]:hidden font-Poppins font-semibold text-[12px]  px-3 py-1 bg-[#3D4EE5] rounded-[9px] ${
+                  className={`max-[560px]:hidden font-Poppins font-semibold text-[12px]  px-3 py-1 bg-[#3D4EE5] rounded-[4px] ${
                     isHovered ? " " : " "
                   }`}
                 >
@@ -108,16 +104,21 @@ function JobBoardComponent({ job }) {
           </div>
         </div>
         <div className="sm:w-1/6 flex flex-col mr-3 w-fit justify-center  items-center gap-1 ">
-          {job.setting.find(
-            (setting) => setting.name === "Remote" && setting.value
-          ) ? (
+          {job?.featured === true ? (
             <h1 className="font-Poppins min-[640px]:hidden text-[12px] cursor-cell  w-fit text-black font-semibold px-3 py-1 bg-[#ffD500] rounded-[5px] ">
               Featured
             </h1>
           ) : null}
           {student && (
             <div className="max-[640px]:h-[24px] max-[640px]:w-[75px] w-24 h-10 ">
-              <ApplyJobButton jobId={job._id} />
+              <ApplyJobButton
+                style={
+                  " w-full h-full rounded-[2em] hover:scale-[105%] font-bold"
+                }
+                applytext={"Apply"}
+                appliedtext={"Applied"}
+                jobId={job._id}
+              />
             </div>
           )}
           {showRegisterButton && (

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 /* import { toast } from "react-toastify"; */
-import JobForm from "../components/Job/Post/JobForm";
+import JobPost from "../components/Job/Post/JobPost";
 const Post = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useSelector((state) => state.auth);
@@ -26,7 +26,7 @@ const Post = () => {
       {user ? (
         user.isActive ? (
           <>
-            <JobForm />
+            <JobPost />
           </>
         ) : (
           <div className="text-center h-full flex justify-center items-center">
