@@ -5,6 +5,10 @@ const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const cors = require("cors");
+const cron = require("node-cron");
+const {
+  moveExpiredJobsToArchive,
+} = require("./controllers/expiredjobController");
 const app = express();
 const port = process.env.PORT;
 const IP_ADDRESS = process.env.SERVER_MAIN_ADDRESS;
@@ -26,16 +30,28 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // Database connection
 connectDB();
-
+// Midnight Cron job for moving expired jobs
+cron.schedule(
+  "0 0 * * *",
+  () => {
+    console.log("Running a daily check for expired jobs...");
+    moveExpiredJobsToArchive();
+  },
+  {
+    scheduled: true,
+    timezone: "Europe/London", // Replace with your server's timezone
+  }
+);
 // API routes
 app.use("/api/jobs", require("./routes/jobRoutes")); //job listings
+app.use("/api/expiredJobs", require("./routes/expiredjobRoutes")); //expiredJob listings
 app.use("/api/users", require("./routes/userRoutes")); //user collection
 app.use("/api/students", require("./routes/studentRoutes")); // student collection
 app.use("/api/profiles", require("./routes/studentFormroutes")); // student profiles
 app.use("/api/contact", require("./routes/contactRoutes")); // contact form
 app.use("/api/superusers", require("./routes/superusers")); // admin collection
 // Payment
-app.post("/payment", cors(), async (req, res) => {
+/* app.post("/payment", cors(), async (req, res) => {
   let { amount, id, description, return_url, allow_redirects } = req.body; // Include return_url in the request body
   try {
     const paymentIntent = await stripe.paymentIntents.create({
@@ -61,22 +77,39 @@ app.post("/payment", cors(), async (req, res) => {
       success: false,
     });
   }
+}); */
+
+app.post("/payment", cors(), async (req, res) => {
+  const { amount, id, description, return_url } = req.body;
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount, // Amount should be in cents
+      currency: "USD",
+      description,
+      payment_method: id,
+      confirm: true,
+      return_url,
+    });
+
+    res.json({ clientSecret: paymentIntent.client_secret, success: true });
+  } catch (error) {
+    console.error("Payment error:", error);
+    res
+      .status(500)
+      .json({ message: "Payment processing failed", success: false });
+  }
 });
+
 // Error handling middleware
 app.use(errorHandler);
 
-// Serve static files and set default route
 if (process.env.NODE_ENV === "production") {
-  //Path to Build
   const clientBuildPath = path.join(__dirname, "../client/build");
-  //Use Build
   app.use(express.static(clientBuildPath));
-  //Use Local Public
-  app.use(express.static(path.join(__dirname, "../client/public")));
-
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(clientBuildPath, "index.html"))
-  );
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(clientBuildPath, "index.html"));
+  });
 } else {
   app.get("/", (req, res) => {
     app.use(express.static("../client/public"));

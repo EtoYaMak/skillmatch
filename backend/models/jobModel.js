@@ -9,7 +9,16 @@ const jobSchema = mongoose.Schema(
     postedBy: {
       type: String,
     },
-
+    featured: {
+      type: Boolean,
+      default: false,
+    },
+    expirationDate: {
+      type: Date,
+      default: function () {
+        return new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000); // Current time + 30 days
+      },
+    },
     position: {
       type: String,
       /* required: [true, "Please enter the Job Title"], */
@@ -100,5 +109,6 @@ const jobSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+jobSchema.index({ expirationDate: 1 }, { expireAfterSeconds: 0 });
 
 module.exports = mongoose.model("Job", jobSchema);

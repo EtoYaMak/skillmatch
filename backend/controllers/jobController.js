@@ -111,6 +111,7 @@ const setJob = async (req, res) => {
     req.body.setting = setting;
 
     const {
+      featured,
       position,
       city,
       country,
@@ -129,6 +130,7 @@ const setJob = async (req, res) => {
     const newJob = await Job.create({
       user,
       postedBy,
+      featured,
       position,
       city,
       country,
