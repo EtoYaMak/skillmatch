@@ -10,10 +10,11 @@ node_modules
 /coverage
 
 # production
-build
+/build
 slick-dump
 assets
-backend
+/backend
+
 # misc
 .DS_Store
 .env.local
