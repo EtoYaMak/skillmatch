@@ -109,8 +109,6 @@ function App() {
             <Route path="jobCreate" element={<CreateJobForm />} />
             <Route path="jobPreview" element={<PreviewJob />} />
             <Route path="jobPayment" element={<PaymentJobForm />} />
-
-            {/* ... other nested routes under /post ... */}
           </Route>
           {/*       <Route path="/payment" element={<StripeContainer />} /> */}
           <Route path="/payment-success" element={<PaymentSuccess />} />

@@ -217,9 +217,9 @@ function Login() {
             <h1 className="text-[15px] text-black font-Poppins">
               Not registered?{" "}
             </h1>
-            <a className="text-[17px] text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium font-Poppins">
+            <h1 className="text-[17px] text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium font-Poppins">
               Register now
-            </a>
+            </h1>
           </Link>
         </div>
       </form>
