@@ -49,11 +49,11 @@ function PaymentJobForm() {
       }
 
       try {
-        const response = await axios.post("http://localhost:3000/payment", {
+        const response = await axios.post("/payment", {
           amount: 9900, // Amount in cents
           id: paymentMethod.id,
           description: user.name,
-          return_url: "http://localhost:3000/payment-success",
+          return_url: "/payment-success",
         });
 
         if (response.data.success) {
