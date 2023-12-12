@@ -51,34 +51,6 @@ app.use("/api/profiles", require("./routes/studentFormroutes")); // student prof
 app.use("/api/contact", require("./routes/contactRoutes")); // contact form
 app.use("/api/superusers", require("./routes/superusers")); // admin collection
 // Payment
-/* app.post("/payment", cors(), async (req, res) => {
-  let { amount, id, description, return_url, allow_redirects } = req.body; // Include return_url in the request body
-  try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: "USD",
-      description: "Skillmint Job Portal",
-      payment_method: id,
-      description: description,
-      confirm: true,
-      return_url, // Include the return_url
-      setup_future_usage: allow_redirects ? "on_session" : "off_session",
-    });
-
-    // Send the client a client_secret to confirm the payment on the client side
-    res.json({
-      clientSecret: paymentIntent.client_secret,
-      success: true,
-    });
-  } catch (error) {
-    console.error("Error", error);
-    res.json({
-      message: "Payment failed",
-      success: false,
-    });
-  }
-}); */
-
 app.post("/payment", cors(), async (req, res) => {
   const { amount, id, description, return_url } = req.body;
 
