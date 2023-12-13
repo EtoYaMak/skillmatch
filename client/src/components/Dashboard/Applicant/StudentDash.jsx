@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import StudentProfile from "../../Dashboard/Applicant/studentProfile";
 import StudentApplications from "../../Dashboard/Applicant/StudentApplications";
+import StudentProfilePage from "./StudentProfilePage";
 
 function StudentDash() {
   const { student, isLoading } = useSelector((state) => state.students);
@@ -42,18 +43,29 @@ function StudentDash() {
         </button>
         <button
           className={`mr-4 btn btn-ghost font-Poppins  ${
+            activeTab === "profileold"
+              ? "font-bold btn-active text-black scale-105"
+              : "text-black"
+          }`}
+          onClick={() => handleTabChange("profileold")}
+        >
+          Profile OLD
+        </button>
+        <button
+          className={`mr-4 btn btn-ghost font-Poppins  ${
             activeTab === "profile"
               ? "font-bold btn-active text-black scale-105"
               : "text-black"
           }`}
           onClick={() => handleTabChange("profile")}
         >
-          Profile
+          Profile NEW
         </button>
       </div>
       <div className="p-4 max-w-5xl mx-auto">
         {/* Display the selected component based on the activeTab state */}
-        {activeTab === "profile" && <StudentProfile />}
+        {activeTab === "profileold" && <StudentProfile />}
+        {activeTab === "profile" && <StudentProfilePage />}
         {activeTab === "applications" && <StudentApplications />}
       </div>
     </div>
