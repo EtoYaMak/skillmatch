@@ -81,7 +81,7 @@ function App() {
 
   return (
     <>
-      <div className="App bg-[#fff] min-h-screen">
+      <div className="App bg-[#fff] min-h-screen" id="App">
         <ActivationModal
           isOpen={isModalOpen}
           onClose={() => setModalOpen(false)}
