@@ -242,37 +242,6 @@ function StudeProfile() {
     // Reload the page
     window.location.reload();
   };
-  /*   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        // Dispatch the getProfile thunk to fetch the profile data
-        const fetchedProfile = await dispatch(getProfile()).unwrap();
-
-        if (!fetchedProfile) {
-          // No profile exists, allow student to create a new one
-          // Reset the form fields
-          setFormData({
-            Degree: "BSc",
-            DegreeTitle: "",
-            University: "",
-            cv: null,
-          });
-        } else {
-          // Profile exists, update the form data
-          setFormData({
-            Degree: fetchedProfile.Degree,
-            DegreeTitle: fetchedProfile.DegreeTitle,
-            University: fetchedProfile.University,
-            cv: fetchedProfile.cv,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      }
-    };
-
-    fetchProfile();
-  }, [dispatch]); */
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

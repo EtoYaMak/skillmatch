@@ -7,11 +7,21 @@ const {
   getStudentProfileForJobPoster,
   deleteProfile,
 } = require("../controllers/fileUploadController");
+const uploadfiles = require("../config/s3multerConfigProfile");
 const { s3uploadDocs } = require("../config/s3DocsmulterConfig");
+const { s3ProfileImages } = require("../config/s3ApplicantProfileImages");
 const { protectS } = require("../middleware/authSMiddleware");
 const { protect } = require("../middleware/authMiddleware");
 
-router.route("/").post(protectS, s3uploadDocs.single("cv"), setSForm);
+router.route("/").post(
+  protectS,
+  uploadfiles.fields([
+    { name: "bannerImage", maxCount: 1 },
+    { name: "profileImage", maxCount: 1 },
+    { name: "ApplicantCV", maxCount: 1 },
+  ]),
+  setSForm
+);
 router.route("/:id").put(protectS, updateSForm);
 router.route("/").get(protectS, getProfile);
 

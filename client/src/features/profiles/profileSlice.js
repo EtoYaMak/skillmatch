@@ -14,6 +14,7 @@ export const createProfile = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().students.student.token;
+      console.log("formData Profile: ", formData);
       return await profileService.createProfile(formData, token);
     } catch (error) {
       const message =

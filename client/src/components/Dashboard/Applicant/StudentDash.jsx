@@ -65,7 +65,7 @@ function StudentDash() {
       <div className="p-4 max-w-5xl mx-auto">
         {/* Display the selected component based on the activeTab state */}
         {activeTab === "profileold" && <StudentProfile />}
-        {activeTab === "profile" && <StudentProfilePage />}
+        {activeTab === "profile" && <StudentProfilePage student={student} />}
         {activeTab === "applications" && <StudentApplications />}
       </div>
     </div>

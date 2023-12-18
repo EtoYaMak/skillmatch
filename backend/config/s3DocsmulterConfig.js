@@ -26,14 +26,14 @@ const s3uploadDocs = multer({
       }
     },
     s3: s3,
-    bucket: "skillmint-job-images",
+    bucket: "skillmint-job-images", //Bucket DIR
     acl: "public-read",
     contentDisposition: "inline",
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key: function (req, file, cb) {
       const uniqueKey = `student-documents/${Date.now().toString()}-${
         file.originalname
-      }`;
+      }`; //student-documents will hold ApplicantCV
       cb(null, uniqueKey);
     },
     metadata: function (req, file, cb) {

@@ -8,7 +8,11 @@ const studentFormModel = require("../models/studentFormModel");
 const multer = require("multer");
 const path = require("path");
 const DIR = path.join(__dirname, "../../client/public/submissions/");
-const { deleteObjectFromS3 } = require("../config/s3DocsmulterConfig");
+const {
+  s3uploadDocs,
+  deleteObjectFromS3,
+} = require("../config/s3DocsmulterConfig");
+const { s3ProfileImages } = require("../config/s3ApplicantProfileImages");
 /* const DIR = "../../client/public/submissions/"; */
 
 const getProfile = asyncHandler(async (req, res) => {
@@ -43,8 +47,70 @@ const getStudentProfileForJobPoster = asyncHandler(async (req, res) => {
 });
 //
 //
+const setSForm = async (req, res) => {
+  try {
+    const studentId = req.student.id; // Assuming this is the authenticated student's ID
+    const studentName = req.student.name; // Assuming you have the student's name available
 
-const setSForm = asyncHandler(async (req, res) => {
+    // Process content
+    const { headerContent, experiences } = req.body;
+
+    // Initialize the object to be saved/updated
+    let formData = {
+      student: studentId,
+      studentName,
+      headerContent,
+      experiences: experiences,
+    };
+
+    // Handle file uploads, assuming multer-s3 sets file location in req.file.location
+    if (req.files) {
+      if (req.files["bannerImage"] && req.files["bannerImage"][0]) {
+        formData.bannerImage = req.files["bannerImage"][0].location;
+      }
+      if (req.files["profileImage"] && req.files["profileImage"][0]) {
+        formData.profileImage = req.files["profileImage"][0].location;
+      }
+      if (req.files["ApplicantCV"] && req.files["ApplicantCV"][0]) {
+        formData.ApplicantCV = req.files["ApplicantCV"][0].location;
+      }
+    }
+
+    // Check if a profile already exists for the student
+    let profile = await studentForm.findOne({ student: studentId });
+
+    if (profile) {
+      // Update the existing profile
+      profile = await studentForm.findOneAndUpdate(
+        { student: studentId },
+        { $set: formData },
+        { new: true }
+      );
+    } else {
+      // Create a new profile
+      profile = await studentForm.create(formData);
+    }
+
+    res.status(200).json(profile);
+  } catch (error) {
+    console.error(`An error occurred: ${error}`);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+/* const setSForm = asyncHandler(async (req, res) => {
+  try {
+    const student = req.student.id;
+    const studentName = req.student.name;
+
+    console.log(req.body);
+  } catch (error) {
+    console.error(`An error occurred: ${error}`);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}); */
+
+/* const setSForm = asyncHandler(async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No File was selected!" });
@@ -70,84 +136,6 @@ const setSForm = asyncHandler(async (req, res) => {
     });
 
     res.status(200).json(sProfile);
-  } catch (error) {
-    console.error(`An error occurred: ${error}`);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-/* const setSForm = asyncHandler(async (req, res) => {
-  try {
-    const storage = multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, DIR);
-      },
-      filename: function (req, file, cb) {
-        const fileNameWithoutExtension = path.parse(file.originalname).name;
-        const uniqueSuffix =
-          Date.now() +
-          "-" +
-          Math.round(Math.random() * 1e9) +
-          path.extname(file.originalname);
-        cb(
-          null,
-          file.fieldname + "-" + fileNameWithoutExtension + "-" + uniqueSuffix
-        );
-      },
-    });
-
-    const fileFilter = (req, file, cb) => {
-      // Only allow certain file types
-      if (
-        file.mimetype === "application/pdf" ||
-        file.mimetype === "application/docx"
-      ) {
-        cb(null, true);
-      } else {
-        cb(null, false);
-      }
-    };
-
-    const fileUpload = multer({
-      storage,
-      limits: {
-        fileSize: 1024 * 1024 * 5,
-      },
-      fileFilter,
-    });
-
-    fileUpload.single("cv")(req, res, async (err) => {
-      if (err) {
-        return res
-          .status(400)
-          .json({ message: "File upload failed", details: err });
-      }
-
-      if (!req.file) {
-        return res.status(400).json({ message: "No File was selected!" });
-      }
-
-      const { University, Degree, DegreeTitle } = req.body;
-      if (!University || !Degree || !DegreeTitle) {
-        return res
-          .status(400)
-          .json({ message: "Missing required form fields" });
-      }
-
-      const student = req.student.id;
-      const studentName = req.student.name;
-      const cv = req.file.filename;
-
-      const sProfile = await studentForm.create({
-        student,
-        studentName,
-        University,
-        Degree,
-        DegreeTitle,
-        cv,
-      });
-
-      res.status(200).json(sProfile);
-    });
   } catch (error) {
     console.error(`An error occurred: ${error}`);
     res.status(500).json({ message: "Internal server error" });

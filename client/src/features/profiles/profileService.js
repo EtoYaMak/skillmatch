@@ -10,6 +10,7 @@ const createProfile = async (formData, token) => {
       "Content-Type": "multipart/form-data",
     },
   };
+  console.log("formData Service: ", formData);
   const response = await axios.post(API_URL, formData, config);
   return response.data;
 };

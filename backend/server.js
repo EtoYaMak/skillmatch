@@ -16,6 +16,7 @@ const IP_ADDRESS_BACK = process.env.SERVER_ADDRESS;
 const IP_ADDRESS_FRONT = process.env.SERVER_ADDRESS_FRONT;
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 // Middleware
+// Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
