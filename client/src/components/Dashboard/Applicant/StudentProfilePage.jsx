@@ -1458,6 +1458,8 @@ function CreateProfilePage({ setModeType, profiles }) {
 //
 /* VIEW PROFILE COMPONENT START */
 function StudentProfilePage({ profiles }) {
+  const src = profiles.bannerImage || "../public/profilebannerPlaceHolder.png";
+
   // Create a variable to store the topmost indexed uniName
   const topUniName =
     profiles?.education && profiles.education.length > 0
@@ -1470,7 +1472,9 @@ function StudentProfilePage({ profiles }) {
         <span className="banner relative ">
           <span className="h-[216px] w-[1584px]">
             <img
-              src={profiles?.bannerImage}
+              src={
+                "https://github.com/EtoYaMak/Skillmint-project/blob/main/client/public/profilebannerPlaceHolder.png"
+              }
               alt="banner"
               className="rounded-t-xl object-fill w-full h-full max-h-[216px] max-w-[1584px]"
             />
@@ -1565,7 +1569,7 @@ function StudentProfilePage({ profiles }) {
         </h1>
         <div className="aboutsec pb-2 px-2 ">
           {profiles?.aboutSection !== null ? (
-            <p className="w-full text-[14px] font-Poppins px-3 p-2 bg-[#f5f5f5] rounded-b-xl">
+            <p className="w-full text-[14px] font-Poppins px-3 p-2 rounded-b-xl">
               {profiles.aboutSection}
             </p>
           ) : (
@@ -1584,7 +1588,7 @@ function StudentProfilePage({ profiles }) {
           profiles.experiences.map((experience, index) => (
             <div
               key={index}
-              className="experience-entry p-3 mx-2 mb-2 bg-[#f5f5f5] 
+              className="experience-entry p-3 mx-2 mb-2 
               rounded-md rounded-tr-3xl rounded-bl-3xl"
             >
               <span className="experience-details flex w-full">
@@ -1638,7 +1642,7 @@ function StudentProfilePage({ profiles }) {
           profiles.education.map((educationItem, index) => (
             <div
               key={index}
-              className="experience-entry p-3 mx-2 mb-2 bg-[#f5f5f5] rounded-md rounded-tr-3xl rounded-bl-3xl"
+              className="experience-entry p-3 mx-2 mb-2  rounded-md rounded-tr-3xl rounded-bl-3xl"
             >
               <span className="education1 flex w-full">
                 <span className="w-1/2 flex flex-col gap-1">
@@ -1696,7 +1700,7 @@ function Profile({ student }) {
   const [modeType, setModeType] = useState("view");
   const { profiles, isLoading } = useSelector((state) => state.profiles);
   const dispatch = useDispatch();
-  useEffect(() => {
+  /*   useEffect(() => {
     const fetchData = async () => {
       if (student) {
         await dispatch(getProfile());
@@ -1706,7 +1710,7 @@ function Profile({ student }) {
     };
 
     fetchData();
-  }, [student, dispatch]);
+  }, [student, dispatch]); */
   console.log("Profiles in useEffect:", profiles);
 
   if (isLoading) {

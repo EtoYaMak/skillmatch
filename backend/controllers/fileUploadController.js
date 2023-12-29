@@ -53,14 +53,16 @@ const setSForm = async (req, res) => {
     const studentName = req.student.name; // Assuming you have the student's name available
 
     // Process content
-    const { headerContent, experiences } = req.body;
+    const { headerContent, aboutSection, experiences, education } = req.body;
 
     // Initialize the object to be saved/updated
     let formData = {
       student: studentId,
       studentName,
       headerContent,
-      experiences: experiences,
+      aboutSection,
+      experiences,
+      education,
     };
 
     // Handle file uploads, assuming multer-s3 sets file location in req.file.location
