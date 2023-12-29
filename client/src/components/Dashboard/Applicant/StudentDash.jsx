@@ -29,23 +29,23 @@ function StudentDash() {
   }
   return (
     <div className="min-h-screen  bg-transparent">
-      <div className="bg-transparent px-4 text-center border-b-2 border-b-[#d0333c] max-w-5xl  mx-auto pt-4">
+      <div className="bg-transparent  max-w-5xl mx-auto pb-4 flex justify-center items-center gap-5">
         {/* Render tabs to switch between profile and applications */}
         <button
-          className={`mr-4 btn btn-ghost font-Poppins   ${
+          className={`font-Poppins p-3 rounded-b-xl uppercase text-[13px]    ${
             activeTab === "applications"
-              ? "font-bold btn-active text-black scale-105"
-              : "text-black"
+              ? "font-bold bg-[#f3f3f3]"
+              : "text-black font-medium"
           }`}
           onClick={() => handleTabChange("applications")}
         >
-          Applications
+          My Applications
         </button>
         <button
-          className={`mr-4 btn btn-ghost font-Poppins  ${
+          className={`font-Poppins p-3 rounded-b-xl uppercase text-[13px]   ${
             activeTab === "profile"
-              ? "font-bold btn-active text-black scale-105"
-              : "text-black"
+              ? "font-bold bg-[#f3f3f3]"
+              : "text-black font-medium"
           }`}
           onClick={() => handleTabChange("profile")}
         >
