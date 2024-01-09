@@ -38,15 +38,24 @@ function HeaderBlock({ formData, setFormData, profiles }) {
   );
 
   // Initialize formData with existing headerContent from profiles on mount
-  useEffect(() => {
+  /*   useEffect(() => {
     if (profiles && profiles.headerContent) {
       setFormData((prevData) => ({
         ...prevData,
         headerContent: profiles.headerContent,
       }));
     }
+  }, [profiles]); */
+  useEffect(() => {
+    if (profiles) {
+      setFormData((prevData) => ({
+        ...prevData,
+        headerContent: profiles.headerContent || prevData.headerContent, // Retains existing headerContent if profiles.headerContent is not available
+        ApplicantCV: profiles.ApplicantCV || prevData.ApplicantCV, // Adds ApplicantCV from profiles, or retains the existing value in formData
+      }));
+    }
   }, [profiles]);
-
+  console.log(formData);
   const handleFileChangeBanner = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -108,6 +117,16 @@ function HeaderBlock({ formData, setFormData, profiles }) {
       });
     }
   };
+
+  function extractFilename(url) {
+    const parts = url.split("/");
+    const encodedFilename = parts[parts.length - 1];
+    const decodedFilename = decodeURIComponent(encodedFilename);
+    const nameParts = decodedFilename.split("-");
+    // Remove the first part which is the timestamp and join the rest back together
+    return nameParts.slice(1).join("-");
+  }
+
   return (
     <>
       {/* HEADER */}
@@ -332,14 +351,38 @@ function HeaderBlock({ formData, setFormData, profiles }) {
           />
         </div>
       ) : (
-        <a
-          href={formData?.headerContent.ApplicantCV}
-          target="_blank"
-          rel="noreferrer"
-          className="font-Poppins text-[16px] font-medium px-3 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-600 hover:text-white ease-in-out duration-150 uppercase w-fit flex items-center justify-center gap-2"
-        >
-          <FaFileAlt size={22} /> CV / RESUME
-        </a>
+        <>
+          <span className="flex items-center justify-end gap-2">
+            {/*      <p className="font-Poppins font-medium text-[16px]">CV</p> */}
+            <a
+              href={formData?.ApplicantCV}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 bg-transparent text-black hover:text-black hover:bg-blue-50 rounded-md px-2 py-1 ease-in-out duration-150"
+            >
+              <FaFileAlt size={24} />
+              <p className="font-Poppins font-medium text-[12px] max-w-[180px]">
+                {formData?.ApplicantCV
+                  ? extractFilename(formData.ApplicantCV)
+                  : "No CV Uploaded"}
+              </p>
+            </a>
+            <label
+              htmlFor="ApplicantCV"
+              className="flex items-center justify-center px-3 py-1 bg-blue-700 rounded-md text-[15px] font-Poppins gap-2 text-white hover:bg-blue-500 hover:text-white ease-in-out duration-150"
+            >
+              <FaCloudUploadAlt size={20} />
+              Replace CV
+            </label>
+            <input
+              type="file"
+              name="ApplicantCV"
+              id="ApplicantCV"
+              className="sr-only"
+              onChange={handleFileCvChange}
+            />
+          </span>
+        </>
       )}
     </>
   );
@@ -1838,7 +1881,6 @@ function Profile({ student }) {
 
     fetchData();
   }, [student, dispatch]);
-  console.log("Profiles in useEffect:", profiles);
 
   if (isLoading) {
     return (

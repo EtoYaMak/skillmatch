@@ -26,7 +26,8 @@ import PasswordResetAdminForm from "./components/Account/PasswordResetAdminForm"
 import AdminDash from "./components/Dashboard/Admin/AdminDash";
 
 import UserDash from "./components/Dashboard/Employer/UserDash";
-import JobApplicants from "./components/Job/Components/JobApplicants";
+/* import JobApplicants from "./components/Job/Components/JobApplicants"; */
+import JobApplicants from "./components/Dashboard/Employer/components/JobApplicants";
 import UserDashJobs from "./components/Dashboard/UserDashJobs";
 
 import StudentDash from "./components/Dashboard/Applicant/StudentDash";
@@ -53,6 +54,7 @@ import Footer from "./components/Footer";
 import CreateJobForm from "./components/Job/Post/Components/CreateJobForm";
 import PaymentJobForm from "./components/Job/Post/Components/PaymentJobForm";
 import PaymentSuccess from "./components/Job/Post/Components/PaymentSuccess";
+import PublicProfilePage from "./components/Dashboard/Applicant/Components/PublicProfilePage";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -157,6 +159,7 @@ function App() {
 
           <Route path="/myapplications" element={<StudentApplications />} />
           <Route path="/jobapplicants/:jobId" element={<JobApplicants />} />
+          <Route path="/profile/:studentId" element={<PublicProfilePage />} />
 
           <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
           <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />

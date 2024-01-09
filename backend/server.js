@@ -15,7 +15,7 @@ const IP_ADDRESS = process.env.SERVER_MAIN_ADDRESS;
 const IP_ADDRESS_BACK = process.env.SERVER_ADDRESS;
 const IP_ADDRESS_FRONT = process.env.SERVER_ADDRESS_FRONT;
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
-// Middleware
+
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -33,9 +33,9 @@ app.use(cors(corsOptions));
 connectDB();
 // Midnight Cron job for moving expired jobs
 cron.schedule(
-  "0 0 * * *",
+  "0 0 */25 * *",
   () => {
-    console.log("Running a daily check for expired jobs...");
+    console.log("Running a check for expired jobs every 25 days...");
     moveExpiredJobsToArchive();
   },
   {
@@ -43,6 +43,7 @@ cron.schedule(
     timezone: "Europe/London", // Replace with your server's timezone
   }
 );
+
 // API routes
 app.use("/api/jobs", require("./routes/jobRoutes")); //job listings
 app.use("/api/expiredJobs", require("./routes/expiredjobRoutes")); //expiredJob listings
