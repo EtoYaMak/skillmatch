@@ -12,7 +12,7 @@
 /coverage   
 
 # production
-build
+#build
 slick-dump
 assets
 #/backend

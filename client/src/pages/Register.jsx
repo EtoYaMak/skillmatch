@@ -149,7 +149,7 @@ function Register() {
         email,
         password,
       };
-
+      //console.log("is User", userData);
       dispatch(register(userData));
     } else if (selectedRole === "applicant") {
       // Dispatch the action for applicant registration
@@ -158,7 +158,7 @@ function Register() {
         email,
         password,
       };
-
+      //console.log("is Student", studentData);
       dispatch(Sregister(studentData));
     } else {
       toast.error("Please accept the Privacy Policy before registering.");
@@ -217,16 +217,23 @@ function Register() {
           </div>
           {[
             { label: "Full Name*", name: "name", type: "text" },
-            { label: "Email Address*", name: "email", type: "email" },
+            {
+              label: "Email Address*",
+              name: "email",
+              type: "email",
+              autocomplete: "email",
+            },
             {
               label: "Password*",
               name: "password",
               type: showPassword ? "text" : "password",
+              autocomplete: "new-password",
             },
             {
               label: "Confirm Password*",
               name: "password2",
               type: showPassword2 ? "text" : "password",
+              autocomplete: "new-password",
             },
           ].map((input, index) => (
             <div
@@ -240,17 +247,18 @@ function Register() {
                 <input
                   type={input.type}
                   name={input.name}
-                  value={
+                  /*                   value={
                     input.name === "password"
                       ? password
                       : input.name === "password2"
                       ? password2
                       : ""
-                  }
+                  } */ value={formData[input.name]}
                   placeholder={`Enter ${input.label.toLowerCase()}`}
                   onChange={onChange}
                   className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 pl-[12px] border rounded-[3px]"
                   required
+                  autoComplete={input.autocomplete}
                 />
               </div>
             </div>
@@ -285,9 +293,9 @@ function Register() {
               <h1 className="text-[15px] text-black font-Poppins">
                 Already have an Account?{" "}
               </h1>
-              <a className="text-[17px] text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium font-Poppins">
+              <h1 className="text-[17px] text-black hover:text-[#d0333c] hover:underline hover:decoration-black font-medium font-Poppins">
                 Login
-              </a>
+              </h1>
             </Link>
           </div>
         </form>
