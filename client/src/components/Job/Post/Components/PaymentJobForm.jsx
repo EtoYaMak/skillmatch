@@ -53,7 +53,7 @@ function PaymentJobForm() {
           amount: 9900, // Amount in cents
           id: paymentMethod.id,
           description: user.name,
-          return_url: "/payment-success",
+          return_url: "https://skillmint.io/payment-success",
         });
 
         if (response.data.success) {
@@ -116,12 +116,13 @@ function PaymentJobForm() {
           />
         </div>
         {/* Pay Form */}
-
-        <PayForm
-          amount={bestPackagePrice}
-          isSelected={selectedPackage}
-          handleSubmit={handleSubmit}
-        />
+        {selectedPackage === "best" ? (
+          <PayForm
+            amount={bestPackagePrice}
+            isSelected={selectedPackage}
+            handleSubmit={handleSubmit}
+          />
+        ) : null}
       </div>
     </>
   );
