@@ -35,6 +35,28 @@ function PaymentJobForm() {
     async (e) => {
       if (e) e.preventDefault();
 
+      // If the selectedPackage is 'free', no payment is necessary
+      if (selectedPackage === "free") {
+        // Proceed with job creation without payment
+        const isFeatured = selectedPackage === "best";
+
+        // Extract previewUrl and fileName, and spread the rest of formData
+        const { previewUrl, fileName, category, ...restFormData } = formData;
+
+        // Prepare the data to dispatch, renaming fileName to logo
+        const submitData = {
+          ...restFormData,
+          logo: fileName,
+          featured: isFeatured,
+          department: category,
+        };
+
+        // Dispatch the job creation action
+        dispatch(createJob(submitData));
+        navigate("/payment-success");
+        return; // Exit the function since no payment is needed
+      }
+
       if (!stripe || !elements) return;
 
       const cardElement = elements.getElement(CardNumberElement);
@@ -57,7 +79,7 @@ function PaymentJobForm() {
         });
 
         if (response.data.success) {
-          console.log("Payment success");
+          //console.log("Payment success");
           const isFeatured = selectedPackage === "best";
 
           // Extract previewUrl and fileName, and spread the rest of formData
@@ -71,7 +93,7 @@ function PaymentJobForm() {
             department: category,
           };
 
-          console.log("Data to dispatch: ", submitData);
+          //console.log("Data to dispatch: ", submitData);
           dispatch(createJob(submitData));
           navigate("/payment-success");
         }

@@ -6,7 +6,7 @@ function PaymentSuccess() {
     <div className="min-h-screen max-w-5xl flex flex-col items-center mx-auto gap-24">
       <span className=" h-fit mt-10">
         <h1 className="font-Poppins font-semibold text-[2rem] sm:text-[2.4rem]">
-          Payment Success
+          Job Post Successful
         </h1>
       </span>
       <span className="flex flex-col sm:flex-row justify-between w-fit mx-auto sm:w-full max-w-lg space-y-10 sm:space-y-0">
@@ -20,7 +20,7 @@ function PaymentSuccess() {
           to={"/Dash"}
           className="uppercase p-4 text-center rounded-sm font-medium text-lg bg-red-500 text-white hover:bg-black hover:text-white font-Poppins duration-200 ease-in-out"
         >
-          To Dashboard
+          My Dashboard
         </Link>
       </span>
     </div>
