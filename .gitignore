@@ -1,19 +1,21 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-node_modules
+# ignore node_modules in specific folders
+/node_modules
+/backend/node_modules/
+/client/node_modules/
 /.pnp
 .pnp.js
 .env
-
 # testing
-/coverage
+/coverage   
 
 # production
-/build
+build
 slick-dump
 assets
-/backend
+#/backend
 
 # misc
 .DS_Store
