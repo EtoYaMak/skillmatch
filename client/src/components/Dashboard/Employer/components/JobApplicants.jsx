@@ -33,7 +33,7 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
 
   return (
     /* Profile Card */
-
+    /* TEST */
     <tbody>
       {/* row*/}
       <tr className="hover:bg-black/5">
@@ -222,7 +222,7 @@ function JobApplicants() {
           }`}
           onClick={() => setSelectedTab("Pending")}
         >
-          {pendingCount} Pending Review
+          {pendingCount} Pending
         </a>
         <a
           role="tab"

@@ -10,6 +10,7 @@ const {
   moveExpiredJobsToArchive,
 } = require("./controllers/expiredjobController");
 const app = express();
+const NODE_ENV = process.env.NODE_ENV;
 const port = process.env.PORT;
 const IP_ADDRESS = process.env.SERVER_MAIN_ADDRESS;
 const IP_ADDRESS_BACK = process.env.SERVER_ADDRESS;
@@ -93,4 +94,4 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 // Start the server
-app.listen(port, () => console.log(`Server @ ${port} `));
+app.listen(port, () => console.log(`Server @ ${port} NODE_ENV:${NODE_ENV}`));
