@@ -37,15 +37,6 @@ function HeaderBlock({ formData, setFormData, profiles }) {
     profiles?.bannerImage || defaultBannerImage
   );
 
-  // Initialize formData with existing headerContent from profiles on mount
-  /*   useEffect(() => {
-    if (profiles && profiles.headerContent) {
-      setFormData((prevData) => ({
-        ...prevData,
-        headerContent: profiles.headerContent,
-      }));
-    }
-  }, [profiles]); */
   useEffect(() => {
     if (profiles) {
       setFormData((prevData) => ({
@@ -54,8 +45,8 @@ function HeaderBlock({ formData, setFormData, profiles }) {
         ApplicantCV: profiles.ApplicantCV || prevData.ApplicantCV, // Adds ApplicantCV from profiles, or retains the existing value in formData
       }));
     }
-  }, [profiles]);
-  console.log(formData);
+  }, [profiles, setFormData]);
+
   const handleFileChangeBanner = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -119,12 +110,17 @@ function HeaderBlock({ formData, setFormData, profiles }) {
   };
 
   function extractFilename(url) {
-    const parts = url.split("/");
-    const encodedFilename = parts[parts.length - 1];
-    const decodedFilename = decodeURIComponent(encodedFilename);
-    const nameParts = decodedFilename.split("-");
-    // Remove the first part which is the timestamp and join the rest back together
-    return nameParts.slice(1).join("-");
+    if (typeof url === "string") {
+      const parts = url.split("/");
+      const encodedFilename = parts[parts.length - 1];
+      const decodedFilename = decodeURIComponent(encodedFilename);
+      const nameParts = decodedFilename.split("-");
+      // Remove the first part which is the timestamp and join the rest back together
+      return nameParts.slice(1).join("-");
+    } else {
+      // Handle the case where url is not a string (null or some unexpected type)
+      return "Invalid URL";
+    }
   }
 
   return (
@@ -140,12 +136,20 @@ function HeaderBlock({ formData, setFormData, profiles }) {
             />
           </span>
           {/* bannerImage upload */}
-          <span className="w-40 h-40 opacity-0 hover:opacity-100">
+          <span className="w-40 h-40 opacity-100">
             <label
               htmlFor="bannerImage"
-              className="banner   absolute flex justify-center items-center w-full h-full top-0  cursor-pointer  hover:bg-black/40  rounded-t-xl shadow-[rgba(0,_0,_0,_0.1)_0px_1px_3px] hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+              className="banner   absolute flex flex-col justify-center items-center w-full h-full top-0  cursor-pointer bg-black/50  rounded-t-xl shadow-[rgba(0,_0,_0,_0.1)_0px_1px_3px] hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
             >
-              <FaRegImage size={33} className="text-white" />
+              <h1 className="font-Poppins text-white font-bold text-lg backdrop-blur-[1px] rounded-md p-1">
+                Upload Banner
+              </h1>
+              <FaRegImage size={33} className="text-white mb-4" />
+              <span className="font-Poppins text-white flex flex-col justify-center items-center font-semibold backdrop-blur-[1px] rounded-md p-1">
+                <h1 className="text-[15px]">Max 5MB</h1>
+                <h1>W: 1584px </h1>
+                <h1>H: 396px</h1>
+              </span>
             </label>
             <input
               type="file"
@@ -155,18 +159,23 @@ function HeaderBlock({ formData, setFormData, profiles }) {
               onChange={handleFileChangeBanner}
             />
           </span>
-          <img
-            src={selectedProfileImage}
-            alt=""
-            className="dp absolute w-24 sm:w-36 mask mask-circle -bottom-10 left-10"
-          />
+
           {/* profileImage upload */}
-          <span className="w-40 h-40 opacity-0 hover:opacity-100">
+          <span className="w-40 h-40 opacity-100 ">
+            <img
+              src={selectedProfileImage}
+              alt=""
+              className="dp absolute -bottom-10 left-10 cursor-pointer w-28 sm:w-36 h-28 sm:h-36  bg-transparent flex justify-center items-center rounded-full "
+            />
+            {/* opacity-0 hover: */}
             <label
               htmlFor="profileImage"
-              className="dp absolute -bottom-10 left-10 cursor-pointer w-24 sm:w-36 h-24 sm:h-36 bg-transparent hover:bg-black/40 flex justify-center items-center rounded-full shadow-[rgba(0,_0,_0,_0.24)_0px_3px_3px] hover:shadow-[rgba(255,_255,_255,_1)_0px_3px_8px]"
+              className="dp absolute flex-col -bottom-10 left-10 cursor-pointer w-28 sm:w-36 h-28 sm:h-36  bg-black/50 flex justify-center items-center rounded-full shadow-[rgba(0,_0,_0,_0.24)_0px_3px_3px] hover:shadow-[rgba(0,0,0,_0.25)_0px_3px_8px]"
             >
               <MdOutlineFileUpload size={45} className="text-white" />
+              <h1 className="font-Poppins text-white font-bold text-lg backdrop-blur-[1px] rounded-md p-1">
+                Upload
+              </h1>
             </label>
             <input
               type="file"
@@ -217,7 +226,7 @@ function HeaderBlock({ formData, setFormData, profiles }) {
                     type="text"
                     id="MiddleName"
                     className="mt-1 p-2 w-full border rounded-md"
-                    alue={formData?.headerContent.MiddleName}
+                    value={formData?.headerContent.MiddleName}
                     onChange={(e) =>
                       handleHeaderContentChange("MiddleName", e.target.value)
                     }
@@ -289,7 +298,7 @@ function HeaderBlock({ formData, setFormData, profiles }) {
             </span>
           </span>
         </Modal>
-        <span className="headerContent flex w-full gap-8 p-3  pb-4 relative ">
+        <span className="headerContent flex sm:flex-row flex-col w-full gap-8 p-3  pb-4 relative ">
           {formData?.headerContent ? (
             <>
               {formData?.headerContent?.FirstName ||
@@ -297,7 +306,7 @@ function HeaderBlock({ formData, setFormData, profiles }) {
               formData?.headerContent?.LastName ||
               formData?.headerContent?.Location ? (
                 <>
-                  <span className="headerContentLeft w-2/3 space-y-1">
+                  <span className="headerContentLeft w-full sm:w-2/3 space-y-1">
                     <h1 className="name text-[20px] font-Poppins font-semibold">
                       {formData?.headerContent?.FirstName}{" "}
                       {formData?.headerContent?.MiddleName}{" "}
@@ -312,10 +321,11 @@ function HeaderBlock({ formData, setFormData, profiles }) {
                   </span>
                 </>
               ) : null}
-              {formData?.ApplicantCV || formData.education?.uniName ? (
-                <span className="headerContentRight w-1/3 flex flex-col justify-evenly items-center">
+              {formData?.education?.uniName !== undefined &&
+              formData.education.uniName.trim() !== "" ? (
+                <span className="headerContentRight w-full sm:w-1/3 flex flex-col justify-evenly items-center">
                   <h1 className="text-[15px] font-Poppins font-normal text-center ">
-                    {formData.education?.uniName}
+                    {formData.education.uniName}
                   </h1>
                 </span>
               ) : null}
@@ -333,7 +343,7 @@ function HeaderBlock({ formData, setFormData, profiles }) {
       </div>
 
       {/* RESUME */}
-      {formData.ApplicantCV === null ? (
+      {formData.ApplicantCV === null || formData.ApplicantCV === "" ? (
         <div className="flex justify-end items-center">
           <label
             htmlFor="ApplicantCV"
@@ -353,23 +363,26 @@ function HeaderBlock({ formData, setFormData, profiles }) {
       ) : (
         <>
           <span className="flex items-center justify-end gap-2">
-            {/*      <p className="font-Poppins font-medium text-[16px]">CV</p> */}
+            <FaFileAlt size={24} />
             <a
-              href={formData?.ApplicantCV}
+              href={
+                formData?.ApplicantCV instanceof File
+                  ? URL.createObjectURL(formData?.ApplicantCV)
+                  : formData?.ApplicantCV
+              }
               target="_blank"
               rel="noreferrer"
               className="flex items-center justify-center gap-2 bg-transparent text-black hover:text-black hover:bg-blue-50 rounded-md px-2 py-1 ease-in-out duration-150"
             >
-              <FaFileAlt size={24} />
               <p className="font-Poppins font-medium text-[12px] max-w-[180px]">
-                {formData?.ApplicantCV
-                  ? extractFilename(formData.ApplicantCV)
-                  : "No CV Uploaded"}
+                {formData?.ApplicantCV instanceof File
+                  ? formData.ApplicantCV.name
+                  : extractFilename(formData?.ApplicantCV)}
               </p>
             </a>
             <label
               htmlFor="ApplicantCV"
-              className="flex items-center justify-center px-3 py-1 bg-blue-700 rounded-md text-[15px] font-Poppins gap-2 text-white hover:bg-blue-500 hover:text-white ease-in-out duration-150"
+              className="flex sm:flex-row flex-col items-center justify-end px-3 py-1 bg-blue-700 rounded-md text-[15px] font-Poppins gap-0 sm:gap-2 text-white hover:bg-blue-500 hover:text-white ease-in-out duration-150 min-w-max"
             >
               <FaCloudUploadAlt size={20} />
               Replace CV
@@ -401,7 +414,7 @@ function AboutBlock({ formData, setFormData, profiles }) {
         aboutSection: profiles.aboutSection,
       }));
     }
-  }, [profiles]);
+  }, [profiles, setFormData]);
   /* About Modal */
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const openAboutModal = () => {
@@ -482,7 +495,7 @@ function AboutBlock({ formData, setFormData, profiles }) {
 function ExperienceBlock({ formData, setFormData, profiles }) {
   const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
-
+  const [isNewEntry, setIsNewEntry] = useState(false); // Flag to track if the modal is for a new entry
   // Initialize formData experiences with profiles data on component mount
 
   useEffect(() => {
@@ -497,50 +510,62 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
         }));
       }
     }
-  }, [profiles]);
-
+  }, [profiles, setFormData]);
+  // Additional useEffect for handling modal related actions
+  useEffect(() => {
+    // When a new experience is added, update the editing index
+    if (isExperienceModalOpen && formData.experiences.length > 0) {
+      setEditingIndex(formData.experiences.length - 1);
+    }
+    // This effect should depend on formData.experiences.length, not editingIndex
+  }, [isExperienceModalOpen, formData.experiences.length]);
   const openExperienceModal = (index) => {
     setIsExperienceModalOpen(true);
-    setEditingIndex(index);
-
-    if (index !== null) {
-      // If index is not null, it's an edit, no need to initialize new entry
-      document.body.style.overflow = "hidden";
-      return;
+    if (index === null) {
+      // Flag that this is a new entry
+      setIsNewEntry(true);
+      // Adding a new experience
+      setFormData((prevData) => {
+        const newExperiences = [
+          ...prevData.experiences,
+          {
+            roleTitle: "",
+            roleCompany: "",
+            roleDateStart: "",
+            roleDateEnd: "",
+            roleLocation: "",
+            roleType: "",
+            roleDuties: "",
+            roleSkills: "",
+          },
+        ];
+        return { ...prevData, experiences: newExperiences };
+      });
+    } else {
+      // This is an edit, not a new entry
+      setIsNewEntry(false);
+      // Ensure this action is not triggering the effect unnecessarily
+      if (editingIndex !== index) {
+        setEditingIndex(index);
+      }
     }
-
-    // If index is null, it's for adding a new experience
-    // Initialize a new entry in form data
-    setFormData((prevData) => ({
-      ...prevData,
-      experiences: [
-        ...prevData.experiences,
-        {
-          roleTitle: "",
-          roleCompany: "",
-          roleDateStart: "",
-          roleDateEnd: "",
-          roleLocation: "",
-          roleType: "",
-          roleDuties: "",
-          roleSkills: "",
-        },
-      ],
-    }));
-
     document.body.style.overflow = "hidden";
   };
-
   const closeExperienceModal = () => {
+    // Only remove the last entry if it was a new entry
+    if (isNewEntry && editingIndex === formData.experiences.length - 1) {
+      setFormData((prevData) => ({
+        ...prevData,
+        experiences: prevData.experiences.slice(0, -1),
+      }));
+    }
+
+    // Resets
+    setIsNewEntry(false);
     setIsExperienceModalOpen(false);
     setEditingIndex(null);
     document.body.style.overflow = "";
   };
-  /*   const isExperienceBlockEmpty = (block) => {
-    return Object.values(block).every(
-      (value) => value === "" || value === null
-    );
-  }; */
   const isExperienceBlockEmpty = (block) => {
     return (
       !block || Object.values(block).every((value) => !value || value === "")
@@ -548,13 +573,13 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
   };
 
   const handleAddExperience = () => {
+    console.log("Before update:", formData.experiences);
+
     if (editingIndex !== null) {
-      // Check if the edited entry is empty
-      if (!isExperienceBlockEmpty(formData.experiences[editingIndex])) {
+      const editedExperience = formData.experiences[editingIndex];
+      if (!isExperienceBlockEmpty(editedExperience)) {
         const updatedExperiences = [...formData.experiences];
-        updatedExperiences[editingIndex] = {
-          ...updatedExperiences[editingIndex],
-        };
+        updatedExperiences[editingIndex] = editedExperience;
         setFormData({ ...formData, experiences: updatedExperiences });
       } else {
         // If it's empty, remove it from the array
@@ -562,37 +587,17 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
         updatedExperiences.splice(editingIndex, 1);
         setFormData({ ...formData, experiences: updatedExperiences });
       }
-    } else {
-      // Adding a new experience
-      const newExperienceBlock = {
-        roleTitle: "",
-        roleCompany: "",
-        roleDateStart: "",
-        roleDateEnd: "",
-        roleLocation: "",
-        roleType: "",
-        roleDuties: "",
-        roleSkills: "",
-      };
-
-      // Only add the new block if it's not empty
-      if (!isExperienceBlockEmpty(newExperienceBlock)) {
-        setFormData((prevData) => ({
-          ...prevData,
-          experiences: [...prevData.experiences, newExperienceBlock],
-        }));
-      }
     }
+
+    console.log("After update:", formData.experiences);
 
     closeExperienceModal();
   };
 
   const handleExperienceChange = (index, field, value) => {
     const updatedExperiences = [...formData.experiences];
-    updatedExperiences[index] = {
-      ...updatedExperiences[index],
-      [field]: value,
-    };
+    const updatedExperience = { ...updatedExperiences[index], [field]: value };
+    updatedExperiences[index] = updatedExperience;
     setFormData({ ...formData, experiences: updatedExperiences });
   };
 
@@ -704,10 +709,10 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
         >
           <span className="max-w-3xl w-full p-8 flex flex-col gap-4 bg-white rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] font-Poppins">
             <h2>
-              {editingIndex !== null ? "Edit Experience" : "Add Experience"}
+              {isNewEntry === true ? "Add Experience" : "Edit Experience"}
             </h2>
 
-            {/* Role Title and Company */}
+            {/* roleTitle */}
             <div className="mb-4">
               <label
                 htmlFor="roleTitle"
@@ -719,24 +724,17 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
                 type="text"
                 id="roleTitle"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  editingIndex !== null
-                    ? formData.experiences[editingIndex].roleTitle
-                    : formData.experiences[formData.experiences.length - 1]
-                        ?.roleTitle || ""
-                }
+                value={formData.experiences[editingIndex]?.roleTitle || ""}
                 onChange={(e) =>
                   handleExperienceChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1,
+                    editingIndex,
                     "roleTitle",
                     e.target.value
                   )
                 }
               />
             </div>
-
+            {/* roleCompany */}
             <div className="mb-4">
               <label
                 htmlFor="roleCompany"
@@ -748,18 +746,10 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
                 type="text"
                 id="roleCompany"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.experiences[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1
-                  ]?.roleCompany || ""
-                }
+                value={formData.experiences[editingIndex]?.roleCompany || ""}
                 onChange={(e) =>
                   handleExperienceChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1,
+                    editingIndex,
                     "roleCompany",
                     e.target.value
                   )
@@ -767,7 +757,7 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
               />
             </div>
 
-            {/* Start Date */}
+            {/* roleDateStart */}
             <div className="mb-4">
               <label
                 htmlFor="roleDateStart"
@@ -779,18 +769,10 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
                 type="date"
                 id="roleDateStart"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.experiences[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1
-                  ]?.roleDateStart || ""
-                }
+                value={formData.experiences[editingIndex]?.roleDateStart || ""}
                 onChange={(e) =>
                   handleExperienceChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1,
+                    editingIndex,
                     "roleDateStart",
                     e.target.value
                   )
@@ -798,7 +780,7 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
               />
             </div>
 
-            {/* End Date */}
+            {/* roleDateEnd */}
             <div className="mb-4">
               <label
                 htmlFor="roleDateEnd"
@@ -810,25 +792,17 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
                 type="date"
                 id="roleDateEnd"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.experiences[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1
-                  ]?.roleDateEnd || ""
-                }
+                value={formData.experiences[editingIndex]?.roleDateEnd || ""}
                 onChange={(e) =>
                   handleExperienceChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1,
+                    editingIndex,
                     "roleDateEnd",
                     e.target.value
                   )
                 }
               />
             </div>
-            {/* Location */}
+            {/* roleLocation */}
             <div className="mb-4 flex w-full gap-8">
               <span className="w-2/3">
                 <label
@@ -841,47 +815,32 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
                   type="text"
                   id="roleLocation"
                   className="mt-1 p-2 w-full border rounded-md"
-                  value={
-                    formData.experiences[
-                      editingIndex !== null
-                        ? editingIndex
-                        : formData.experiences.length - 1
-                    ]?.roleLocation || ""
-                  }
+                  value={formData.experiences[editingIndex]?.roleLocation || ""}
                   onChange={(e) =>
                     handleExperienceChange(
-                      editingIndex !== null
-                        ? editingIndex
-                        : formData.experiences.length - 1,
+                      editingIndex,
                       "roleLocation",
                       e.target.value
                     )
                   }
                 />
               </span>
+              {/* RoleType */}
               <span className="w-1/3">
                 <label
-                  htmlFor="employmentType"
+                  htmlFor="roleType"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Employment Type
                 </label>
                 <select
-                  id="employmentType"
+                  id="roleType"
                   className="mt-1 p-2 w-full border rounded-md"
-                  value={
-                    formData.experiences[
-                      editingIndex !== null
-                        ? editingIndex
-                        : formData.experiences.length - 1
-                    ]?.roleType || "" // Changed from employmentType to roleType
-                  }
+                  value={formData.experiences[editingIndex]?.roleType || ""}
                   onChange={(e) =>
                     handleExperienceChange(
-                      editingIndex !== null
-                        ? editingIndex
-                        : formData.experiences.length - 1,
-                      "roleType", // Changed from employmentType to roleType
+                      editingIndex,
+                      "roleType",
                       e.target.value
                     )
                   }
@@ -898,7 +857,7 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
               </span>
             </div>
 
-            {/* Job Duties */}
+            {/* roleDuties */}
             <div className="mb-4">
               <label
                 htmlFor="roleDuties"
@@ -909,18 +868,10 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
               <textarea
                 id="roleDuties"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.experiences[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1
-                  ]?.roleDuties || ""
-                }
+                value={formData.experiences[editingIndex]?.roleDuties || ""}
                 onChange={(e) =>
                   handleExperienceChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1,
+                    editingIndex,
                     "roleDuties",
                     e.target.value
                   )
@@ -928,7 +879,7 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
               />
             </div>
 
-            {/* Skills */}
+            {/* roleSkills */}
             <div className="mb-4">
               <label
                 htmlFor="roleSkills"
@@ -940,18 +891,10 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
                 type="text"
                 id="roleSkills"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.experiences[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1
-                  ]?.roleSkills || ""
-                }
+                value={formData.experiences[editingIndex]?.roleSkills || ""}
                 onChange={(e) =>
                   handleExperienceChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.experiences.length - 1,
+                    editingIndex,
                     "roleSkills",
                     e.target.value
                   )
@@ -981,16 +924,9 @@ function EducationBlock({ formData, setFormData, profiles }) {
   /* Education Modal */
   const [isEducationModalOpen, setIsEducationModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [isNewEntry, setIsNewEntry] = useState(false); // Flag to track if the modal is for a new entry
 
   // Initialize formData experiences with profiles data on component mount
-  /*   useEffect(() => {
-    if (profiles && profiles.education && profiles.education.length > 0) {
-      setFormData((prevData) => ({
-        ...prevData,
-        education: profiles.education,
-      }));
-    }
-  }, [profiles]); */
   useEffect(() => {
     if (profiles && profiles.education) {
       const nonEmptyEducation = profiles.education.filter(
@@ -1003,109 +939,26 @@ function EducationBlock({ formData, setFormData, profiles }) {
         }));
       }
     }
-  }, [profiles]);
+  }, [profiles, setFormData]);
+  // Additional useEffect for handling modal related actions
+  useEffect(() => {
+    // When a new education is added, update the editing index
+    if (isEducationModalOpen && formData.education.length > 0) {
+      setEditingIndex(formData.education.length - 1);
+    }
+    // This effect should depend on formData.education.length, not editingIndex
+  }, [isEducationModalOpen, formData.education.length]);
+
   const openEducationModal = (index) => {
     setIsEducationModalOpen(true);
-    setEditingIndex(index);
-
-    if (index !== null) {
-      // If index is not null, it's an edit, no need to initialize new entry
-      document.body.style.overflow = "hidden";
-      return;
-    }
-    // If index is null, it's for adding a new experience
-    // Initialize a new entry in form data
-    setFormData((prevData) => ({
-      ...prevData,
-      education: [
-        ...prevData.education,
-        {
-          uniName: "",
-          uniDegree: "",
-          uniGrade: "",
-          uniStartDate: "",
-          uniEndDate: "",
-          uniLocation: "",
-          uniSection: "",
-          uniSkills: "",
-        },
-      ],
-    }));
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeEducationModal = () => {
-    setIsEducationModalOpen(false);
-    setEditingIndex(null);
-    document.body.style.overflow = "";
-  };
-  /*   const isEducationBlockEmpty = (block) => {
-    return Object.values(block).every(
-      (value) => value === "" || value === null
-    );
-  }; */
-
-  const isEducationBlockEmpty = (block) => {
-    return (
-      !block || Object.values(block).every((value) => !value || value === "")
-    );
-  };
-
-  const handleAddEducation = () => {
-    // If we are editing an existing entry
-    if (editingIndex !== null) {
-      // Check if the edited entry is empty
-      if (!isEducationBlockEmpty(formData.education[editingIndex])) {
-        const updatedEducation = [...formData.education];
-        updatedEducation[editingIndex] = {
-          ...updatedEducation[editingIndex],
-        };
-        setFormData({ ...formData, education: updatedEducation });
-      } else {
-        // If it's empty, remove it from the array
-        const updatedEducation = [...formData.education];
-        updatedEducation.splice(editingIndex, 1);
-        setFormData({ ...formData, education: updatedEducation });
-      }
-    } else {
-      // If we're adding a new entry
-      const newEducationBlock = {
-        uniName: "",
-        uniDegree: "",
-        uniGrade: "",
-        uniStartDate: "",
-        uniEndDate: "",
-        uniLocation: "",
-        uniSection: "",
-        uniSkills: "",
-      };
-
-      // Only add the new block if it's not empty
-      if (!isEducationBlockEmpty(newEducationBlock)) {
-        setFormData((prevData) => ({
-          ...prevData,
-          education: [...prevData.education, newEducationBlock],
-        }));
-      }
-    }
-    closeEducationModal();
-  };
-  /*   const handleAddEducation = () => {
-    if (editingIndex !== null) {
-      // Editing existing experience
-      const updatedEducation = [...formData.education];
-      updatedEducation[editingIndex] = {
-        ...updatedEducation[editingIndex],
-      };
-      setFormData({ ...formData, education: updatedEducation });
-    } else {
-      // Adding a new experience
-      setFormData((prevData) => ({
-        ...prevData,
-        education: [
+    if (index === null) {
+      // Flag that this is a new entry
+      setIsNewEntry(true);
+      // Adding a new education entry
+      setFormData((prevData) => {
+        const newEducation = [
           ...prevData.education,
           {
-            // Initialize all fields for the new experience
             uniName: "",
             uniDegree: "",
             uniGrade: "",
@@ -1115,24 +968,78 @@ function EducationBlock({ formData, setFormData, profiles }) {
             uniSection: "",
             uniSkills: "",
           },
-        ],
-      }));
-      // Update the index after setting the state to ensure it gets the correct index
-      setEditingIndex(formData.education.length);
+        ];
+        return { ...prevData, education: newEducation };
+      });
+    } else {
+      // Ensure this action is not triggering the effect unnecessarily
+      // This is an edit, not a new entry
+      setIsNewEntry(false);
+      if (editingIndex !== index) {
+        setEditingIndex(index);
+      }
     }
-
-    closeEducationModal();
-  }; */
-
-  const handleEducationChange = (index, field, value) => {
-    const updateEducation = [...formData.education];
-    updateEducation[index] = {
-      ...updateEducation[index],
-      [field]: value,
-    };
-    setFormData({ ...formData, education: updateEducation });
+    document.body.style.overflow = "hidden";
+  };
+  const closeEducationModal = () => {
+    // Only remove the last entry if it was a new entry
+    if (isNewEntry && editingIndex === formData.education.length - 1) {
+      setFormData((prevData) => ({
+        ...prevData,
+        education: prevData.education.slice(0, -1),
+      }));
+    }
+    // Reset the flag regardless
+    setIsNewEntry(false);
+    setIsEducationModalOpen(false);
+    setEditingIndex(null);
+    document.body.style.overflow = "";
   };
 
+  /*   const closeEducationModal = () => {
+    if (
+      editingIndex === null &&
+      isEducationBlockEmpty(formData.education[formData.education.length - 1])
+    ) {
+      // Remove the last, blank education entry
+      setFormData((prevData) => ({
+        ...prevData,
+        education: prevData.education.slice(0, -1),
+      }));
+    }
+    setIsEducationModalOpen(false);
+    setEditingIndex(null);
+    document.body.style.overflow = "";
+  }; */
+
+  const isEducationBlockEmpty = (block) => {
+    return (
+      !block || Object.values(block).every((value) => !value || value === "")
+    );
+  };
+
+  const handleAddEducation = () => {
+    if (editingIndex !== null) {
+      const editedEducation = formData.education[editingIndex];
+      if (!isEducationBlockEmpty(editedEducation)) {
+        const updatedEducation = [...formData.education];
+        updatedEducation[editingIndex] = editedEducation;
+        setFormData({ ...formData, education: updatedEducation });
+      } else {
+        const updatedEducation = [...formData.education];
+        updatedEducation.splice(editingIndex, 1);
+        setFormData({ ...formData, education: updatedEducation });
+      }
+    }
+    closeEducationModal();
+  };
+
+  const handleEducationChange = (index, field, value) => {
+    const updatedEducation = [...formData.education];
+    const updatedEdu = { ...updatedEducation[index], [field]: value };
+    updatedEducation[index] = updatedEdu;
+    setFormData({ ...formData, education: updatedEducation });
+  };
   const handleEditEducation = (index) => {
     openEducationModal(index);
   };
@@ -1148,6 +1055,7 @@ function EducationBlock({ formData, setFormData, profiles }) {
       <div className="education w-full bg-white rounded-xl shadow-[rgba(0,_0,_0,_0.1)0px_1px_5px] flex flex-col">
         <h1 className="text-[20px] font-Poppins font-semibold flex items-center justify-between w-full p-2 shadow-[rgba(0,_0,_0,_0.045)_0px_1px_5px] rounded-t-xl">
           Education
+          {/* ADD NEW EDUCATION */}
           <button
             type="button"
             onClick={() => openEducationModal(null)}
@@ -1234,11 +1142,9 @@ function EducationBlock({ formData, setFormData, profiles }) {
           className=" flex flex-col justify-center items-center min-h-screen"
         >
           <span className="max-w-3xl w-full p-8 flex flex-col gap-4 bg-white rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] font-Poppins">
-            <h2>
-              {editingIndex !== null ? "Edit Education" : "Add Education"}
-            </h2>
+            <h2>{isNewEntry === true ? "Add Education" : "Edit Education"}</h2>
             <div className="mb-4">
-              {/* University  */}
+              {/* uniName  */}
               <label
                 htmlFor="uniName"
                 className="block text-sm font-medium text-gray-700"
@@ -1249,24 +1155,13 @@ function EducationBlock({ formData, setFormData, profiles }) {
                 type="text"
                 id="uniName"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  editingIndex !== null
-                    ? formData.education[editingIndex].uniName
-                    : formData.education[formData.education.length - 1]
-                        ?.uniName || ""
-                }
+                value={formData.education[editingIndex]?.uniName || ""}
                 onChange={(e) =>
-                  handleEducationChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1,
-                    "uniName",
-                    e.target.value
-                  )
+                  handleEducationChange(editingIndex, "uniName", e.target.value)
                 }
               />
             </div>
-            {/* Degree */}
+            {/* uniDegree */}
             <div className="mb-4">
               <label
                 htmlFor="uniDegree"
@@ -1278,24 +1173,17 @@ function EducationBlock({ formData, setFormData, profiles }) {
                 type="text"
                 id="uniDegree"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  editingIndex !== null
-                    ? formData.education[editingIndex].uniDegree
-                    : formData.education[formData.education.length - 1]
-                        ?.uniDegree || ""
-                }
+                value={formData.education[editingIndex]?.uniDegree || ""}
                 onChange={(e) =>
                   handleEducationChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1,
+                    editingIndex,
                     "uniDegree",
                     e.target.value
                   )
                 }
               />
             </div>
-            {/* Grade */}
+            {/* uniGrade */}
             <span className="flex">
               <div className="">
                 <label
@@ -1308,17 +1196,10 @@ function EducationBlock({ formData, setFormData, profiles }) {
                   type="text"
                   id="uniGrade"
                   className="mt-1 p-2 w-full border rounded-md"
-                  value={
-                    editingIndex !== null
-                      ? formData.education[editingIndex].uniGrade
-                      : formData.education[formData.education.length - 1]
-                          ?.uniGrade || ""
-                  }
+                  value={formData.education[editingIndex]?.uniGrade || ""}
                   onChange={(e) =>
                     handleEducationChange(
-                      editingIndex !== null
-                        ? editingIndex
-                        : formData.education.length - 1,
+                      editingIndex,
                       "uniGrade",
                       e.target.value
                     )
@@ -1327,7 +1208,7 @@ function EducationBlock({ formData, setFormData, profiles }) {
               </div>
               {/* DATES */}
               <span className="flex w-full justify-end gap-4">
-                {/* Start Date */}
+                {/* uniStartDate */}
                 <div className="">
                   <label
                     htmlFor="uniStartDate"
@@ -1339,18 +1220,10 @@ function EducationBlock({ formData, setFormData, profiles }) {
                     type="date"
                     id="uniStartDate"
                     className="mt-1 p-2 w-full border rounded-md"
-                    value={
-                      formData.education[
-                        editingIndex !== null
-                          ? editingIndex
-                          : formData.education.length - 1
-                      ]?.uniStartDate || ""
-                    }
+                    value={formData.education[editingIndex]?.uniStartDate || ""}
                     onChange={(e) =>
                       handleEducationChange(
-                        editingIndex !== null
-                          ? editingIndex
-                          : formData.education.length - 1,
+                        editingIndex,
                         "uniStartDate",
                         e.target.value
                       )
@@ -1358,7 +1231,7 @@ function EducationBlock({ formData, setFormData, profiles }) {
                   />
                 </div>
 
-                {/* End Date */}
+                {/* uniEndDate */}
                 <div className="">
                   <label
                     htmlFor="uniEndDate"
@@ -1370,18 +1243,10 @@ function EducationBlock({ formData, setFormData, profiles }) {
                     type="date"
                     id="uniEndDate"
                     className="mt-1 p-2 w-full border rounded-md"
-                    value={
-                      formData.education[
-                        editingIndex !== null
-                          ? editingIndex
-                          : formData.education.length - 1
-                      ]?.uniEndDate || ""
-                    }
+                    value={formData.education[editingIndex]?.uniEndDate || ""}
                     onChange={(e) =>
                       handleEducationChange(
-                        editingIndex !== null
-                          ? editingIndex
-                          : formData.education.length - 1,
+                        editingIndex,
                         "uniEndDate",
                         e.target.value
                       )
@@ -1390,7 +1255,7 @@ function EducationBlock({ formData, setFormData, profiles }) {
                 </div>
               </span>
             </span>
-            {/* Location */}
+            {/* uniLocation */}
             <div className="mb-4 w-full">
               <label
                 htmlFor="uniLocation"
@@ -1402,18 +1267,10 @@ function EducationBlock({ formData, setFormData, profiles }) {
                 type="text"
                 id="uniLocation"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.education[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1
-                  ]?.uniLocation || ""
-                }
+                value={formData.education[editingIndex]?.uniLocation || ""}
                 onChange={(e) =>
                   handleEducationChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1,
+                    editingIndex,
                     "uniLocation",
                     e.target.value
                   )
@@ -1421,7 +1278,7 @@ function EducationBlock({ formData, setFormData, profiles }) {
               />
             </div>
 
-            {/* Uni Desc. */}
+            {/* uniSection */}
             <div className="mb-4">
               <label
                 htmlFor="uniSection"
@@ -1432,18 +1289,10 @@ function EducationBlock({ formData, setFormData, profiles }) {
               <textarea
                 id="uniSection"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.education[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1
-                  ]?.uniSection || ""
-                }
+                value={formData.education[editingIndex]?.uniSection || ""}
                 onChange={(e) =>
                   handleEducationChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1,
+                    editingIndex,
                     "uniSection",
                     e.target.value
                   )
@@ -1451,7 +1300,7 @@ function EducationBlock({ formData, setFormData, profiles }) {
               />
             </div>
 
-            {/* Skills */}
+            {/* uniSkills */}
             <div className="mb-4">
               <label
                 htmlFor="uniSkills"
@@ -1463,18 +1312,10 @@ function EducationBlock({ formData, setFormData, profiles }) {
                 type="text"
                 id="uniSkills"
                 className="mt-1 p-2 w-full border rounded-md"
-                value={
-                  formData.education[
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1
-                  ]?.uniSkills || ""
-                }
+                value={formData.education[editingIndex]?.uniSkills || ""}
                 onChange={(e) =>
                   handleEducationChange(
-                    editingIndex !== null
-                      ? editingIndex
-                      : formData.education.length - 1,
+                    editingIndex,
                     "uniSkills",
                     e.target.value
                   )
@@ -1514,104 +1355,63 @@ function CreateProfilePage({ setModeType, profiles }) {
       Location: "",
     },
     aboutSection: "",
-    experiences: [
-      {
-        roleTitle: "",
-        roleCompany: "",
-        roleDateStart: "",
-        roleDateEnd: "",
-        roleLocation: "",
-        roleType: "",
-        roleDuties: "",
-        roleSkills: "",
-      },
-    ],
-    education: [
-      {
-        uniName: "",
-        uniDegree: "",
-        uniGrade: "",
-        uniStartDate: "",
-        uniEndDate: "",
-        uniLocation: "",
-        uniSection: "",
-        uniSkills: "",
-      },
-    ],
+    experiences: [],
+    education: [],
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
 
     // Dispatch the action to send the data to the backend
+    console.log("9 onSubmit Data: ", formData.experiences);
     dispatch(createProfile(formData));
-
-    // Introduce a delay of, for example, 1 second (1000 milliseconds)
-    setTimeout(() => {
-      setModeType("view");
-      window.location.reload();
-    }, 1000);
+    setModeType("view");
   };
   return (
     <>
       <form
-        className="min-h-screen relative"
+        className=" relative"
         encType="multipart/form-data"
         onSubmit={onSubmit}
       >
         <span className="w-full flex justify-end items-center gap-4 my-2">
           <button
             type="submit"
-            className="px-3 py-2 bg-white text-black hover:bg-black hover:text-white  border-blue-400 border hover:border-transparent hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] ease-in-out duration-200  font-Poppins  font-semibold rounded-md"
+            className="px-3 py-2 bg-blue-700 text-white hover:bg-blue-500 hover:text-white shadow-[rgba(0,_0,_0,_0.25)_0px_3px_4px] ease-in-out duration-200  font-Poppins   font-semibold rounded-md"
           >
             Save Changes
           </button>
           <button
             type="button"
             onClick={(e) => setModeType("view")}
-            className="px-3 py-2 bg-white text-red-600 hover:text-white hover:bg-black  border-red-400 border hover:border-transparent hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  ease-in-out duration-200 font-Poppins font-semibold rounded-md"
-          >
-            Cancel
-          </button>
-        </span>
-        <span className="space-y-4">
-          <HeaderBlock
-            formData={formData}
-            setFormData={setFormData}
-            profiles={profiles}
-          />
-          <AboutBlock
-            formData={formData}
-            setFormData={setFormData}
-            profiles={profiles}
-          />
-          <ExperienceBlock
-            formData={formData}
-            setFormData={setFormData}
-            profiles={profiles}
-          />
-          <EducationBlock
-            formData={formData}
-            setFormData={setFormData}
-            profiles={profiles}
-          />
-        </span>
-        <span className="w-full flex justify-center items-center gap-4 my-4 ">
-          <button
-            type="submit"
-            className="px-3 py-2 bg-white text-black hover:bg-black hover:text-white  border-blue-400 border hover:border-transparent hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] ease-in-out duration-200  font-Poppins text-[16px]  font-semibold rounded-md"
-          >
-            Save Changes
-          </button>
-          <button
-            type="button"
-            onClick={(e) => setModeType("view")}
-            className="px-3 py-2 bg-white text-red-600 hover:text-white hover:bg-black  border-red-400 border hover:border-transparent hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]  ease-in-out duration-200 font-Poppins text-[16px] font-semibold rounded-md"
+            className="px-3 py-2 bg-gray-800 text-white hover:text-white hover:bg-black shadow-[rgba(0,_0,_0,_0.25)_0px_3px_4px]  ease-in-out duration-200 font-Poppins  font-semibold rounded-md"
           >
             Cancel
           </button>
         </span>
       </form>
+      <span className="space-y-4">
+        <HeaderBlock
+          formData={formData}
+          setFormData={setFormData}
+          profiles={profiles}
+        />
+        <AboutBlock
+          formData={formData}
+          setFormData={setFormData}
+          profiles={profiles}
+        />
+        <ExperienceBlock
+          formData={formData}
+          setFormData={setFormData}
+          profiles={profiles}
+        />
+        <EducationBlock
+          formData={formData}
+          setFormData={setFormData}
+          profiles={profiles}
+        />
+      </span>
     </>
   );
 }
@@ -1648,53 +1448,38 @@ function StudentProfilePage({ profiles }) {
           <img
             src={srcProfile}
             alt="profile"
-            className="dp absolute w-24 sm:w-36 mask mask-circle -bottom-10 left-10"
+            className="dp absolute -bottom-10 left-10 cursor-pointer w-28 sm:w-36 h-28 sm:h-36  bg-transparent flex justify-center items-center rounded-full"
           />
         </span>
         <span className="headerContent flex w-full gap-8 p-3  pb-4 relative ">
           {profiles?.headerContent !== null ? (
             <>
-              {
-                profiles?.headerContent?.FirstName ||
-                profiles?.headerContent?.MiddleName ||
-                profiles?.headerContent?.LastName ||
-                profiles?.headerContent?.Location ? (
-                  <>
-                    <span className="headerContentLeft w-2/3 space-y-1">
-                      <h1 className="name text-[20px] font-Poppins font-semibold">
-                        {profiles?.headerContent?.FirstName}{" "}
-                        {profiles?.headerContent?.MiddleName}{" "}
-                        {profiles?.headerContent?.LastName}
-                      </h1>
-                      <h1 className="headline text-[15px] font-Poppins font-normal">
-                        {profiles?.headerContent?.Headline}
-                        {/*
-                React Developer | SysAdmin | Networks | Cyber security | IT Support
-                 */}
-                      </h1>
-                      <h1 className="location text-[13px] font-Poppins pt-2">
-                        {profiles?.headerContent?.Location}
-                        {/* Birmingham, England, United Kingdom */}
-                      </h1>
-                    </span>
-                  </>
-                ) : null
-                /*                 <>
-                  <span className="headerContentLeft w-2/3 space-y-1 text-black/40">
+              {profiles?.headerContent?.FirstName ||
+              profiles?.headerContent?.MiddleName ||
+              profiles?.headerContent?.LastName ||
+              profiles?.headerContent?.Location ? (
+                <>
+                  <span className="headerContentLeft w-2/3 space-y-1">
                     <h1 className="name text-[20px] font-Poppins font-semibold">
-                      Name
+                      {profiles?.headerContent?.FirstName}{" "}
+                      {profiles?.headerContent?.MiddleName}{" "}
+                      {profiles?.headerContent?.LastName}
                     </h1>
                     <h1 className="headline text-[15px] font-Poppins font-normal">
-                      Headline
+                      {profiles?.headerContent?.Headline}
+                      {/*
+                React Developer | SysAdmin | Networks | Cyber security | IT Support
+                 */}
                     </h1>
                     <h1 className="location text-[13px] font-Poppins pt-2">
-                      Locaiton
+                      {profiles?.headerContent?.Location}
+                      {/* Birmingham, England, United Kingdom */}
                     </h1>
                   </span>
-                </> */
-              }
+                </>
+              ) : null}
               {profiles?.ApplicantCV || profiles?.education ? (
-                <span className="headerContentRight w-1/3 flex flex-col justify-evenly items-center">
+                <span className="headerContentRight w-1/3 flex flex-col justify-evenly items-center ">
                   {profiles?.education ? (
                     <h1 className="text-[15px] font-Poppins font-normal text-center  ">
                       {topUniName}
@@ -1738,120 +1523,160 @@ function StudentProfilePage({ profiles }) {
           )}
         </div>
       </div>
+
       {/* Experience */}
-      <div className="experience w-full bg-white rounded-xl  shadow-[rgba(0,_0,_0,_0.1)0px_1px_5px] flex flex-col gap-2">
-        <h1 className="text-[20px] font-Poppins font-semibold p-2  shadow-[rgba(0,_0,_0,_0.045)_0px_1px_5px] rounded-t-xl">
+      <div className="experience w-full bg-white rounded-xl shadow-[rgba(0,_0,_0,_0.1)0px_1px_5px] flex flex-col gap-2">
+        <h1 className="text-[20px] font-Poppins font-semibold p-2 shadow-[rgba(0,_0,_0,_0.045)_0px_1px_5px] rounded-t-xl">
           Experience
         </h1>
         {profiles?.experiences?.length > 0 ? (
-          profiles.experiences.map((experience, index) => (
-            <div
-              key={index}
-              className="experience-entry p-3 mx-2 mb-2 pb-1 
+          profiles.experiences.map((experience, index) => {
+            // Check if required fields have values
+            if (
+              experience.roleTitle ||
+              experience.roleType ||
+              experience.roleCompany ||
+              experience.roleDateStart ||
+              experience.roleDateEnd ||
+              experience.roleLocation ||
+              experience.roleDuties ||
+              experience.roleSkills
+            ) {
+              return (
+                <div
+                  key={index}
+                  className="experience-entry p-3 mx-2 mb-2 pb-1 
               rounded-md rounded-tr-3xl rounded-bl-3xl"
-            >
-              <span className="experience-details flex w-full">
-                <span className="w-1/2 mb-[2px] flex flex-col gap-1">
-                  <span className="role font-Poppins text-[16px] font-normal flex items-end gap-2">
-                    <p>{experience.roleTitle}</p>{" "}
-                    <p className="text-[12px]">{experience.roleType}</p>
-                  </span>
-                  <h1 className="company font-Poppins text-[14px] font-medium">
-                    {experience.roleCompany}
-                  </h1>
-                </span>
-                <span className="w-1/2 text-end mb-[2px] flex flex-col gap-1">
-                  <h1 className="date font-Poppins text-[14px] font-normal flex justify-end">
-                    {experience.roleDateStart}{" "}
-                    {experience.roleDateStart && experience.roleDateEnd ? (
-                      <RxDash size={17} className="text-gray-500" />
-                    ) : null}
-                    {experience.roleDateEnd}
-                  </h1>
-                  <span className="location setting font-Poppins text-[14px] font-normal ">
-                    {/*                   <span className="location setting font-Poppins text-[14px] font-normal flex w-full">
+                >
+                  <span className="experience-details flex w-full">
+                    <span className="w-1/2 mb-[2px] flex flex-col gap-1">
+                      <span className="role font-Poppins text-[16px] font-normal flex items-end gap-2">
+                        <p>{experience.roleTitle}</p>{" "}
+                        <p className="text-[12px]">{experience.roleType}</p>
+                      </span>
+                      <h1 className="company font-Poppins text-[14px] font-medium">
+                        {experience.roleCompany}
+                      </h1>
+                    </span>
+                    <span className="w-1/2 text-end mb-[2px] flex flex-col gap-1">
+                      <h1 className="date font-Poppins text-[14px] font-normal flex justify-end">
+                        {experience.roleDateStart}{" "}
+                        {experience.roleDateStart && experience.roleDateEnd ? (
+                          <RxDash size={17} className="text-gray-500" />
+                        ) : null}
+                        {experience.roleDateEnd}
+                      </h1>
+                      <span className="location setting font-Poppins text-[14px] font-normal ">
+                        {/*                   <span className="location setting font-Poppins text-[14px] font-normal flex w-full">
                     <p className="w-1/2 text-center"> {experience.roleType}</p>
                     <p className="w-1/2 text-center">
                       {experience.roleLocation}
                     </p>
                   </span> */}
-                    <p className="">{experience.roleLocation}</p>
+                        <p className="">{experience.roleLocation}</p>
+                      </span>
+                    </span>
                   </span>
-                </span>
-              </span>
-              <p className="job duties font-Poppins text-[14px] font-normal my-2">
-                {experience.roleDuties}
-              </p>
-              <div className="skills my-2">
-                <h1 className="font-Poppins text-[16px] font-medium border-b ">
-                  {experience?.roleSkills ? "Skills" : null}
-                </h1>
-                <h1 className="skillist font-Poppins text-[14px] font-normal w-fit pt-2">
-                  {experience.roleSkills}
-                </h1>
-              </div>
-            </div>
-          ))
+                  <p className="job duties font-Poppins text-[14px] font-normal my-2">
+                    {experience.roleDuties}
+                  </p>
+                  <div className="skills my-2">
+                    <h1 className="font-Poppins text-[16px] font-medium border-b ">
+                      {experience?.roleSkills ? "Skills" : null}
+                    </h1>
+                    <h1 className="skillist font-Poppins text-[14px] font-normal w-fit pt-2">
+                      {experience.roleSkills}
+                    </h1>
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <p
+                  key={index}
+                  className="font-Poppins text-[14px] font-normal p-3"
+                >
+                  No experience listed.
+                </p>
+              ); // Skip rendering empty experience entries
+            }
+          })
         ) : (
           <p className="font-Poppins text-[14px] font-normal p-3">
             No experience listed.
           </p>
         )}
       </div>
-
       {/* Education */}
       <div className="education w-full bg-white rounded-xl shadow-[rgba(0,_0,_0,_0.1)0px_1px_5px] flex flex-col gap-2">
-        <h1 className="text-[20px] font-Poppins font-semibold p-2  shadow-[rgba(0,_0,_0,_0.045)_0px_1px_5px] rounded-t-xl">
+        <h1 className="text-[20px] font-Poppins font-semibold p-2 shadow-[rgba(0,_0,_0,_0.045)_0px_1px_5px] rounded-t-xl">
           Education
         </h1>
         {profiles?.education?.length > 0 ? (
-          profiles.education.map((educationItem, index) => (
-            <div
-              key={index}
-              className="experience-entry p-3 mx-2 mb-2 pb-1 rounded-md rounded-tr-3xl rounded-bl-3xl"
-            >
-              <span className="education1 flex w-full">
-                <span className="w-1/2 flex flex-col gap-1">
-                  <h1 className="degree font-Poppins text-[16px] font-semibold">
-                    {educationItem.uniDegree}
-                  </h1>
-                  <span className="role font-Poppins flex items-end gap-2">
-                    <p className="text-[14px] font-medium">
-                      {educationItem.uniName}
-                    </p>
-                    <p className="text-[12px]">{educationItem?.uniGrade}</p>
-                  </span>
+          profiles.education.map((educationItem, index) => {
+            // Check if required fields have values
+            if (
+              educationItem.uniDegree ||
+              educationItem.uniName ||
+              educationItem.uniGrade ||
+              educationItem.uniStartDate ||
+              educationItem.uniEndDate ||
+              educationItem.uniLocation ||
+              educationItem.uniSection ||
+              educationItem.uniSkills
+            ) {
+              return (
+                <div
+                  key={index}
+                  className="experience-entry p-3 mx-2 mb-2 pb-1 rounded-md rounded-tr-3xl rounded-bl-3xl"
+                >
+                  <span className="education1 flex w-full">
+                    <span className="w-1/2 flex flex-col gap-1">
+                      <h1 className="degree font-Poppins text-[16px] font-semibold">
+                        {educationItem.uniDegree}
+                      </h1>
+                      <span className="role font-Poppins flex items-end gap-2">
+                        <p className="text-[14px] font-medium">
+                          {educationItem.uniName}
+                        </p>
+                        <p className="text-[12px]">{educationItem?.uniGrade}</p>
+                      </span>
 
-                  {/*                   <h1 className="grade font-Poppins text-[14px] font-normal">
+                      {/*                   <h1 className="grade font-Poppins text-[14px] font-normal">
                     Grade:
                   </h1> */}
-                </span>
-                <span className="w-1/2 text-end flex flex-col gap-1">
-                  <h1 className="date font-Poppins text-[14px] font-normal flex justify-end">
-                    {educationItem.uniStartDate}{" "}
-                    {educationItem.uniStartDate && educationItem.uniEndDate ? (
-                      <RxDash size={17} className="text-gray-500" />
-                    ) : null}{" "}
-                    {educationItem.uniEndDate}
-                  </h1>
-                  <h1 className="location setting font-Poppins text-[14px] font-normal">
-                    {educationItem.uniLocation}
-                  </h1>
-                </span>
-              </span>
-              <p className="academic about font-Poppins text-[14px] font-normal my-2">
-                {educationItem.uniSection}
-              </p>
-              <div className="skills my-2">
-                <h1 className="font-Poppins text-[16px] font-medium border-b ">
-                  {educationItem?.uniSkills ? "Skills" : null}
-                </h1>
-                <h1 className="skillist font-Poppins text-[14px] font-normal w-fit pt-2">
-                  {educationItem.uniSkills}
-                </h1>
-              </div>
-            </div>
-          ))
+                    </span>
+                    <span className="w-1/2 text-end flex flex-col gap-1">
+                      <h1 className="date font-Poppins text-[14px] font-normal flex justify-end">
+                        {educationItem.uniStartDate}{" "}
+                        {educationItem.uniStartDate &&
+                        educationItem.uniEndDate ? (
+                          <RxDash size={17} className="text-gray-500" />
+                        ) : null}{" "}
+                        {educationItem.uniEndDate}
+                      </h1>
+                      <h1 className="location setting font-Poppins text-[14px] font-normal">
+                        {educationItem.uniLocation}
+                      </h1>
+                    </span>
+                  </span>
+                  <p className="academic about font-Poppins text-[14px] font-normal my-2">
+                    {educationItem.uniSection}
+                  </p>
+                  <div className="skills my-2">
+                    <h1 className="font-Poppins text-[16px] font-medium border-b ">
+                      {educationItem?.uniSkills ? "Skills" : null}
+                    </h1>
+                    <h1 className="skillist font-Poppins text-[14px] font-normal w-fit pt-2">
+                      {educationItem.uniSkills}
+                    </h1>
+                  </div>
+                </div>
+              );
+            } else {
+              return null; // Skip rendering empty education entries
+            }
+          })
         ) : (
           <p className="font-Poppins text-[14px] font-normal p-3">
             No Education listed.

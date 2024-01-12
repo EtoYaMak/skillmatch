@@ -1,19 +1,23 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { JobFormContext } from "../JobPost";
 import { useDispatch } from "react-redux";
 import { SAcreateJob } from "../../../../features/jobs/jobSlice";
 import DOMPurify from "dompurify";
 import ReactQuill from "react-quill";
+import { MdOutlineFileUpload } from "react-icons/md";
+
 import "../../../../assets/quill.snow.css"; // Import the CSS for the editor
 import countriesList from "../../../../assets/countries-data.json";
 import departmentData from "../../../../assets/Departments.json";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 let jobPlaceholder =
   "As a Network Engineer, you will play a crucial role in designing, implementing, and maintaining our organization's network infrastructure. Your responsibilities will include analyzing network requirements, configuring routers and switches, ensuring network security, and troubleshooting connectivity issues. Collaborating with cross-functional teams, you will contribute to the planning and execution of network projects, while staying abreast of industry trends and emerging technologies. The ideal candidate possesses strong problem-solving skills, in-depth knowledge of networking protocols, and a passion for optimizing network performance to support the organization's seamless operations.";
 
 function CreateJobForm() {
-  const { formData, updateFormData } = useContext(JobFormContext);
+  const { formData, updateFormData, isFormValid, setIsFormValid } =
+    useContext(JobFormContext);
 
   const [position, setPosition] = useState(formData.position || "");
   const [careerPage, setCareerPage] = useState(formData.careerPage || "");
@@ -29,13 +33,11 @@ function CreateJobForm() {
     formData.selectedCountry || ""
   );
   const [countries] = useState(countriesList); //Data
-  //category
-  const [category, setCategory] = useState(formData.category || ""); //Chosen
-  const [customCategory, setCustomCategory] = useState(
-    formData.customCategory || ""
-  ); //Other
-  const [searchTerm, setSearchTerm] = useState(""); //Input Search
-  const categories = departmentData; //Data
+  // Department
+  const [category, setCategory] = useState(formData.category || "");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedCustomDepartment, setSelectedCustomDepartment] = useState("");
+
   //Salary
   const [salary, setSalary] = useState(formData.salary || ""); //Chosen
   //File
@@ -49,11 +51,6 @@ function CreateJobForm() {
   const [internship, setInternship] = useState(formData.internship || false);
   const [hybrid, setHybrid] = useState(formData.hybrid || false);
   const [onsite, setOnsite] = useState(formData.onsite || false);
-
-  const [showFormError, setShowFormError] = useState(true);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const modules = {
     toolbar: {
@@ -90,88 +87,6 @@ function CreateJobForm() {
     }
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    const location = `${city}, ${selectedCountry}`;
-    // Input validation
-    /*     const requiredFields = [
-      { name: "Job Title", value: position },
-      { name: "City", value: city },
-      { name: "Country", value: selectedCountry },
-      { name: "Location", value: location },
-      { name: "Company Name", value: company },
-      { name: "Company Website", value: website },
-      { name: "Job link", value: careerPage },
-      { name: "Description", value: description },
-      { name: "Logo", value: fileName },
-      { name: "Skills", value: skills.length > 0 },
-    ];
-
-    const missingFields = requiredFields
-      .filter((field) => !field.value)
-      .map((field) => field.name);
-    if (missingFields.length > 0) {
-      setFormError(`${missingFields.join(", ")}`);
-      setShowFormError(true);
-      showToastError();
-      return;
-    } */
-
-    // Sanitization
-    const sanitizedPosition = sanitizeInput(position); //jobtitle
-    const sanitizedCity = sanitizeInput(city); //jobcity
-    const sanitizedCountry = sanitizeInput(selectedCountry); //jobcountry
-    const sanitizedDepartment = sanitizeInput(category); //jobdepartment
-    const sanitizedSalary = sanitizeInput(salary); //jobsalary
-    const sanitizedCareerPage = sanitizeInput(careerPage); //jobcareerpage careerpageLink
-    const sanitizedCompany = sanitizeInput(company); //jobcompany
-    const sanitizedWebsite = sanitizeInput(website); //jobwebsite companywebsite
-    const sanitizedDescription = sanitizeInput(description); //jobdescription
-    const sanitizedSkills = skills.map((skill) => sanitizeInput(skill)); //jobskillsarray
-
-    const formData = new FormData();
-
-    formData.append("position", sanitizedPosition); //jobtitle
-    formData.append("city", sanitizedCity); //jobcity
-    formData.append("country", sanitizedCountry); //jobcountry
-    formData.append("department", sanitizedDepartment); //jobdepartment
-    formData.append("salary", sanitizedSalary); //jobsalary
-    formData.append("careerPage", sanitizedCareerPage); //jobcareerpage careerpageLink
-    formData.append("company", sanitizedCompany); //jobcompany
-    formData.append("website", sanitizedWebsite); //jobwebsite companywebsite
-    formData.append("logo", fileName); //joblogo
-    formData.append("fulltime", fulltime); //jobfulltime
-    formData.append("internship", internship); //jobinternship
-    formData.append("contract", contract); //jobcontract
-    formData.append("remote", remote); //jobremote
-    formData.append("hybrid", hybrid); //jobhybrid
-    formData.append("onsite", onsite); //jobonsite
-    formData.append("description", sanitizedDescription); //jobdescription
-    sanitizedSkills.forEach((skill) => {
-      formData.append("skills[]", skill);
-    }); //jobskillsarray
-    dispatch(SAcreateJob(formData));
-    setPosition(""); //jobtitle
-    setCity(""); //jobcity
-    setSelectedCountry(""); //jobcountry
-    setCategory(""); //jobdepartment
-    setSalary(""); //jobsalary
-    setCareerPage(""); //jobcareerpage careerpageLink
-    setCompany(""); //jobcompany
-    setWebsite(""); //jobwebsite companywebsite
-    setFileName(""); //joblogo
-    setDescription(""); //jobdescription
-    setFulltime(false); //jobfulltime
-    setInternship(false); //jobinternship
-    setContract(false); //jobcontract
-    setRemote(false); //jobremote
-    setHybrid(false); //jobhybrid
-    setOnsite(false); //jobonsite
-    setSkills([]); //jobskillsarray
-    //navigate("/adminDash");
-  };
-
   //Handle Changes
   const handleCityChange = (e) => {
     setCity(e.target.value);
@@ -193,23 +108,19 @@ function CreateJobForm() {
   const showToastError = () => {
     toast.error(
       <div className="custom-toast">
-        {" "}
-        {/* Apply your custom styles here */}
         <p className="custom-toast-text text-lg font-Inter">
-          Oh! Looks like you missed some fields!
+          Fill all required Fields
         </p>
       </div>,
       {
-        theme: "dark",
-        autoClose: 8000, // Auto close after 5 seconds (adjust as needed)
+        theme: "light",
+        autoClose: 4000, // Auto close after 4 seconds (adjust as needed)
         // No need to set custom toast styles here; use the CSS class
         toastClassName: "custom-toast-container", // Add custom class for styling
       }
     );
-  };
-
-  const handleFormErrorClose = () => {
-    setShowFormError(false);
+    // Reset the form validity after showing the toast
+    setIsFormValid(true);
   };
 
   const handleDescriptionChange = (value) => {
@@ -248,38 +159,33 @@ function CreateJobForm() {
 
     return sanitizedInput;
   };
-  const filteredCategories = Object.keys(categories).filter((key) =>
-    categories[key].toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
-  const handleCategoryChange = (event) => {
-    const selectedCategory = event.target.value;
-    setCategory(selectedCategory);
-    setSearchTerm("");
+  const handleDepartmentChange = (event) => {
+    const departmentFirst = event.target.value;
+    setSelectedDepartment(departmentFirst);
 
-    // If "Other" is selected, clear customCategory
-    if (selectedCategory !== "other") {
-      setCustomCategory("");
+    if (departmentFirst !== "other") {
+      const departmentName = departmentData[departmentFirst];
+      setCategory(departmentName);
+    } else {
+      setCategory(selectedCustomDepartment);
     }
-  };
-
-  const handleCustomCategoryChange = (event) => {
-    setCustomCategory(event.target.value);
-    setCategory("other"); // Set category to 'other' when user starts typing a custom category
   };
   // Whenever any piece of state changes, update the context's formData.
   useEffect(() => {
-    updateFormData({
-      position,
-      careerPage,
-      company,
-      website,
-      description,
-      skills,
-      city,
-      country,
-      category: category === "other" ? customCategory : category,
-      salary,
+    const sanitizedFormData = {
+      position: sanitizeInput(position),
+      careerPage: sanitizeInput(careerPage, {
+        ALLOWED_URI_REGEXP: /^https?:\/\//i,
+      }),
+      company: sanitizeInput(company),
+      website: sanitizeInput(website, { ALLOWED_URI_REGEXP: /^https?:\/\//i }),
+      description: sanitizeInput(description),
+      skills: skills.map(sanitizeInput),
+      city: sanitizeInput(city),
+      country: sanitizeInput(country),
+      category: sanitizeInput(category),
+      salary: sanitizeInput(salary),
       remote,
       contract,
       fulltime,
@@ -288,7 +194,8 @@ function CreateJobForm() {
       onsite,
       fileName: fileName,
       previewUrl,
-    });
+    };
+    updateFormData(sanitizedFormData);
   }, [
     position,
     careerPage,
@@ -300,7 +207,6 @@ function CreateJobForm() {
     country,
     selectedCountry,
     category,
-    customCategory,
     salary,
     remote,
     contract,
@@ -311,6 +217,15 @@ function CreateJobForm() {
     fileName,
     previewUrl,
   ]);
+
+  // Inside your CreateJobForm component
+  useEffect(() => {
+    if (!isFormValid) {
+      showToastError();
+    }
+    // This will ensure the toast is shown only when `isFormValid` changes to false
+  }, [isFormValid]);
+
   return (
     <form
       className="w-full max-w-[1100px] mx-auto pt-10"
@@ -318,10 +233,19 @@ function CreateJobForm() {
       encType="multipart/form-data"
     >
       <>
+        {/* Display an error message if the form is not valid */}
+        {!isFormValid && (
+          <>
+            <div className="text-red-500 mb-4">
+              Please fill out all required fields.
+            </div>
+          </>
+        )}
         <div className="flex flex-col  p-8 w-full  bg-white shadow-[0_3px_5px_rgb(0,0,0,0.15)]">
           <h1 className="font-bold text-[28px] text-gray-600">
             Tell us about the position
           </h1>
+          {/* Job Title */}
           <div className="w-full font-Poppins ">
             <div>
               <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
@@ -334,7 +258,11 @@ function CreateJobForm() {
                 type="text"
                 name="position"
                 id="position"
-                className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                className={`form-control w-full border rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 ${
+                  !position
+                    ? "ring-2 ring-red-500 border-transparent"
+                    : "border-black/20 focus:border-black/40"
+                }`}
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
                 onKeyDown={falseFlagsubmit}
@@ -350,7 +278,11 @@ function CreateJobForm() {
 
               <input
                 type="text"
-                className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:font-light"
+                className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:font-light ${
+                  !city
+                    ? "ring-2 ring-red-500 border-transparent"
+                    : "border-black/20 focus:border-black/40"
+                }`}
                 placeholder="City"
                 id="city"
                 name="city"
@@ -366,7 +298,11 @@ function CreateJobForm() {
               <select
                 value={country}
                 onChange={handleCountryChange}
-                className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                  !country
+                    ? "ring-2 ring-red-500 border-transparent"
+                    : "border-black/20 focus:border-black/40"
+                }`}
               >
                 <option value="" className="" disabled hidden>
                   Select a Country
@@ -385,17 +321,21 @@ function CreateJobForm() {
           </div>
           {/* Skills */}
           <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
+            {/* SKILL */}
             <div className="bg-transparent w-full">
               <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                 Skills
               </label>
 
-              {/* SKILL INPUT */}
               <input
                 type="text"
                 name="skills"
                 id="skills"
-                className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40"
+                className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40 ${
+                  skills <= 0
+                    ? "ring-2 ring-red-500 border-transparent"
+                    : "border-black/20 focus:border-black/40"
+                }`}
                 placeholder="<spacebar> or <comma> to split Skills."
                 onKeyUp={handleSkillChange}
                 onKeyDown={falseFlagsubmit}
@@ -422,30 +362,42 @@ function CreateJobForm() {
             {/* Category */}
             <div className="category flex flex-col justify-start w-full">
               <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
-                Category
+                Department
               </label>
               <select
-                value={category}
-                onChange={handleCategoryChange}
-                className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                id="department"
+                value={selectedDepartment}
+                onChange={handleDepartmentChange}
+                className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                  !selectedDepartment
+                    ? "ring-2 ring-red-500 border-transparent"
+                    : "border-black/20 focus:border-black/40"
+                }`}
               >
-                <option value="" disabled hidden>
-                  Select a category
+                <option value="" disabled>
+                  Select a department
                 </option>
-                {filteredCategories.map((key) => (
+                {Object.keys(departmentData).map((key) => (
                   <option key={key} value={key}>
-                    {categories[key]}
+                    {departmentData[key]}
                   </option>
                 ))}
+                <option value="other">Other</option>
               </select>
-              {category === "other" && (
-                <input
-                  type="text"
-                  value={customCategory}
-                  onChange={handleCustomCategoryChange}
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 mt-2"
-                  placeholder="Enter custom category"
-                />
+
+              {selectedDepartment === "other" && (
+                <div>
+                  <input
+                    type="text"
+                    id="customDepartment"
+                    onChange={(e) => {
+                      setSelectedCustomDepartment(e.target.value);
+                      setCategory(e.target.value); // Update category with custom input
+                    }}
+                    className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 mt-2"
+                    placeholder="Enter Custom Department"
+                  />
+                </div>
               )}
             </div>
           </div>
@@ -532,6 +484,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                 </div>
               </div>
             </div>
+            {/* Salary */}
             <div className="sm:w-1/2">
               <label className="block text-2xl font-semibold mb-3 mt-8 text-black">
                 Salary
@@ -540,7 +493,11 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                 name="dropdown"
                 value={salary}
                 onChange={(e) => setSalary(e.target.value)}
-                className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                  !salary
+                    ? " border-red-500 border-2"
+                    : "border-black/20 focus:border-black/40"
+                }`}
               >
                 <option value="" disabled hidden>
                   Salary Range
@@ -557,9 +514,12 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
           </div>
           {/* Description */}
           <div className="mt-14 text-black overflow-hidden ">
+            <label className="block text-2xl font-semibold mb-2 text-black">
+              Description
+            </label>
             <ReactQuill
               placeholder={jobPlaceholder}
-              className="border-none"
+              className={`border-transparent`}
               onChange={handleDescriptionChange}
               value={description}
               modules={modules}
@@ -577,7 +537,11 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                   type="text"
                   name="company"
                   id="company"
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                    !company
+                      ? " border-red-500 border-2"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
                   placeholder="ABC Co."
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
@@ -595,7 +559,11 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                   type="text"
                   name="careerPage"
                   id="careerPage"
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                    !careerPage
+                      ? " border-red-500 border-2"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
                   placeholder="www.careers.abc.com/job"
                   value={careerPage}
                   onChange={(e) => setCareerPage(e.target.value)}
@@ -613,49 +581,45 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                   <p className="h-8">
                     Logo <span className="text-[10px]">MAX 2MB</span>{" "}
                   </p>
-                  {fileName && <p>Preview</p>}
+                  {/* {fileName && <p className="absolute">Preview</p>} */}
                 </label>
 
-                <div className="flex flex-row justify-between items-start">
-                  <input
-                    type="file"
-                    name="logo"
-                    accept="image/*"
-                    className="file-input-ghost file-input w-fit bg-white file:bg-black/10 file:text-[14px] font-Poppins text-[17px] border border-black/20 rounded-[2px] "
-                    onChange={handleFileChange}
-                    /* onChange={(e) => setFileName(e.target.files[0])} */
-                  />
-
-                  {!fileName && (
-                    <div className="flex flex-col justify-center items-center min-w-[90px] w-[90px] h-[90px] ">
-                      <img
-                        src={"../assets/dp.jpg"}
-                        alt="Preview"
-                        className="object-cover mask mask-circle"
-                        style={{
-                          width: 160,
-                          height: 160,
-                          position: "center",
-                        }}
-                      />
-                    </div>
-                  )}
-
-                  {fileName && (
-                    <div className="flex flex-col justify-center items-center min-w-[90px] w-[90px] h-[90px] ">
+                <div className="flex flex-row justify-between items-center relative  bg-[#a4a4a4]/20 rounded-md">
+                  <span
+                    className={`w-full h-36 group flex flex-col-reverse sm:flex-row-reverse justify-between items-center relative  rounded-xl z-[2] hover:shadow-sm`}
+                  >
+                    {previewUrl && previewUrl !== null ? (
                       <img
                         src={previewUrl}
-                        alt="Preview"
-                        className="mask mask-circle shadow-[0px_3px_8px_rgb(0,0,0,0.3)]"
-                        style={{
-                          width: 160,
-                          height: 160,
-                          position: "center",
-                        }}
+                        alt=""
+                        className="dp cursor-pointer pointer-events-none w-28 h-28  bg-transparent flex justify-center items-center rounded-full z-10 absolute  max-[640px]:top-1 sm:right-5"
                       />
-                    </div>
-                  )}
+                    ) : null}
+                    <label
+                      htmlFor="profileImage"
+                      className={`dp absolute flex-row cursor-pointer w-full h-full   flex justify-center items-center   text-black`}
+                    >
+                      {/*    <MdOutlineFileUpload size={45} /> */}
+                      <h1
+                        className={`font-Poppins font-bold text-lg sm:text-3xl  text-black/40 group-hover:text-black/60 absolute ${
+                          !fileName ? "" : "max-[640px]:bottom-0"
+                        } sm:flex`}
+                      >
+                        Upload
+                      </h1>
+                    </label>
+                    <input
+                      type="file"
+                      name="profileImage"
+                      id="profileImage"
+                      className="sr-only w-full h-full"
+                      onChange={handleFileChange}
+                    />
+                  </span>
                 </div>
+                <h1 className="font-Poppins font-medium text-center text-sm  p-1 ">
+                  Click inside the box to select a file
+                </h1>
               </div>
             </div>
             {/* Company URL */}
@@ -668,7 +632,11 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                   type="text"
                   name="website"
                   id="website"
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 "
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                    !website
+                      ? " border-red-500 border-2"
+                      : "border-black/20 focus:border-black/40"
+                  } z-20`}
                   placeholder="www.abc.com"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}

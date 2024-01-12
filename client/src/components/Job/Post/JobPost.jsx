@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
@@ -11,7 +12,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 // Create a context for the form data
@@ -19,6 +19,7 @@ export const JobFormContext = createContext({});
 function JobPost() {
   const [formData, setFormData] = useState({});
   const [currentStep, setCurrentStep] = useState("jobCreate");
+  const [isFormValid, setIsFormValid] = useState(true);
 
   const { user } = useSelector((state) => state.auth);
   const { SAuser } = useSelector((state) => state.SAuser);
@@ -37,14 +38,46 @@ function JobPost() {
     setCurrentStep(step);
     navigate(`/post/${step}`);
   };
-
   const handleNext = () => {
-    const newFormData = collectFormData(); // Call collectFormData from the child component
-    updateFormData(newFormData); // Update the context with the new form data
-    // Define logic to determine the next step based on `currentStep`
+    const newFormData = collectFormData();
+
+    // Add your form validation logic here
+    if (!isFormDataValid(newFormData)) {
+      // Form data is not valid, do not proceed to the next step
+      setIsFormValid(false);
+      return;
+    }
+
+    setIsFormValid(true);
+
+    updateFormData(newFormData);
+
     const nextStep = determineNextStep(currentStep);
     goToStep(nextStep);
   };
+  const isFormDataValid = (formData) => {
+    // Add conditions for all the fields you want to validate
+    const isValid =
+      formData.position.trim() !== "" &&
+      formData.careerPage.trim() !== "" &&
+      formData.company.trim() !== "" &&
+      formData.website.trim() !== "" &&
+      formData.description.trim() !== "" &&
+      formData.skills.length > 0 && // Check if skills array is not empty
+      formData.city !== "" &&
+      formData.country !== "" &&
+      formData.category !== "" &&
+      formData.salary !== "" &&
+      formData.fileName !== "";
+
+    console.log("Is Form Valid:", isValid);
+    return isValid;
+  };
+  /*   const isFormDataValid = (formData) => {
+    const isValid = formData.position.trim() !== "";
+    console.log("Is Form Valid:", isValid);
+    return isValid;
+  }; */
 
   const handleEdit = () => {
     // Logic to go back to editing, for example, always back to jobCreate
@@ -79,6 +112,8 @@ function JobPost() {
       collectFormData,
       handlePaymentSubmit,
       setSubmitPayment,
+      isFormValid,
+      setIsFormValid,
     }),
     [
       formData,
@@ -87,22 +122,45 @@ function JobPost() {
       collectFormData,
       handlePaymentSubmit,
       setSubmitPayment,
+      isFormValid,
+      setIsFormValid,
     ]
   );
+  // Save formData to sessionStorage when it updates
+  useEffect(() => {
+    sessionStorage.setItem("jobFormData", JSON.stringify(formData));
+  }, [formData]);
+
+  // Check for saved formData in sessionStorage when the component mounts
+  useEffect(() => {
+    const savedFormData = sessionStorage.getItem("jobFormData");
+    if (savedFormData) {
+      setFormData(JSON.parse(savedFormData));
+    }
+  }, []);
+
+  // If user is on the jobPreview and tries to refresh, force them to /post
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (currentStep === "jobPreview" || currentStep === "jobPayment") {
+        sessionStorage.removeItem("jobFormData"); // Optional: Clear formData on refresh
+        navigate("/post");
+        // Custom message for the user
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [currentStep, navigate]);
   return (
     <>
       {SAuser || user ? (
         <Elements stripe={stripePromise}>
-          {/*         <JobFormContext.Provider
-          value={{
-            formData,
-            updateFormData,
-            goToStep,
-            collectFormData,
-            handlePaymentSubmit,
-            setSubmitPayment,
-          }}
-        > */}{" "}
           <JobFormContext.Provider value={contextValue}>
             <div className=" min-h-screen font-Poppins">
               <h1 className=" text-[#000] relative flex justify-start items-center h-24  px-4 mx-auto z-50   select-none pl-[6vw]">

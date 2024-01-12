@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "node_modules/flowbite-react/lib/esm/**/*.js",
+  ],
 
   theme: {
     extend: {
@@ -9,6 +12,7 @@ module.exports = {
         Poppins: ["Poppins", "sans-serif"],
         Oswald: ["Oswald", "sans-serif"],
         Handlee: ["Handlee", "cursive"],
+        Nothing: ["Nothing You Could Do", "cursive"],
       },
       backgroundImage: {
         paymentBG: "url('./assets/ten_payment.svg')",
@@ -20,7 +24,7 @@ module.exports = {
     require("@tailwindcss/forms"),
 
     require("tailwind-scrollbar-hide"),
-    /*     require("flowbite/plugin"),*/
+    require("flowbite/plugin"),
     require("daisyui"),
   ],
 };

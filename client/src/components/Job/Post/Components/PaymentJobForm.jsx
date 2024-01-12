@@ -20,12 +20,24 @@ import {
 //
 function PaymentJobForm() {
   const { formData, setSubmitPayment } = useContext(JobFormContext);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    // Check if the necessary formData is present
+    // You should tailor the condition to check for the actual required fields
+    const isFormDataIncomplete =
+      !formData || Object.keys(formData).length === 0;
+
+    if (isFormDataIncomplete) {
+      // If the formData is incomplete, redirect to /post
+      navigate("/post");
+    }
+  }, [formData, navigate]);
   const bestPackagePrice = 99;
   const [selectedPackage, setSelectedPackage] = useState("free");
 
   const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
 
   const stripe = useStripe();
@@ -42,7 +54,7 @@ function PaymentJobForm() {
 
         // Extract previewUrl and fileName, and spread the rest of formData
         const { previewUrl, fileName, category, ...restFormData } = formData;
-
+        console.log(category);
         // Prepare the data to dispatch, renaming fileName to logo
         const submitData = {
           ...restFormData,
@@ -52,8 +64,9 @@ function PaymentJobForm() {
         };
 
         // Dispatch the job creation action
-        dispatch(createJob(submitData));
-        navigate("/payment-success");
+        console.log(submitData);
+        //dispatch(createJob(submitData));
+        //navigate("/payment-success");
         return; // Exit the function since no payment is needed
       }
 

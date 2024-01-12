@@ -1,6 +1,6 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { JobFormContext } from "../JobPost";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   RiMapPinLine,
   RiGlobalLine,
@@ -13,6 +13,19 @@ import Departments from "../../../../assets/Departments.json";
 
 export default function PreviewJob() {
   const { formData } = useContext(JobFormContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the necessary formData is present
+    // You should tailor the condition to check for the actual required fields
+    const isFormDataIncomplete =
+      !formData || Object.keys(formData).length === 0;
+
+    if (isFormDataIncomplete) {
+      // If the formData is incomplete, redirect to /post
+      navigate("/post");
+    }
+  }, [formData, navigate]);
 
   return (
     <div className="w-full max-w-[1100px] mx-auto mt-5 min-h-screen">
@@ -36,9 +49,7 @@ function JobCard({ formData }) {
   return (
     <>
       <div
-        className={`jobcomp jobItemCard max-[640px]:gap-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppins max-w-[980px] mx-auto duration-200 ease-in-out cursor-pointer z-0 ${
-          formData?.remote ? "" : "shadow-[0_3px_10px_rgb(0,0,0,0.35)]"
-        }`}
+        className={`jobcomp jobItemCard max-[640px]:gap-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppins max-w-[980px] mx-auto duration-200 ease-in-out cursor-pointer z-0 shadow-[0_3px_10px_rgb(0,0,0,0.35)]`}
       >
         <div className="w-full flex flex-row justify-between items-center">
           {/* LEFT FLEX DIR */}
@@ -85,15 +96,16 @@ function JobCard({ formData }) {
                 Featured
               </h1>
             )}
-
-            {formData?.skills.slice(0, 2).map((skill, index) => (
-              <span
-                key={index}
-                className={`max-[560px]:hidden font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] rounded-[9px]`}
-              >
-                {skill}
-              </span>
-            ))}
+            {formData?.skills
+              ? formData.skills.slice(0, 2).map((skill, index) => (
+                  <span
+                    key={index}
+                    className={`max-[560px]:hidden font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] rounded-[9px]`}
+                  >
+                    {skill}
+                  </span>
+                ))
+              : null}
           </div>
 
           <div className="sm:w-1/6 flex flex-col mr-3 w-fit justify-center items-center gap-1">
@@ -215,14 +227,16 @@ function JobPage({ formData }) {
               ) : null}
             </div>
             <div className="skills flex gap-3 flex-wrap ">
-              {formData?.skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className={`w-fit px-3 py-1 bg-slate-950 text-[16px] font-medium text-white text-center rounded-[5px]`}
-                >
-                  {skill}
-                </span>
-              ))}
+              {formData?.skills
+                ? formData.skills.slice(0, 2).map((skill, index) => (
+                    <span
+                      key={index}
+                      className={`max-[560px]:hidden font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] rounded-[9px]`}
+                    >
+                      {skill}
+                    </span>
+                  ))
+                : null}
             </div>
             <div className="description w-full  bg-white  mt-4 font-Poppins ">
               <h4
