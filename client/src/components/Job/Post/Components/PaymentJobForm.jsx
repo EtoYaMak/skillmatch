@@ -65,8 +65,8 @@ function PaymentJobForm() {
 
         // Dispatch the job creation action
         console.log(submitData);
-        //dispatch(createJob(submitData));
-        //navigate("/payment-success");
+        dispatch(createJob(submitData));
+        navigate("/payment-success");
         return; // Exit the function since no payment is needed
       }
 

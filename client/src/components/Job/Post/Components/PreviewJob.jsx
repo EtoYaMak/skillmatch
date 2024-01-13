@@ -128,9 +128,17 @@ function JobCard({ formData }) {
 
 function JobPage({ formData }) {
   // Find the label for the category
-  const categoryLabel = Object.entries(Departments).find(
-    ([key, value]) => key === formData?.category
-  )?.[1];
+  const formatCategory = (formData) => {
+    const categoryLabel = Object.entries(Departments).find(
+      ([key, value]) => key === formData?.department
+    )?.[1];
+
+    if (categoryLabel) {
+      return categoryLabel; // Return the label from JSON if found
+    } else {
+      return formData.department; // Return the custom string if not found in JSON
+    }
+  };
   const sanitizedHTML = DOMPurify.sanitize(formData?.description, {
     USE_PROFILES: { html: true },
   });
@@ -188,7 +196,7 @@ function JobPage({ formData }) {
                 {formData?.city}
               </span>
               <span className="w-fit px-3 py-1 bg-slate-900  text-[18px] font-semibold text-white text-center  rounded-[4px]">
-                {categoryLabel}
+                {formData?.category}
               </span>
               <span className="w-fit px-3 py-1 bg-slate-900  text-[18px] font-semibold text-white text-center rounded-[4px] ">
                 {formData?.salary}
@@ -231,7 +239,7 @@ function JobPage({ formData }) {
                 ? formData.skills.slice(0, 2).map((skill, index) => (
                     <span
                       key={index}
-                      className={`max-[560px]:hidden font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] rounded-[9px]`}
+                      className={`max-[560px]:hidden font-Poppins font-semibold text-[12px] px-3 py-1 bg-[#3D4EE5] text-white rounded-[9px]`}
                     >
                       {skill}
                     </span>

@@ -50,9 +50,17 @@ function JobDetailPage({ job }) {
   } = job;
   const applicantsCount = job.applicants.length;
 
-  const categoryLabel = Object.entries(Departments).find(
-    ([key, value]) => key === job?.department
-  )?.[1];
+  const formatCategory = (job) => {
+    const categoryLabel = Object.entries(Departments).find(
+      ([key, value]) => key === job?.department
+    )?.[1];
+
+    if (categoryLabel) {
+      return categoryLabel; // Return the label from JSON if found
+    } else {
+      return job.department; // Return the custom string if not found in JSON
+    }
+  };
   //Format expirationDate
   const formatexpDate = (expirationDate) => {
     const monthNames = [
@@ -176,7 +184,7 @@ function JobDetailPage({ job }) {
               {job?.city}
             </span>
             <span className="w-fit px-3 py-1 bg-slate-900  text-[15px] font-semibold text-white text-center  rounded-[4px]">
-              {categoryLabel}
+              {formatCategory(job)}
             </span>
             <span className="w-fit px-3 py-1 bg-slate-900  text-[15px] font-semibold text-white text-center rounded-[4px] ">
               {job?.salary}

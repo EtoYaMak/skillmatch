@@ -130,7 +130,7 @@ function CreateJobForm() {
 
   const handleSkillChange = (e) => {
     const value = e.target.value.trim();
-    if (value && (e.key === "," || e.key === " ")) {
+    if (value && (e.key === "," || e.key === "Enter")) {
       e.preventDefault();
       // const trimmedValue = value.replace(/-,+$/, ""); // Remove trailing commas
       //const sanitizedValue = value.replace(/[^a-zA-Z0-9\-+\s#.]|(?<=\.)$/g, ""); // Remove special characters except "-", ".", "+", and whitespace
@@ -319,7 +319,7 @@ function CreateJobForm() {
               </select>
             </div>
           </div>
-          {/* Skills */}
+          {/* Skills && department */}
           <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
             {/* SKILL */}
             <div className="bg-transparent w-full">
@@ -336,9 +336,9 @@ function CreateJobForm() {
                     ? "ring-2 ring-red-500 border-transparent"
                     : "border-black/20 focus:border-black/40"
                 }`}
-                placeholder="<spacebar> or <comma> to split Skills."
+                placeholder="Type a Skill and press <ENTER>"
                 onKeyUp={handleSkillChange}
-                onKeyDown={falseFlagsubmit}
+                /* onKeyDown={falseFlagsubmit} */
               />
               {/* SKILLS.MAP */}
               <div className="flex flex-wrap mb-1 gap-1">
@@ -401,6 +401,7 @@ function CreateJobForm() {
               )}
             </div>
           </div>
+          {/* SETTING && SALARY */}
           <div className="sm:flex sm:space-x-8 bg-transparent font-Poppins w-full ">
             {/* WORK SETTINGS */}
             <div className="flex flex-col sm:w-1/2 justify-center items-start font-Poppins gap-3 ">
@@ -508,7 +509,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                 <option value="£35,000 - £45,000">£35,000 - £45,000 GBP</option>
                 <option value="£45,000 - £60,000">£45,000 - £60,000 GBP</option>
                 <option value="£60,000 - £80,000">£60,000 - £80,000 GBP</option>
-                <option value="80plus">£80,000+ GBP</option>
+                <option value="£80,000+">£80,000+ GBP</option>
               </select>
             </div>
           </div>
@@ -612,20 +613,20 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                       type="file"
                       name="profileImage"
                       id="profileImage"
-                      className="sr-only w-full h-full"
+                      className="form-control-file file-input bg-transparent w-full h-full"
                       onChange={handleFileChange}
                     />
                   </span>
                 </div>
-                <h1 className="font-Poppins font-medium text-center text-sm  p-1 ">
+                {/*                 <h1 className="font-Poppins font-medium text-center text-sm  p-1 ">
                   Click inside the box to select a file
-                </h1>
+                </h1> */}
               </div>
             </div>
             {/* Company URL */}
             <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
               <div className="bg-transparent ">
-                <label className="block text-2xl font-semibold mb-10 mt-8 text-black">
+                <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                   Company URL
                 </label>
                 <input
