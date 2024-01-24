@@ -70,7 +70,7 @@ function JobPost() {
       formData.salary !== "" &&
       formData.fileName !== "";
 
-    console.log("Is Form Valid:", isValid);
+    //console.log("Is Form Valid:", isValid);
     return isValid;
   };
   /*   const isFormDataValid = (formData) => {

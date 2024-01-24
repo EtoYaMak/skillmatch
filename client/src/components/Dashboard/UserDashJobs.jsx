@@ -41,7 +41,7 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
       "Are you sure you want to delete this job?"
     );
     if (confirmDelete) {
-      console.log("Job Delete: ", jobId);
+      //console.log("Job Delete: ", jobId);
       if (user) {
         dispatch(deleteJob(jobId));
       } else if (SAuser) {

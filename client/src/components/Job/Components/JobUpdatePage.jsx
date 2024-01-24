@@ -171,11 +171,11 @@ function JobUpdatePage() {
   };
   useEffect(() => {
     // This will log the updated formData.salary whenever it changes
-    console.log(formData.salary);
+    /*     console.log(formData.salary);
     console.log("category", category);
     console.log("selectedDepartment", selectedDepartment);
     console.log("selectedCustomDepartment", selectedCustomDepartment);
-    console.log("formData.department", formData.department);
+    console.log("formData.department", formData.department); */
   }, [
     formData.salary,
     formData.department,
@@ -221,7 +221,7 @@ function JobUpdatePage() {
     } */
 
     dispatch(updateJob({ jobId: job._id, UpdatedFormData }));
-    console.log("dispatch Successful");
+    //console.log("dispatch Successful");
     if (SAuser) {
       navigate("/adminDash");
     } else if (user) {

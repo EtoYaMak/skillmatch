@@ -200,7 +200,7 @@ export const updateJob = createAsyncThunk(
       }
 
       const response = await updateJobService(jobId, UpdatedFormData, token);
-      console.log(UpdatedFormData);
+      //console.log(UpdatedFormData);
       return response;
     } catch (error) {
       const message =

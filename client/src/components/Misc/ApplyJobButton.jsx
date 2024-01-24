@@ -36,13 +36,13 @@ const ApplyJobButton = ({
     try {
       setIsLoading(true);
       // Check if a profile exists
-      console.log("Before navigate");
+      //console.log("Before navigate");
       if (!profiles || profiles.length === 0 || profiles === null) {
         // Redirect to DashboardS if no profile is found
         navigate("/DashboardS");
         return; // Stop further execution of the function
       }
-      console.log("After navigate");
+      //console.log("After navigate");
       // Call the applyToJob function here
       await dispatch(applyToJob({ jobId, studentId: student._id }));
 

@@ -110,7 +110,7 @@ function JobForm() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(salary);
+    //console.log(salary);
     // Clear the successful payment signal from sessionStorage
     // sessionStorage.removeItem("paymentSuccess");
 

@@ -42,7 +42,7 @@ function ViewStudentApplications() {
       "Are you sure you want to delete this job?"
     );
     if (confirmDelete) {
-      console.log("Job Delete: ", jobId);
+      //console.log("Job Delete: ", jobId);
       if (SAuser) {
         dispatch(SAdeleteJob(jobId));
       } else {

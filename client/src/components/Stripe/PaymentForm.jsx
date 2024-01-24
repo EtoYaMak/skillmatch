@@ -86,7 +86,7 @@ export default function PaymentForm() {
       }
     } else {
       console.error(error.message);
-      console.log("Error", error.message);
+      //console.log("Error", error.message);
     }
   };
 

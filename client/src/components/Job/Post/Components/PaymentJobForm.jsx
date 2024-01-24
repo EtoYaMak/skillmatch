@@ -54,7 +54,7 @@ function PaymentJobForm() {
 
         // Extract previewUrl and fileName, and spread the rest of formData
         const { previewUrl, fileName, category, ...restFormData } = formData;
-        console.log(category);
+        //console.log(category);
         // Prepare the data to dispatch, renaming fileName to logo
         const submitData = {
           ...restFormData,
@@ -64,7 +64,7 @@ function PaymentJobForm() {
         };
 
         // Dispatch the job creation action
-        console.log(submitData);
+        //console.log(submitData);
         dispatch(createJob(submitData));
         navigate("/payment-success");
         return; // Exit the function since no payment is needed

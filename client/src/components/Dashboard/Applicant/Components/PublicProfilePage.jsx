@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 
 /* VIEW PROFILE COMPONENT START */
 function StudentProfilePage({ profiles }) {
-  console.log("Profiles in StundetProfilePage", profiles);
+  //console.log("Profiles in StundetProfilePage", profiles);
   const srcBanner =
     profiles.bannerImage ||
     "https://skillmint-job-images.s3.eu-west-2.amazonaws.com/Applicant-Profile-Images/profilebannerPlaceHolder.png";
