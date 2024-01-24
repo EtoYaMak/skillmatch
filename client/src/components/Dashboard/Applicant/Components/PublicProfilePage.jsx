@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import { RxDash } from "react-icons/rx";
 import { FaFileAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { getStudentProfile } from "../../../../features/profiles/profileSlice";
+import {
+  SAgetStudentProfile,
+  getStudentProfile,
+} from "../../../../features/profiles/profileSlice";
 import { useParams } from "react-router-dom";
 
 /* VIEW PROFILE COMPONENT START */
@@ -236,16 +239,22 @@ function PublicProfilePage({}) {
   const { studentId } = useParams();
 
   const { profiles, isLoading } = useSelector((state) => state.profiles);
+  const SAuser = useSelector((state) => state.SAuser.SAuser);
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchData = async () => {
       if (studentId) {
-        await dispatch(getStudentProfile(studentId));
-      } else {
-        console.log("Invalid student ID");
+        if (user) {
+          dispatch(getStudentProfile(studentId));
+        } else if (SAuser) {
+          dispatch(SAgetStudentProfile(studentId));
+        } else {
+          console.error("Unkown user student profile request");
+        }
       }
     };
-
     fetchData();
   }, [studentId, dispatch]);
 

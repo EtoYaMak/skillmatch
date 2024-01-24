@@ -1,4 +1,4 @@
-// Making HTTP request
+// studentService.js Making HTTP request
 import axios from "axios";
 
 /* const API_URL = "http://18.169.159.127/api/students/"; */

@@ -142,6 +142,10 @@ export const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.isError = false;
+        state.message = "";
       })
       .addCase(activateAccount.pending, (state) => {
         state.isLoading = true;

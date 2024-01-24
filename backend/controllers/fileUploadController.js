@@ -29,7 +29,6 @@ const getProfile = asyncHandler(async (req, res) => {
   res.json(profile);
 });
 
-//
 //FOR JOB POSTER DASHBOARD
 const getStudentProfileForJobPoster = asyncHandler(async (req, res) => {
   const studentId = req.params.studentId; // Get studentId from URL parameter
@@ -99,50 +98,6 @@ const setSForm = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-/* const setSForm = asyncHandler(async (req, res) => {
-  try {
-    const student = req.student.id;
-    const studentName = req.student.name;
-
-    console.log(req.body);
-  } catch (error) {
-    console.error(`An error occurred: ${error}`);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}); */
-
-/* const setSForm = asyncHandler(async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No File was selected!" });
-    }
-
-    const { University, Degree, DegreeTitle } = req.body;
-    if (!University || !Degree || !DegreeTitle) {
-      return res.status(400).json({ message: "Missing required form fields" });
-    }
-
-    const student = req.student.id;
-    const studentName = req.student.name;
-    const cv = req.file.location; // Use 'key' instead of 'filename' for S3
-    console.log("CV file: ", cv);
-    console.log("REQ file: ", req.file);
-    const sProfile = await studentForm.create({
-      student,
-      studentName,
-      University,
-      Degree,
-      DegreeTitle,
-      cv,
-    });
-
-    res.status(200).json(sProfile);
-  } catch (error) {
-    console.error(`An error occurred: ${error}`);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}); */
 
 const updateSForm = asyncHandler(async (req, res) => {
   const formId = req.params.id;

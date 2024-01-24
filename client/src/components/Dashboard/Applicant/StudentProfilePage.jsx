@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import { LuListPlus } from "react-icons/lu";
 import { AiOutlineDelete } from "react-icons/ai";
+import { FaRegHandPointRight } from "react-icons/fa6";
 
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -339,9 +340,12 @@ function HeaderBlock({ formData, setFormData, profiles }) {
           <button
             type="button"
             onClick={openHeaderModal}
-            className="w-fit absolute right-3 -top-6 "
+            className="w-fit absolute right-2 -top-6 "
           >
-            <FaRegEdit className="text-black" size={22} />
+            <FaRegEdit
+              className="text-black hover:text-red-600 ease-in-out duration-150"
+              size={22}
+            />
           </button>
         </span>
       </div>
@@ -449,7 +453,10 @@ function AboutBlock({ formData, setFormData, profiles }) {
         <h1 className="text-[20px] font-Poppins font-semibold flex items-center justify-between rounded-t-xl shadow-[rgba(0,_0,_0,_0.045)_0px_1px_5px] p-2 ">
           About{" "}
           <button type="button" onClick={openAboutModal} className="w-fit ">
-            <FaRegEdit size={22} />
+            <FaRegEdit
+              size={22}
+              className="text-black hover:text-red-600 ease-in-out duration-150"
+            />
           </button>
         </h1>
         {/* MAP */}
@@ -747,7 +754,7 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
           <button
             type="button"
             onClick={() => openExperienceModal(null)}
-            className="w-fit"
+            className="w-fit text-black hover:text-red-600 ease-in-out duration-150"
           >
             <LuListPlus size={24} />
           </button>
@@ -1455,7 +1462,7 @@ function EducationBlock({ formData, setFormData, profiles }) {
           <button
             type="button"
             onClick={() => openEducationModal(null)}
-            className="w-fit "
+            className="w-fit  text-black hover:text-red-600 ease-in-out duration-150  "
           >
             <LuListPlus size={24} />
           </button>
@@ -2029,7 +2036,19 @@ function StudentProfilePage({ profiles }) {
                     </h1>
                   </span>
                 </>
-              ) : null}
+              ) : (
+                <>
+                  <span className="headerContentLeft w-2/3 space-y-1">
+                    <h1 className="name text-[20px] font-Poppins font-semibold">
+                      Create A Profile
+                    </h1>
+                    <h1 className="headline text-[15px] font-Poppins font-normal">
+                      Impress Employers and Improve your chances of approval
+                    </h1>
+                    <h1 className="location text-[13px] font-Poppins pt-2"></h1>
+                  </span>
+                </>
+              )}
               {profiles?.ApplicantCV || profiles?.education ? (
                 <span className="headerContentRight w-1/3 flex flex-col justify-evenly items-center ">
                   {profiles?.education ? (
@@ -2071,7 +2090,9 @@ function StudentProfilePage({ profiles }) {
           {profiles?.aboutSection && profiles.aboutSection !== "" ? (
             <p className=" ">{profiles.aboutSection}</p>
           ) : (
-            <p className="  ">No personal statement.</p>
+            <p className="  ">
+              Provide a brief introduction and your experience.
+            </p>
           )}
         </div>
       </div>
@@ -2149,7 +2170,7 @@ function StudentProfilePage({ profiles }) {
           })
         ) : (
           <p className="font-Poppins text-[14px] font-normal p-3">
-            No experience listed.
+            Show your professional journey.
           </p>
         )}
       </div>
@@ -2221,7 +2242,7 @@ function StudentProfilePage({ profiles }) {
           })
         ) : (
           <p className="font-Poppins text-[14px] font-normal p-3">
-            No Education listed.
+            Show your academic journey.
           </p>
         )}
       </div>
@@ -2263,11 +2284,22 @@ function Profile({ student }) {
           modeType === "edit" ? "hidden" : "flex"
         }`}
       >
+        {!profiles || profiles.length === 0 || profiles === null ? (
+          <span className="flex flex-row  font-Poppins justify-end items-center px-2 gap-2">
+            <p>
+              <strong>Create</strong> your Profile & Start{" "}
+              <strong>Applying</strong>
+            </p>
+            <FaRegHandPointRight size={24} className="text-red-600" />
+          </span>
+        ) : null}
         <button
-          className={`px-3 py-2 bg-black text-white  font-semibold  ease-in-out duration-200 rounded-md hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] font-Poppins my-2`}
+          className={` px-3 py-2 bg-black text-white  font-semibold  ease-in-out duration-200 rounded-md hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] font-Poppins my-2`}
           onClick={(e) => setModeType("edit")}
         >
-          Personalize Profile
+          {!profiles || profiles.length === 0 || profiles === null
+            ? "Create Profile"
+            : "Personalize Profile"}
         </button>
       </span>
       {modeType === "view" && <StudentProfilePage profiles={profiles} />}

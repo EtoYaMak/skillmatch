@@ -12,7 +12,10 @@ function JobDetailComponent(props) {
   const job = useSelector((state) =>
     state.jobs.jobs.find((job) => job._id === jobId)
   );
-
+  const { user } = useSelector((state) => state.auth);
+  const { SAuser } = useSelector((state) => state.SAuser);
+  const { student, studentData } = useSelector((state) => state.students);
+  const { profiles } = useSelector((state) => state.profiles);
   // Dispatch the getJobId action when the component mounts
   useEffect(() => {
     dispatch(getJobId(jobId));
@@ -38,7 +41,14 @@ function JobDetailComponent(props) {
   // Display the job details
   return (
     <div className="w-full mx-auto pt-10 pb-20">
-      <JobDetailPage job={job} />
+      <JobDetailPage
+        job={job}
+        student={student}
+        studentData={studentData}
+        profiles={profiles}
+        user={user}
+        SAuser={SAuser}
+      />
     </div>
   );
 }

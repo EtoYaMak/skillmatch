@@ -1,3 +1,4 @@
+//studentSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import studentService from "./studentService";
 
@@ -6,6 +7,7 @@ const student = JSON.parse(localStorage.getItem("student"));
 
 const initialState = {
   student: student ? student : null,
+  studentData: null,
   isSuccess: false,
   isError: false,
   isLoading: false,
@@ -55,10 +57,16 @@ export const Slogin = createAsyncThunk(
 );
 
 // Logout Student
-export const Slogout = createAsyncThunk("student/Slogout", async () => {
+/* export const Slogout = createAsyncThunk("student/Slogout", async () => {
   await studentService.Slogout();
-});
-
+}); */
+export const Slogout = createAsyncThunk(
+  "student/Slogout",
+  async (_, thunkAPI) => {
+    studentService.Slogout();
+    thunkAPI.dispatch(Sreset());
+  }
+);
 //
 export const fetchStudentData = createAsyncThunk(
   "student/fetchStudentData",
@@ -137,6 +145,7 @@ export const studentSlice = createSlice({
   initialState,
   reducers: {
     Sreset: (state) => {
+      state.studentData = null;
       state.isSuccess = false;
       state.isLoading = false;
       state.isError = false;
@@ -174,7 +183,14 @@ export const studentSlice = createSlice({
         state.student = null;
       })
       .addCase(Slogout.fulfilled, (state) => {
+        // Clear student data
         state.student = null;
+        state.studentData = null; // Add this if you're storing additional student data
+        // Reset any other related state
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.isError = false;
+        state.message = "";
       })
       .addCase(fetchStudentData.fulfilled, (state, action) => {
         state.studentData = action.payload; // Assuming you save student data in this structure

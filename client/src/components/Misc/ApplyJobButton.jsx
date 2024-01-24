@@ -3,32 +3,24 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { applyToJob } from "../../features/jobs/jobSlice";
 import { fetchStudentData } from "../../features/students/studentSlice";
-
-const ApplyJobButton = ({ jobId, applytext, appliedtext, style }) => {
+import { getProfile } from "../..//features/profiles/profileSlice";
+import { useNavigate } from "react-router-dom";
+const ApplyJobButton = ({
+  jobId,
+  applytext,
+  appliedtext,
+  style,
+  noProfileText,
+  disabledStyle,
+  student,
+  studentData,
+  profiles,
+}) => {
   const dispatch = useDispatch();
-  const { student, studentData } = useSelector((state) => state.students);
+  const navigate = useNavigate(); // Initialize navigate
+
   const [isApplied, setIsApplied] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        await dispatch(fetchStudentData());
-      } catch (error) {
-        console.error("Error fetching student data:", error);
-        // Handle the error if needed
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (student) {
-      fetchData();
-    } else {
-      console.error("useEffect Error");
-    }
-  }, [dispatch, student]);
 
   useEffect(() => {
     if (studentData) {
@@ -37,11 +29,20 @@ const ApplyJobButton = ({ jobId, applytext, appliedtext, style }) => {
       );
       setIsApplied(hasApplied);
     }
-  }, [studentData, jobId]);
-  const handleApply = async () => {
+  }, [studentData, jobId, setIsApplied]);
+
+  const handleApply = async (event) => {
+    event.stopPropagation();
     try {
       setIsLoading(true);
-
+      // Check if a profile exists
+      console.log("Before navigate");
+      if (!profiles || profiles.length === 0 || profiles === null) {
+        // Redirect to DashboardS if no profile is found
+        navigate("/DashboardS");
+        return; // Stop further execution of the function
+      }
+      console.log("After navigate");
       // Call the applyToJob function here
       await dispatch(applyToJob({ jobId, studentId: student._id }));
 
@@ -57,22 +58,32 @@ const ApplyJobButton = ({ jobId, applytext, appliedtext, style }) => {
     }
   };
 
+  const isDisabled =
+    isApplied ||
+    isLoading ||
+    !profiles ||
+    profiles.length === 0 ||
+    profiles === null;
+
   return (
     <button
-      onClick={handleApply}
-      disabled={isApplied || isLoading}
-      className={`flex justify-center items-center ${style} ease-in-out duration-200 uppercase font-Poppins  ${
+      onClick={(event) => handleApply(event)}
+      className={`flex justify-center items-center ${style} ease-in-out duration-200 uppercase font-Poppins ${
         isApplied
-          ? "bg-transparent text-black/60 font-bold"
-          : " bg-black text-white " /* w-[120px] h-[43px] sm:px-3   sm:py-2  font-bold sm:text-[16px] text-[14px] py-1 px-3*/
+          ? "bg-transparent text-black/80 font-bold"
+          : isDisabled
+          ? `${disabledStyle}` // Add your disabled button styling here
+          : "bg-black text-white"
       }`}
     >
       {isLoading ? (
         <span className="loading loading-dots loading-sm"></span>
       ) : isApplied ? (
-        `${appliedtext}`
+        appliedtext
+      ) : isDisabled ? (
+        noProfileText // Display alternative text when the button is disabled due to no profile
       ) : (
-        `${applytext}`
+        applytext
       )}
     </button>
   );

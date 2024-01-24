@@ -1,15 +1,12 @@
 import React from "react";
-
 import DOMPurify from "dompurify";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { FaLink } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
 import Departments from "../../../assets/Departments.json";
-import { applyToJob } from "../../../features/jobs/jobSlice";
-import { fetchStudentData } from "../../../features/students/studentSlice";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import ApplyJobButton from "../../Misc/ApplyJobButton";
+import { FaCheckDouble } from "react-icons/fa6";
 
 import {
   RiMapPinLine,
@@ -19,12 +16,11 @@ import {
   RiExternalLinkLine,
 } from "react-icons/ri";
 
-function JobDetailPage({ job }) {
+function JobDetailPage({ job, user, SAuser, student, studentData, profiles }) {
   const jobId = job._id;
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const { SAuser } = useSelector((state) => state.SAuser);
-  const { student, studentData } = useSelector((state) => state.students);
+  const navigate = useNavigate();
+
   // Check if the user is a student (student object exists)
   const isStudent = !!student;
   const showRegisterButton = !student && !user && !SAuser;
@@ -151,9 +147,10 @@ function JobDetailPage({ job }) {
     color: "black",
     // Add more styles as needed
   };
+  const isButtonDisabled = user || SAuser || student;
 
   return (
-    <div className="main flex max-w-7xl mx-auto">
+    <div className="main flex max-w-7xl mx-auto px-4">
       {/* JOB DETAILS LEFT */}
       <div className="jobdetails w-full">
         <div className="topdetails flex flex-col gap-2">
@@ -241,21 +238,34 @@ function JobDetailPage({ job }) {
               //
             ></div>
           </div>
-          <div className="apply-bottom w-full flex flex-col sm:flex-row space-y-4 sm:space-y-0 items-center justify-between mt-8 sm:mt-24">
+          <div className="apply-bottom w-full flex flex-col sm:flex-row space-y-4 sm:space-y-0 items-center justify-between mt-8 sm:mt-24 pb-4 border-b border-black/30">
             {student ? (
               <ApplyJobButton
-                style={"h-fit w-fit rounded-sm px-4 py-3 bg-red-600 text-xl "}
+                style={"h-fit w-fit rounded-sm px-7 py-3 bg-black text-xl "}
                 applytext={"Apply for this position"}
-                appliedtext={"Applied"}
+                appliedtext={`Applied`}
+                noProfileText={"Create a Profile To Apply"}
+                disabledStyle={
+                  "text-white h-fit w-fit rounded-sm px-4 bg-red-600 py-3"
+                }
                 jobId={job._id}
+                profiles={profiles}
+                student={student}
+                studentData={studentData}
               />
             ) : (
-              <Link
-                to={"/register"}
-                className="px-3 w-80 py-3 text-[18px]  bg-black text-white font-Poppins font-semibold hover:text-white text-center"
+              <button
+                /* to={"/register"} */
+                onClick={() => {
+                  navigate("/register");
+                }}
+                disabled={isButtonDisabled}
+                className={`px-4 mx-4 py-3 w-[70%] h-fit bg-black text-white font-Poppins font-semibold hover:text-white text-center ${
+                  isButtonDisabled ? "bg-black/50" : ""
+                }`}
               >
                 Register To Apply
-              </Link>
+              </button>
             )}
 
             <span className="flex flex-col items-center font-Poppins justify-center">
@@ -276,7 +286,7 @@ function JobDetailPage({ job }) {
         </div>
       </div>
       {/* Company Card RIGHT */}
-      <div className="companydetails bg-slate-200 w-[30%] max-h-[380px]  min-w-fit mx-2 mt-[8vh] px-4 hidden min-[760px]:flex flex-col justify-center items-center top-0 sticky">
+      <div className="companydetails bg-sky-100 w-[30%] max-h-[380px]  min-w-fit mx-2 mt-[8vh] px-4 hidden min-[760px]:flex flex-col justify-center items-center top-0 sticky">
         {/* LOGO CONTAINER */}
         <figure className="mb-4 mask mask-circle">
           <img
@@ -300,18 +310,31 @@ function JobDetailPage({ job }) {
         </Link>
         {student ? (
           <ApplyJobButton
-            style={"h-fit w-fit rounded-sm px-4 py-3 "}
+            style={"h-fit w-fit rounded-sm bg-black px-4 py-3 "}
             applytext={"Apply for this position"}
             appliedtext={"Applied"}
+            noProfileText={"Create a Profile To Apply"}
+            disabledStyle={
+              "text-white h-fit w-fit rounded-sm px-4 bg-red-600 py-3"
+            }
             jobId={job._id}
+            profiles={profiles}
+            student={student}
+            studentData={studentData}
           />
         ) : (
-          <Link
-            to={"/register"}
-            className="px-3 py-2 w-full bg-black text-white font-Poppins font-semibold hover:text-white text-center"
+          <button
+            /* to={"/register"} */
+            onClick={() => {
+              navigate("/register");
+            }}
+            disabled={isButtonDisabled}
+            className={`px-3 py-2 w-full bg-black text-white font-Poppins font-semibold hover:text-white text-center ${
+              isButtonDisabled ? "bg-black/50" : ""
+            }`}
           >
             Register To Apply
-          </Link>
+          </button>
         )}
       </div>
     </div>

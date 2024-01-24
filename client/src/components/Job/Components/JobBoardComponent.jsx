@@ -4,12 +4,16 @@ import countriesData from "../../../assets/countries-data.json";
 import { useSelector, useDispatch } from "react-redux";
 import ApplyJobButton from "../../Misc/ApplyJobButton";
 
-function JobBoardComponent({ job }) {
+function JobBoardComponent({
+  job,
+  studentData,
+  profiles,
+  user,
+  SAuser,
+  student,
+}) {
   const jobId = job._id;
 
-  const { user } = useSelector((state) => state.auth);
-  const { SAuser } = useSelector((state) => state.SAuser);
-  const { student } = useSelector((state) => state.students);
   const showRegisterButton = !student && !user && !SAuser;
 
   const navigate = useNavigate();
@@ -19,7 +23,10 @@ function JobBoardComponent({ job }) {
   const handleClick = () => {
     navigate(`/jobs/${jobId}`);
   };
-
+  const handleRegisterClick = async (event) => {
+    event.stopPropagation();
+    navigate("/register");
+  };
   const skills = job.skills ? [...job.skills] : [];
   /* FIND Country CODE */
   const countryCode = countriesData.find(
@@ -29,7 +36,7 @@ function JobBoardComponent({ job }) {
   return (
     <>
       <div
-        className={`jobcomp jobItemCard  max-[640px]:gap-2  my-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppin max-w-[980px]  mx-auto duration-200 ease-in-out cursor-pointer z-0 ${
+        className={`jobcomp jobItemCard sm:px-0  px-2  max-[640px]:gap-2  my-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppin max-w-[980px]  mx-auto duration-200 ease-in-out cursor-pointer z-0 ${
           job?.featured === true
             ? "bg-[hsl(49,100%,77%)] border-b-[2px] border-b-[#ffD500]"
             : "border-b-[1px]" //bg-[#ffd50033] border-[#fff1a7] Add additional styles for non-remote jobs if needed
@@ -110,24 +117,29 @@ function JobBoardComponent({ job }) {
             </h1>
           ) : null}
           {student && (
-            <div className="max-[640px]:h-[24px] max-[640px]:w-[75px] w-24 h-10 ">
+            <div className="max-[640px]:h-[24px] min-[640px]:w-[80px] w-24 h-10">
               <ApplyJobButton
                 style={
-                  " w-full h-full rounded-[2em] hover:scale-[105%] font-bold"
+                  "w-full h-full rounded-[2em] hover:scale-[105%] font-bold "
                 }
                 applytext={"Apply"}
                 appliedtext={"Applied"}
+                noProfileText={"Apply?"}
+                disabledStyle={"text-white bg-black"}
+                student={student}
+                studentData={studentData}
+                profiles={profiles}
                 jobId={job._id}
               />
             </div>
           )}
           {showRegisterButton && (
-            <Link
-              to={"/register"}
-              className="flex justify-center items-center  ease-in-out duration-200 bg-black  uppercase font-Poppins  px-3  py-2 text-white hover:text-white hover:scale-105 font-bold z-40 max-[640px]:h-8 max-[640px]:w-20 w-28 h-10 rounded-[2em] "
+            <button
+              onClick={(event) => handleRegisterClick(event)}
+              className="flex justify-center items-center  ease-in-out duration-200 bg-black  uppercase font-Poppins  px-3  py-2 text-white hover:text-white hover:scale-105 font-bold z-40 max-[640px]:h-8 max-[640px]:w-24 w-28 h-10 rounded-[2em] "
             >
-              Apply
-            </Link>
+              Register
+            </button>
           )}
         </div>
       </div>

@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
 import { SAlogout, SAreset } from "../features/SAuser/adminSlice";
 import { Slogout, Sreset } from "../features/students/studentSlice";
+import { reset as profileReset } from "../features/profiles/profileSlice";
+import { reset as accountsReset } from "../features/accounts/accountSlice";
 
 const Navbar = () => {
   const dropdownRef = useRef(null);
@@ -26,19 +28,27 @@ const Navbar = () => {
   const handleOptionClick = () => {
     setIsOpen(false);
   };
-  const onSLogout = () => {
-    dispatch(Slogout());
+  const onSLogout = async () => {
+    await dispatch(Slogout());
     dispatch(Sreset());
+    dispatch(profileReset());
+    dispatch(accountsReset());
     navigate("/");
   };
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
+    //additional resets
+    //dispatch(profileReset());
+    //dispatch(accountsReset());
     navigate("/");
   };
   const onSALogout = () => {
     dispatch(SAlogout());
     dispatch(SAreset());
+    //additional resets
+    dispatch(profileReset());
+    dispatch(accountsReset());
     navigate("/");
   };
   const handleClick = () => {
@@ -118,7 +128,7 @@ const Navbar = () => {
             Browse
           </Link>
         </li>
-        {!SAuser && !student ? (
+        {!student ? (
           <li className="text-[#000] font-Poppins  font-medium tracking-widest text-xl text-center  bg-inherit">
             <Link
               to="/post"
@@ -246,8 +256,8 @@ const Navbar = () => {
               </Link>
             </div>
           </li>
-          <li className="backdrop-blur-sm bg-[#fff]/70">
-            <div className="nav-link flex items-center  bg-[#fff]/80 hover:bg-[#000]/70 ease-in-out duration-300 hidden">
+          <li className="backdrop-blur-sm bg-[#fff]/70 hidden">
+            <div className="nav-link flex items-center  bg-[#fff]/80 hover:bg-[#000]/70 ease-in-out duration-300 ">
               <Link
                 to="/browse"
                 onClick={() => setToggle(false)}
@@ -257,7 +267,7 @@ const Navbar = () => {
               </Link>
             </div>
           </li>
-          {!student && (SAuser || user) ? (
+          {!student ? (
             <li className=" backdrop-blur-sm bg-[#fff]/70">
               <div className="nav-link flex items-center  bg-[#fff]/80 hover:bg-[#000]/70 ease-in-out duration-300">
                 <Link

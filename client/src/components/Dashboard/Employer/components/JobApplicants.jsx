@@ -11,6 +11,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { FaCheck, FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 //
 function ProfileCard({ profile, onUpdateStatus, job }) {
@@ -76,7 +77,7 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
             target="_blank"
             className="btn btn-ghost btn-sm"
           >
-            Resume
+            Resume <FaExternalLinkAlt />
           </a>
         </td>
         <td>
@@ -85,7 +86,7 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
             target="_blank"
             className="btn btn-ghost btn-sm"
           >
-            Profile
+            Profile <FaExternalLinkAlt />
           </a>
         </td>
         <th>
@@ -281,20 +282,14 @@ function JobApplicants() {
                     applicant?.status === "Rejected")
                 ) {
                   return (
-                    <>
-                      <ProfileCard
-                        key={profile._id}
-                        profile={profile}
-                        job={job}
-                        onUpdateStatus={(newStatus) =>
-                          handleUpdateStatus(
-                            job._id,
-                            profile.student,
-                            newStatus
-                          )
-                        }
-                      />
-                    </>
+                    <ProfileCard
+                      key={profile._id}
+                      profile={profile}
+                      job={job}
+                      onUpdateStatus={(newStatus) =>
+                        handleUpdateStatus(job._id, profile.student, newStatus)
+                      }
+                    />
                   );
                 }
                 return null;

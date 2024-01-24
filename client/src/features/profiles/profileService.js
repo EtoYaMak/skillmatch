@@ -21,8 +21,12 @@ const getProfile = async (token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(API_URL, config);
-  return response.data;
+  try {
+    const response = await axios.get(API_URL, config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const getStudentProfile = async (studentId, token) => {

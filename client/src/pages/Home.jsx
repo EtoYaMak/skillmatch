@@ -2,28 +2,58 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllJobs, reset } from "../features/jobs/jobSlice";
-import Slider from "react-slick";
-import "../assets/slick-carousel/slick/slick.css";
-import "../assets/slick-carousel/slick/slick-theme.css";
 import FeaturedCardComp from "../components/Job/Components/FeaturedCardComp";
 import JobBoardComponent from "../components/Job/Components/JobBoardComponent";
 import SearchComponent from "../components/Misc/Search";
 
 import "semantic-ui-css/semantic.min.css";
-import "../assets/slider.css";
-import settings from "../components/Misc/slider_settings";
 import SearchCat from "../components/Job/Components/BrowseFilters/SearchCat";
 import Location from "../components/Job/Components/BrowseFilters/Location";
 import PayRange from "../components/Job/Components/BrowseFilters/PayRange";
 import SortingFilter from "../components/Job/Components/BrowseFilters/SortingFilter";
+import {
+  fetchStudentData,
+  Sreset as studentReset,
+} from "../features/students/studentSlice";
+import {
+  getProfile,
+  reset as profileReset,
+} from "../features/profiles/profileSlice";
 
 function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { student, studentData } = useSelector((state) => state.students);
+  const { profiles } = useSelector((state) => state.profiles);
+  const { user, isLoading: userLoading } = useSelector((state) => state.auth);
+  const { SAuser, isLoading: adminLoading } = useSelector(
+    (state) => state.SAuser
+  );
+
   const { jobs, isError, message, isLoading } = useSelector(
     (state) => state.jobs
   );
-  const { student } = useSelector((state) => state.students);
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      if (isMounted && student && !studentData && profiles.length === 0) {
+        try {
+          await dispatch(fetchStudentData());
+          await dispatch(getProfile());
+        } catch (error) {
+          // Handle any errors during profile fetching
+          console.error("Error fetching profile:", error);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch, student, studentData, profiles, user, SAuser]);
 
   useEffect(() => {
     dispatch(getAllJobs());
@@ -197,7 +227,14 @@ function Home() {
           {Array.isArray(FfilteredJobs) ? (
             FfilteredJobs.slice(0, visibleJobs).map((job) => (
               <React.Fragment key={job._id}>
-                <JobBoardComponent job={job} />
+                <JobBoardComponent
+                  job={job}
+                  student={student}
+                  studentData={studentData}
+                  profiles={profiles}
+                  user={user}
+                  SAuser={SAuser}
+                />
               </React.Fragment>
             ))
           ) : (

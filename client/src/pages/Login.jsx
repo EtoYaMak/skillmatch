@@ -78,29 +78,6 @@ function Login() {
       [e.target.name]: e.target.value,
     }));
   };
-  /*   const onSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const userData = {
-        emai: "test",
-        password,
-      };
-      await dispatch(login(userData));
-    } catch (error) {
-      try {
-        const studentData = {
-          email,
-          password,
-        };
-        // If login fails, try Slogin
-        await dispatch(Slogin(studentData));
-      } catch (secondError) {
-        toast.error(secondError.message);
-      }
-      toast.error(error.message);
-    }
-  }; */
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -182,6 +159,7 @@ function Login() {
             name="email"
             value={email}
             placeholder="Enter your email"
+            autoComplete="email"
             onChange={onChange}
             className="max-w-[340px] text-black bg-white placeholder:text-black/40 text-[14px] py-4 border rounded-[3px]"
             required
@@ -195,6 +173,7 @@ function Login() {
               name="password"
               value={password}
               placeholder="Enter password"
+              autoComplete="current-password"
               onChange={onChange}
               className="w-full text-black bg-white placeholder:text-black/40 text-[14px] py-4 border rounded-[3px]"
               required
