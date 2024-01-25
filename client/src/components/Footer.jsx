@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer className="footer p-10 bg-black text-base-content font-Poppins">
+      <h1 className="hiddenHSEO">Skillmint.io Job Portal Footer</h1>
+      <h2 className="hiddenHSEO">This is the Footer for Skillmint's website</h2>
       <aside className="w-full flex flex-col justify-center items-center select-none">
         <h1 className=" flex flex-col text-[#fff] bg-transparent w-fit select-none">
           <Link

@@ -48,6 +48,13 @@ export default function PreviewJob() {
 function JobCard({ formData }) {
   return (
     <>
+      <h1 className="hiddenHSEO">
+        Preview Your Job listing before submitting to Skillmint.io
+      </h1>
+      <h2 className="hiddenHSEO">
+        This is how your job listing will look like to the applicants, visitors
+        and other users
+      </h2>
       <div
         className={`jobcomp jobItemCard max-[640px]:gap-2 py-2 max-h-[130px] sm:max-h-[115px] flex flex-row items-center sm:rounded-2xl font-Poppins max-w-[980px] mx-auto duration-200 ease-in-out cursor-pointer z-0 shadow-[0_3px_10px_rgb(0,0,0,0.35)]`}
       >

@@ -162,6 +162,12 @@ function Home() {
   }
   return (
     <div className="mx-auto h-full  bg-inherit max-w-[1240px]">
+      <h1 className="hiddenHSEO">Skillmint Job Portal Home Page</h1>
+      <h2 className="hiddenHSEO">
+        View latest Jobs Posted. Apply to Jobs. Find Your Next Career. Start
+        your Professional Journey
+      </h2>
+
       <h1 className="text-center py-4 text-3xl sm:text-4xl text-[#333] select-none font-Poppins tracking-wide max-w-xs mx-auto font-bold ">
         Find a Job
       </h1>

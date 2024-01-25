@@ -99,6 +99,8 @@ const Navbar = () => {
 
   return (
     <div className="relative flex justify-around items-center h-24  px-4 mx-auto z-50 bg-[#fff]   select-none ">
+      <h1 className="hiddenHSEO">Skillmint Job Portal Navigation Menu</h1>
+      <h2 className="hiddenHSEO">Navbar to browse skillmint website</h2>
       <h1 className="w-max text-[#000] bg-transparent">
         <Link
           to="/"

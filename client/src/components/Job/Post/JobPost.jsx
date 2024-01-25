@@ -159,6 +159,10 @@ function JobPost() {
   }, [currentStep, navigate]);
   return (
     <>
+      <h1 className="hiddenHSEO">Post A Job on Skillmint Job Portal</h1>
+      <h2 className="hiddenHSEO">
+        Create a new Job Posting with the post form
+      </h2>
       {SAuser || user ? (
         <Elements stripe={stripePromise}>
           <JobFormContext.Provider value={contextValue}>

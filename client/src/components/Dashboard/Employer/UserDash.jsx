@@ -29,6 +29,10 @@ function UserDash() {
   }
   return (
     <div className="min-h-screen font-Poppins">
+      <h1 className="hiddenHSEO">Skillmint Employer Dashboard Page</h1>
+      <h2 className="hiddenHSEO">
+        This Page is for the Employer to view their listed jobs
+      </h2>
       <div className="max-w-[960px] mx-auto flex flex-col gap-4 ">
         <div className="border-b border-b-[#000] text-center p-4 space-x-4">
           {/* Render tabs to switch between profile and applications */}

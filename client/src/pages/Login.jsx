@@ -112,6 +112,11 @@ function Login() {
 
   return (
     <div className="w-full min-h-screen font-Poppins flex justify-center items-center">
+      <h1 className="hiddenHSEO">Skillmint Login Page</h1>
+      <h2 className="hiddenHSEO">
+        Login to Post Job Listings. Login To Start Applying to Jobs Roles
+        Positions.
+      </h2>
       <form
         onSubmit={onSubmit}
         className="mx-auto  sm:max-w-[780px] p-8 pt-12 bg-black/5 rounded-[6px] w-full"

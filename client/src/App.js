@@ -55,6 +55,7 @@ import CreateJobForm from "./components/Job/Post/Components/CreateJobForm";
 import PaymentJobForm from "./components/Job/Post/Components/PaymentJobForm";
 import PaymentSuccess from "./components/Job/Post/Components/PaymentSuccess";
 import PublicProfilePage from "./components/Dashboard/Applicant/Components/PublicProfilePage";
+import NotFound from "./components/NotFound";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -163,7 +164,10 @@ function App() {
 
           <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
           <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
+          {/* Catch-all route for 404 Not Found */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
+
         <ToastContainer />
       </div>
       <div className="bg-[#2c3033]">

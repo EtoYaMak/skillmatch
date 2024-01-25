@@ -41,6 +41,12 @@ function JobDetailComponent(props) {
   // Display the job details
   return (
     <div className="w-full mx-auto pt-10 pb-20">
+      <h1 className="hiddenHSEO">
+        Skillmint Job Portal. View Full Job. Job Details Page.
+      </h1>
+      <h2 className="hiddenHSEO">
+        View Complete Job Details. Salary. Location. Skills. Description.
+      </h2>
       <JobDetailPage
         job={job}
         student={student}

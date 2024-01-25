@@ -48,6 +48,10 @@ function AdminDash() {
   };
   return (
     <div className="h-full font-Poppins flex  flex-col sm:flex-row ">
+      <h1 className="hiddenHSEO">Admin User Dashboard Screen</h1>
+      <h2 className="hiddenHSEO">
+        Private Dashboard for admin control and access
+      </h2>
       <div className="adminNav w-full sm:w-auto gap-2 px-4 sm:px-0 sm:gap-10 py-4 sm:py-10 border-b  text-center  flex  flex-wrap sm:flex-col sm:items-center justify-between items-start sm:justify-start  sm:text-xl">
         {/* Render tabs to switch between profile and applications */}
         <button

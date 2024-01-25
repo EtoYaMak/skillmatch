@@ -175,6 +175,10 @@ function Register() {
   return (
     <>
       <div className="w-full min-h-screen font-Poppins flex justify-center items-center">
+        <h1 className="hiddenHSEO">Skillmint Register Page</h1>
+        <h2 className="hiddenHSEO">
+          Register as an Employer. Register as an Applicant
+        </h2>
         <form
           onSubmit={onSubmit}
           className="mx-auto sm:max-w-[780px] p-8 pt-12 bg-black/5 rounded-[6px] w-full"

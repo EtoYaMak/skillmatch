@@ -25,6 +25,11 @@ function StudentProfilePage({ profiles }) {
       : null;
   return (
     <div className="space-y-5 min-h-screen max-w-7xl mx-auto pt-2 pb-5">
+      <h1 className="hiddenHSEO">Applicant Profile Page for public Viewing</h1>
+      <h2 className="hiddenHSEO">
+        View an Applicant's profile with their complete education and work
+        history alongside CV link
+      </h2>
       {/* HEADER */}
       <div className="header flex flex-col gap-8 rounded-xl shadow-[rgba(0,_0,_0,_0.1)0px_1px_5px] relative z-0">
         <span className="banner relative ">

@@ -154,6 +154,20 @@ function JobDetailPage({ job, user, SAuser, student, studentData, profiles }) {
       {/* JOB DETAILS LEFT */}
       <div className="jobdetails w-full">
         <div className="topdetails flex flex-col gap-2">
+          {/* Hidden Headings for SEO */}
+          <h1 className="hiddenHSEO">Job Detail {job?.position}</h1>
+          <h1 className="hiddenHSEO">
+            {setting &&
+              setting
+                .filter((jobSetting) => jobSetting.value) // Only keep settings with value true
+                .map((jobSetting, index) => (
+                  <h2 key={index}>
+                    {jobSetting.name.charAt(0).toUpperCase() +
+                      jobSetting.name.slice(1)}
+                  </h2>
+                ))}{" "}
+            {job?.position}
+          </h1>
           <span>
             <h1 className="uppercase text-[16px] font-medium font-Poppins">
               POSTED {formattedCreatedAt}
@@ -176,30 +190,9 @@ function JobDetailPage({ job, user, SAuser, student, studentData, profiles }) {
               </h1>
             ) : null}
           </span>
-          <div className="others flex gap-3 flex-wrap">
-            <span className="w-fit px-3 py-1 bg-slate-900  text-[15px] font-semibold text-white text-center  rounded-[4px]">
-              {job?.city}
-            </span>
-            <span className="w-fit px-3 py-1 bg-slate-900  text-[15px] font-semibold text-white text-center  rounded-[4px]">
-              {formatCategory(job)}
-            </span>
-            <span className="w-fit px-3 py-1 bg-slate-900  text-[15px] font-semibold text-white text-center rounded-[4px] ">
-              {job?.salary}
-            </span>
-          </div>
-          <div className="worksetting flex gap-3 my-2 items-center justify-start flex-wrap">
-            {setting &&
-              setting
-                .filter((jobSetting) => jobSetting.value) // Only keep settings with value true
-                .map((jobSetting, index) => (
-                  <span
-                    key={index}
-                    className="w-fit px-3 py-1 bg-gray-700 text-[15px] font-semibold text-white text-center rounded-[2px]"
-                  >
-                    {jobSetting.name.charAt(0).toUpperCase() +
-                      jobSetting.name.slice(1)}
-                  </span>
-                ))}
+          {/* Settings */}
+          <div className="worksetting flex gap-3 items-center justify-start flex-wrap">
+            {/* worktype */}
             {type &&
               type
                 .filter((jobType) => jobType.value)
@@ -212,12 +205,37 @@ function JobDetailPage({ job, user, SAuser, student, studentData, profiles }) {
                       jobType.name.slice(1)}
                   </span>
                 ))}
+            {/* worksetting */}
+            {setting &&
+              setting
+                .filter((jobSetting) => jobSetting.value) // Only keep settings with value true
+                .map((jobSetting, index) => (
+                  <span
+                    key={index}
+                    className="w-fit px-3 py-1 bg-gray-700 text-[15px] font-semibold text-white text-center rounded-[2px]"
+                  >
+                    {jobSetting.name.charAt(0).toUpperCase() +
+                      jobSetting.name.slice(1)}
+                  </span>
+                ))}
           </div>
+          <div className="others flex gap-3 flex-wrap">
+            <span className="w-fit px-3 py-1 bg-gray-800  text-[15px] font-semibold text-white text-center rounded-[4px] ">
+              {job?.salary}
+            </span>
+            <span className="w-fit px-3 py-1 bg-gray-800  text-[15px] font-semibold text-white text-center  rounded-[4px]">
+              {job?.city}
+            </span>
+          </div>
+          {/* Skills */}
           <div className="skills flex gap-3 flex-wrap ">
+            <span className="w-fit px-3 py-1 bg-slate-900  text-[15px] font-semibold text-white text-center  rounded-[4px]">
+              {formatCategory(job)}
+            </span>
             {job?.skills.map((skill, index) => (
               <span
                 key={index}
-                className={`w-fit px-3 py-1 bg-slate-950 text-[16px] font-medium text-white text-center rounded-[5px]`}
+                className={`w-fit px-3 py-1 bg-gray-900 text-[16px] font-semibold text-white text-center rounded-[5px]`}
               >
                 {skill}
               </span>
