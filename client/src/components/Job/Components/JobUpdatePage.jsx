@@ -24,7 +24,7 @@ function JobUpdatePage() {
 
   useEffect(() => {
     const isUserAuthorized = () => {
-      if (SAuser || adminID) {
+      if (SAuser || adminID || userID) {
         return true; // Admins are authorized
       } else if (user && job && user._id === job.user) {
         return true; // Regular user is authorized if they own the job
@@ -36,7 +36,7 @@ function JobUpdatePage() {
     if (!isUserAuthorized()) {
       navigate("/401"); // Redirect to home page if not authorized
     }
-  }, [SAuser, adminID, user, job, navigate]);
+  }, [SAuser, adminID, userID, user, job, navigate]);
 
   const [countries] = useState(countriesList);
   const modules = {
@@ -222,7 +222,7 @@ function JobUpdatePage() {
     }));
   };
 
-  const handleSkillChange = (e) => {
+  /*   const handleSkillChange = (e) => {
     const value = e.target.value.trim();
     if (value && (e.key === "," || e.key === "Enter")) {
       e.preventDefault();
@@ -235,8 +235,34 @@ function JobUpdatePage() {
       }));
       e.target.value = ""; // Reset the input field
     }
+  }; */
+  const handleSkillChange = (e) => {
+    const value = e.target.value.trim();
+
+    if (value) {
+      const sanitizedValue = value
+        .replace(/\.+$/, "")
+        .replace(/[^a-zA-Z0-9\-+/\s#.&]/g, "");
+
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        skills: [...prevFormData.skills, sanitizedValue],
+      }));
+      e.target.value = "";
+    }
   };
 
+  const handleKeyUp = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13 || e.key === ",") {
+      e.preventDefault();
+      handleSkillChange(e);
+    }
+  };
+
+  const handleAddSkillClick = () => {
+    const inputElement = document.getElementById("skills");
+    handleSkillChange({ target: inputElement });
+  };
   const falseFlagsubmit = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -328,20 +354,29 @@ function JobUpdatePage() {
           {/* Skills && Department */}
           <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
             {/* SKILL */}
-            <div className="bg-transparent w-full">
+            <div className="bg-transparent w-full relative">
               <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                 Skills
               </label>
-
-              <input
-                type="text"
-                name="skills"
-                id="skills"
-                className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40 `}
-                placeholder="Type a Skill and press <ENTER>"
-                onKeyUp={handleSkillChange}
-                onKeyDown={falseFlagsubmit}
-              />
+              <div className="flex items-center rounded-sm ">
+                <input
+                  type="text"
+                  name="skills"
+                  id="skills"
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40 `}
+                  placeholder="Type a Skill and press <ENTER>"
+                  //onKeyUp={handleSkillChange}
+                  onKeyDown={falseFlagsubmit}
+                  onKeyUp={handleKeyUp}
+                />
+                <button
+                  className="p-[0.58em]  bg-black min-w-max text-[17px] font-medium text-white  rounded-r-[2px] font-Poppins absolute right-0"
+                  onClick={handleAddSkillClick}
+                  type="button"
+                >
+                  Add Skill
+                </button>
+              </div>
               {/* SKILLS.MAP */}
               <div className="flex flex-wrap mb-1 gap-1">
                 {formData.skills &&
@@ -577,13 +612,13 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
 
                 <div className="flex flex-row justify-between items-center relative  bg-[#a4a4a4]/20 rounded-md">
                   <span
-                    className={`w-full h-36 group flex flex-col-reverse sm:flex-row-reverse justify-between items-center relative rounded-xl  hover:shadow-sm`}
+                    className={`w-full h-40 group flex flex-col-reverse sm:flex-row-reverse justify-between items-center relative rounded-xl  hover:shadow-sm`}
                   >
                     {previewUrl && previewUrl !== null ? (
                       <img
                         src={previewUrl}
                         alt=""
-                        className="dp cursor-pointer pointer-events-none w-28 h-28  bg-transparent flex justify-center items-center rounded-full absolute  max-[640px]:top-1 sm:right-5"
+                        className="dp cursor-pointer pointer-events-none w-28 h-28 z-10  bg-transparent flex justify-center items-center rounded-full absolute  max-[640px]:top-10 sm:right-5"
                       />
                     ) : null}
                     <label
@@ -593,7 +628,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                       {/*    <MdOutlineFileUpload size={45} /> */}
                       <h1
                         className={`font-Poppins font-bold text-lg sm:text-3xl  text-black/40 group-hover:text-black/60 absolute ${
-                          !file ? "" : "max-[640px]:bottom-0"
+                          !file ? "" : "hidden"
                         } sm:flex`}
                       >
                         Upload
@@ -611,7 +646,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                       <img
                         src={formData.logo}
                         alt="Current logo"
-                        className="dp cursor-pointer pointer-events-none w-28 h-28  bg-transparent flex justify-center items-center rounded-full absolute  max-[640px]:top-1 sm:right-5"
+                        className="dp cursor-pointer pointer-events-none w-28 h-28  bg-transparent flex justify-center items-center rounded-full absolute  max-[640px]:top-10 sm:right-5"
                       />
                     )}
                   </span>

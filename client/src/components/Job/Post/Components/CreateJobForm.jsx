@@ -128,12 +128,24 @@ function CreateJobForm() {
     setDescription(sanitizedValue);
   };
 
+  /*   const handleSkillChange = (e) => {
+    const value = e.target.value.trim();
+
+    if (value && (e.key === "Enter" || e.keyCode === 13 || e.key === ",")) {
+      e.preventDefault();
+      const sanitizedValue = value
+        .replace(/\.+$/, "")
+        .replace(/[^a-zA-Z0-9\-+/\s#.&]/g, "");
+
+      setSkills([...skills, sanitizedValue]);
+      e.target.value = "";
+    }
+  }; */
+
   const handleSkillChange = (e) => {
     const value = e.target.value.trim();
-    if (value && (e.key === "NumpadEnter" || e.key === "Enter")) {
-      e.preventDefault();
-      // const trimmedValue = value.replace(/-,+$/, ""); // Remove trailing commas
-      //const sanitizedValue = value.replace(/[^a-zA-Z0-9\-+\s#.]|(?<=\.)$/g, ""); // Remove special characters except "-", ".", "+", and whitespace
+
+    if (value) {
       const sanitizedValue = value
         .replace(/\.+$/, "")
         .replace(/[^a-zA-Z0-9\-+/\s#.&]/g, "");
@@ -143,6 +155,17 @@ function CreateJobForm() {
     }
   };
 
+  const handleKeyUp = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13 || e.key === ",") {
+      e.preventDefault();
+      handleSkillChange(e);
+    }
+  };
+
+  const handleAddSkillClick = () => {
+    const inputElement = document.getElementById("skills");
+    handleSkillChange({ target: inputElement });
+  };
   const removeSkill = (skill) => {
     const skillIndex = skills.indexOf(skill);
     if (skillIndex !== -1) {
@@ -326,30 +349,44 @@ function CreateJobForm() {
           {/* Skills && department */}
           <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
             {/* SKILL */}
-            <div className="bg-transparent w-full">
+            <div className="bg-transparent w-full relative">
               <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                 Skills
               </label>
-
-              <input
-                type="text"
-                name="skills"
-                id="skills"
-                className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40 ${
-                  skills <= 0
-                    ? "ring-2 ring-red-500 border-transparent"
-                    : "border-black/20 focus:border-black/40"
-                }`}
-                placeholder="Type a Skill and press <ENTER>"
-                onKeyUp={handleSkillChange}
-                /* onKeyDown={falseFlagsubmit} */
-              />
+              <div className="flex items-center rounded-sm ">
+                <input
+                  type="text"
+                  name="skills"
+                  id="skills"
+                  enterKeyHint="enter"
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40 ${
+                    skills <= 0
+                      ? "ring-2 ring-red-500 border-transparent"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
+                  placeholder="Type a Skill"
+                  //onKeyUp={handleSkillChange}
+                  //onKeyDown={handleSkillChange}
+                  /* onKeyDown={falseFlagsubmit} */
+                  onKeyUp={handleKeyUp}
+                />
+                <button
+                  className="p-[0.58em]  bg-black min-w-max text-[17px] font-medium text-white  rounded-r-[2px] font-Poppins absolute right-0"
+                  onClick={handleAddSkillClick}
+                  type="button"
+                >
+                  Add Skill
+                </button>
+              </div>
               {/* SKILLS.MAP */}
               <div className="flex flex-wrap mb-1 gap-1">
                 {skills.map((skill, index) => (
                   <div
                     key={index}
-                    className=" bg-white pl-3 py-[2px] mt-1 text-[13px] font-Poppins font-medium border border-black/40 rounded-[2px]"
+                    onClick={() => removeSkill(index)}
+                    className="cursor-pointer duration-100 ease-in-out group hover:bg-[#1e1e1e] bg-[#e8e8e8] hover:text-white text-black pl-3 py-[2px] mt-1 text-[13px] font-Poppins font-medium border border-black/40 rounded-[2px]"
+
+                    //className=" bg-white pl-3 py-[2px] mt-1 text-[13px] font-Poppins font-medium border border-black/40 rounded-[2px]"
                   >
                     {skill}
                     <button

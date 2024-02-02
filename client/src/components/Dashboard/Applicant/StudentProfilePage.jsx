@@ -199,7 +199,9 @@ function HeaderBlock({ formData, setFormData, profiles }) {
           className=" flex flex-col justify-center items-center min-h-screen z-20"
         >
           <span className="max-w-3xl w-full p-8 flex flex-col gap-4 bg-white rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] font-Poppins">
-            <h2>Profile Header</h2>
+            <h2 className="font-semibold font-Poppins text-lg w-full text-center">
+              Profile Header
+            </h2>
             {/* NAME */}
             <div className="mb-4">
               <span className="flex gap-4">
@@ -293,11 +295,19 @@ function HeaderBlock({ formData, setFormData, profiles }) {
               />
             </div>
 
-            <span className="flex justify-between">
-              <button type="button" onClick={handleSaveHeaderChanges}>
+            <span className="flex justify-between font-Poppins font-medium">
+              <button
+                type="button"
+                onClick={handleSaveHeaderChanges}
+                className="p-2 px-3 rounded-md bg-black text-white"
+              >
                 Save Changes
               </button>
-              <button type="button" onClick={closeHeaderModal}>
+              <button
+                type="button"
+                onClick={closeHeaderModal}
+                className="p-2 px-3 rounded-md bg-red-600 text-white"
+              >
                 Cancel
               </button>
             </span>
@@ -474,19 +484,29 @@ function AboutBlock({ formData, setFormData, profiles }) {
           className=" flex flex-col justify-center items-center min-h-screen"
         >
           <span className="max-w-3xl w-full p-8 flex flex-col gap-4 bg-white rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] font-Poppins">
-            <h2>About</h2>
+            <h2 className="font-semibold font-Poppins text-lg w-full text-center">
+              About
+            </h2>
             <input
               type="text"
               id="aboutSection"
-              className="w-full p-2 text-[14px] font-Poppins"
+              className="w-full p-2 text-[14px] font-Poppins rounded-md border border-black/20"
               value={formData.aboutSection}
               onChange={handleAboutChange}
             />
-            <span className="flex justify-between">
-              <button type="button" onClick={handleSaveAbout}>
+            <span className="flex justify-between font-Poppins font-medium">
+              <button
+                type="button"
+                onClick={handleSaveAbout}
+                className="p-2 px-3 rounded-md bg-black text-white"
+              >
                 Save
               </button>
-              <button type="button" onClick={closeAboutModal}>
+              <button
+                type="button"
+                onClick={closeAboutModal}
+                className="p-2 px-3 rounded-md bg-red-600 text-white"
+              >
                 Cancel
               </button>
             </span>
@@ -1202,7 +1222,7 @@ function ExperienceBlock({ formData, setFormData, profiles }) {
               <button
                 type="button"
                 onClick={closeExperienceModal}
-                className="bg-red-500 text-white p-2 rounded-md"
+                className="bg-red-600 text-white p-2 rounded-md"
               >
                 Cancel
               </button>
@@ -1894,7 +1914,11 @@ function EducationBlock({ formData, setFormData, profiles }) {
                   <p className="font-medium">Save Education</p>
                 )}
               </button>
-              <button type="button" onClick={closeEducationModal}>
+              <button
+                type="button"
+                onClick={closeEducationModal}
+                className="p-2 px-3 rounded-md bg-red-600 text-white"
+              >
                 Cancel
               </button>
             </span>
@@ -2065,9 +2089,10 @@ function StudentProfilePage({ profiles }) {
                       href={profiles?.ApplicantCV}
                       target="_blank"
                       rel="noreferrer"
-                      className="font-Poppins text-[16px] font-medium px-3 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-600 hover:text-white ease-in-out duration-150 uppercase w-fit flex items-center justify-center gap-2"
+                      className="font-Poppins text-[16px] max-[344px]:text-[12px] font-medium max-[450px]:px-2 max-[450px]:py-2  px-3 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-600 hover:text-white ease-in-out duration-150
+                      uppercase flex min-[450px]:flex-row flex-col items-center justify-center gap-2 w-fit text-center"
                     >
-                      <FaFileAlt size={22} /> CV
+                      <FaFileAlt size={22} /> View CV
                     </a>
                   ) : (
                     <h1 className="text-[15px] font-Poppins font-normal text-center ">
@@ -2122,16 +2147,20 @@ function StudentProfilePage({ profiles }) {
               rounded-md rounded-tr-3xl rounded-bl-3xl"
                 >
                   <span className="experience-details flex flex-col sm:flex-row w-full">
-                    <span className="w-full sm:w-1/2 mb-[2px] flex flex-col  gap-1">
-                      <span className="role font-Poppins text-[16px] font-normal flex items-end gap-2">
-                        <p>{experience.roleTitle}</p>{" "}
-                        <p className="text-[12px]">{experience.roleType}</p>
+                    <span className="w-full sm:3/5 mb-[2px] flex flex-col  gap-1">
+                      <span className="role font-Poppins text-[16px] font-semibold gap-2">
+                        <p className="flex justify-between">
+                          {experience.roleTitle}{" "}
+                          <span className="text-[13px] text-black/70 min-w-fit mr-0 sm:mr-10">
+                            {experience.roleType}
+                          </span>
+                        </p>
                       </span>
                       <h1 className="company font-Poppins text-[14px] font-medium">
                         {experience.roleCompany}
                       </h1>
                     </span>
-                    <span className="w-full sm:w-1/2 text-start sm:text-end mb-[2px] flex flex-col gap-1">
+                    <span className="w-full sm:w-2/5 text-start sm:text-end mb-[2px] flex flex-col gap-1">
                       <h1 className="date font-Poppins text-[14px] font-normal flex justify-start sm:justify-end">
                         {experience.roleDateStart}{" "}
                         {experience.roleDateStart && experience.roleDateEnd ? (
@@ -2195,18 +2224,18 @@ function StudentProfilePage({ profiles }) {
               return (
                 <div
                   key={index}
-                  className="experience-entry p-3 mx-2 mb-2 pb-1 rounded-md rounded-tr-3xl rounded-bl-3xl"
+                  className="experience-entry p-3 mx-2 mb-2 pb-1 "
                 >
                   <span className="education1 flex flex-col sm:flex-row w-full">
                     <span className="w-full sm:w-1/2 flex flex-col gap-1">
                       <h1 className="degree font-Poppins text-[16px] font-semibold">
                         {educationItem.uniDegree}
                       </h1>
-                      <span className="role font-Poppins flex items-end gap-2">
-                        <p className="text-[14px] font-medium">
-                          {educationItem.uniName}
-                        </p>
-                        <p className="text-[12px]">{educationItem?.uniGrade}</p>
+                      <span className="role font-Poppins flex sm:justify-normal justify-between gap-2 font-medium">
+                        <p className="text-[14px]">{educationItem.uniName} </p>{" "}
+                        <span className="text-[14px] text-black/70">
+                          {educationItem?.uniGrade}
+                        </span>
                       </span>
                     </span>
                     <span className="w-full sm:w-1/2 text-start sm:text-end flex flex-col gap-1">
