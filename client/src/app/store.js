@@ -21,5 +21,5 @@ export default configureStore({
     contact: contactReducer,
     accounts: accountReducer,
   },
-  devTools: true,
+  devTools: isDevelopment /* true */,
 });
