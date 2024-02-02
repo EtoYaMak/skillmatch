@@ -98,7 +98,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="relative flex justify-around items-center h-24  px-4 mx-auto z-50 bg-[#fff]   select-none ">
+    <div className="relative flex justify-between items-center h-24  px-4 mx-auto z-50 bg-[#fff]   select-none max-w-6xl">
       <h1 className="hiddenHSEO">Skillmint Job Portal Navigation Menu</h1>
       <h2 className="hiddenHSEO">Navbar to browse skillmint website</h2>
       <h1 className="w-max text-[#000] bg-transparent">
@@ -113,7 +113,7 @@ const Navbar = () => {
         {SAuser ? <span>ADMIN</span> : null}
       </h1>
 
-      <ul className="uppercase gap-0 hidden md:flex bg-transparent justify-center items-center select-none">
+      <ul className="uppercase gap-0 hidden sm:flex bg-transparent justify-center items-center select-none">
         <li className=" text-[#000] font-Poppins  font-medium tracking-widest text-xl text-center  bg-inherit">
           <Link
             to="/"
@@ -214,7 +214,7 @@ const Navbar = () => {
       </ul>
       <div
         id="toggle-nav"
-        className="block p-3 md:hidden bg-[#fff] rounded-full cursor-pointer"
+        className="block p-3 sm:hidden bg-[#fff] rounded-full cursor-pointer"
         onClick={handleToggle}
       >
         {toggle ? (
@@ -230,7 +230,7 @@ const Navbar = () => {
       <div
         className={
           toggle
-            ? "md:hidden absolute left-0 top-0 min-w-[65%]  ease-in-out duration-700 bg-transparent  "
+            ? "sm:hidden absolute left-0 top-0 min-w-[65%]  ease-in-out duration-700 bg-transparent  "
             : "ease-out duration-100 fixed left-[-200%] top-0"
         }
       >

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJobId, updateJob } from "../../../features/jobs/jobSlice";
 import ReactQuill from "react-quill";
@@ -34,7 +34,7 @@ function JobUpdatePage() {
     };
 
     if (!isUserAuthorized()) {
-      navigate("/"); // Redirect to home page if not authorized
+      navigate("/401"); // Redirect to home page if not authorized
     }
   }, [SAuser, adminID, user, job, navigate]);
 
@@ -169,20 +169,7 @@ function JobUpdatePage() {
       }));
     }
   };
-  useEffect(() => {
-    // This will log the updated formData.salary whenever it changes
-    /*     console.log(formData.salary);
-    console.log("category", category);
-    console.log("selectedDepartment", selectedDepartment);
-    console.log("selectedCustomDepartment", selectedCustomDepartment);
-    console.log("formData.department", formData.department); */
-  }, [
-    formData.salary,
-    formData.department,
-    category,
-    selectedDepartment,
-    selectedCustomDepartment,
-  ]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const UpdatedFormData = new FormData();
@@ -265,7 +252,7 @@ function JobUpdatePage() {
     ); // or an error message
   }
   return (
-    <div>
+    <div className="px-2">
       {job ? (
         <form
           onSubmit={handleSubmit}
@@ -361,12 +348,13 @@ function JobUpdatePage() {
                   formData.skills.map((skill, index) => (
                     <div
                       key={index}
-                      className=" bg-white pl-3 py-[2px] mt-1 text-[13px] font-Poppins font-medium border border-black/40 rounded-[2px]"
+                      onClick={() => removeSkill(index)}
+                      className="cursor-pointer duration-100 ease-in-out group hover:bg-[#1e1e1e] bg-[#e8e8e8] hover:text-white text-black pl-3 py-[2px] mt-1 text-[13px] font-Poppins font-medium border border-black/40 rounded-[2px]"
                     >
                       {skill}
                       <button
                         type="button"
-                        className="font-medium w-6 hover:text-red-500"
+                        className="font-medium w-6 group-hover:text-red-700"
                         onClick={() => removeSkill(index)}
                       >
                         X
@@ -652,17 +640,26 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
             </div>
           </div>
           {/* BUTTON type submit */}
-          <div className="form-group flex justify-center items-center bg-transparent py-10 w-full ">
+          <div className="form-group flex flex-col justify-end items-center bg-transparent gap-4 py-10 w-full ">
             <button
-              className="btn btn-lg flex bg-[#1c1f21] hover:bg-[#d0333c] text-zinc-200 text-lg hover:border-white font-semibold minw-fit max-w-xs w-full hover:text-white h-fit rounded-3xl uppercase transition-colors duration-300 ease-in-out shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
+              className=" px-3 py-2 hover:bg-[#d0333c] bg-black  text-lg font-semibold  text-white  rounded-md uppercase transition-colors duration-200 ease-in-out shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
               type="submit"
             >
               Update Job
             </button>
+            <button
+              onClick={() => {
+                navigate(-1);
+              }}
+              className="px-3 py-2  bg-[#000]/80 hover:bg-[#d0333c] text-lg hover:border-white font-semibold text-white hover:text-white  rounded-md uppercase transition-colors duration-200 ease-in-out shadow-[0px_2px_8px_rgb(0,0,0,0.3)] "
+              type="button"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       ) : (
-        <div>Loading... (ERROR retrieving JOB)</div>
+        <div>Loading...</div>
       )}
     </div>
   );

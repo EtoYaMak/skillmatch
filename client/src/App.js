@@ -56,6 +56,7 @@ import PaymentJobForm from "./components/Job/Post/Components/PaymentJobForm";
 import PaymentSuccess from "./components/Job/Post/Components/PaymentSuccess";
 import PublicProfilePage from "./components/Dashboard/Applicant/Components/PublicProfilePage";
 import NotFound from "./components/NotFound";
+import NotAuthorized from "./components/NotAuthorized";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -166,6 +167,7 @@ function App() {
           <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
           {/* Catch-all route for 404 Not Found */}
           <Route path="*" element={<NotFound />} />
+          <Route path="/401" element={<NotAuthorized />} />
         </Routes>
 
         <ToastContainer />

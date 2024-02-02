@@ -57,7 +57,7 @@ function UserDash() {
             Blank
           </button> */}
         </div>
-        <div className="w-fit mx-auto">
+        <div className="w-full mx-auto px-2">
           {/* Pass the user and jobs props to UserDashJobs */}
           {activeTab === "profile" && (
             <UserDashJobs

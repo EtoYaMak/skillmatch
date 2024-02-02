@@ -130,7 +130,7 @@ function CreateJobForm() {
 
   const handleSkillChange = (e) => {
     const value = e.target.value.trim();
-    if (value && (e.key === "," || e.key === "Enter")) {
+    if (value && (e.key === "NumpadEnter" || e.key === "Enter")) {
       e.preventDefault();
       // const trimmedValue = value.replace(/-,+$/, ""); // Remove trailing commas
       //const sanitizedValue = value.replace(/[^a-zA-Z0-9\-+\s#.]|(?<=\.)$/g, ""); // Remove special characters except "-", ".", "+", and whitespace
@@ -622,9 +622,6 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                     />
                   </span>
                 </div>
-                {/*                 <h1 className="font-Poppins font-medium text-center text-sm  p-1 ">
-                  Click inside the box to select a file
-                </h1> */}
               </div>
             </div>
             {/* Company URL */}

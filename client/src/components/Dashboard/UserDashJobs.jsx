@@ -57,11 +57,11 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
       className={`flex  ${
         viewType === "list"
           ? "flex-col "
-          : "flex-wrap gap-2 justify-center items-center "
-      } max-w-[1240px] mx-auto`}
+          : "flex-wrap gap-2 justify-center items-center  "
+      } max-w-[1240px] mx-auto pb-8`}
     >
       {/* VIEW STYLE */}
-      <div className="w-full mb-4 flex justify-end">
+      <div className="w-full mb-4 flex justify-end ">
         <button
           onClick={handleToggleView}
           className="flex justify-center items-center gap-2 bg-black text-white font-Poppins px-3 py-2 rounded-xl"
@@ -80,8 +80,8 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
               key={job._id}
               className={`${
                 viewType === "list"
-                  ? "flex flex-row items-center justify-center  "
-                  : "card card-compact w-fit h-full"
+                  ? "flex flex-row items-center justify-center h-fit sm:h-24"
+                  : "card card-compact w-fit h-full "
               } mb-2  bg-transparent shadow-[0px_2px_8px_rgb(0,0,0,0.3)] hover:text-black rounded-xl`}
             >
               {/* LOGO */}
@@ -126,7 +126,13 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
                   </a>
                   <p className="text-center text-lg select-none flex flex-col">
                     {job.company}
-                    <span className="text-xs text-start text-zinc-500">
+                    <span
+                      className={`${
+                        viewType === "list"
+                          ? "text-sm text-start text-zinc-500"
+                          : "text-sm sm:text-start text-center text-zinc-500"
+                      }`}
+                    >
                       {formatCreatedAtDate(job.createdAt)}
                     </span>
                   </p>
@@ -146,32 +152,34 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
                         : "menu menu-horizontal p-2 bg-white/5 rounded-box items-center mt-2"
                     }`}
                   >
-                    <li className="">
+                    <li className="group">
                       <Link
                         to={`/jobapplicants/${job._id}`}
-                        className=" flex  hover:bg-black hover:text-white "
+                        className=" flex  hover:bg-black   "
                       >
-                        <FaUsers size={16} />
-                        <span className=" font-bold text-[14px] bg-transparent">
+                        <FaUsers
+                          size={16}
+                          className="group-hover:text-black "
+                        />
+                        <span className=" font-bold text-[14px] bg-transparent group-hover:text-black">
                           {countPendingApplicants(job._id, jobs)}
                         </span>
                       </Link>
                     </li>
-                    <li className="">
+                    <li className="group">
                       <Link
                         className="hover:bg-black hover:text-white w-full flex justify-center items-center"
                         to={`/jobs/${job._id}/update`}
                       >
-                        <FaEdit size={16} />
+                        <FaEdit size={16} className="group-hover:text-black" />
                       </Link>
                     </li>
-                    <li className="">
-                      {" "}
+                    <li className="group">
                       <button
-                        className="hover:bg-black hover:text-white w-full flex justify-center items-center"
+                        className="hover:bg-black  w-full flex justify-center items-center"
                         onClick={() => handleDeleteJob(job._id)}
                       >
-                        <FaTrash size={16} />
+                        <FaTrash size={16} className="group-hover:text-black" />
                       </button>
                     </li>
                   </ul>

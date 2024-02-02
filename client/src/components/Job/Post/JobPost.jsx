@@ -166,19 +166,22 @@ function JobPost() {
       {SAuser || user ? (
         <Elements stripe={stripePromise}>
           <JobFormContext.Provider value={contextValue}>
-            <div className=" min-h-screen font-Poppins">
-              <h1 className=" text-[#000] relative flex justify-start items-center h-24  px-4 mx-auto z-50   select-none pl-[6vw]">
+            <div className=" min-h-screen font-Poppins max-w-7xl mx-auto">
+              <Link
+                to={"/"}
+                className=" text-[#000] relative flex justify-center items-center h-24  px-4 mx-auto z-50   select-none "
+              >
                 <span className="bg-transparent leading-[1.85rem] font-Poppins tracking-tighter text-4xl font-extrabold hover:text-[#d0333c] ease-in-out duration-500 ">
                   SKILL
                   <br />
                   MINT
                 </span>
-              </h1>
+              </Link>
               <div className="head border-b flex flex-col justify-center gap-8 items-center p-14">
                 <h1 className="font-Poppins text-[2rem] sm:text-[2.65rem] font-semibold text-center">
                   Reach the largest remote community on the web
                 </h1>
-                <ul className="steps w-[96vw] sm:w-[80vw] ">
+                <ul className="steps w-[96vw] sm:w-[80vw] max-w-5xl">
                   <li
                     className={`step text-lg ${
                       currentStep === "jobCreate" ? "step-primary" : ""

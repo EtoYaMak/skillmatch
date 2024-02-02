@@ -117,26 +117,32 @@ function ProfileCard({ profile, onUpdateStatus, job }) {
 function JobApplicants() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { jobId } = useParams(); // Get the job ID from the URL parameter
-
+  const { jobId } = useParams();
   const job = useSelector((state) =>
     state.jobs.jobs.find((j) => j._id === jobId)
   );
-  const profiles = useSelector((state) => state.profiles.profiles);
-  const jobStatus = useSelector((state) => state.jobs.isLoading);
-  const jobError = useSelector((state) => state.jobs.isError);
-  const SAuser = useSelector((state) => state.SAuser.SAuser);
+  const { isError: jobError, isLoading: jobStatus } = useSelector(
+    (state) => state.jobs
+  );
   const user = useSelector((state) => state.auth.user);
+  const SAuser = useSelector((state) => state.SAuser.SAuser);
+  const profiles = useSelector((state) => state.profiles.profiles);
   const [renderedProfiles, setRenderedProfiles] = useState(new Set());
 
   useEffect(() => {
+    // Check if job is undefined
     if (!job) {
       // Fetch only if job isn't already in the state
       dispatch(getJobId(jobId));
+      return; // Return early to prevent further code execution
     }
-  }, [dispatch, jobId, job]);
 
-  useEffect(() => {
+    // Check access control criteria
+    if (!user || user._id !== job.user) {
+      navigate("/401"); // Redirect to the homepage or another route if needed
+      return;
+    }
+    // Fetch student profiles as needed
     if (job && job.applicants) {
       job.applicants.forEach((applicant) => {
         if (!renderedProfiles.has(applicant.student)) {
@@ -151,13 +157,12 @@ function JobApplicants() {
               new Set(prevProfiles).add(applicant.student)
             );
           } else {
-            console.error("Unkown user student profile request");
+            console.error("Unknown user student profile request");
           }
         }
       });
     }
-  }, [user, SAuser, dispatch, job, renderedProfiles]);
-
+  }, [user, SAuser, dispatch, jobId, job, renderedProfiles, navigate]);
   //
 
   const handleUpdateStatus = async (jobId, studentId, newStatus) => {
@@ -182,17 +187,17 @@ function JobApplicants() {
   ) : !job ? (
     <div className="text-black text-center w-full">No job available</div>
   ) : (
-    <div className="font-Poppins max-w-[1280px] mx-auto min-h-screen ">
+    <div className="font-Poppins max-w-[1024px] mx-auto min-h-screen ">
       {/* GO BACK */}
-      <span className="flex justify-center relative items-center py-4 ">
+      <span className="flex flex-col sm:flex-row justify-center relative items-center gap-4 sm:gap-0  py-4 ">
         <button
-          className="btn btn-ghost btn-md absolute left-10 flex font-Poppins text-lg font-medium gap-2"
+          className="btn btn-ghost btn-md flex font-Poppins text-lg font-medium gap-2"
           onClick={() => handleGoBack()}
         >
           <FaRegArrowAltCircleLeft size={22} />
           Dashboard
         </button>
-        <div className=" flex justify-center items-center gap-3">
+        <div className=" flex justify-center items-center gap-3 w-full">
           <div className="avatar">
             <div className="mask mask-squircle w-20 h-20">
               <img src={job.logo} alt="Avatar for Job Applicants" />

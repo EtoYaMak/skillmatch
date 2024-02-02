@@ -47,11 +47,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.skillmint.io/activate/:type/:token</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.skillmint.io/dash</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -72,11 +67,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.skillmint.io/jobapplicants/:jobId</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.skillmint.io/profile/:studentId</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -86,12 +76,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://www.skillmint.io/jobs/:jobId/update</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
   <!-- Catch-all route for 404 Not Found -->
   <url>
     <loc>https://www.skillmint.io/404</loc>
