@@ -166,7 +166,7 @@ function App() {
           <Route path="/jobs/:jobId" element={<JobDetailComponent />} />
           <Route path="/jobs/:jobId/update" element={<JobUpdatePage />} />
           {/* Catch-all route for 404 Not Found */}
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
           <Route path="/401" element={<NotAuthorized />} />
         </Routes>
 
