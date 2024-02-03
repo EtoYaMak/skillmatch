@@ -25,6 +25,7 @@ import {
   createProfile,
   getProfile,
 } from "../../../features/profiles/profileSlice";
+import { useNavigate } from "react-router-dom";
 
 //////////////////////////////////////////////////////////////////////
 /* HEADER BLOCK START */
@@ -2285,12 +2286,13 @@ function Profile({ student }) {
   const [modeType, setModeType] = useState("view");
   const { profiles, isLoading } = useSelector((state) => state.profiles);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       if (student) {
         await dispatch(getProfile());
       } else {
-        console.log("Unauthorized");
+        navigate("/");
       }
     };
 

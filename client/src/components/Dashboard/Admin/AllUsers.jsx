@@ -30,35 +30,33 @@ function UserTable({ paginatedUsers, jobs }) {
         <tbody>
           {Array.isArray(paginatedUsers) ? (
             paginatedUsers.map((user, index) => (
-              <>
-                <tr className="">
-                  <th className="bg-black/5 font-semibold">{index}</th>
-                  <td className="">
-                    <p className="">{user?.name}</p>
-                  </td>
-                  <td className="bg-black/5 font-semibold">
-                    <Link
-                      to={`/user-jobs/${user._id}`}
-                      className="hover:font-bold"
-                    >
-                      View
-                    </Link>
-                  </td>
-                  <td className="">
-                    <p>{user.email}</p>
-                  </td>
-                  <td className="bg-black/5 font-semibold">
-                    <p
-                      className={`text-${
-                        user?.isActive ? "green" : "red"
-                      }-600 font-Poppins `}
-                    >
-                      {user?.isActive ? "Yes" : "No"}
-                    </p>
-                  </td>
-                  <td className="">{formatCreatedAtDate(user?.createdAt)}</td>
-                </tr>
-              </>
+              <tr key={index} className="">
+                <th className="bg-black/5 font-semibold">{index}</th>
+                <td className="">
+                  <p className="">{user?.name}</p>
+                </td>
+                <td className="bg-black/5 font-semibold">
+                  <Link
+                    to={`/user-jobs/${user._id}`}
+                    className="hover:font-bold"
+                  >
+                    View
+                  </Link>
+                </td>
+                <td className="">
+                  <p>{user.email}</p>
+                </td>
+                <td className="bg-black/5 font-semibold">
+                  <p
+                    className={`text-${
+                      user?.isActive ? "green" : "red"
+                    }-600 font-Poppins `}
+                  >
+                    {user?.isActive ? "Yes" : "No"}
+                  </p>
+                </td>
+                <td className="">{formatCreatedAtDate(user?.createdAt)}</td>
+              </tr>
             ))
           ) : (
             <tr>

@@ -567,7 +567,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
               modules={modules}
             />
           </div>
-
+          {/* COMPANY DETAILS */}
           <div className="sm:flex sm:space-x-8 bg-transparent font-Poppins">
             {/* Company Name */}
             <div className="w-full sm:w-1/2 bg-transparent font-Poppins">

@@ -21,15 +21,18 @@ function JobFormAdmin() {
   const [skills, setSkills] = useState([]);
   //location
   const [city, setCity] = useState("");
-  //
+  const [country, setCountry] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(""); //Chosen
-  const [searchCountry, setSearchCountry] = useState(""); //Input Search
+  //const [searchCountry, setSearchCountry] = useState(""); //Input Search
   const [countries] = useState(countriesList); //Data
   //category
   const [category, setCategory] = useState(""); //Chosen
   const [customCategory, setCustomCategory] = useState(""); //Other
   const [searchTerm, setSearchTerm] = useState(""); //Input Search
+  // Department
   const categories = departmentData; //Data
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedCustomDepartment, setSelectedCustomDepartment] = useState("");
   //Salary
   const [salary, setSalary] = useState(""); //Chosen
   //File
@@ -43,7 +46,7 @@ function JobFormAdmin() {
   const [internship, setInternship] = useState(false);
   const [hybrid, setHybrid] = useState(false);
   const [onsite, setOnsite] = useState(false);
-  const [showFormError, setShowFormError] = useState(true);
+  //const [showFormError, setShowFormError] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -82,38 +85,16 @@ function JobFormAdmin() {
       }
     }
   };
+  //SUBMIT
   const onSubmit = (e) => {
     e.preventDefault();
 
     const location = `${city}, ${selectedCountry}`;
-    // Input validation
-    /*     const requiredFields = [
-      { name: "Job Title", value: position },
-      { name: "City", value: city },
-      { name: "Country", value: selectedCountry },
-      { name: "Location", value: location },
-      { name: "Company Name", value: company },
-      { name: "Company Website", value: website },
-      { name: "Job link", value: careerPage },
-      { name: "Description", value: description },
-      { name: "Logo", value: fileName },
-      { name: "Skills", value: skills.length > 0 },
-    ];
-
-    const missingFields = requiredFields
-      .filter((field) => !field.value)
-      .map((field) => field.name);
-    if (missingFields.length > 0) {
-      setFormError(`${missingFields.join(", ")}`);
-      setShowFormError(true);
-      showToastError();
-      return;
-    } */
 
     // Sanitization
     const sanitizedPosition = sanitizeInput(position); //jobtitle
     const sanitizedCity = sanitizeInput(city); //jobcity
-    const sanitizedCountry = sanitizeInput(selectedCountry); //jobcountry
+    const sanitizedCountry = sanitizeInput(country); //jobcountry
     const sanitizedDepartment = sanitizeInput(category); //jobdepartment
     const sanitizedSalary = sanitizeInput(salary); //jobsalary
     const sanitizedCareerPage = sanitizeInput(careerPage); //jobcareerpage careerpageLink
@@ -143,11 +124,18 @@ function JobFormAdmin() {
     sanitizedSkills.forEach((skill) => {
       formData.append("skills[]", skill);
     }); //jobskillsarray
+    //console.log(formData);
     dispatch(SAcreateJob(formData));
     setPosition(""); //jobtitle
     setCity(""); //jobcity
+    setCountry("");
     setSelectedCountry(""); //jobcountry
     setCategory(""); //jobdepartment
+    setCustomCategory("");
+    setSearchTerm("");
+    setSelectedDepartment("");
+    setSelectedCustomDepartment("");
+    setPreviewUrl("");
     setSalary(""); //jobsalary
     setCareerPage(""); //jobcareerpage careerpageLink
     setCompany(""); //jobcompany
@@ -170,7 +158,9 @@ function JobFormAdmin() {
   };
 
   const handleCountryChange = (e) => {
-    setSelectedCountry(e.target.value);
+    const selectedCountry = e.target.value;
+    setCountry(selectedCountry);
+    // setSelectedCountry(e.target.value);
   };
 
   const falseFlagsubmit = (e) => {
@@ -197,17 +187,17 @@ function JobFormAdmin() {
       }
     );
   };
-
+  /* 
   const handleFormErrorClose = () => {
     setShowFormError(false);
-  };
+  }; */
 
   const handleDescriptionChange = (value) => {
     const sanitizedValue = DOMPurify.sanitize(value);
     setDescription(sanitizedValue);
   };
 
-  const handleSkillChange = (e) => {
+  /*   const handleSkillChange = (e) => {
     const value = e.target.value.trim();
     if (value && (e.key === "," || e.key === " ")) {
       e.preventDefault();
@@ -220,8 +210,32 @@ function JobFormAdmin() {
       setSkills([...skills, sanitizedValue]);
       e.target.value = "";
     }
+  }; */
+
+  const handleSkillChange = (e) => {
+    const value = e.target.value.trim();
+
+    if (value) {
+      const sanitizedValue = value
+        .replace(/\.+$/, "")
+        .replace(/[^a-zA-Z0-9\-+/\s#.&]/g, "");
+
+      setSkills([...skills, sanitizedValue]);
+      e.target.value = "";
+    }
   };
 
+  const handleKeyUp = (e) => {
+    if (e.key === "Enter" || e.keyCode === 13 || e.key === ",") {
+      e.preventDefault();
+      handleSkillChange(e);
+    }
+  };
+
+  const handleAddSkillClick = () => {
+    const inputElement = document.getElementById("skills");
+    handleSkillChange({ target: inputElement });
+  };
   const removeSkill = (skill) => {
     const skillIndex = skills.indexOf(skill);
     if (skillIndex !== -1) {
@@ -238,10 +252,21 @@ function JobFormAdmin() {
 
     return sanitizedInput;
   };
+
   const filteredCategories = Object.keys(categories).filter((key) =>
     categories[key].toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const handleDepartmentChange = (event) => {
+    const departmentFirst = event.target.value;
+    setSelectedDepartment(departmentFirst);
 
+    if (departmentFirst !== "other") {
+      const departmentName = departmentData[departmentFirst];
+      setCategory(departmentName);
+    } else {
+      setCategory(selectedCustomDepartment);
+    }
+  };
   const handleCategoryChange = (event) => {
     const selectedCategory = event.target.value;
     setCategory(selectedCategory);
@@ -266,8 +291,8 @@ function JobFormAdmin() {
         encType="multipart/form-data"
       >
         <>
-          <div className="flex flex-col  p-8 w-full  bg-black/5">
-            <h1 className="font-bold text-[28px] text-black/50">
+          <div className="flex flex-col  p-8 w-full  bg-white shadow-[0_3px_5px_rgb(0,0,0,0.15)]">
+            <h1 className="font-bold text-[28px] text-gray-600">
               Tell us about the position
             </h1>
             <div className="w-full font-Poppins ">
@@ -282,7 +307,11 @@ function JobFormAdmin() {
                   type="text"
                   name="position"
                   id="position"
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                  className={`form-control w-full border rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 ${
+                    !position
+                      ? "ring-2 ring-red-500 border-transparent"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
                   onKeyDown={falseFlagsubmit}
@@ -292,13 +321,17 @@ function JobFormAdmin() {
             <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
               {/* Location */}
               <div className="w-full font-Poppins">
-                <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                   Location
                 </label>
 
                 <input
                   type="text"
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:font-light"
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:font-light ${
+                    !city
+                      ? "ring-2 ring-red-500 border-transparent"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
                   placeholder="City"
                   id="city"
                   name="city"
@@ -308,14 +341,17 @@ function JobFormAdmin() {
               </div>
               {/* Country */}
               <div className="Country flex flex-col justify-start w-full">
-                <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                   Country
                 </label>
                 <select
-                  name="dropdown"
-                  value={selectedCountry}
+                  value={country}
                   onChange={handleCountryChange}
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                    !country
+                      ? "ring-2 ring-red-500 border-transparent"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
                 >
                   <option value="" className="" disabled hidden>
                     Select a Country
@@ -332,29 +368,44 @@ function JobFormAdmin() {
                 </select>
               </div>
             </div>
-            {/* Skills */}
+            {/* Skills && department */}
             <div className="w-full flex flex-col sm:flex-row justify-between bg-transparent font-Poppins sm:gap-8">
-              <div className="bg-transparent w-full">
-                <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+              {/* SKILL */}
+              <div className="bg-transparent w-full relative">
+                <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                   Skills
                 </label>
 
-                {/* SKILL INPUT */}
-                <input
-                  type="text"
-                  name="skills"
-                  id="skills"
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40"
-                  placeholder="<spacebar> or <comma> to split Skills."
-                  onKeyUp={handleSkillChange}
-                  onKeyDown={falseFlagsubmit}
-                />
+                <div className="flex items-center rounded-sm ">
+                  <input
+                    type="text"
+                    name="skills"
+                    id="skills"
+                    enterKeyHint="enter"
+                    className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 placeholder:text-black/40 ${
+                      skills <= 0
+                        ? "ring-2 ring-red-500 border-transparent"
+                        : "border-black/20 focus:border-black/40"
+                    }`}
+                    placeholder="Type a Skill"
+                    onKeyUp={handleKeyUp}
+                    // onKeyDown={falseFlagsubmit}
+                  />
+                  <button
+                    className="p-[0.58em]  bg-black min-w-max text-[17px] font-medium text-white  rounded-r-[2px] font-Poppins absolute right-0"
+                    onClick={handleAddSkillClick}
+                    type="button"
+                  >
+                    Add Skill
+                  </button>
+                </div>
                 {/* SKILLS.MAP */}
                 <div className="flex flex-wrap mb-1 gap-1">
                   {skills.map((skill, index) => (
                     <div
                       key={index}
-                      className=" bg-white pl-3 py-[2px] mt-1 text-[13px] font-Poppins font-medium border border-black/40 rounded-[2px]"
+                      onClick={() => removeSkill(index)}
+                      className="cursor-pointer duration-100 ease-in-out group hover:bg-[#1e1e1e] bg-[#e8e8e8] hover:text-white text-black pl-3 py-[2px] mt-1 text-[13px] font-Poppins font-medium border border-black/40 rounded-[2px]"
                     >
                       {skill}
                       <button
@@ -370,38 +421,51 @@ function JobFormAdmin() {
               </div>
               {/* Category */}
               <div className="category flex flex-col justify-start w-full">
-                <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
-                  Category
+                <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
+                  Department
                 </label>
                 <select
-                  value={category}
-                  onChange={handleCategoryChange}
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                  id="department"
+                  value={selectedDepartment}
+                  onChange={handleDepartmentChange}
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                    !selectedDepartment
+                      ? "ring-2 ring-red-500 border-transparent"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
                 >
-                  <option value="" disabled hidden>
-                    Select a category
+                  <option value="" disabled>
+                    Select a department
                   </option>
-                  {filteredCategories.map((key) => (
+                  {Object.keys(departmentData).map((key) => (
                     <option key={key} value={key}>
-                      {categories[key]}
+                      {departmentData[key]}
                     </option>
                   ))}
+                  <option value="other">Other</option>
                 </select>
-                {category === "other" && (
-                  <input
-                    type="text"
-                    value={customCategory}
-                    onChange={handleCustomCategoryChange}
-                    className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 mt-2"
-                    placeholder="Enter custom category"
-                  />
+
+                {selectedDepartment === "other" && (
+                  <div>
+                    <input
+                      type="text"
+                      id="customDepartment"
+                      onChange={(e) => {
+                        setSelectedCustomDepartment(e.target.value);
+                        setCategory(e.target.value); // Update category with custom input
+                      }}
+                      className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 mt-2"
+                      placeholder="Enter Custom Department"
+                    />
+                  </div>
                 )}
               </div>
             </div>
+            {/* SETTING && SALARY */}
             <div className="sm:flex sm:space-x-8 bg-transparent font-Poppins w-full ">
               {/* WORK SETTINGS */}
               <div className="flex flex-col sm:w-1/2 justify-center items-start font-Poppins gap-1 ">
-                <label className="block text-2xl font-semibold  mt-4 text-black">
+                <label className="block text-2xl font-semibold  mt-8 text-black">
                   Work Setting
                 </label>
                 {/* Type */}
@@ -425,7 +489,7 @@ function JobFormAdmin() {
                       checked={internship}
                       onChange={(e) => setInternship(e.target.checked)}
                       className="mb-1 checkbox checkbox-warning
-border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)]"
+                      border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)]"
                     />
                     <span className=" text-lg">Internship</span>
                   </div>
@@ -437,7 +501,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                       checked={contract}
                       onChange={(e) => setContract(e.target.checked)}
                       className="mb-1 checkbox checkbox-warning
-border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                      border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
                     />
                     <span className=" text-lg">Contract</span>
                   </div>
@@ -452,7 +516,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                       checked={remote}
                       onChange={(e) => setRemote(e.target.checked)}
                       className="mb-1 checkbox checkbox-success
-border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                      border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
                     />
                     <span className="text-lg">Remote</span>
                   </div>
@@ -464,7 +528,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                       checked={hybrid}
                       onChange={(e) => setHybrid(e.target.checked)}
                       className="mb-1 checkbox checkbox-success
-border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
+                      border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_1px_1px_rgb(0,0,0,0.2)] "
                     />
                     <span className=" text-lg">Hybrid</span>
                   </div>
@@ -481,15 +545,20 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                   </div>
                 </div>
               </div>
+              {/* Salary */}
               <div className="sm:w-1/2">
-                <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                <label className="block text-2xl font-semibold mb-3 mt-8 text-black">
                   Salary
                 </label>
                 <select
                   name="dropdown"
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
-                  className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                  className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                    !salary
+                      ? " border-red-500 border-2"
+                      : "border-black/20 focus:border-black/40"
+                  }`}
                 >
                   <option value="" disabled hidden>
                     Salary Range
@@ -512,12 +581,12 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
                   <option value="£60,000 - £80,000">
                     £60,000 - £80,000 GBP
                   </option>
-                  <option value="80plus">£80,000+ GBP</option>
+                  <option value="£80,000+">£80,000+ GBP</option>
                 </select>
               </div>
             </div>
             {/* Description */}
-            <div className="mt-4 text-black overflow-hidden ">
+            <div className="mt-14 text-black overflow-hidden ">
               <ReactQuill
                 placeholder={jobPlaceholder}
                 className="border-none"
@@ -527,18 +596,23 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
               />
             </div>
 
+            {/* COMPANY DETAILS */}
             <div className="sm:flex sm:space-x-8 bg-transparent font-Poppins">
               {/* Company Name */}
               <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
                 <div className="bg-transparent">
-                  <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                  <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                     Company Name
                   </label>
                   <input
                     type="text"
                     name="company"
                     id="company"
-                    className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                    className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                      !company
+                        ? " border-red-500 border-2"
+                        : "border-black/20 focus:border-black/40"
+                    }`}
                     placeholder="ABC Co."
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
@@ -549,14 +623,18 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
               {/* Career Page URL */}
               <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
                 <div className="bg-transparent">
-                  <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                  <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                     Career Page URL
                   </label>
                   <input
                     type="text"
                     name="careerPage"
                     id="careerPage"
-                    className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40"
+                    className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                      !careerPage
+                        ? " border-red-500 border-2"
+                        : "border-black/20 focus:border-black/40"
+                    }`}
                     placeholder="www.careers.abc.com/job"
                     value={careerPage}
                     onChange={(e) => setCareerPage(e.target.value)}
@@ -570,7 +648,7 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
               {/* Logo */}
               <div className="w-full sm:w-1/2 bg-transparent">
                 <div className="form-group bg-transparent">
-                  <label className=" block text-2xl font-semibold mb-2 mt-4 text-black">
+                  <label className=" block text-2xl font-semibold mb-2 mt-8 text-black">
                     <p className="h-8">
                       Logo <span className="text-[10px]">MAX 2MB</span>{" "}
                     </p>
@@ -622,14 +700,18 @@ border-none ring-[1px] ring-[#777] hover:ring-[#000] focus:ring-0 shadow-[0.5px_
               {/* Company URL */}
               <div className="w-full sm:w-1/2 bg-transparent font-Poppins">
                 <div className="bg-transparent ">
-                  <label className="block text-2xl font-semibold mb-2 mt-4 text-black">
+                  <label className="block text-2xl font-semibold mb-2 mt-8 text-black">
                     Company URL
                   </label>
                   <input
                     type="text"
                     name="website"
                     id="website"
-                    className="form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 "
+                    className={`form-control w-full border border-black/20 rounded-[2px] p-[0.65em] text-[17px] font-medium focus:ring-0 focus:border-black/40 ${
+                      !website
+                        ? " border-red-500 border-2"
+                        : "border-black/20 focus:border-black/40"
+                    } z-20`}
                     placeholder="www.abc.com"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}

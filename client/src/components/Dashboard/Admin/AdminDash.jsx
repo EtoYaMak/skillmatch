@@ -36,9 +36,15 @@ function AdminDash() {
   }, [location.pathname]);
 
   useEffect(() => {
-    dispatch(getAllJobsTwo());
-    dispatch(getAllStudents());
-    dispatch(getAllUsers());
+    if (SAuser) {
+      dispatch(getAllJobsTwo());
+      dispatch(getAllStudents());
+      dispatch(getAllUsers());
+      return;
+    } else {
+      navigate("/401");
+      return;
+    }
   }, [dispatch]);
   const handleTabClick = (tab) => {
     setActive(tab);

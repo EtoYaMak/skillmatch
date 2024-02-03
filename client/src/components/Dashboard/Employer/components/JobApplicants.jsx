@@ -138,7 +138,7 @@ function JobApplicants() {
     }
 
     // Check access control criteria
-    if (!user || user._id !== job.user) {
+    if (!SAuser && (!user || user._id !== job.user)) {
       navigate("/401"); // Redirect to the homepage or another route if needed
       return;
     }

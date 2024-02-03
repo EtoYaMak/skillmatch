@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import StudentProfile from "../../Dashboard/Applicant/studentProfile";
@@ -12,10 +12,11 @@ function StudentDash() {
 
   const [activeTab, setActiveTab] = useState("profile");
 
-  if (!student) {
-    navigate("/loginS");
-    return <p>Unauthorized access ~ Login to view your profile</p>;
-  }
+  useEffect(() => {
+    if (!student) {
+      navigate("/login");
+    }
+  }, [student, navigate]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -52,11 +53,13 @@ function StudentDash() {
           Profile
         </button>
       </div>
-      <div className="px-4 max-w-5xl mx-auto pb-4">
-        {/* Display the selected component based on the activeTab state */}
-        {activeTab === "profile" && <StudentProfilePage student={student} />}
-        {activeTab === "applications" && <StudentApplications />}
-      </div>
+      {student && (
+        <div className="px-4 max-w-5xl mx-auto pb-4">
+          {/* Display the selected component based on the activeTab state */}
+          {activeTab === "profile" && <StudentProfilePage student={student} />}
+          {activeTab === "applications" && <StudentApplications />}
+        </div>
+      )}
     </div>
   );
 }

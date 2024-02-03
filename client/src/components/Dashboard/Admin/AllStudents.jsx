@@ -32,37 +32,33 @@ function UserTable({ paginatedStudents }) {
         <tbody>
           {Array.isArray(paginatedStudents) ? (
             paginatedStudents.map((student, index) => (
-              <>
-                <tr className="">
-                  <th className="bg-black/5 font-semibold">{index}</th>
-                  <td className="">
-                    <p className="">{student?.name}</p>
-                  </td>
-                  <td className="bg-black/5 font-semibold">
-                    <Link
-                      to={`/student-applied-jobs/${student._id}`}
-                      className="hover:font-bold"
-                    >
-                      View
-                    </Link>
-                  </td>
-                  <td className="">
-                    <p>{student.email}</p>
-                  </td>
-                  <td className="bg-black/5 font-semibold">
-                    <p
-                      className={`text-${
-                        student?.isActive ? "green" : "red"
-                      }-600 font-Poppins `}
-                    >
-                      {student?.isActive ? "Yes" : "No"}
-                    </p>
-                  </td>
-                  <td className="">
-                    {formatCreatedAtDate(student?.createdAt)}
-                  </td>
-                </tr>
-              </>
+              <tr key={index} className="">
+                <th className="bg-black/5 font-semibold">{index}</th>
+                <td className="">
+                  <p className="">{student?.name}</p>
+                </td>
+                <td className="bg-black/5 font-semibold">
+                  <Link
+                    to={`/student-applied-jobs/${student._id}`}
+                    className="hover:font-bold"
+                  >
+                    View
+                  </Link>
+                </td>
+                <td className="">
+                  <p>{student.email}</p>
+                </td>
+                <td className="bg-black/5 font-semibold">
+                  <p
+                    className={`text-${
+                      student?.isActive ? "green" : "red"
+                    }-600 font-Poppins `}
+                  >
+                    {student?.isActive ? "Yes" : "No"}
+                  </p>
+                </td>
+                <td className="">{formatCreatedAtDate(student?.createdAt)}</td>
+              </tr>
             ))
           ) : (
             <tr>
