@@ -21,22 +21,25 @@ function JobUpdatePage() {
   const job = useSelector((state) =>
     state.jobs.jobs.find((j) => j._id === jobId)
   );
-
+  //Authorization Check
   useEffect(() => {
-    const isUserAuthorized = () => {
-      if (SAuser || adminID || userID) {
-        return true; // Admins are authorized
-      } else if (user && job && user._id === job.user) {
-        return true; // Regular user is authorized if they own the job
-      } else {
-        return false; // Not authorized
-      }
-    };
+    if (jobId) {
+      dispatch(getJobId(jobId));
+      const isUserAuthorized = () => {
+        if (SAuser || adminID) {
+          return true; // Admins are authorized
+        } else if (user && job && user._id === job.user) {
+          return true; // Regular user is authorized if they own the job
+        } else {
+          return false; // Not authorized
+        }
+      };
 
-    if (!isUserAuthorized()) {
-      navigate("/401"); // Redirect to home page if not authorized
+      if (!isUserAuthorized()) {
+        navigate("/401"); // Redirect to home page if not authorized
+      }
     }
-  }, [SAuser, adminID, userID, user, job, navigate]);
+  }, [jobId, dispatch, SAuser, adminID, userID, user, job, navigate]);
 
   const [countries] = useState(countriesList);
   const modules = {
@@ -90,11 +93,11 @@ function JobUpdatePage() {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedCustomDepartment, setSelectedCustomDepartment] = useState("");
   // Effect for fetching job data
-  useEffect(() => {
+  /*   useEffect(() => {
     if (jobId) {
       dispatch(getJobId(jobId));
     }
-  }, [jobId, dispatch]);
+  }, [jobId, dispatch]); */
 
   // Effect for initializing form data
   useEffect(() => {
@@ -122,6 +125,7 @@ function JobUpdatePage() {
     }
   }, [job, isInitialized]);
 
+  //File reader
   useEffect(() => {
     if (!file) {
       setPreviewUrl(null);

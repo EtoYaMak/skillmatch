@@ -17,7 +17,23 @@ const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 // Create a context for the form data
 export const JobFormContext = createContext({});
 function JobPost() {
-  const [formData, setFormData] = useState({});
+  // Initialize all fields with default values
+  const initialFormData = {
+    position: "",
+    careerPage: "",
+    company: "",
+    website: "",
+    description: "",
+    skills: [],
+    city: "",
+    country: "",
+    category: "",
+    salary: "",
+    fileName: "",
+  };
+  const [formData, setFormData] = useState(initialFormData);
+
+  //const [formData, setFormData] = useState({});
   const [currentStep, setCurrentStep] = useState("jobCreate");
   const [isFormValid, setIsFormValid] = useState(true);
 
@@ -38,6 +54,26 @@ function JobPost() {
     setCurrentStep(step);
     navigate(`/post/${step}`);
   };
+
+  const isFormDataValid = (formData) => {
+    // Add conditions for all the fields you want to validate
+    const isValid =
+      formData.position?.trim() !== "" &&
+      formData.careerPage?.trim() !== "" &&
+      formData.company?.trim() !== "" &&
+      formData.website?.trim() !== "" &&
+      formData.description?.trim() !== "" &&
+      formData.skills.length > 0 && // Check if skills array is not empty
+      formData.city !== "" &&
+      formData.country !== "" &&
+      formData.category !== "" &&
+      formData.salary !== "" &&
+      formData.fileName !== "";
+
+    //console.log("Is Form Valid:", isValid);
+    return isValid;
+  };
+
   const handleNext = () => {
     const newFormData = collectFormData();
 
@@ -55,24 +91,7 @@ function JobPost() {
     const nextStep = determineNextStep(currentStep);
     goToStep(nextStep);
   };
-  const isFormDataValid = (formData) => {
-    // Add conditions for all the fields you want to validate
-    const isValid =
-      formData.position.trim() !== "" &&
-      formData.careerPage.trim() !== "" &&
-      formData.company.trim() !== "" &&
-      formData.website.trim() !== "" &&
-      formData.description.trim() !== "" &&
-      formData.skills.length > 0 && // Check if skills array is not empty
-      formData.city !== "" &&
-      formData.country !== "" &&
-      formData.category !== "" &&
-      formData.salary !== "" &&
-      formData.fileName !== "";
 
-    //console.log("Is Form Valid:", isValid);
-    return isValid;
-  };
   /*   const isFormDataValid = (formData) => {
     const isValid = formData.position.trim() !== "";
     console.log("Is Form Valid:", isValid);

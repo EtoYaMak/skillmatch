@@ -161,10 +161,10 @@ function JobDetailPage({ job, user, SAuser, student, studentData, profiles }) {
               setting
                 .filter((jobSetting) => jobSetting.value) // Only keep settings with value true
                 .map((jobSetting, index) => (
-                  <h2 key={index}>
+                  <span key={index}>
                     {jobSetting.name.charAt(0).toUpperCase() +
                       jobSetting.name.slice(1)}
-                  </h2>
+                  </span>
                 ))}{" "}
             {job?.position}
           </h1>
