@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getJobId, updateJob } from "../../../features/jobs/jobSlice";
@@ -21,14 +21,20 @@ function JobUpdatePage() {
   const job = useSelector((state) =>
     state.jobs.jobs.find((j) => j._id === jobId)
   );
-  //Authorization Check
+  // Fetch job details when component mounts
   useEffect(() => {
     if (jobId) {
-      dispatch(getJobId(jobId));
+      dispatch(getJobId(jobId)); // Dispatch action to fetch job details
+    }
+  }, [jobId, dispatch]);
+  //Authorization Check
+  useEffect(() => {
+    if (jobId && job && user) {
+      // Check if jobId, job, and user are available
       const isUserAuthorized = () => {
         if (SAuser || adminID) {
           return true; // Admins are authorized
-        } else if (user && job && user._id === job.user) {
+        } else if (user._id === job.user) {
           return true; // Regular user is authorized if they own the job
         } else {
           return false; // Not authorized
@@ -36,10 +42,12 @@ function JobUpdatePage() {
       };
 
       if (!isUserAuthorized()) {
-        navigate("/401"); // Redirect to home page if not authorized
+        // Redirect or handle unauthorized access
+        //navigate(-1);
+        navigate("/401");
       }
     }
-  }, [jobId, dispatch, SAuser, adminID, userID, user, job, navigate]);
+  }, [jobId, job, user, SAuser, adminID, navigate]);
 
   const [countries] = useState(countriesList);
   const modules = {
@@ -92,12 +100,6 @@ function JobUpdatePage() {
   const [category, setCategory] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedCustomDepartment, setSelectedCustomDepartment] = useState("");
-  // Effect for fetching job data
-  /*   useEffect(() => {
-    if (jobId) {
-      dispatch(getJobId(jobId));
-    }
-  }, [jobId, dispatch]); */
 
   // Effect for initializing form data
   useEffect(() => {
