@@ -9,13 +9,16 @@ import {
 } from "../../features/jobs/jobSlice";
 import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { MdGridView, MdCalendarViewDay } from "react-icons/md";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
 
 function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
   const dispatch = useDispatch();
   const [viewType, setViewType] = useState("list");
-
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1); // Start from page 1
+  const [jobsPerPage] = useState(7); // Limit to 5 items per page
   const handleToggleView = () => {
     setViewType((prevType) => (prevType === "grid" ? "list" : "grid"));
   };
@@ -51,7 +54,22 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
       }
     }
   };
+  // Filter out null values and order the jobs by their ID
 
+  // Calculate total pages (ensure at least 1 page)
+  const totalPages = Math.max(1, Math.ceil(jobs.length / jobsPerPage));
+
+  // Slice applied jobs based on pagination (prevent negative index)
+  const paginatedJobs = jobs.slice(
+    Math.max(0, (currentPage - 1) * jobsPerPage),
+    Math.min(currentPage * jobsPerPage, jobs.length)
+  );
+
+  // Handle page changes
+  const handlePageChange = (newPage) => {
+    // Enforce valid page range
+    setCurrentPage(Math.max(1, Math.min(newPage, totalPages)));
+  };
   return (
     <div
       className={`flex  ${
@@ -74,7 +92,7 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
       </div>
       {jobs.length > 0 ? (
         <>
-          {jobs.map((job) => (
+          {paginatedJobs.map((job) => (
             /* MAIN CONTAINER */
             <div
               key={job._id}
@@ -205,6 +223,39 @@ function UserDashJobs({ createdAt, user, SAuser, jobs, jobsLoading }) {
           )}
         </>
       )}
+      {jobs.length > 0 ? (
+        <div className="pagination flex flex-row justify-center items-center gap-2 py-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="rounded-[3px] px-[5px] py-[5px] font-Poppins border font-medium text-black/70 disabled:text-black/20"
+          >
+            <FaChevronLeft />
+          </button>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              aria-current={currentPage === index + 1}
+              className={`rounded-[3px] px-[9px] py-[2px] font-Poppins text-[13px]   ${
+                currentPage === index + 1
+                  ? "current-page border border-black font-semibold "
+                  : "border font-medium"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="rounded-[3px] px-[5px] py-[5px] font-Poppins border font-medium text-black/70 disabled:text-black/20"
+          >
+            <FaChevronRight />
+          </button>
+        </div>
+      ) : null}
+      {/* Pagination controls (example implementation) */}
     </div>
   );
 }

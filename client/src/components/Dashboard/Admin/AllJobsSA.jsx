@@ -8,6 +8,7 @@ import Location from "../../Job/Components/BrowseFilters/Location";
 import PayRange from "../../Job/Components/BrowseFilters/PayRange";
 import SearchCat from "../../Job/Components/BrowseFilters/SearchCat";
 import SearchComponent from "../../Misc/Search";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 function AllJobsSA({ alljobs, SAuser }) {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ function AllJobsSA({ alljobs, SAuser }) {
   const [salaryFilter, setSalaryFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 8;
+  const jobsPerPage = 7;
 
   const handleSortChange = (selectedValue) => {
     setSortBy(selectedValue);
@@ -128,7 +129,7 @@ function AllJobsSA({ alljobs, SAuser }) {
         </div>
       </div>
 
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full pt-4">
         {Array.isArray(currentJobs) ? (
           currentJobs.map((job) => (
             <div
@@ -192,36 +193,37 @@ function AllJobsSA({ alljobs, SAuser }) {
         )}{" "}
       </div>
       {/* Pagination outside the job listings div */}
-      <div className="pagination flex flex-wrap justify-center items-center">
-        {currentPage > 1 && (
-          <button
-            className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
-            onClick={() => handlePageClick(currentPage - 1)}
-          >
-            {"<"}
-          </button>
-        )}
+      <div className="pagination flex flex-wrap justify-center items-center gap-2 py-4">
+        <button
+          disabled={currentPage === 1}
+          className="rounded-[3px] px-[5px] py-[5px] font-Poppins border font-medium text-black/70 disabled:text-black/20"
+          onClick={() => handlePageClick(currentPage - 1)}
+        >
+          <FaChevronLeft />
+        </button>
+
         {pageNumbers.map((pageNumber) => (
           <button
             key={pageNumber}
-            className={`btn btn-square btn-xs text-sm mx-[1px] ${
+            aria-current={pageNumber}
+            className={`rounded-[3px] px-[9px] py-[2px] font-Poppins text-[13px]   ${
               currentPage === pageNumber
-                ? "current-page bg-black text-white"
-                : "bg-black/5 text-black"
+                ? "current-page border border-black font-semibold "
+                : "border font-medium"
             }`}
             onClick={() => handlePageClick(pageNumber)}
           >
             {pageNumber}
           </button>
         ))}
-        {currentPage < totalPageCount && (
-          <button
-            className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
-            onClick={() => handlePageClick(currentPage + 1)}
-          >
-            &gt;
-          </button>
-        )}
+
+        <button
+          onClick={() => handlePageClick(currentPage + 1)}
+          disabled={currentPage === totalPageCount}
+          className="rounded-[3px] px-[5px] py-[5px] font-Poppins border font-medium text-black/70 disabled:text-black/20"
+        >
+          <FaChevronRight />
+        </button>
       </div>
     </div>
   );

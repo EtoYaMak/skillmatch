@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import SearchComponent from "../../Misc/Search";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { FaEdit, FaUsers, FaTrash } from "react-icons/fa";
 import { SAdeleteJob } from "../../../features/jobs/jobSlice";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 
 // Define a function to format the date
 const formatCreatedAtDate = (createdAt) => {
@@ -80,36 +79,37 @@ function Pagination({
   handlePageClick,
 }) {
   return (
-    <div className="pagination flex flex-wrap justify-end items-center my-8 max-w-[960px] mx-auto w-full">
-      {currentPage > 1 && (
-        <button
-          className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
-          onClick={() => handlePageClick(currentPage - 1)}
-        >
-          {"<"}
-        </button>
-      )}
+    <div className="pagination flex flex-row justify-center items-center gap-2 py-4">
+      <button
+        onClick={() => handlePageClick(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="rounded-[3px] px-[5px] py-[5px] font-Poppins border font-medium text-black/70 disabled:text-black/20 text-[15px]"
+      >
+        <FaChevronLeft />
+      </button>
+
       {pageNumbers.map((pageNumber) => (
         <button
           key={pageNumber}
-          className={`btn btn-square btn-xs text-sm mx-[1px]  ${
+          aria-current={currentPage === pageNumber}
+          className={`rounded-[3px] px-3  font-Poppins text-[13px] ${
             currentPage === pageNumber
-              ? "current-page bg-black hover:bg-white text-white hover:text-black  hover:scale-105 "
-              : "bg-black/5 text-black"
+              ? "current-page border border-black font-semibold "
+              : "border font-medium"
           }`}
           onClick={() => handlePageClick(pageNumber)}
         >
           {pageNumber}
         </button>
       ))}
-      {currentPage < totalPageCount && (
-        <button
-          className="btn btn-square btn-xs text-sm mx-[1px] bg-black text-white"
-          onClick={() => handlePageClick(currentPage + 1)}
-        >
-          &gt;
-        </button>
-      )}
+
+      <button
+        onClick={() => handlePageClick(currentPage + 1)}
+        disabled={currentPage === totalPageCount}
+        className="rounded-[3px] px-[5px] py-[5px] font-Poppins border font-medium text-black/70 disabled:text-black/20 text-[15px]"
+      >
+        <FaChevronRight />
+      </button>
     </div>
   );
 }
