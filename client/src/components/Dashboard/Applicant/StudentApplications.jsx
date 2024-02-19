@@ -58,10 +58,6 @@ const StudentApplications = () => {
   return (
     <div className="text-center text-black">
       <h3 className="text-xl font-semibold mb-4">Your Applied Jobs</h3>
-
-      <h1 className="text-xl font-bold font-Poppins">
-        YOU ARE ON: {currentPage}
-      </h1>
       <div className="space-y-4">
         {paginatedAppliedJobs?.map(
           (appliedJob) =>
