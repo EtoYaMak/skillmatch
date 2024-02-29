@@ -8,8 +8,8 @@
 /.pnp
 .pnp.js
 .env
-Hosting-GUIDE.txt
-desktop.ini
+/Hosting-GUIDE.txt
+/desktop.ini
 # testing
 /coverage   
 
