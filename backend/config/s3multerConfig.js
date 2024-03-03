@@ -17,7 +17,7 @@ const s3 = new S3Client({
 const s3upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: "skillmint-job-images",
+    bucket: "skillmatch-jobs",
     acl: "public-read",
     contentDisposition: "inline",
     contentType: multer.AUTO_CONTENT_TYPE,
@@ -36,7 +36,7 @@ const s3upload = multer({
 const deleteObjectFromS3 = async (key) => {
   try {
     await s3.send(
-      new DeleteObjectCommand({ Bucket: "skillmint-job-images", Key: key })
+      new DeleteObjectCommand({ Bucket: "skillmatch-jobs", Key: key })
     );
     console.log(`Object deleted from S3: ${key}`);
   } catch (error) {

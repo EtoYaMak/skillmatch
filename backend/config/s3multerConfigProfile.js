@@ -32,7 +32,7 @@ const fileFilter = (req, file, cb) => {
 
 const multerS3Config = multerS3({
   s3: s3,
-  bucket: "skillmint-job-images",
+  bucket: "skillmatch-jobs",
   acl: "public-read",
   contentDisposition: "inline",
   contentType: multerS3.AUTO_CONTENT_TYPE,

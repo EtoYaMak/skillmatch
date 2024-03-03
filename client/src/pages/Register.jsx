@@ -175,7 +175,7 @@ function Register() {
   return (
     <>
       <div className="w-full min-h-screen font-Poppins flex justify-center items-center">
-        <h1 className="hiddenHSEO">Skillmint Register Page</h1>
+        <h1 className="hiddenHSEO">Skillmatch Register Page</h1>
         <h2 className="hiddenHSEO">
           Register as an Employer. Register as an Applicant
         </h2>
@@ -183,8 +183,8 @@ function Register() {
           onSubmit={onSubmit}
           className="mx-auto sm:max-w-[780px] p-8 pt-12 bg-black/5 rounded-[6px] w-full"
         >
-          <h1 className="select-none bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
-            Skill <br /> Mint
+          <h1 className="select-none bg-transparent font-Poppins leading-[1.5rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
+            Skill <br /> Match
           </h1>
           <h1 className="text-[2.1em] font-Poppins mx-auto my-12 select-none w-fit">
             {selectedRole === "poster" ? "Employer" : " Applicant"} Register

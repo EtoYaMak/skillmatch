@@ -162,7 +162,7 @@ function Home() {
   }
   return (
     <div className="mx-auto h-full  bg-inherit max-w-[1240px]">
-      <h1 className="hiddenHSEO">Skillmint Job Portal Home Page</h1>
+      <h1 className="hiddenHSEO">Skillmatch Job Portal Home Page</h1>
       <h2 className="hiddenHSEO">
         View latest Jobs Posted. Apply to Jobs. Find Your Next Career. Start
         your Professional Journey

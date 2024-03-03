@@ -49,7 +49,7 @@ function JobCard({ formData }) {
   return (
     <>
       <h1 className="hiddenHSEO">
-        Preview Your Job listing before submitting to Skillmint.io
+        Preview Your Job listing before submitting to Skillmatch.io
       </h1>
       <h2 className="hiddenHSEO">
         This is how your job listing will look like to the applicants, visitors

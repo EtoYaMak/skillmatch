@@ -182,7 +182,7 @@ function JobApplicants() {
     <div className="text-black text-center w-full">No job available</div>
   ) : (
     <div className="font-Poppins sm:scale-100 scale-[85%] min-h-screen w-full max-w-2xl mx-auto">
-      <h1 className="hiddenHSEO">Skillmint Job Applicants List Page</h1>
+      <h1 className="hiddenHSEO">Skillmatch Job Applicants List Page</h1>
       <h2 className="hiddenHSEO">
         View All Job Applicants. Employer Dashboard View Applicants
       </h2>

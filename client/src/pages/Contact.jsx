@@ -53,9 +53,9 @@ const Contact = () => {
   }
   return (
     <div className="max-w-6xl mx-auto  bg-white rounded-3xl h-full  flex flex-col justify-center items-center">
-      <h1 className="hiddenHSEO">Skillmint Contact Page Form</h1>
+      <h1 className="hiddenHSEO">Skillmatch Contact Page Form</h1>
       <h2 className="hiddenHSEO">
-        Contact Skillmint Support. Ask A Question. Submit Form.
+        Contact Skillmatch Support. Ask A Question. Submit Form.
       </h2>
       <section className="text-gray-400 body-font font-Poppins mb-8">
         <div className="container px-5 py-5 mx-auto bg-transparent rounded-b-xl">

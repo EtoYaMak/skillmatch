@@ -1,7 +1,7 @@
 {
-  "name": "skillmint-project",
+  "name": "skillmatch-project",
   "version": "1.0.0",
-  "description": "Skillmint Project Root",
+  "description": "skillmatch Project Root",
   "main": "server.js",
   "scripts": {
     "start": "npm run dev",

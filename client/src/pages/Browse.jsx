@@ -117,7 +117,7 @@ function Browse() {
 
   return (
     <div className="main mx-auto max-w-[1240px] px-4 md:px-6 ">
-      <h1 className="hiddenHSEO">Skillmint Browse Jobs Page</h1>
+      <h1 className="hiddenHSEO">Skillmatch Browse Jobs Page</h1>
       <h2 className="hiddenHSEO">
         Browse All Jobs. Filter Jobs. Remote Jobs. Latest Jobs
       </h2>

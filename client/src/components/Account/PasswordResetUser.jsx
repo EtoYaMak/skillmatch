@@ -46,7 +46,7 @@ function PasswordResetUser() {
   return (
     <>
       <h1 className="hiddenHSEO">Request a Password Reset for your account</h1>
-      <h2 className="hiddenHSEO">Skillmint Password Reset page</h2>
+      <h2 className="hiddenHSEO">Skillmatch Password Reset page</h2>
       <div className="flex-shrink-0 h-screen ">
         <div className=" translate-y-36 w-fit mx-auto">
           <form

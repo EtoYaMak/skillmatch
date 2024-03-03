@@ -29,7 +29,7 @@ function UserDash() {
   }
   return (
     <div className="min-h-screen font-Poppins">
-      <h1 className="hiddenHSEO">Skillmint Employer Dashboard Page</h1>
+      <h1 className="hiddenHSEO">Skillmatch Employer Dashboard Page</h1>
       <h2 className="hiddenHSEO">
         This Page is for the Employer to view their listed jobs
       </h2>

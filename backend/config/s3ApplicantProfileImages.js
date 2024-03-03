@@ -21,7 +21,7 @@ const s3ProfileImages = multer({
       cb(null, true);
     },
     s3: s3,
-    bucket: "skillmint-job-images", // Bucket
+    bucket: "skillmatch-jobs", // Bucket
     acl: "public-read",
     contentDisposition: "inline",
     contentType: multerS3.AUTO_CONTENT_TYPE,

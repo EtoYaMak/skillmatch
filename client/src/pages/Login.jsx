@@ -112,7 +112,7 @@ function Login() {
 
   return (
     <div className="w-full min-h-screen font-Poppins flex justify-center items-center">
-      <h1 className="hiddenHSEO">Skillmint Login Page</h1>
+      <h1 className="hiddenHSEO">Skillmatch Login Page</h1>
       <h2 className="hiddenHSEO">
         Login to Post Job Listings. Login To Start Applying to Jobs Roles
         Positions.
@@ -122,7 +122,7 @@ function Login() {
         className="mx-auto  sm:max-w-[780px] p-8 pt-12 bg-black/5 rounded-[6px] w-full"
       >
         <h1 className="bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
-          Skill <br /> Mint
+          Skill <br /> Match
         </h1>
         <h1 className="text-[2.1em] font-Poppins mx-auto my-8 text-center w-full">
           Sign In

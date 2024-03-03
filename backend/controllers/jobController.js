@@ -82,7 +82,7 @@ const setJob = async (req, res) => {
       });
 
       const uploadParams = {
-        Bucket: "skillmint-job-images",
+        Bucket: "sskillmatch-jobs",
         Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
         Body: resizedImage,
         ACL: "public-read",
@@ -184,7 +184,7 @@ const updateJob = async (req, res) => {
       });
 
       const uploadParams = {
-        Bucket: "skillmint-job-images",
+        Bucket: "skillmatch-jobs",
         Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
         Body: resizedImage,
         ACL: "public-read",

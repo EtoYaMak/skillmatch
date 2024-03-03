@@ -271,7 +271,7 @@ function StudeProfile() {
     const fileURL = formData.cv;
     const link = document.createElement("a");
     link.href = fileURL;
-    link.setAttribute("download", "MY_CV_SKILLMINT_DOWNLOAD.pdf");
+    link.setAttribute("download", "MY_CV_SKILLMATCH_DOWNLOAD.pdf");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

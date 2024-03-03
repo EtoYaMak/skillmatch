@@ -122,7 +122,7 @@ function PaymentJobForm() {
   }, [handleSubmit, setSubmitPayment]);
   return (
     <>
-      <h1 className="hiddenHSEO">Skillmint Job Payment Screen</h1>
+      <h1 className="hiddenHSEO">Skillmatch Job Payment Screen</h1>
       <h2 className="hiddenHSEO">
         You can create a free job listing or create a featured job listing with
         a payed option

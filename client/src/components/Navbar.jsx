@@ -99,16 +99,16 @@ const Navbar = () => {
 
   return (
     <div className="relative flex justify-between items-center h-24  px-4 mx-auto z-50 bg-[#fff]   select-none max-w-6xl">
-      <h1 className="hiddenHSEO">Skillmint Job Portal Navigation Menu</h1>
-      <h2 className="hiddenHSEO">Navbar to browse skillmint website</h2>
+      <h1 className="hiddenHSEO">Skillmatch Job Portal Navigation Menu</h1>
+      <h2 className="hiddenHSEO">Navbar to browse skillmatch website</h2>
       <h1 className="w-max text-[#000] bg-transparent">
         <Link
           to="/"
-          className="bg-transparent font-Poppins leading-6 tracking-tighter text-4xl font-extrabold hover:text-[#d0333c] ease-in-out duration-500 "
+          className="bg-transparent font-Poppins leading-7 text-4xl font-extrabold hover:text-[#d0333c] ease-in-out duration-500 flex flex-col"
         >
-          SKILL
-          <br />
-          MINT
+          <span className="tracking-widest">SKILL</span>
+
+          <span className="tracking-tight">MATCH</span>
         </Link>
         {SAuser ? <span>ADMIN</span> : null}
       </h1>

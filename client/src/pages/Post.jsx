@@ -23,7 +23,7 @@ const Post = () => {
   }
   return (
     <div className="select-none w-full h-screen">
-      <h1 className="hiddenHSEO">Skillmint Post A Job Page</h1>
+      <h1 className="hiddenHSEO">Skillmatch Post A Job Page</h1>
       <h2 className="hiddenHSEO">
         Start Posting Jobs and find the best candidate
       </h2>

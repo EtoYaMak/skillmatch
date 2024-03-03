@@ -100,7 +100,7 @@ function PasswordResetUserForm() {
       <h1 className="hiddenHSEO">
         Reset your password and create a new password
       </h1>
-      <h2 className="hiddenHSEO">Skillmint Reset password Page for users</h2>
+      <h2 className="hiddenHSEO">Skillmatch Reset password Page for users</h2>
       <div className=" w-full font-Poppins h-screen">
         <div className=" translate-y-24 w-fit mx-auto">
           <form

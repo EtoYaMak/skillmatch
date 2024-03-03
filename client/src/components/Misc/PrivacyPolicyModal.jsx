@@ -14,7 +14,7 @@ const PrivacyPolicyModal = ({ isOpen, onClose }) => {
           <h2 className="font-bold text-xl">Privacy Policy</h2>
           <p className="mt-1 font-semibold">Last Updated: 7 Oct 2023</p>
           <p className="mt-1">
-            This Privacy Policy describes how Skillmint ("we," "us," or "our")
+            This Privacy Policy describes how Skillmatch ("we," "us," or "our")
             collects, uses, discloses, and protects the personal information of
             users of our job portal website located at
             <a
@@ -22,7 +22,7 @@ const PrivacyPolicyModal = ({ isOpen, onClose }) => {
               target="_blank"
               className="underline font-bold mx-1"
             >
-              Skillmint
+              Skillmatch
             </a>
             (the "Website"). By using our Website, you consent to the practices
             described in this Privacy Policy.

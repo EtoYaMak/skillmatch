@@ -255,7 +255,7 @@ function CreateJobForm() {
       method="post"
       encType="multipart/form-data"
     >
-      <h1 className="hiddenHSEO">Create your job listing Skillmint</h1>
+      <h1 className="hiddenHSEO">Create your job listing Skillmatch</h1>
       <h2 className="hiddenHSEO">
         Fill out the form to continue with your job listing
       </h2>
