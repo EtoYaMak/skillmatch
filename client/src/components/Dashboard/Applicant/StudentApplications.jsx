@@ -20,16 +20,18 @@ const StudentApplications = () => {
   }, [dispatch]);
 
   const mapAppliedJobsToJobs = () => {
-    return student?.appliedJobs?.map((appliedJob) => {
-      const matchingJob = jobs.find((job) => job._id === appliedJob.job);
-      if (matchingJob) {
-        return {
-          job: matchingJob,
-          status: appliedJob.status,
-        };
-      }
-      return null;
-    });
+    return (
+      student?.appliedJobs?.map((appliedJob) => {
+        const matchingJob = jobs.find((job) => job._id === appliedJob.job);
+        if (matchingJob) {
+          return {
+            job: matchingJob,
+            status: appliedJob.status,
+          };
+        }
+        return null;
+      }) || []
+    ); // Ensure that an empty array is returned if student, appliedJobs, or map() returns undefined
   };
 
   // Filter out null values and order the jobs by their ID

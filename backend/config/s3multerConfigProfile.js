@@ -1,4 +1,4 @@
-// /config/multerConfig.js
+// /config/multerConfigProfile.js
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const { S3Client } = require("@aws-sdk/client-s3");
@@ -33,7 +33,7 @@ const fileFilter = (req, file, cb) => {
 const multerS3Config = multerS3({
   s3: s3,
   bucket: "skillmatch-jobs",
-  acl: "public-read",
+  //acl: "public-read",
   contentDisposition: "inline",
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key: function (req, file, cb) {

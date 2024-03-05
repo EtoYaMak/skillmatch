@@ -193,7 +193,7 @@ function JobPost() {
                 <span className="bg-transparent leading-[1.85rem] font-Poppins tracking-tighter text-4xl font-extrabold hover:text-[#d0333c] ease-in-out duration-500 ">
                   SKILL
                   <br />
-                  MINT
+                  MATCH
                 </span>
               </Link>
               <div className="head border-b flex flex-col justify-center gap-8 items-center p-14">

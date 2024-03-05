@@ -31,7 +31,7 @@ function PasswordResetAdmin() {
             <h1 className="bg-transparent font-Poppins leading-[1.4rem] uppercase tracking-tighter text-3xl font-extrabold hover:text-[#d0333c] ease-in-out duration-300 w-fit mx-auto ">
               Skill
               <br />
-              Mint
+              MATCH
             </h1>
             <h1 className="w-fit text-[2.1em] font-Poppins mx-auto my-6">
               Request Reset Email

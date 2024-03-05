@@ -16,7 +16,7 @@ function Footer() {
           >
             SKILL
             <br />
-            MINT
+            MATCH
           </Link>
         </h1>
         Job Portal since 2023.

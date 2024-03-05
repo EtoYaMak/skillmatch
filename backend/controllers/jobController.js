@@ -82,10 +82,10 @@ const setJob = async (req, res) => {
       });
 
       const uploadParams = {
-        Bucket: "sskillmatch-jobs",
+        Bucket: "skillmatch-jobs",
         Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
         Body: resizedImage,
-        ACL: "public-read",
+        //ACL: "public-read",
         ContentType: req.file.mimetype, // Dynamically set based on the file's MIME type
       };
 
@@ -187,7 +187,7 @@ const updateJob = async (req, res) => {
         Bucket: "skillmatch-jobs",
         Key: `job-images/${Date.now().toString()}-${req.file.originalname}`,
         Body: resizedImage,
-        ACL: "public-read",
+        //ACL: "public-read",
         ContentType: req.file.mimetype,
       };
 

@@ -15,6 +15,9 @@ const port = process.env.PORT;
 const IP_ADDRESS = process.env.SERVER_MAIN_ADDRESS;
 const IP_ADDRESS_BACK = process.env.SERVER_ADDRESS;
 const IP_ADDRESS_FRONT = process.env.SERVER_ADDRESS_FRONT;
+const AWS_KEY = process.env.AWS_ACCESS_KEY_ID;
+const AWS_SECRET = process.env.AWS_SECRET_ACCESS_KEY;
+const AWS_REG = process.env.AWS_REGION;
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 // Middleware
@@ -94,4 +97,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 // Start the server
-app.listen(port, () => console.log(`Server @ ${port} NODE_ENV:${NODE_ENV}`));
+app.listen(port, () => console.log(`Server @ ${port} NODE_ENV:${NODE_ENV} `));
+/* AWS: KEY ${AWS_KEY}, SECRET ${AWS_SECRET}, REGION ${AWS_REG} */

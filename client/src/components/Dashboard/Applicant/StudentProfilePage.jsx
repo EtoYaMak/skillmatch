@@ -2311,7 +2311,7 @@ function Profile({ student }) {
   return (
     <>
       <h1 className="hiddenHSEO">
-        Skillmint Applicant Profile Page on Dashboard
+        Skillmatch Applicant Profile Page on Dashboard
       </h1>
       <h2 className="hiddenHSEO">Applicant Dashboard Profile Page</h2>
       <span

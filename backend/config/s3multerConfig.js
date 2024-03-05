@@ -8,21 +8,25 @@ const multerS3 = require("multer-s3");
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION } = process.env;
 
 const s3 = new S3Client({
-  region: AWS_REGION, // Add your AWS region here
+  region: AWS_REGION,
   credentials: {
     accessKeyId: AWS_ACCESS_KEY_ID,
     secretAccessKey: AWS_SECRET_ACCESS_KEY,
   },
 });
+
+//This is for Job post images, however the actual multer config is inside jobController.js
+//Modify code in jobController.js for job-images/ and bucket settings
 const s3upload = multer({
   storage: multerS3({
     s3: s3,
     bucket: "skillmatch-jobs",
-    acl: "public-read",
+    //acl: "public-read",
     contentDisposition: "inline",
-    contentType: multer.AUTO_CONTENT_TYPE,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
     key: function (req, file, cb) {
-      const uniqueKey = `job-images/${Date.now().toString()}-${
+      let folder = "job-images/";
+      const uniqueKey = `${folder}${Date.now().toString()}-${
         file.originalname
       }`;
       cb(null, uniqueKey);
